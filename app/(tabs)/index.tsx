@@ -9,7 +9,7 @@ export default function HomeScreen() {
     const [sliders,] = React.useState([1, 2, 3])
     const ios = Platform.OS === 'ios';
     return (
-        <SafeAreaView className={`flex-1 bg-orange-800` + (ios ? ' pb-2' : ' pt-3')}>
+        <SafeAreaView className={`flex-1 bg-orange-600` + (ios ? ' pb-2' : ' pt-3')}>
             <Header/>
             <DeliveryBar/>
             <ScrollView
@@ -17,7 +17,7 @@ export default function HomeScreen() {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{paddingBottom: 10}}
             >
-                {sliders.map((i) => (
+                {Array.from(Array(100).keys()).map((i) => (
                     <Text key={i} className="text-black mb-4">Hello World</Text>
                 ))}
             </ScrollView>
