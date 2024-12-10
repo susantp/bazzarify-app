@@ -1,29 +1,36 @@
 {
   "name": "bazzarify",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start --web",
+    "android": "expo start -a",
+    "ios": "expo start -i",
+    "web": "expo start -w",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.4",
-    "@react-navigation/bottom-tabs": "^7.0.0",
-    "@react-navigation/native": "^7.0.0",
-    "expo": "~52.0.18",
+    "@react-navigation/bottom-tabs": "^7.2.0",
+    "@react-navigation/native": "^7.0.14",
+    "@tanstack/react-query": "^5.62.15",
+    "expo": "^52.0.23",
+    "expo-asset": "~11.0.1",
     "expo-blur": "~14.0.1",
+    "expo-checkbox": "~4.0.0",
     "expo-constants": "~17.0.3",
-    "expo-font": "~13.0.1",
+    "expo-crypto": "~14.0.1",
+    "expo-font": "~13.0.2",
     "expo-haptics": "~14.0.0",
     "expo-linking": "~7.0.3",
-    "expo-router": "~4.0.11",
+    "expo-location": "~18.0.4",
+    "expo-router": "~4.0.15",
     "expo-splash-screen": "~0.29.18",
     "expo-status-bar": "~2.0.0",
     "expo-symbols": "~0.2.0",
@@ -32,38 +39,52 @@
     "nativewind": "^4.1.23",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-native": "0.76.5",
+    "react-native": "0.76.6",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-heroicons": "^4.0.0",
-    "react-native-reanimated": "^3.16.5",
+    "react-native-reanimated": "^3.16.6",
     "react-native-reanimated-carousel": "^3.5.1",
     "react-native-safe-area-context": "4.12.0",
-    "react-native-screens": "~4.1.0",
+    "react-native-screens": "~4.4.0",
     "react-native-svg": "15.8.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
-    "tailwindcss": "^3.4.16"
+    "recoil": "^0.7.7",
+    "tailwindcss": "^3.4.17",
+    "underscore": "^1.13.7"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
+    "@tanstack/eslint-plugin-query": "^5.62.15",
+    "@testing-library/react-native": "^12.9.0",
     "@types/jest": "^29.5.14",
-    "@types/react": "~18.3.12",
-    "@types/react-test-renderer": "^19.0.0",
-    "eslint": "^9.16.0",
+    "@types/react": "~18.3.18",
+    "@types/underscore": "^1.13.0",
+    "eslint": "^8.57.1",
     "eslint-config-expo": "~8.0.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "expo-dev-client": "^5.0.8",
     "jest": "^29.7.0",
     "jest-expo": "~52.0.2",
-    "react-test-renderer": "19.0.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "typescript": "^5.7.2"
   },
   "private": true,
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "expo": {
     "doctor": {
       "reactNativeDirectoryCheck": {
-        "exclude": ["react-native-heroicons"],
+        "exclude": [
+          "react-native-heroicons"
+        ],
         "listUnknownPackages": false
       }
     }
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }
