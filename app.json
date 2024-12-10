@@ -4,7 +4,7 @@
     "slug": "bazzarify",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/launcher.png",
     "scheme": "bazzarify",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,12 +13,8 @@
       "bundleIdentifier": "com.techbizz.bazzarify"
     },
     "android": {
-      "permissions": [
-        "android.permission.ACCESS_FINE_LOCATION"
-      ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/launcher.png"
       },
       "package": "com.techbizz.bazzarify"
     },
@@ -28,16 +24,24 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
