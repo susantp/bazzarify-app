@@ -12,14 +12,14 @@ export default function useCheckoutScreenHook() {
 
   const CARDS = [
     {
+      title: "address",
+      id: randomUUID(),
+      component: <CheckoutAddressComponent />,
+    },
+    {
       title: "checkoutItems",
       id: randomUUID(),
       component: <OrderItem />,
-    },
-    {
-      title: "orderDetails",
-      id: randomUUID(),
-      component: <OrderDetailsComponent />,
     },
     {
       title: "vouchers",
@@ -27,9 +27,9 @@ export default function useCheckoutScreenHook() {
       component: <VoucherList />,
     },
     {
-      title: "address",
+      title: "orderDetails",
       id: randomUUID(),
-      component: <CheckoutAddressComponent />,
+      component: <OrderDetailsComponent />,
     },
   ];
   return { CARDS, cartItems };

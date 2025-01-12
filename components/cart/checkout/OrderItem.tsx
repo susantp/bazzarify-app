@@ -19,9 +19,6 @@ const OrderItem = () => (
       <View id="vendor">
         <Text className="text-sm">ultima lifestyle</Text>
       </View>
-      <View id="delivery-info">
-        <Text className="text-sm">Get By Dec Mon 2nd - Wed 4th</Text>
-      </View>
       <View
         id="price-action"
         className="w-full flex-row items-center justify-between"

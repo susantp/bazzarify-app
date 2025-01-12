@@ -17,12 +17,13 @@ const CheckoutAddressComponent = () => {
         <View className="w-1/12 flex-row items-center">
           <MapPinIcon size={26} color="black" />
         </View>
-        <View className="w-9/12 flex-col gap-y-2">
+        <View className="w-9/12 flex-col">
+          <Text>Om Prakash Shaha &nbsp; &nbsp;98XXXXXXXX</Text>
           <Text>Koshi, Province</Text>
           <Text>Morang, Biratnagar</Text>
         </View>
         <View className="w-2/12 flex-row items-center">
-          <Text>Change</Text>
+          <Text className="text-sm">Change</Text>
         </View>
       </TouchableOpacity>
       <DemoModalComponent
