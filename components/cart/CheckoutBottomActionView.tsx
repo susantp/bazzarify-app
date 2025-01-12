@@ -31,7 +31,7 @@ const CheckoutBottomActionView = ({
       </View>
       <Link
         href={actionLink}
-        className="flex-row items-end rounded-3xl bg-orange-600 px-6 py-2"
+        className="flex-row items-end rounded-full bg-orange-600 px-6 py-4"
       >
         <Text className="text-md text-white">{btnLabel}</Text>
       </Link>
