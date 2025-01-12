@@ -19,9 +19,12 @@ export default function CheckoutScreen() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Checkout" />
-      <ContentWrapper styles={{ paddingBottom: paddingAfterBottomView }}>
+      <ContentWrapper>
         <FlatList
-          contentContainerStyle={{ rowGap: 15 }}
+          contentContainerStyle={{
+            rowGap: 15,
+            paddingBottom: paddingAfterBottomView + 25,
+          }}
           showsVerticalScrollIndicator={false}
           className="p-2"
           data={CARDS}
