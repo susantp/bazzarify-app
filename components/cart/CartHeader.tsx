@@ -24,11 +24,11 @@ const CartHeader = () => {
     setCartItems(_.filter((item) => !item.isSelected));
   };
   return (
-    <View className="flex flex-row justify-between px-4">
-      <View className="w-3/8">
+    <View className="flex flex-row justify-between pr-2">
+      <View className="w-3/12">
         <ScreenHeader title="My Cart" />
       </View>
-      <View className="w-5/8 flex flex-row items-center justify-end gap-x-4">
+      <View className="flex w-9/12 flex-row items-center justify-end gap-x-4">
         <CartActions cartItems={_} onPress={handleDelete} />
       </View>
     </View>
