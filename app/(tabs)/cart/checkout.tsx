@@ -5,8 +5,8 @@ import React from "react";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { useRecoilValue } from "recoil";
 import { cartItemsTotalAtom } from "@/atoms/cartScreen/cartAction.atom";
-import CheckoutBottomActionView from "@/components/cart/CheckoutBottomActionView";
-import BottomActionView from "@/components/cart/BottomActionView";
+import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
+import BottomActionView from "@/components/common/BottomActionView";
 import useBottomViewHook from "@/hooks/useBottomViewHook";
 import useCheckoutScreenHook from "@/hooks/useCheckoutScreenHook";
 
@@ -31,17 +31,16 @@ export default function CheckoutScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      <BottomActionView
-        items={cartItems}
-        onLayoutEvent={handleBottomViewLayoutEvent}
-      >
-        <CheckoutBottomActionView
-          totalPrice={totalCartPrice}
-          btnLabel="Place Order"
-          deliveryPrice={110}
-          actionLink={{ pathname: "/cart/payment" }}
-        />
-      </BottomActionView>
+      {cartItems.length > 0 && (
+        <BottomActionView onLayoutEvent={handleBottomViewLayoutEvent}>
+          <CheckoutBottomActionView
+            totalPrice={totalCartPrice}
+            btnLabel="Place Order"
+            deliveryPrice={110}
+            actionLink={{ pathname: "/cart/payment" }}
+          />
+        </BottomActionView>
+      )}
     </SafeAreaWrapper>
   );
 }
