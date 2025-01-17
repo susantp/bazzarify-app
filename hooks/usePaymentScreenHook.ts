@@ -1,15 +1,17 @@
-export type TPaymentType = {
+import { Href } from "expo-router";
+
+export type TPaymentMethodType = {
   sectionTitle: string;
   methods: PaymentMethodType[];
 };
 export type PaymentMethodType = {
   name: string;
   icon: string;
-  action: string;
+  pathname: Href;
   id: string;
 };
 export default function usePaymentScreenHook() {
-  const paymentTypes: TPaymentType[] = [
+  const paymentMethodTypes: TPaymentMethodType[] = [
     {
       sectionTitle: "Recommended Method",
       methods: [
@@ -17,7 +19,7 @@ export default function usePaymentScreenHook() {
           id: "card",
           name: "Credit/Debit card payment",
           icon: "credit_card_icon",
-          action: "navigateToCardPayment",
+          pathname: "/cart/cardPayment",
         },
       ],
     },
@@ -28,13 +30,13 @@ export default function usePaymentScreenHook() {
           id: "imePay",
           name: "Ime pay",
           icon: "ime_pay_icon",
-          action: "navigateToImePay",
+          pathname: "/cart/cardPayment",
         },
         {
           id: "connectIPS",
           name: "Connect IPS",
           icon: "connect_ips_icon",
-          action: "navigateToConnectIps",
+          pathname: "/cart/cardPayment",
         },
       ],
     },
@@ -45,11 +47,11 @@ export default function usePaymentScreenHook() {
           id: "cod",
           name: "Cash On Delivery (COD)",
           icon: "cash_on_delivery_icon",
-          action: "navigateToCashOnDelivery",
+          pathname: "/cart/cardPayment",
         },
       ],
     },
   ];
 
-  return { paymentTypes };
+  return { paymentMethodTypes };
 }
