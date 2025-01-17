@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import React from "react";
 
-const ScreenHeader = ({ title }: { title: string | undefined }) => {
+const ScreenHeader = ({ title }: { title?: string }) => {
   const canGoBack = router.canGoBack();
   return (
     <View className="flex-row items-center justify-between px-1">

@@ -5,36 +5,30 @@ import { Text, View } from "react-native";
 import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
 import { randomUUID } from "expo-crypto";
 import useBottomViewHook from "@/hooks/useBottomViewHook";
-import BottomActionView from "@/components/common/BottomActionView";
 import React from "react";
-import PaymentBottomActionView from "@/components/cart/payment/PaymentBottomActionView";
 import PaymentMethodView from "@/components/cart/payment/PaymentMethodView";
 
 export default function PaymentScreen() {
-  const { paymentMethodTypes } = usePaymentScreenHook();
-  const { handleBottomViewLayoutEvent, paddingAfterBottomView } =
-    useBottomViewHook();
+  const { paymentMethodSections } = usePaymentScreenHook();
+  useBottomViewHook();
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Payment" />
-      <ContentWrapper styles={{ paddingBottom: paddingAfterBottomView }}>
-        {paymentMethodTypes.map((methodType, index) => (
+      <ContentWrapper>
+        {paymentMethodSections.map((methodSection, index) => (
           <View key={randomUUID()} className="flex-col">
             <View className="bg-gray-300 px-2 py-1.5">
-              <Text>{methodType.sectionTitle}</Text>
+              <Text>{methodSection.sectionTitle}</Text>
             </View>
-            {methodType.methods.map((method) => (
+            {methodSection.methods.map((methodType) => (
               <PaymentMethodView
-                method={method}
+                method={methodType}
                 key={randomUUID()}
-                pathName={method.pathname}
+                pathName={methodType.pathname}
               />
             ))}
           </View>
         ))}
-        <BottomActionView onLayoutEvent={handleBottomViewLayoutEvent}>
-          <PaymentBottomActionView totalPrice={399} subTotalPrice={399} />
-        </BottomActionView>
       </ContentWrapper>
     </SafeAreaWrapper>
   );
