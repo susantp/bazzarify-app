@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import { Link, LinkProps } from "expo-router";
 import React from "react";
 
-interface CheckoutBottomActionViewProps {
+interface ICheckoutBottomActionViewProps {
   totalPrice: number;
   btnLabel: string;
   deliveryPrice?: number;
@@ -14,7 +14,7 @@ const CheckoutBottomActionView = ({
   btnLabel,
   deliveryPrice,
   actionLink,
-}: CheckoutBottomActionViewProps) => {
+}: ICheckoutBottomActionViewProps) => {
   return (
     <View className="flex-row items-center justify-between px-4 py-9">
       <View className="flex-col gap-y-2">
