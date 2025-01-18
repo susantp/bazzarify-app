@@ -1,24 +1,14 @@
-import { LayoutChangeEvent, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
 
 interface BottomActionViewProps {
   children: React.ReactNode;
-  onLayoutEvent?: (event: LayoutChangeEvent) => void;
+  // onLayoutEvent?: (event: LayoutChangeEvent) => void;
 }
 
-const BottomActionView = ({
-  children,
-  onLayoutEvent,
-}: BottomActionViewProps) => {
+const BottomActionView = ({ children }: BottomActionViewProps) => {
   return (
-    <View
-      onLayout={onLayoutEvent}
-      style={{
-        position: "absolute",
-        bottom: 0,
-      }}
-      className={`w-full border border-gray-400 bg-white`}
-    >
+    <View className={`w-full flex-col-reverse border border-gray-400 bg-white`}>
       {children}
     </View>
   );

@@ -4,7 +4,7 @@ import React from "react";
 
 const ImePayPaymentComponent = () => {
   return (
-    <>
+    <View className="flex-1">
       <View className="flex-row gap-x-2 px-2 pb-10 pt-2">
         <View className="w-1/12 items-end">
           <ImePayIcon />
@@ -16,7 +16,7 @@ const ImePayPaymentComponent = () => {
           </Text>
         </View>
       </View>
-      <View className="flex-1 flex-col gap-y-2 bg-gray-100 px-3 py-8">
+      <View className="flex-col gap-y-2 bg-gray-100 px-3 py-8">
         <Text className="text-gray-600">
           "You will be redirected to you IME Pay account to complete payment:"
         </Text>
@@ -34,7 +34,7 @@ const ImePayPaymentComponent = () => {
           ***Login with your IME Pay mobile and PIN.***
         </Text>
       </View>
-    </>
+    </View>
   );
 };
 

@@ -8,7 +8,6 @@ import CODPaymentComponent from "@/components/cart/payment/CODPaymentComponent";
 import CODPaymentBottomActionView from "@/components/cart/payment/CODPaymentBottomActionView";
 import ImePayPaymentComponent from "@/components/cart/payment/ImePayPaymentComponent";
 import ImePayPaymentBottomActionView from "@/components/cart/payment/ImePayPaymentBottomActionView";
-import useBottomViewHook from "@/hooks/useBottomViewHook";
 
 export type PaymentMethodSection = {
   sectionTitle: string;
@@ -22,17 +21,15 @@ export type PaymentMethodType = {
   voucherMsg?: string;
 };
 export default function usePaymentScreenHook(id?: string) {
-  const { handleBottomViewLayoutEvent, paddingAfterBottomView } =
-    useBottomViewHook();
   const componentMap: Record<PaymentMethodType["id"], React.ReactNode> = {
     card: (
       <>
         <CardPaymentComponent />
-        <BottomActionView onLayoutEvent={handleBottomViewLayoutEvent}>
+        <BottomActionView>
           <CardPaymentBottomActionView
             totalPrice={399}
             subTotalPrice={399}
-            actionBtn="Pay Now"
+            actionBtn="Place Order"
           />
         </BottomActionView>
       </>
@@ -40,7 +37,7 @@ export default function usePaymentScreenHook(id?: string) {
     cod: (
       <>
         <CODPaymentComponent />
-        <BottomActionView onLayoutEvent={handleBottomViewLayoutEvent}>
+        <BottomActionView>
           <CODPaymentBottomActionView
             actionBtn="Place Order"
             cashPaymentFee={10}
@@ -53,11 +50,11 @@ export default function usePaymentScreenHook(id?: string) {
     imePay: (
       <>
         <ImePayPaymentComponent />
-        <BottomActionView onLayoutEvent={handleBottomViewLayoutEvent}>
+        <BottomActionView>
           <ImePayPaymentBottomActionView
             totalPrice={323}
             subTotalPrice={323}
-            actionBtn={"Pay Now"}
+            actionBtn={"Place Order"}
           />
         </BottomActionView>
       </>
@@ -117,7 +114,6 @@ export default function usePaymentScreenHook(id?: string) {
   return {
     paymentMethodSections,
     paymentMethodById,
-    paddingAfterBottomView,
     componentMap,
   };
 }
