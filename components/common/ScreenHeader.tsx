@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
-import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import React from "react";
+import { AntDesign } from "@expo/vector-icons";
 
 const ScreenHeader = ({ title }: { title?: string }) => {
   const canGoBack = router.canGoBack();
@@ -13,7 +13,7 @@ const ScreenHeader = ({ title }: { title?: string }) => {
         onPress={() => (canGoBack ? router.back() : router.dismissTo("/"))}
       >
         {canGoBack ? (
-          <ChevronLeftIcon size={20} strokeWidth={4} color="white" />
+          <AntDesign size={18} name="left" color="white" />
         ) : undefined}
         <Text className="text-xl font-semibold text-white">{title}</Text>
       </TouchableOpacity>
