@@ -11,12 +11,13 @@ import {
   ToShipIcon,
 } from "@/components/common/icons";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
+import { router } from "expo-router";
 
 const ProfileScreen = () => {
   return (
     <SafeAreaWrapper>
       <AccountHeader />
-      <View className="h-screen flex-col bg-white px-2 py-2">
+      <View className="flex-1 flex-col bg-white px-2 py-2">
         <ProfileInfo />
         <MyOrders />
       </View>
@@ -35,27 +36,33 @@ type MyOrdersViewBoxMapKeyLiteral =
 type MyOrdersViewBoxMapKeyType = {
   [key in MyOrdersViewBoxMapKeyLiteral]: {
     label: string;
+    id: string;
     icon: React.ReactNode;
   };
 };
 const myOrdersViewBoxMap: MyOrdersViewBoxMapKeyType = {
   toPay: {
+    id: "toPay",
     label: "To Pay",
     icon: <WalletIcon size={26} color={Colors.light.tint} />,
   },
   toShip: {
+    id: "toShip",
     label: "To Ship",
     icon: <ToShipIcon />,
   },
   toReceive: {
+    id: "toReceive",
     label: "To Receive",
     icon: <ToReceiveIcon />,
   },
   toReview: {
+    id: "toReview",
     label: "To Review",
     icon: <ToReviewIcon />,
   },
   toReturn: {
+    id: "toReturn",
     label: "To Return",
     icon: <ToReturnIcon />,
   },
@@ -70,6 +77,7 @@ export const MyOrders = () => (
           <TouchableOpacity
             className="w-1/5 flex-col items-center gap-y-1"
             key={key}
+            onPress={() => router.push("/account/order/tracking")}
           >
             {value.icon}
             <Text className="text-sm">{value.label}</Text>
