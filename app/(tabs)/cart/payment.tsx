@@ -4,13 +4,11 @@ import ScreenHeader from "@/components/common/ScreenHeader";
 import { Text, View } from "react-native";
 import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
 import { randomUUID } from "expo-crypto";
-import useBottomViewHook from "@/hooks/useBottomViewHook";
 import React from "react";
 import PaymentMethodView from "@/components/cart/payment/PaymentMethodView";
 
 export default function PaymentScreen() {
   const { paymentMethodSections } = usePaymentScreenHook();
-  useBottomViewHook();
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Payment" />

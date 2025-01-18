@@ -7,14 +7,11 @@ import { useRecoilValue } from "recoil";
 import { cartItemsTotalAtom } from "@/atoms/cartScreen/cartAction.atom";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import BottomActionView from "@/components/common/BottomActionView";
-import useBottomViewHook from "@/hooks/useBottomViewHook";
 import useCheckoutScreenHook from "@/hooks/useCheckoutScreenHook";
 
 export default function CheckoutScreen() {
   const totalCartPrice = useRecoilValue(cartItemsTotalAtom);
   const { CARDS, cartItems } = useCheckoutScreenHook();
-  const { handleBottomViewLayoutEvent, paddingAfterBottomView } =
-    useBottomViewHook();
 
   return (
     <SafeAreaWrapper>
@@ -23,7 +20,6 @@ export default function CheckoutScreen() {
         <FlatList
           contentContainerStyle={{
             rowGap: 15,
-            paddingBottom: paddingAfterBottomView + 25,
           }}
           showsVerticalScrollIndicator={false}
           className="p-2"
@@ -32,10 +28,10 @@ export default function CheckoutScreen() {
         />
       </ContentWrapper>
       {cartItems.length > 0 && (
-        <BottomActionView onLayoutEvent={handleBottomViewLayoutEvent}>
+        <BottomActionView>
           <CheckoutBottomActionView
             totalPrice={totalCartPrice}
-            btnLabel="Place Order"
+            btnLabel="Pay"
             deliveryPrice={110}
             actionLink={{ pathname: "/cart/payment" }}
           />

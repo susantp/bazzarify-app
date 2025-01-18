@@ -4,7 +4,7 @@ import React from "react";
 
 const CODPaymentComponent = () => {
   return (
-    <>
+    <View className="flex-1">
       <View className="h-4 bg-gray-200"></View>
       <View className="flex-row gap-x-2 p-2">
         <View className="w-1/12 items-end">
@@ -29,7 +29,7 @@ const CODPaymentComponent = () => {
           </Text>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 

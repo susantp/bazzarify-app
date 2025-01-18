@@ -9,13 +9,14 @@ import React from "react";
 
 export default function PaymentConfirmationScreen() {
   const { id } = useLocalSearchParams();
-  const { paymentMethodById, componentMap, paddingAfterBottomView } =
-    usePaymentScreenHook(id.toString());
+  const { paymentMethodById, componentMap } = usePaymentScreenHook(
+    id.toString(),
+  );
 
   return (
     <SafeAreaWrapper>
       <ScreenHeader title={paymentMethodById?.name} />
-      <ContentWrapper styles={{ paddingBottom: paddingAfterBottomView }}>
+      <ContentWrapper>
         {paymentMethodById?.voucherMsg && (
           <View className="flex-row gap-x-2 bg-blue-200 p-2">
             <View className="w-1/12 items-end">

@@ -7,7 +7,6 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import BottomActionView from "@/components/common/BottomActionView";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import useBottomViewHook from "@/hooks/useBottomViewHook";
 import useCartScreenHook from "@/hooks/useCartScreenHook";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
@@ -16,14 +15,12 @@ import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
 export default function CartScreen() {
   const totalCartPrice = useRecoilValue(cartItemsTotalAtom);
   const { CARDS, cartItems } = useCartScreenHook();
-  const { paddingAfterBottomView, handleBottomViewLayoutEvent } =
-    useBottomViewHook();
   const [showModal, setShowModal] = useRecoilState(addressModalAtom);
 
   return (
     <SafeAreaWrapper>
       <CartHeader />
-      <ContentWrapper styles={{ paddingBottom: paddingAfterBottomView }}>
+      <ContentWrapper>
         <FlatList
           className="bg-white"
           data={CARDS}
@@ -31,7 +28,7 @@ export default function CartScreen() {
         />
       </ContentWrapper>
       {cartItems.length > 0 && (
-        <BottomActionView onLayoutEvent={handleBottomViewLayoutEvent}>
+        <BottomActionView>
           <CheckoutBottomActionView
             totalPrice={totalCartPrice}
             btnLabel="Checkout"
