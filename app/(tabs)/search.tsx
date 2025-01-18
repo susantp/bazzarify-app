@@ -28,10 +28,10 @@ export default function SearchScreen() {
     <SafeAreaWrapper>
       <View className="flex-row items-center justify-between px-2 py-5">
         <View
-          className={`flex-1 flex-row items-center gap-x-4 rounded-full bg-white px-4 ${ios ? "py-2.5" : "py-1"}`}
+          className={`flex-1 flex-row items-center gap-x-2 rounded-full bg-white px-4 ${ios ? "py-2.5" : "py-1"}`}
         >
           {canGoBack ? (
-            <TouchableOpacity onPress={() => router.back()} className="">
+            <TouchableOpacity onPress={() => router.back()} className="p-2">
               <ArrowLeftIcon size={24} strokeWidth={9} color="black" />
             </TouchableOpacity>
           ) : null}

@@ -6,8 +6,10 @@ import SectionHeader from "@/components/home/SectionHeader";
 import { categoriesItemData } from "@/constants/categoriesItemData";
 import React from "react";
 import { randomUUID } from "expo-crypto";
+import { Dimensions, Image, View } from "react-native";
 
 export default function useHomeScreenHook() {
+  const { width, height } = Dimensions.get("window");
   const CARDS = [
     {
       id: randomUUID(),
@@ -48,6 +50,17 @@ export default function useHomeScreenHook() {
         </ContentGridSection>
       ),
       title: "Popular Items",
+    },
+    {
+      id: randomUUID(),
+      component: (
+        <View className="flex w-full items-center">
+          <Image
+            source={require("@/assets/images/ads/homeAd.png")}
+            style={{ width: width * 0.99, height: height * 0.2 }}
+          />
+        </View>
+      ),
     },
     {
       id: randomUUID(),
