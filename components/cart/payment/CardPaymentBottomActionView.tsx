@@ -1,17 +1,17 @@
 import { Text, View } from "react-native";
 import React from "react";
 
-interface IPaymentMethodViewProps {
+interface ICardPaymentMethodViewProps {
   totalPrice: number;
   subTotalPrice: number;
 }
 
-const PaymentBottomActionView = ({
+const CardPaymentBottomActionView = ({
   totalPrice,
   subTotalPrice,
-}: IPaymentMethodViewProps) => {
+}: ICardPaymentMethodViewProps) => {
   return (
-    <View className="px-4 py-9">
+    <View className="w-full px-4 py-9">
       <View className="flex-col gap-y-4">
         <View className="w-full flex-row justify-between">
           <Text className="text-sm font-light">Subtotal</Text>
@@ -28,4 +28,4 @@ const PaymentBottomActionView = ({
     </View>
   );
 };
-export default PaymentBottomActionView;
+export default CardPaymentBottomActionView;
