@@ -5,6 +5,7 @@ import {
   PermissionType,
 } from "@/components/account/setting/data/permissions";
 import { Colors } from "@/constants/Colors";
+import ContentWrapper from "@/components/common/ContentWrapper";
 
 const PermissionSettingScreen = () => {
   const [permissions, setPermissions] = useState(permissionSetting);
@@ -17,7 +18,7 @@ const PermissionSettingScreen = () => {
   };
   return (
     permissions.length > 0 && (
-      <View className="h-screen-safe bg-white">
+      <ContentWrapper className="bg-white">
         <FlatList
           data={permissions}
           renderItem={({ item }) => {
@@ -40,7 +41,7 @@ const PermissionSettingScreen = () => {
             );
           }}
         />
-      </View>
+      </ContentWrapper>
     )
   );
 };

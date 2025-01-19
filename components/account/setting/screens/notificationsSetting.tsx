@@ -5,6 +5,7 @@ import {
   notificationSettingList,
   NotificationSettingType,
 } from "@/components/account/setting/data/notification";
+import ContentWrapper from "@/components/common/ContentWrapper";
 
 const NotificationSettingScreen = () => {
   const [notifications, setNotifications] = useState(notificationSettingList);
@@ -19,7 +20,7 @@ const NotificationSettingScreen = () => {
   };
   return (
     notifications.length > 0 && (
-      <View className="h-screen-safe bg-white">
+      <ContentWrapper className="bg-white">
         <FlatList
           data={notifications}
           renderItem={({ item }) => {
@@ -45,7 +46,7 @@ const NotificationSettingScreen = () => {
             );
           }}
         />
-      </View>
+      </ContentWrapper>
     )
   );
 };

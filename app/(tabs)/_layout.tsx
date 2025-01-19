@@ -95,13 +95,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="account"
-        options={{
-          title: "Account",
-          tabBarIcon: ({ color }) => <UserIcon size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="products/[slug]"
         options={{
           tabBarStyle: {
@@ -114,6 +107,13 @@ export default function TabLayout() {
         name="auth"
         options={{
           href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: "Account",
+          tabBarIcon: ({ color }) => <UserIcon size={28} color={color} />,
         }}
       />
     </Tabs>

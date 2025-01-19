@@ -17,7 +17,7 @@ export default function CartScreen() {
   const totalCartPrice = useRecoilValue(cartItemsTotalAtom);
   const { CARDS, cartItems, selectedItemCount } = useCartScreenHook();
   const [showModal, setShowModal] = useRecoilState(addressModalAtom);
-  const onPress = () =>
+  const handlePress = () =>
     selectedItemCount < 1
       ? Alert.alert("Please select item to checkout.")
       : router.push("/cart/checkout");
@@ -34,7 +34,7 @@ export default function CartScreen() {
       {cartItems.length > 0 && (
         <BottomActionView>
           <CheckoutBottomActionView
-            handlePress={onPress}
+            handlePress={handlePress}
             totalPrice={totalCartPrice}
             btnLabel={
               cartItems.length > 0

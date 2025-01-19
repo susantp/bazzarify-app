@@ -5,6 +5,7 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
 } from "react-native-heroicons/outline";
+import ContentWrapper from "@/components/common/ContentWrapper";
 
 const FaqScreen = () => {
   const [list, setList] = useState(FaqList);
@@ -16,7 +17,7 @@ const FaqScreen = () => {
     );
   };
   return (
-    <View className="h-screen-safe flex-col gap-y-2 bg-white p-2">
+    <ContentWrapper className="gap-y-2 bg-white p-2">
       {list.map((item) => (
         <View
           key={item.id}
@@ -38,7 +39,7 @@ const FaqScreen = () => {
           </View>
         </View>
       ))}
-    </View>
+    </ContentWrapper>
   );
 };
 export default FaqScreen;

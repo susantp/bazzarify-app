@@ -16,7 +16,7 @@ export default function PaymentConfirmationScreen() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title={paymentMethodById?.name} />
-      <ContentWrapper>
+      <ContentWrapper className="bg-white">
         {paymentMethodById?.voucherMsg && (
           <View className="flex-row gap-x-2 bg-blue-200 p-2">
             <View className="w-1/12 items-end">

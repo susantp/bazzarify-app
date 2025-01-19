@@ -5,7 +5,7 @@ interface ICheckoutBottomActionViewProps {
   totalPrice: number;
   btnLabel: string;
   deliveryPrice?: number;
-  handlePress: () => void;
+  handlePress: () => void | undefined;
 }
 
 const CheckoutBottomActionView = ({
