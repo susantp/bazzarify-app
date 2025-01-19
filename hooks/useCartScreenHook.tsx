@@ -8,6 +8,7 @@ import { cartItemsAtom } from "@/atoms/cartScreen/cartAction.atom";
 
 export default function useCartScreenHook() {
   const cartItems = useRecoilValue(cartItemsAtom);
+  const selectedItemCount = cartItems.filter((item) => item.isSelected).length;
   const CARDS = [
     {
       title: "wel",
@@ -36,5 +37,5 @@ export default function useCartScreenHook() {
       ),
     },
   ];
-  return { CARDS, cartItems };
+  return { CARDS, cartItems, selectedItemCount };
 }
