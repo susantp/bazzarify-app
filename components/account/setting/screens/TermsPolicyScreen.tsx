@@ -4,6 +4,7 @@ import {
   TermPolicyType,
   termsPolicy,
 } from "@/components/account/setting/data/termsPolicy";
+import ContentWrapper from "@/components/common/ContentWrapper";
 
 const TermsPolicyScreen = () => {
   const [termsPolicyState, setTermsPolicyState] = useState(termsPolicy);
@@ -20,7 +21,7 @@ const TermsPolicyScreen = () => {
     setActiveContent(activeTermsPolicy[0]);
   }, [termsPolicyState]);
   return (
-    <View className="h-screen-safe flex-col gap-y-2 bg-white">
+    <ContentWrapper className="gap-y-2 bg-white">
       <View className="flex-row">
         {termsPolicyState.map((item, key) => (
           <TouchableOpacity
@@ -35,7 +36,7 @@ const TermsPolicyScreen = () => {
       <View className="px-2">
         {activeContent && <Text>{activeContent.content}</Text>}
       </View>
-    </View>
+    </ContentWrapper>
   );
 };
 

@@ -20,7 +20,7 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Your Order" />
-      <ContentWrapper className="gap-y-6 px-3 py-2">
+      <ContentWrapper className="gap-y-6 bg-white px-3 py-2">
         <View className="flex-row flex-wrap gap-2">
           {orderStatusBoxes.map((orderStatus) => (
             <TouchableOpacity

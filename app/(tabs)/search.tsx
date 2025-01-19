@@ -1,11 +1,5 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import {
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { HeaderIcons } from "@/components/home/Header";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { router } from "expo-router";
@@ -16,7 +10,6 @@ import { useState } from "react";
 
 export default function SearchScreen() {
   const canGoBack = router.canGoBack();
-  const ios = Platform.OS === "ios";
   const [searchHistory, setSearchHistory] = useState([
     "women dress",
     "ramen noodels",
@@ -47,7 +40,7 @@ export default function SearchScreen() {
 
         <HeaderIcons classes="flex-row items-center w-3/12 md:w-2/12  justify-between px-2 md:px-4" />
       </View>
-      <ContentWrapper className="gap-y-3 p-4">
+      <ContentWrapper className="gap-y-3 bg-white p-4">
         <View className="flex-row items-center justify-between">
           <View>
             <Text className="text-xl font-semibold">Search History</Text>

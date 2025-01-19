@@ -13,7 +13,7 @@ export default function PaymentScreen() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Payment" />
-      <ContentWrapper>
+      <ContentWrapper className="bg-white">
         {paymentMethodSections.map((methodSection, index) => (
           <View key={randomUUID()} className="flex-col">
             <View className="bg-gray-300 px-2 py-1.5">

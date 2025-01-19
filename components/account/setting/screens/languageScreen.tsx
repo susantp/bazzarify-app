@@ -2,6 +2,7 @@ import { FlatList, Image, Switch, Text, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useRecoilState } from "recoil";
 import { languageAtom } from "@/atoms/languageAtom";
+import ContentWrapper from "@/components/common/ContentWrapper";
 
 const LanguageSettingScreen = () => {
   const [languages, setLanguages] = useRecoilState(languageAtom);
@@ -18,7 +19,7 @@ const LanguageSettingScreen = () => {
 
   return (
     languages.length > 0 && (
-      <View className="h-screen-safe bg-white">
+      <ContentWrapper className="bg-white">
         <FlatList
           data={languages}
           renderItem={({ item }) => (
@@ -40,7 +41,7 @@ const LanguageSettingScreen = () => {
             </View>
           )}
         />
-      </View>
+      </ContentWrapper>
     )
   );
 };

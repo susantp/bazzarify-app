@@ -5,7 +5,7 @@ import AddressListComponent from "@/components/account/setting/AddressListCompon
 const AddressSettingScreen = () => {
   const { addresses, handleSwitchChange } = useAddressesHook();
   return (
-    <ContentWrapper>
+    <ContentWrapper className="bg-white">
       {addresses.length > 0 && (
         <AddressListComponent
           addresses={addresses}

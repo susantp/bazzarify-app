@@ -13,12 +13,7 @@ const ContentWrapper = ({
   styles,
 }: ContentWrapperProps) => {
   const mergedClasses = [
-    ...new Set([
-      ...(className?.split(" ") || []),
-      "flex-1",
-      "bg-white",
-      "flex-col",
-    ]),
+    ...new Set(["flex-1", "flex-col", ...(className?.split(" ") || [])]),
   ].join(" ");
   return (
     <View style={styles} className={mergedClasses}>

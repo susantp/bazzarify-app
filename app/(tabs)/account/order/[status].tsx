@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Track Your Product" />
-      <ContentWrapper className="gap-y-6 px-4 py-3">
+      <ContentWrapper className="gap-y-6 bg-white px-4 py-3">
         <DeliveryMileStones />
         <View className="flex-row items-center justify-between rounded-lg bg-slate-100 p-3">
           <View className="flex-col gap-y-1">
