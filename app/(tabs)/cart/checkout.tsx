@@ -12,7 +12,6 @@ import useCheckoutScreenHook from "@/hooks/useCheckoutScreenHook";
 export default function CheckoutScreen() {
   const totalCartPrice = useRecoilValue(cartItemsTotalAtom);
   const { CARDS, cartItems } = useCheckoutScreenHook();
-
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Checkout" />
@@ -31,7 +30,7 @@ export default function CheckoutScreen() {
         <BottomActionView>
           <CheckoutBottomActionView
             totalPrice={totalCartPrice}
-            btnLabel="Pay"
+            btnLabel="Place Order"
             deliveryPrice={110}
             actionLink={{ pathname: "/cart/payment" }}
           />
