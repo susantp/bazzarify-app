@@ -6,6 +6,7 @@ import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
 import { randomUUID } from "expo-crypto";
 import React from "react";
 import PaymentMethodView from "@/components/cart/payment/PaymentMethodView";
+import BottomActionView from "@/components/common/BottomActionView";
 
 export default function PaymentScreen() {
   const { paymentMethodSections } = usePaymentScreenHook();
@@ -28,6 +29,20 @@ export default function PaymentScreen() {
           </View>
         ))}
       </ContentWrapper>
+      <BottomActionView>
+        <View className="flex-col gap-y-4 px-4 py-9">
+          <View className="flex-row justify-between">
+            <Text className="text-sm font-light">Subtotal</Text>
+            <Text className="font-semibold">Rs. 329</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="text-xl">Total Amount</Text>
+            <Text className="text-xl font-semibold text-orange-600">
+              Rs. 329
+            </Text>
+          </View>
+        </View>
+      </BottomActionView>
     </SafeAreaWrapper>
   );
 }

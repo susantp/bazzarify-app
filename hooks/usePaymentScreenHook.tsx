@@ -29,7 +29,7 @@ export default function usePaymentScreenHook(id?: string) {
           <CardPaymentBottomActionView
             totalPrice={399}
             subTotalPrice={399}
-            actionBtn="Place Order"
+            actionBtn="Confirm Order"
           />
         </BottomActionView>
       </>
@@ -39,7 +39,7 @@ export default function usePaymentScreenHook(id?: string) {
         <CODPaymentComponent />
         <BottomActionView>
           <CODPaymentBottomActionView
-            actionBtn="Place Order"
+            actionBtn="Confirm Order"
             cashPaymentFee={10}
             totalPrice={333}
             subTotalPrice={323}
@@ -54,7 +54,7 @@ export default function usePaymentScreenHook(id?: string) {
           <ImePayPaymentBottomActionView
             totalPrice={323}
             subTotalPrice={323}
-            actionBtn={"Place Order"}
+            actionBtn={"Confirm Order"}
           />
         </BottomActionView>
       </>

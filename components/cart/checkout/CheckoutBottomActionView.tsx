@@ -1,19 +1,18 @@
-import { Text, View } from "react-native";
-import { Link, LinkProps } from "expo-router";
+import { Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
 interface ICheckoutBottomActionViewProps {
   totalPrice: number;
   btnLabel: string;
   deliveryPrice?: number;
-  actionLink: LinkProps["href"];
+  handlePress: () => void;
 }
 
 const CheckoutBottomActionView = ({
   totalPrice,
   btnLabel,
   deliveryPrice,
-  actionLink,
+  handlePress,
 }: ICheckoutBottomActionViewProps) => {
   return (
     <View className="flex-row items-center justify-between px-4 py-9">
@@ -29,12 +28,12 @@ const CheckoutBottomActionView = ({
           </Text>
         )}
       </View>
-      <Link
-        href={actionLink}
+      <TouchableOpacity
+        onPress={handlePress}
         className="flex-row items-end rounded-full bg-orange-600 px-6 py-4"
       >
         <Text className="text-md text-white">{btnLabel}</Text>
-      </Link>
+      </TouchableOpacity>
     </View>
   );
 };
