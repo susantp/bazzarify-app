@@ -1,7 +1,8 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { CheckBadgeIcon } from "react-native-heroicons/solid";
 import { UserEditIcon } from "@/components/common/icons";
 import { Colors } from "@/constants/Colors";
+import { Link } from "expo-router";
 
 const ProfileInfo = () => (
   <View className="w-screen flex-row items-center gap-x-1 py-4">
@@ -21,9 +22,9 @@ const ProfileInfo = () => (
       <Text className="text-sm">2 Stores Followed </Text>
     </View>
     <View className="flex w-3/12 items-end">
-      <TouchableOpacity>
+      <Link href="/account/editProfile">
         <UserEditIcon />
-      </TouchableOpacity>
+      </Link>
     </View>
   </View>
 );
