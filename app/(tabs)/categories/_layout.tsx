@@ -13,6 +13,7 @@ const Home = () => {
         name="[id]/[child]/[subChild]/index"
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="popular" options={{ headerShown: false }} />
     </Stack>
   );
 };

@@ -1,11 +1,11 @@
 import { Text, View } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
+import { Href, Link } from "expo-router";
 
 type SectionHeaderProps = {
   title: string;
   showSeeMoreBtn?: boolean;
-  seeMorePath?: string;
+  seeMorePath?: Href;
 };
 const SectionHeader = ({ title, seeMorePath }: SectionHeaderProps) => (
   <View
@@ -16,7 +16,7 @@ const SectionHeader = ({ title, seeMorePath }: SectionHeaderProps) => (
       {title}
     </Text>
     {seeMorePath && (
-      <Link href={{ pathname: "/(tabs)/categories" }}>
+      <Link href={seeMorePath}>
         <Text>See More</Text>
       </Link>
     )}

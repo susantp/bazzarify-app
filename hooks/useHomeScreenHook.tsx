@@ -45,7 +45,7 @@ export default function useHomeScreenHook() {
         >
           <SectionHeader
             title="Popular Items"
-            seeMorePath="/(tabs)/categories"
+            seeMorePath={"/(tabs)/categories/popular"}
           />
         </ContentGridSection>
       ),
