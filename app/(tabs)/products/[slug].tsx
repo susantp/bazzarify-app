@@ -1,4 +1,3 @@
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Animated, Platform, Text } from "react-native";
 import Header from "@/components/home/Header";
 import { useLocalSearchParams } from "expo-router";
@@ -18,6 +17,10 @@ import ProductSlider from "@/components/product/ProductSlider";
 import { getById } from "@/utils/getById";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductSpecification from "@/components/product/ProductSpecification";
+import BottomActionView from "@/components/common/BottomActionView";
+import ContentWrapper from "@/components/common/ContentWrapper";
+import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
+import ProductPageBottomView from "@/components/product/ProductPageBottomView";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
@@ -29,13 +32,13 @@ export default function ProductScreen() {
 
   if (!product) return <Text>Loading...</Text>;
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
+    <SafeAreaWrapper>
+      <Header
+        classes={`flex-row justify-between items-center mx-4 gap-3 my-6`}
+      />
+      <ContentWrapper
         className={`flex-1 bg-orange-600` + (ios ? " pb-2" : " pt-3")}
       >
-        <Header
-          classes={`flex-row justify-between items-center mx-4 gap-3 my-6`}
-        />
         <ScrollView style={{ width: "100%" }}>
           <ProductScreenContainer>
             <ProductSlider />
@@ -51,7 +54,10 @@ export default function ProductScreen() {
             <RelatedProducts />
           </ProductScreenContainer>
         </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+      </ContentWrapper>
+      <BottomActionView className="gap-y-3 p-3">
+        <ProductPageBottomView />
+      </BottomActionView>
+    </SafeAreaWrapper>
   );
 }
