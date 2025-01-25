@@ -1,6 +1,6 @@
 import { Image, TouchableOpacity, View } from "react-native";
-import { HeartIcon, ShareIcon } from "react-native-heroicons/outline";
 import React from "react";
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 
 const ProductSlider = () => (
   <>
@@ -17,11 +17,11 @@ const ProductSlider = () => (
       id="actions"
       className="flex-row justify-between justify-items-center"
     >
-      <TouchableOpacity className="rounded-full bg-slate-200 p-1.5 shadow-sm">
-        <HeartIcon color="black" strokeWidth={2} size={28} />
+      <TouchableOpacity className="rounded-full bg-orange-100 p-2 shadow-sm">
+        <AntDesign color="black" name="hearto" size={24} />
       </TouchableOpacity>
-      <TouchableOpacity className="rounded-full bg-slate-200 p-1.5 shadow-sm">
-        <ShareIcon size={28} strokeWidth={2} color="black" />
+      <TouchableOpacity className="rounded-full bg-orange-100 p-2 shadow-sm">
+        <SimpleLineIcons name="share-alt" size={24} />
       </TouchableOpacity>
     </View>
   </>
