@@ -12,7 +12,7 @@ const TextInputV1 = (props: TextInputV1Props) => {
           <Text className="font-semibold">{props.legend}</Text>
         </View>
       )}
-      <View className="flex-col gap-y-2 rounded-xl border border-slate-300 px-1">
+      <View className="flex-col gap-y-2 rounded-xl border border-slate-300 px-1 py-3">
         <TextInput className="px-2" {...props} />
       </View>
     </View>
