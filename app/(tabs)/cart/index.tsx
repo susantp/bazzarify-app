@@ -21,6 +21,10 @@ export default function CartScreen() {
     selectedItemCount < 1
       ? Alert.alert("Please select item to checkout.")
       : router.push("/cart/checkout");
+  const handleAddressPress = () => {
+    setShowModal(!showModal);
+    router.push(`/account/setting/address/create`);
+  };
   return (
     <SafeAreaWrapper>
       <CartHeader />
@@ -48,7 +52,7 @@ export default function CartScreen() {
         showModal={showModal}
         handlePress={() => setShowModal(!showModal)}
       >
-        <SelectAddressModalView />
+        <SelectAddressModalView onPress={handleAddressPress} />
       </DemoModalComponent>
     </SafeAreaWrapper>
   );
