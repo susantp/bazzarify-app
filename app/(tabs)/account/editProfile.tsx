@@ -15,10 +15,18 @@ import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useRecoilValue } from "recoil";
 import { userProfileAtom } from "@/atoms/sessionAtom";
+import Toast from "react-native-toast-message";
 
 export default function Page() {
   const { width } = useWindowDimensions();
   const userProfile = useRecoilValue(userProfileAtom);
+  const handleProfileUpdate = () => {
+    Toast.show({
+      position: "bottom",
+      text1: "Done",
+      type: "success",
+    });
+  };
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Edit Profile" />
@@ -84,6 +92,7 @@ export default function Page() {
             placeholder={"Confirm Password"}
           />
           <TouchableOpacity
+            onPress={handleProfileUpdate}
             activeOpacity={0.6}
             className="flex w-full items-center rounded-xl bg-orange-600 py-3"
           >
