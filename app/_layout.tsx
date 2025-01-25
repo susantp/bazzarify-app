@@ -15,6 +15,8 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import "expo-dev-client";
 import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
+import toastConfig from "@/config/toastConfig";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -41,16 +43,19 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </RecoilRoot>
-      </QueryClientProvider>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <QueryClientProvider client={queryClient}>
+          <RecoilRoot>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </RecoilRoot>
+        </QueryClientProvider>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+      <Toast config={toastConfig} />
+    </>
   );
 }
