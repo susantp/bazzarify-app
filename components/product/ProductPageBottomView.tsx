@@ -19,7 +19,7 @@ const ProductPageBottomView = () => {
         <Text>512+ sold in last month</Text>
       </View>
       <View className="flex-row">
-        <View className="w-3/12 flex-row justify-between">
+        <View className="w-3/12 flex-row justify-between pl-1">
           <TouchableOpacity className="flex-col items-center">
             <FontAwesome5 name="apple-alt" color="black" size={24} />
             <Text>Store</Text>
@@ -47,7 +47,7 @@ const ProductPageBottomView = () => {
                 ${leftBtnDimension.width * 0.88},${leftBtnDimension.height} 
                 0,${leftBtnDimension.height}
               `}
-                fill="#1A202C" // Tailwind Blue-900
+                fill="#1A202C"
               />
             </Svg>
             <Text className="font-bold text-white">Add To Cart</Text>

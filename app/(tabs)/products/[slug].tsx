@@ -6,7 +6,6 @@ import { popularItemsData } from "@/constants/popularItemsData";
 import { ItemProps } from "@/components";
 import ProductScreenContainer from "@/components/product/ProductScreenContainer";
 import ProductGenericDetails from "@/components/product/ProductGenericDetails";
-import ProductVouchers from "@/components/product/ProductVouchers";
 import ProductDeliveryDetails from "@/components/product/ProductDeliveryDetails";
 import ProductReviewBox from "@/components/product/ProductReviewBox";
 import AskQuestionBox from "@/components/product/AskQuestionBox";
@@ -21,6 +20,7 @@ import BottomActionView from "@/components/common/BottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ProductPageBottomView from "@/components/product/ProductPageBottomView";
+import VoucherList from "@/components/cart/checkout/VoucherList";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
@@ -43,7 +43,7 @@ export default function ProductScreen() {
           <ProductScreenContainer>
             <ProductSlider />
             <ProductGenericDetails item={product} />
-            <ProductVouchers />
+            <VoucherList className="border-gray-400" />
             <ProductDeliveryDetails />
             <ProductReviewBox />
             <AskQuestionBox />

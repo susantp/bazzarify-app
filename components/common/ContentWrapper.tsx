@@ -1,5 +1,6 @@
 import { StyleProp, View, ViewStyle } from "react-native";
 import React from "react";
+import cn from "@/utils/tailwindHelper";
 
 interface ContentWrapperProps {
   children: React.ReactNode;
@@ -12,11 +13,8 @@ const ContentWrapper = ({
   className,
   styles,
 }: ContentWrapperProps) => {
-  const mergedClasses = [
-    ...new Set(["flex-1", "flex-col", ...(className?.split(" ") || [])]),
-  ].join(" ");
   return (
-    <View style={styles} className={mergedClasses}>
+    <View style={styles} className={cn(`flex-1 flex-col`, className)}>
       {children}
     </View>
   );
