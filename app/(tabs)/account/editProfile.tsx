@@ -1,11 +1,4 @@
-import {
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import ContentWrapper from "@/components/common/ContentWrapper";
@@ -17,7 +10,6 @@ import Toast from "react-native-toast-message";
 import TextInputV1 from "@/components/common/TextInputV1";
 
 export default function Page() {
-  const { width } = useWindowDimensions();
   const userProfile = useRecoilValue(userProfileAtom);
   const handleProfileUpdate = () => {
     Toast.show({

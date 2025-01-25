@@ -11,6 +11,14 @@ const Home = () => {
       <Stack.Screen name="profile" options={{ headerShown: false }} />
       <Stack.Screen name="editProfile" options={{ headerShown: false }} />
       <Stack.Screen name="setting/index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="setting/address/[id]/edit"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="setting/address/create"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="setting/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="order/index" options={{ headerShown: false }} />
       <Stack.Screen name="order/[status]" options={{ headerShown: false }} />

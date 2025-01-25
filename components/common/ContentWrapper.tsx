@@ -14,7 +14,7 @@ const ContentWrapper = ({
   styles,
 }: ContentWrapperProps) => {
   return (
-    <View style={styles} className={cn(`flex-1 flex-col`, className)}>
+    <View style={styles} className={cn(`flex-1 flex-col bg-white`, className)}>
       {children}
     </View>
   );
