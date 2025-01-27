@@ -40,7 +40,7 @@ export default function ChildCategoryScreen() {
       title: "Related Items",
       element: (
         <ContentGridSection
-          classes=" bg-white flex-col align-center"
+          className="align-center flex-col bg-white"
           title={"Popular Items"}
           items={popularItemsData}
           horizontal={false}

@@ -11,7 +11,7 @@ const Slider = ({ itemList }: Props) => {
       data={itemList}
       renderItem={({ item, index }: ListRenderItemInfo<ImageSliderType>) => (
         <SliderItem
-          classes="flex items-center justify-center  bg-white"
+          className="flex items-center justify-center bg-white"
           item={item}
           index={index}
         />

@@ -28,7 +28,7 @@ const NormalHeader = ({ canGoBack, searchPlaceHolder }: NormalHeaderProps) => (
       />
     </View>
 
-    <HeaderIcons classes="flex-row items-center w-3/12 md:w-2/12  justify-between px-2 md:px-4" />
+    <HeaderIcons className="w-3/12 flex-row items-center justify-between px-2 md:w-2/12 md:px-4" />
   </View>
 );
 

@@ -23,7 +23,7 @@ export default function Page() {
       </View>
       <ContentWrapper>
         <ContentGridSection
-          classes=" bg-white flex-col align-center"
+          className="align-center flex-col bg-white"
           title={"Popular Items"}
           items={popularItemsData}
           horizontal={false}

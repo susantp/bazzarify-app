@@ -24,7 +24,7 @@ export default function useHomeScreenHook() {
           items={popularItemsData.slice(0, 6)}
           showDiscountBadge={true}
           navigateTo={"/index"}
-          classes="px-1 py-3 bg-white "
+          className="bg-white px-1 py-3"
           horizontal={false}
           cols={3}
         >
@@ -37,7 +37,7 @@ export default function useHomeScreenHook() {
       id: randomUUID(),
       component: (
         <ContentGridSection
-          classes="px-1 py-3 bg-white"
+          className="bg-white px-1 py-3"
           title="Popular Items"
           items={popularItemsData.slice(0, 4)}
           horizontal={false}
@@ -66,7 +66,7 @@ export default function useHomeScreenHook() {
       id: randomUUID(),
       component: (
         <ContentGridSection
-          classes="px-1 py-3 bg-white flex-col"
+          className="flex-col bg-white px-1 py-3"
           title="Categories"
           items={categoriesItemData.slice(0, 9)}
           horizontal={false}
@@ -81,7 +81,7 @@ export default function useHomeScreenHook() {
       id: randomUUID(),
       component: (
         <ContentGridSection
-          classes="px-1 py-3 bg-white flex-col gap-y-4"
+          className="flex-col gap-y-4 bg-white px-1 py-3"
           title="Just for you"
           items={popularItemsData}
           horizontal={false}
