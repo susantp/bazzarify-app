@@ -104,6 +104,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="vendor"
+        options={{
+          tabBarStyle: {
+            display: "none",
+          },
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="auth"
         options={{
           href: null,

@@ -1,10 +1,11 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import {
   ChatBubbleLeftRightIcon,
   ShieldCheckIcon,
 } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import React from "react";
+import { router } from "expo-router";
 
 const ProductVendorDetails = () => (
   <View
@@ -44,9 +45,12 @@ const ProductVendorDetails = () => (
         </View>
       </View>
     </View>
-    <View className="flex items-center justify-items-center">
+    <TouchableOpacity
+      onPress={() => router.push("/vendor/demoVendor")}
+      className="flex items-center justify-items-center"
+    >
       <Text className="font-semibold text-orange-600">Visit Store</Text>
-    </View>
+    </TouchableOpacity>
   </View>
 );
 
