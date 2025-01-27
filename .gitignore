@@ -41,3 +41,4 @@ android/
 ios/
 *reference.md
 *-steps.sh
+*.apk

@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome5, Octicons } from "@expo/vector-icons";
 import Svg, { Polygon } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
+import { router } from "expo-router";
 
 const ProductPageBottomView = () => {
   const [leftBtnDimension, setLeftButtonDimensions] = useState({
@@ -31,6 +32,7 @@ const ProductPageBottomView = () => {
         </View>
         <View className="w-9/12 flex-row justify-end">
           <TouchableOpacity
+            onPress={() => router.push("/cart")}
             className="flex items-center justify-center px-8"
             onLayout={(e) => setLeftButtonDimensions(e.nativeEvent.layout)}
           >
@@ -53,6 +55,7 @@ const ProductPageBottomView = () => {
             <Text className="font-bold text-white">Add To Cart</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => router.push("/cart/checkout")}
             className="flex items-center justify-center px-8"
             onLayout={(e) => setRightButtonDimensions(e.nativeEvent.layout)}
           >
