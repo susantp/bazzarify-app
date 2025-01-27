@@ -52,7 +52,10 @@ export default function CartScreen() {
         showModal={showModal}
         handlePress={() => setShowModal(!showModal)}
       >
-        <SelectAddressModalView onPress={handleAddressPress} />
+        <SelectAddressModalView
+          title="Choose delivery address"
+          onPress={handleAddressPress}
+        />
       </DemoModalComponent>
     </SafeAreaWrapper>
   );

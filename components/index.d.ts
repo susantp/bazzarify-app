@@ -13,11 +13,11 @@ export type titleKey =
   | "Categories";
 
 type HeaderProps = {
-  classes: string;
+  className: string;
 };
 type SearchBoxProps = {
-  classes: string;
+  className: string;
 };
 type HeaderIconsProps = {
-  classes: string;
+  className: string;
 };

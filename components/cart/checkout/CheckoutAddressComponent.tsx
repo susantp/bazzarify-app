@@ -2,12 +2,17 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/solid";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import AddressSettingScreen from "@/components/account/setting/screens/addressSettingScreen";
 import { useRecoilState } from "recoil";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
+import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
+import { router } from "expo-router";
 
 const CheckoutAddressComponent = () => {
   const [showModal, setShowModal] = useRecoilState(addressModalAtom);
+  const handleAddressPress = () => {
+    setShowModal(!showModal);
+    router.push(`/account/setting/address/create`);
+  };
   return (
     <>
       <TouchableOpacity
@@ -30,17 +35,10 @@ const CheckoutAddressComponent = () => {
         showModal={showModal}
         handlePress={() => setShowModal(!showModal)}
       >
-        <View className="flex-col gap-y-2">
-          <View className="w-full">
-            <Text className="text-2xl font-bold">Shipping Address</Text>
-          </View>
-          <AddressSettingScreen />
-          <View className="flex-row items-center justify-center">
-            <TouchableOpacity className="rounded-full bg-orange-600 px-4 py-2">
-              <Text className="text-xl text-white">Add another address</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <SelectAddressModalView
+          title="Choose delivery address"
+          onPress={handleAddressPress}
+        />
       </DemoModalComponent>
     </>
   );

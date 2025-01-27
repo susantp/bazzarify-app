@@ -28,7 +28,7 @@ export default function useCartScreenHook() {
       title: "other-products",
       component: (
         <ContentGridSection
-          classes="flex-col align-center pl-4"
+          className="align-center flex-col pl-4"
           title={"Just for you"}
           items={popularItemsData}
           cols={2}

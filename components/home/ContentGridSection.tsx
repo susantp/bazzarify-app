@@ -15,7 +15,7 @@ export type ContentGridSectionProps = {
   items: ItemProps[];
   showDiscountBadge?: boolean;
   navigateTo?: string;
-  classes?: string;
+  className?: string;
   cols: 2 | 3 | 4;
   horizontal: boolean;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -25,14 +25,14 @@ export type ContentGridSectionProps = {
 const ContentGridSection = ({
   title,
   items,
-  classes,
+  className,
   cols,
   horizontal,
   contentContainerStyle,
   children,
 }: ContentGridSectionProps) => {
   return (
-    <View id={title.toLowerCase().replaceAll(" ", "-")} className={classes}>
+    <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
       {children}
       <FlatList
         id="content"
