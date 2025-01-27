@@ -1,12 +1,11 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { HeaderIcons } from "@/components/home/Header";
+import { Text, TouchableOpacity, View } from "react-native";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { router } from "expo-router";
-import { ArrowLeftIcon } from "react-native-heroicons/micro";
 import { TrashIcon } from "react-native-heroicons/outline";
 import { randomUUID } from "expo-crypto";
 import { useState } from "react";
+import NormalHeader from "@/components/common/NormalHeader";
 
 export default function SearchScreen() {
   const canGoBack = router.canGoBack();
@@ -19,27 +18,7 @@ export default function SearchScreen() {
   ]);
   return (
     <SafeAreaWrapper>
-      <View className="flex-row items-center justify-between px-2 py-5">
-        <View
-          className={`flex-1 flex-row items-center gap-x-2 rounded-full bg-white pl-4`}
-        >
-          {canGoBack ? (
-            <TouchableOpacity onPress={() => router.back()}>
-              <ArrowLeftIcon size={24} strokeWidth={9} color="black" />
-            </TouchableOpacity>
-          ) : null}
-          <TextInput
-            autoCorrect={true}
-            keyboardType="default"
-            returnKeyType="next"
-            className="flex-1 rounded-r-full py-3"
-            placeholder={"Hoodie for men"}
-            focusable={true}
-          />
-        </View>
-
-        <HeaderIcons classes="flex-row items-center w-3/12 md:w-2/12  justify-between px-2 md:px-4" />
-      </View>
+      <NormalHeader canGoBack={canGoBack} searchPlaceHolder="Hoodie for men" />
       <ContentWrapper className="gap-y-3 bg-white p-4">
         <View className="flex-row items-center justify-between">
           <View>

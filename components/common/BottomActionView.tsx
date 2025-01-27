@@ -5,7 +5,6 @@ import cn from "@/utils/tailwindHelper";
 interface BottomActionViewProps {
   children: React.ReactNode;
   className?: string;
-  // onLayoutEvent?: (event: LayoutChangeEvent) => void;
 }
 
 const BottomActionView = ({ children, className }: BottomActionViewProps) => {
