@@ -58,7 +58,7 @@ export default function Layout() {
       <Tabs.Screen
         name="[id]/products"
         options={{
-          title: "Categories",
+          title: "Products",
           tabBarIcon: ({ color }) => (
             <Fontisto name="shopping-package" size={28} color={color} />
           ),
