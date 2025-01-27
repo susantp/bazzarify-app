@@ -6,14 +6,14 @@ import DemoModalComponent from "@/components/common/DemoModalComponent";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
 
 type DeliveryBarProps = {
-  classes: string;
+  className: string;
 };
 
-export default function DeliveryBar({ classes }: DeliveryBarProps) {
+export default function DeliveryBar({ className }: DeliveryBarProps) {
   const { msg, isError, handleRetry } = useDeliveryComponentHook();
   const [showModal, setShowModal] = useState(false);
   return (
-    <View className={classes}>
+    <View className={className}>
       {isError ? (
         <TouchableOpacity onPress={handleRetry}>
           <Text className="text-sm font-semibold text-white underline">

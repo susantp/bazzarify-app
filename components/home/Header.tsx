@@ -4,12 +4,12 @@ import { HeaderIconsProps, HeaderProps, SearchBoxProps } from "@/components";
 import { ArrowLeftIcon } from "react-native-heroicons/micro";
 import { router } from "expo-router";
 
-export const SearchBox = ({ classes }: SearchBoxProps) => {
+export const SearchBox = ({ className }: SearchBoxProps) => {
   const canGoBack = router.canGoBack();
   return (
     <TouchableOpacity
       onPress={() => router.push("/search")}
-      className={classes}
+      className={className}
     >
       <View className="h-12 flex-row items-center">
         {canGoBack ? (
@@ -26,8 +26,8 @@ export const SearchBox = ({ classes }: SearchBoxProps) => {
   );
 };
 
-export const HeaderIcons = ({ classes }: HeaderIconsProps) => (
-  <View className={classes}>
+export const HeaderIcons = ({ className }: HeaderIconsProps) => (
+  <View className={className}>
     <TouchableOpacity>
       <HeartIcon size={36} strokeWidth={2} color="white" />
     </TouchableOpacity>
@@ -37,11 +37,11 @@ export const HeaderIcons = ({ classes }: HeaderIconsProps) => (
   </View>
 );
 
-export default function Header({ classes }: HeaderProps) {
+export default function Header({ className }: HeaderProps) {
   return (
-    <View className={classes}>
-      <SearchBox classes="flex-1 rounded-full bg-white px-4" />
-      <HeaderIcons classes="flex-row items-center w-3/12 md:w-2/12  justify-between px-2 md:px-4" />
+    <View className={className}>
+      <SearchBox className="flex-1 rounded-full bg-white px-4" />
+      <HeaderIcons className="w-3/12 flex-row items-center justify-between px-2 md:w-2/12 md:px-4" />
     </View>
   );
 }

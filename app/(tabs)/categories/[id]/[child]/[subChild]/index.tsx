@@ -14,7 +14,7 @@ export default function SubChildCategoryScreen() {
         title={`Categories / ${id.toString().slice(0, 6).padEnd(9, ".")} / ${child.toString().slice(0, 6).padEnd(9, ".")} / ${subChild.toString().slice(0, 6).padEnd(9, ".")}`}
       />
       <ContentGridSection
-        classes=" bg-white flex-col align-center"
+        className="align-center flex-col bg-white"
         title={"Popular Items"}
         items={popularItemsData}
         horizontal={false}

@@ -4,13 +4,13 @@ import { ImageSliderType } from "@/constants/SliderData";
 type SliderItemProps = {
   item: ImageSliderType;
   index: number;
-  classes: string;
+  className: string;
 };
 
-const SliderItem = ({ item, classes }: SliderItemProps) => {
+const SliderItem = ({ item, className }: SliderItemProps) => {
   const { width } = Dimensions.get("screen");
   return (
-    <View className={classes} style={{ width }}>
+    <View className={className} style={{ width }}>
       <Image className="w-full" source={item.image} />
     </View>
   );

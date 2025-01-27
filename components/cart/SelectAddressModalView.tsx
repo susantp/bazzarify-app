@@ -4,12 +4,16 @@ import React from "react";
 
 interface SelectAddressModalViewProps {
   onPress: () => void;
+  title: string;
 }
 
-const SelectAddressModalView = ({ onPress }: SelectAddressModalViewProps) => (
+const SelectAddressModalView = ({
+  onPress,
+  title,
+}: SelectAddressModalViewProps) => (
   <View className="flex-col gap-y-2">
     <View className="w-full">
-      <Text className="text-2xl font-bold">Choose delivery address</Text>
+      <Text className="text-2xl font-bold">{title}</Text>
     </View>
     <AddressSettingScreen />
     <View className="flex-row items-center justify-center">

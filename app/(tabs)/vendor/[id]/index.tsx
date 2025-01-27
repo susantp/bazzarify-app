@@ -52,7 +52,7 @@ export default function Page() {
       title: "popular6Items",
       component: (
         <ContentGridSection
-          classes="bg-white flex-col align-center"
+          className="align-center flex-col bg-white"
           title={"Popular Items"}
           items={popularItemsData.slice(0, 6)}
           horizontal={false}
@@ -70,7 +70,7 @@ export default function Page() {
       title: "popular6Items",
       component: (
         <ContentGridSection
-          classes="bg-white flex-col align-center"
+          className="align-center flex-col bg-white"
           title={"Popular Items"}
           items={popularItemsData.slice(0, 6)}
           horizontal={false}
@@ -88,7 +88,7 @@ export default function Page() {
       title: "popular6Items",
       component: (
         <ContentGridSection
-          classes="bg-white flex-col align-center"
+          className="align-center flex-col bg-white"
           title={"Popular Items"}
           items={popularItemsData.slice(0, 4)}
           horizontal={false}

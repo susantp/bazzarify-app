@@ -34,7 +34,7 @@ export default function ProductScreen() {
   return (
     <SafeAreaWrapper>
       <Header
-        classes={`flex-row justify-between items-center mx-4 gap-3 my-6`}
+        className={`mx-4 my-6 flex-row items-center justify-between gap-3`}
       />
       <ContentWrapper
         className={`flex-1 bg-orange-600` + (ios ? " pb-2" : " pt-3")}

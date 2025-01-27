@@ -11,8 +11,8 @@ export default function HomeScreen() {
   const { CARDS } = useHomeScreenHook();
   return (
     <SafeAreaWrapper>
-      <Header classes={`flex-row items-center px-2 py-5 justify-between`} />
-      <DeliveryBar classes="flex-row justify-center py-2 items-center bg-blue-950 gap-2" />
+      <Header className={`flex-row items-center justify-between px-2 py-5`} />
+      <DeliveryBar className="flex-row items-center justify-center gap-2 bg-blue-950 py-2" />
       <ContentWrapper>
         <FlatList
           data={CARDS}
