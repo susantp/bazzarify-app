@@ -21,7 +21,10 @@ const ProductPageBottomView = () => {
       </View>
       <View className="flex-row">
         <View className="w-3/12 flex-row justify-between pl-1">
-          <TouchableOpacity className="flex-col items-center">
+          <TouchableOpacity
+            className="flex-col items-center"
+            onPress={() => router.push("/vendor/demoVendor")}
+          >
             <FontAwesome5 name="apple-alt" color="black" size={24} />
             <Text>Store</Text>
           </TouchableOpacity>
