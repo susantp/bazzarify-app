@@ -1,4 +1,5 @@
 import {
+  Alert,
   GestureResponderEvent,
   Text,
   TouchableOpacity,
@@ -18,7 +19,7 @@ const CartHeader = () => {
   const [_, setCartItems] = useRecoilState(cartItemsAtom);
   const handleDelete = () => {
     if (_.filter((item) => item.isSelected).length < 1) {
-      alert("No item selected");
+      Alert.alert("No item selected");
       return;
     }
     setCartItems(_.filter((item) => !item.isSelected));
