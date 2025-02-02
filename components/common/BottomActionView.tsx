@@ -11,7 +11,11 @@ const BottomActionView = ({ children, className }: BottomActionViewProps) => {
   return (
     <View
       className={cn(
-        `w-full flex-col-reverse border border-gray-400 bg-white`,
+        "w-full",
+        "flex-col-reverse",
+        "border",
+        "border-gray-400",
+        "bg-white",
         className,
       )}
     >
