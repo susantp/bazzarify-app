@@ -28,7 +28,10 @@ export default function useHomeScreenHook() {
           horizontal={false}
           cols={3}
         >
-          <SectionHeader title="Flash Deals" seeMorePath="/(tabs)/categories" />
+          <SectionHeader
+            title="Flash Deals"
+            seeMorePath="/(tabs)/categories/flashDeal"
+          />
         </ContentGridSection>
       ),
       title: "Flash Deals",

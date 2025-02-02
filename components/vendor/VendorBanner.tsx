@@ -1,4 +1,3 @@
-import NormalHeader from "@/components/common/NormalHeader";
 import {
   Image,
   ImageBackground,
@@ -11,7 +10,6 @@ import { Colors } from "@/constants/Colors";
 import React from "react";
 
 interface VendorHeaderProps {
-  canGoBack: boolean;
   vendor: VendorDataType;
 }
 
@@ -31,13 +29,9 @@ export const vendorData: VendorDataType = {
   bgImgPath:
     "https://lh3.googleusercontent.com/pw/AP1GczPpYF3_nl945SomGeJhAvSQCg4sjrRSAgCjXW4WoAYEsoNnbfB7vdeDYatFPozUgWf3eQ_FLPntC49CN7_f8K9cS7210vTyhNkMA50vXWdjotRFpaxG=w780-h258-no",
 };
-const VendorHeader = ({ canGoBack, vendor }: VendorHeaderProps) => {
+const VendorBanner = ({ vendor }: VendorHeaderProps) => {
   return (
     <>
-      <NormalHeader
-        canGoBack={canGoBack}
-        searchPlaceHolder={`search on ${vendor.name}`}
-      />
       <ImageBackground
         style={{
           height: 150,
@@ -93,4 +87,4 @@ const VendorHeader = ({ canGoBack, vendor }: VendorHeaderProps) => {
   );
 };
 
-export default VendorHeader;
+export default VendorBanner;

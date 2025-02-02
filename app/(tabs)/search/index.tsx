@@ -1,14 +1,14 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { Text, TouchableOpacity, View } from "react-native";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { router } from "expo-router";
 import { TrashIcon } from "react-native-heroicons/outline";
 import { randomUUID } from "expo-crypto";
 import { useState } from "react";
-import NormalHeader from "@/components/common/NormalHeader";
+import useSearchBarHook from "@/hooks/useSearchBarHook";
+import { Link } from "expo-router";
+import NormalTopBar from "@/components/common/NormalTopBar";
 
-export default function SearchScreen() {
-  const canGoBack = router.canGoBack();
+export default function Page() {
   const [searchHistory, setSearchHistory] = useState([
     "women dress",
     "ramen noodels",
@@ -16,9 +16,15 @@ export default function SearchScreen() {
     "shoes",
     "tteobokki",
   ]);
+  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
   return (
     <SafeAreaWrapper>
-      <NormalHeader canGoBack={canGoBack} searchPlaceHolder="Hoodie for men" />
+      <NormalTopBar
+        onChangeText={handleChangeText}
+        canGoBack={canGoBack}
+        searchPlaceHolder="Hoodie for men"
+        handleSubmitEditing={onSearchSubmit}
+      />
       <ContentWrapper className="gap-y-3 bg-white p-4">
         <View className="flex-row items-center justify-between">
           <View>
@@ -38,7 +44,11 @@ export default function SearchScreen() {
               key={randomUUID()}
               className="rounded-md bg-gray-200 px-2 py-1"
             >
-              <Text>{item}</Text>
+              <Link
+                href={{ pathname: "/search/[query]", params: { query: item } }}
+              >
+                <Text>{item}</Text>
+              </Link>
             </TouchableOpacity>
           ))}
         </View>

@@ -2,7 +2,7 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { router } from "expo-router";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import React from "react";
-import VendorHeader, { vendorData } from "@/components/vendor/VendorHeader";
+import VendorHeader, { vendorData } from "@/components/vendor/VendorBanner";
 import { popularItemsData } from "@/constants/popularItemsData";
 import ContentGridSection from "@/components/home/ContentGridSection";
 import SectionHeader from "@/components/home/SectionHeader";
