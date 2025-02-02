@@ -1,5 +1,5 @@
 import { Animated, Platform, Text } from "react-native";
-import Header from "@/components/home/Header";
+import TopBar from "@/components/home/TopBar";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { popularItemsData } from "@/constants/popularItemsData";
@@ -33,7 +33,7 @@ export default function ProductScreen() {
   if (!product) return <Text>Loading...</Text>;
   return (
     <SafeAreaWrapper>
-      <Header
+      <TopBar
         className={`mx-4 my-6 flex-row items-center justify-between gap-3`}
       />
       <ContentWrapper

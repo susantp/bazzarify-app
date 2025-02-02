@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import VendorHeader, { vendorData } from "@/components/vendor/VendorHeader";
+import VendorHeader, { vendorData } from "@/components/vendor/VendorBanner";
 import { randomUUID } from "expo-crypto";
 import { Entypo } from "@expo/vector-icons";
 
