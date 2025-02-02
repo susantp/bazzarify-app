@@ -14,6 +14,7 @@ const Home = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="popular" options={{ headerShown: false }} />
+      <Stack.Screen name="flashDeal" options={{ headerShown: false }} />
     </Stack>
   );
 };

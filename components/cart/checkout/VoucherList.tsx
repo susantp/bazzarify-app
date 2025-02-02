@@ -16,7 +16,11 @@ const VoucherList = ({ className }: VoucherListProps) => {
   return (
     <View
       className={cn(
-        `flex-col rounded-2xl border border-gray-300 p-4`,
+        `flex-col`,
+        `rounded-2xl`,
+        `border`,
+        `border-gray-300`,
+        `p-4`,
         className,
       )}
     >
