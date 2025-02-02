@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <View className="flex-row items-center justify-between pr-3">
-        <ScreenHeader title="Popular Deals" />
+        <ScreenHeader title="Popular Items" />
         <TouchableOpacity activeOpacity={0.6}>
           <Ionicons
             name="options"

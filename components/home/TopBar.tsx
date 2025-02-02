@@ -26,22 +26,22 @@ export const SearchBox = ({ className }: SearchBoxProps) => {
   );
 };
 
-export const HeaderIcons = ({ className }: HeaderIconsProps) => (
+export const TopBarIcons = ({ className }: HeaderIconsProps) => (
   <View className={className}>
     <TouchableOpacity>
       <HeartIcon size={36} strokeWidth={2} color="white" />
     </TouchableOpacity>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => router.push("/cart")}>
       <ShoppingCartIcon size={36} strokeWidth={2} color="white" />
     </TouchableOpacity>
   </View>
 );
 
-export default function Header({ className }: HeaderProps) {
+export default function TopBar({ className }: HeaderProps) {
   return (
     <View className={className}>
       <SearchBox className="flex-1 rounded-full bg-white px-4" />
-      <HeaderIcons className="w-3/12 flex-row items-center justify-between px-2 md:w-2/12 md:px-4" />
+      <TopBarIcons className="w-3/12 flex-row items-center justify-between px-2 md:w-2/12 md:px-4" />
     </View>
   );
 }

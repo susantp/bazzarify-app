@@ -1,18 +1,18 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { router } from "expo-router";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import React from "react";
-import VendorHeader, { vendorData } from "@/components/vendor/VendorHeader";
+import VendorBanner, { vendorData } from "@/components/vendor/VendorBanner";
 import ContentGridSection from "@/components/home/ContentGridSection";
 import { popularItemsData } from "@/constants/popularItemsData";
 import { FlatList, ImageBackground, useWindowDimensions } from "react-native";
 import { randomUUID } from "expo-crypto";
 import Slider from "@/components/home/Slider";
 import { SliderData } from "@/constants/SliderData";
+import useSearchBarHook from "@/hooks/useSearchBarHook";
+import NormalTopBar from "@/components/common/NormalTopBar";
 
 export default function Page() {
   const vendor = vendorData;
-  const canGoBack = router.canGoBack();
   const { height, width } = useWindowDimensions();
   const CARDS = [
     {
@@ -97,9 +97,17 @@ export default function Page() {
       ),
     },
   ];
+  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
+
   return (
     <SafeAreaWrapper>
-      <VendorHeader canGoBack={canGoBack} vendor={vendor} />
+      <NormalTopBar
+        canGoBack={canGoBack}
+        handleSubmitEditing={onSearchSubmit}
+        onChangeText={handleChangeText}
+        searchPlaceHolder={`search on ${vendor.name}`}
+      />
+      <VendorBanner vendor={vendor} />
       <ContentWrapper>
         <FlatList
           data={CARDS}
