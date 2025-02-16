@@ -20,11 +20,11 @@ export default function Page() {
         <OrderStatus orderStatuses={orderStatusBoxes} />
         <View className="my-6 h-0.5 bg-slate-200" />
         <View className="flex-row flex-wrap gap-y-6">
-          {otherMenus.map(({ id, icon, label }) => (
+          {otherMenus.map(({ id, icon, label, routeTo }) => (
             <TouchableOpacity
               className="w-1/4 flex-col items-center gap-y-1"
               key={randomUUID()}
-              onPress={() => router.push(`/account/order?statusId=${id}`)}
+              onPress={() => routeTo && router.push(routeTo)}
             >
               {icon}
               <Text className="text-sm">{label}</Text>

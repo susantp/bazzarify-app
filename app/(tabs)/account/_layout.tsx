@@ -22,6 +22,15 @@ const Layout = () => {
       <Stack.Screen name="setting/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="order/index" options={{ headerShown: false }} />
       <Stack.Screen name="order/[status]" options={{ headerShown: false }} />
+      <Stack.Screen name="message/index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="message/activities"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="message/promotions"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 };
