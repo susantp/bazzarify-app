@@ -113,7 +113,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="auth"
+        name="guest"
         options={{
           href: null,
         }}

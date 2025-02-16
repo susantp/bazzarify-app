@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
 import { useRecoilState } from "recoil";
 import { userSession } from "@/atoms/sessionAtom";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import LoginFormHelperText from "@/components/account/LoginFormHelperText";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { Controller, useForm } from "react-hook-form";
@@ -28,7 +28,35 @@ const LoginScreen = () => {
       password: "",
     },
   });
-  const handleLogin = () => setSession(!session);
+  const handleLogin = async () => {
+    // await axios
+    //   .get("https://127.0.0.1/health")
+    //   .then((res) => console.log(res))
+    //   .catch((err: AxiosError) => console.log("error:", err.message));
+    // await fetch(
+    //   "https://local-ne.techbizz.local/api/v1/auth/login/credentials",
+    //   {
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       username: "vendor@gmail.com",
+    //       password: "admin",
+    //     }),
+    //   },
+    // )
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((error: Error) => {
+    //     console.log("error: ", error.message);
+    //   });
+    setSession(!session);
+    router.push("/account/profile");
+  };
   const [showPassword, setShowPassword] = useState(true);
   return (
     <SafeAreaWrapper>
@@ -91,7 +119,7 @@ const LoginScreen = () => {
             <View>
               <Text>New User?</Text>
             </View>
-            <Link href="/auth/register">
+            <Link href="/guest/register">
               <Text className="text-orange-600 underline">Sign Up</Text>
             </Link>
           </View>
