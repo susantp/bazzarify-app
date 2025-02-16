@@ -9,11 +9,13 @@ import {
 import React from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Href } from "expo-router";
 
 export type ProfileMenuBoxType = {
   label: string;
   id: string;
   icon: React.ReactNode;
+  routeTo?: Href;
 };
 export default function useProfileScreen() {
   const orderStatusBoxes: ProfileMenuBoxType[] = [
@@ -46,7 +48,8 @@ export default function useProfileScreen() {
   const otherMenus: ProfileMenuBoxType[] = [
     {
       id: "toMessage",
-      label: "To Message",
+      label: "Message",
+      routeTo: "/account/message",
       icon: <FontAwesome6 name="inbox" size={26} color={Colors.light.tint} />,
     },
     {
