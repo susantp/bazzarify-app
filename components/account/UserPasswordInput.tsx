@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import {
   EyeIcon,
   EyeSlashIcon,
   LockClosedIcon,
   LockOpenIcon,
 } from "react-native-heroicons/outline";
+import { InputProps } from "@/components/common";
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -14,25 +15,31 @@ const AlertDescription = React.forwardRef<
   <div ref={ref} className="text-sm" {...props} />
 ));
 AlertDescription.displayName = "AlertDescription";
+
+interface PasswordInputProps extends InputProps {
+  setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
+  showPassword: boolean;
+}
+
 const UserPasswordInput = ({
-  placeholder,
-  inputPadding,
-  defaultValue,
-}: {
-  placeholder: string;
-  inputPadding: string;
-  defaultValue: string;
-}) => {
-  const [showPassword, setShowPassword] = useState(true);
+  value,
+  setShowPassword,
+  showPassword,
+  onBlur,
+  onChange,
+  hasError,
+}: PasswordInputProps) => {
   return (
-    <View className="relative w-full px-6">
+    <>
       <TextInput
-        defaultValue={defaultValue}
+        value={value}
+        onBlur={onBlur}
+        onChangeText={onChange}
         secureTextEntry={showPassword}
-        placeholder={placeholder}
-        className={`rounded-md bg-white pl-14 ${inputPadding}`}
+        placeholder="Password"
+        className={`rounded-md bg-white pl-14`}
       />
-      <View className="absolute inset-x-9 inset-y-2.5">
+      <View className="absolute inset-x-9 inset-y-1.5">
         {showPassword ? (
           <LockClosedIcon size={28} strokeWidth={1} color="gray" />
         ) : (
@@ -40,7 +47,7 @@ const UserPasswordInput = ({
         )}
       </View>
       <TouchableOpacity
-        className="absolute bottom-3 right-8"
+        className="absolute inset-y-1.5 right-8"
         onPress={() => setShowPassword(!showPassword)}
       >
         <View>
@@ -51,7 +58,8 @@ const UserPasswordInput = ({
           )}
         </View>
       </TouchableOpacity>
-    </View>
+      {hasError && <Text className="text-red-600">This is required.</Text>}
+    </>
   );
 };
 
