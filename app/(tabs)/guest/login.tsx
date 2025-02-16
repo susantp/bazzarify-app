@@ -1,11 +1,17 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
 import { useRecoilState } from "recoil";
 import { userSession } from "@/atoms/sessionAtom";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import LoginFormHelperText from "@/components/account/LoginFormHelperText";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { Controller, useForm } from "react-hook-form";
@@ -119,9 +125,9 @@ const LoginScreen = () => {
             <View>
               <Text>New User?</Text>
             </View>
-            <Link href="/guest/register">
+            <Pressable onPress={() => console.log("register press")}>
               <Text className="text-orange-600 underline">Sign Up</Text>
-            </Link>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
