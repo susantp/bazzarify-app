@@ -1,11 +1,11 @@
 import { useRecoilValue } from "recoil";
 import { userSession } from "@/atoms/sessionAtom";
 import { Stack } from "expo-router";
-import LoginScreen from "@/app/(tabs)/auth/login";
+import Page from "@/app/(tabs)/guest/guestAccountIndex";
 
-const Home = () => {
+const Layout = () => {
   const session = useRecoilValue(userSession);
-  if (!session) return <LoginScreen />;
+  if (!session) return <Page />;
   return (
     <Stack>
       <Stack.Screen name="profile" options={{ headerShown: false }} />
@@ -26,4 +26,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Layout;
