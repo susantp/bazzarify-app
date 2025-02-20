@@ -7,6 +7,7 @@ import {
   LockOpenIcon,
 } from "react-native-heroicons/outline";
 import { InputProps } from "@/components/common";
+import cn from "@/utils/tailwindHelper";
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -28,6 +29,7 @@ const UserPasswordInput = ({
   onBlur,
   onChange,
   hasError,
+  className,
 }: PasswordInputProps) => {
   return (
     <>
@@ -37,7 +39,7 @@ const UserPasswordInput = ({
         onChangeText={onChange}
         secureTextEntry={showPassword}
         placeholder="Password"
-        className={`rounded-md bg-white pl-14`}
+        className={cn("rounded-md", "bg-white", "pl-14", className)}
       />
       <View className="absolute inset-x-9 inset-y-1.5">
         {showPassword ? (

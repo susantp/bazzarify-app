@@ -11,7 +11,6 @@ import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
 import { useRecoilState } from "recoil";
 import { userSession } from "@/atoms/sessionAtom";
-import { router } from "expo-router";
 import LoginFormHelperText from "@/components/account/LoginFormHelperText";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { Controller, useForm } from "react-hook-form";
@@ -19,7 +18,7 @@ import UsernameInput from "@/components/account/UsernameInput";
 import UserPasswordInput from "@/components/account/UserPasswordInput";
 
 type FormData = {
-  username: string;
+  email: string;
   password: string;
 };
 const LoginScreen = () => {
@@ -30,38 +29,21 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      username: "",
-      password: "",
+      email: "abc@abc.com",
+      password: "abc",
     },
   });
-  const handleLogin = async () => {
-    // await axios
-    //   .get("https://127.0.0.1/health")
-    //   .then((res) => console.log(res))
-    //   .catch((err: AxiosError) => console.log("error:", err.message));
-    // await fetch(
-    //   "https://local-ne.techbizz.local/api/v1/auth/login/credentials",
-    //   {
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       username: "vendor@gmail.com",
-    //       password: "admin",
-    //     }),
-    //   },
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
+  const handleLogin = async (data: FormData) => {
+    // axiosInstance
+    //   .post("/auth/login/credentials", data)
+    //   .then((response: AxiosResponse) => {
+    //     console.log("response", response.data);
     //   })
-    //   .catch((error: Error) => {
-    //     console.log("error: ", error.message);
+    //   .catch((error: AxiosError) => {
+    //     console.log("error: ", error.request);
     //   });
     setSession(!session);
-    router.push("/account/profile");
+    // router.push("/account/profile");
   };
   const [showPassword, setShowPassword] = useState(true);
   return (
@@ -79,13 +61,14 @@ const LoginScreen = () => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <UsernameInput
-                  hasError={errors.username}
+                  className="py-3"
+                  hasError={errors.email}
                   onChange={onChange}
                   onBlur={onBlur}
                   value={value}
                 />
               )}
-              name="username"
+              name="email"
             />
           </View>
           <View className="w-full flex-col gap-y-2 px-6">
@@ -96,6 +79,7 @@ const LoginScreen = () => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <UserPasswordInput
+                  className="py-3"
                   hasError={errors.password}
                   setShowPassword={setShowPassword}
                   showPassword={showPassword}
