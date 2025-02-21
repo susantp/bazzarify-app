@@ -7,10 +7,11 @@ import { router } from "expo-router";
 export default function useMessageActionHook() {
   const actions: MessageActionType[] = [
     {
-      id: "message",
-      label: "Message",
+      id: "chats",
+      label: "Chats",
       icon: <MaterialIcons name="message" size={30} color={"#fff"} />,
       bgColor: "bg-green-500",
+      routeTo: () => router.push("/account/message/inbox"),
     },
     {
       id: "package",
