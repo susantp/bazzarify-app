@@ -55,6 +55,7 @@ export default function useProfileScreen() {
     {
       id: "vouchers",
       label: "Collect Vouchers",
+      routeTo: "/account/voucherCenter",
       icon: (
         <MaterialIcons name="discount" size={26} color={Colors.light.tint} />
       ),
