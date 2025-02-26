@@ -10,7 +10,7 @@ import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
 import { useRecoilState } from "recoil";
-import { userSession } from "@/atoms/sessionAtom";
+import { userToken } from "@/atoms/sessionAtom";
 import LoginFormHelperText from "@/components/account/LoginFormHelperText";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { useForm } from "react-hook-form";
@@ -22,30 +22,42 @@ import {
 } from "@/components/common";
 import ControlledInput from "@/components/common/ControlledInput";
 import { router } from "expo-router";
+import axiosInstance from "@/utils/axios";
+import { AxiosError, AxiosResponse } from "axios";
+import remotePaths from "@/staticData/remote.paths";
+import { save } from "@/utils/secureStore";
 
 const LoginScreen = () => {
-  const [session, setSession] = useRecoilState(userSession);
+  const [, setToken] = useRecoilState(userToken);
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<TLoginFormField>({
     defaultValues: {
-      email: "abc@abc.com",
-      password: "abc",
+      email: "abwtccbecd@abc.com",
+      password: "Handsome123",
     },
   });
   const handleLogin = async (data: TLoginFormField) => {
-    // axiosInstance
-    //   .post("/auth/login/credentials", data)
-    //   .then((response: AxiosResponse) => {
-    //     console.log("response", response.data);
-    //   })
-    //   .catch((error: AxiosError) => {
-    //     console.log("error: ", error.request);
-    //   });
-    setSession(!session);
-    // router.push("/account/profile");
+    axiosInstance
+      .post(remotePaths.loginCredentials.path, data)
+      .then((response: AxiosResponse) => {
+        if (response.data.metaData.errorCode) {
+          setError("password", {
+            type: "manual",
+            message: response.data.metaData.error,
+          });
+        }
+        const token = response.data.metaData.token;
+        save("token", token);
+        setToken(response.data.data.payload.token);
+        router.replace("/account/profile");
+      })
+      .catch((error: AxiosError) => {
+        console.log("error: ", error.request);
+      });
   };
   const [showPassword, setShowPassword] = useState(true);
   return (
@@ -66,7 +78,7 @@ const LoginScreen = () => {
             formField={({ field }: IControlledFormFieldProps) => (
               <UsernameInput
                 className="py-3"
-                hasError={errors.username}
+                hasError={errors.email}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 value={field.value}
