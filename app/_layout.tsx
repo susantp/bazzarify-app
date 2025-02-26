@@ -17,6 +17,14 @@ import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import toastConfig from "@/config/toastConfig";
+import * as Sentry from "@sentry/react-native";
+
+Sentry.init({
+  dsn: "https://5711ab58e2cef392cd161c1452d1db40@o4508887288446976.ingest.de.sentry.io/4508887290282064",
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

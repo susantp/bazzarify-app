@@ -42,3 +42,5 @@ ios/
 *reference.md
 *-steps.sh
 *.apk
+.env.local
+.env

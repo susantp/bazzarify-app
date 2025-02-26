@@ -5,6 +5,9 @@
   },
   "build": {
     "dev": {
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://192.168.1.64/api/v1"
+      },
       "distribution": "internal",
       "developmentClient": true,
       "autoIncrement": true,

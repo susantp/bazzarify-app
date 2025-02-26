@@ -48,6 +48,14 @@
           "configureAndroidBackup": true,
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "techbizz-nepal-pvt-ltd",
+          "project": "react-native",
+          "url": "https://sentry.io/"
+        }
       ]
     ],
     "experiments": {
