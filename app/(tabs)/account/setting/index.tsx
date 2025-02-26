@@ -17,12 +17,15 @@ import {
 } from "@/components/account/setting/data/settingList";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
-import { userSession } from "@/atoms/sessionAtom";
+import { userToken } from "@/atoms/sessionAtom";
 
 const SettingScreen = () => {
   const defaultLanguage = useRecoilValue(filteredDefaultLanguage);
-  const [session, setSession] = useRecoilState(userSession);
-
+  const [, setToken] = useRecoilState(userToken);
+  const handleLogout = () => {
+    setToken("");
+    router.replace("/guest/guestAccountIndex");
+  };
   const renderItem = ({ item }: ListRenderItemInfo<IProfileMenu>) => {
     return (
       <TouchableOpacity
@@ -55,7 +58,7 @@ const SettingScreen = () => {
             renderItem={renderItem}
           />
           <TouchableOpacity
-            onPress={() => setSession(!session)}
+            onPress={handleLogout}
             activeOpacity={0.8}
             className="mt-4 flex w-full items-center bg-orange-600"
           >

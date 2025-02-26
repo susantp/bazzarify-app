@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import PageTitle from "@/components/account/PageTitle";
 import { useRecoilState } from "recoil";
-import { userSession } from "@/atoms/sessionAtom";
-import { Link } from "expo-router";
+import { userToken } from "@/atoms/sessionAtom";
+import { Link, router } from "expo-router";
 import UsernameInput from "@/components/account/UsernameInput";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import { useForm } from "react-hook-form";
@@ -19,10 +19,10 @@ import NameInput from "@/components/account/NameInput";
 import authRemotePaths from "@/staticData/remote.paths";
 import axiosInstance from "@/utils/axios";
 import { AxiosError, AxiosResponse } from "axios";
-import * as SecureStore from "expo-secure-store";
+import { save } from "@/utils/secureStore";
 
 const Page = () => {
-  const [session, setSession] = useRecoilState(userSession);
+  const [token, setToken] = useRecoilState(userToken);
   const [formValues] = useState({
     name: "om prakash shah",
     email: "abwtccbecd@abc.com",
@@ -49,10 +49,17 @@ const Page = () => {
             message: response.data.metaData.error,
           });
         }
-        SecureStore.setItem("token", response.data.data.payload.token);
-        setSession(!session);
+        const token = response.data.metaData.token;
+        save("token", token);
+        setToken(response.data.data.payload.token);
+        router.replace("/account/profile");
+        console.log("user registered replacing to profile screen");
       })
       .catch((error: AxiosError) => {
+        setError("password_confirmation", {
+          type: "manual",
+          message: "System Error. Please Contact us.",
+        });
         console.log("error: ", error);
       });
   };

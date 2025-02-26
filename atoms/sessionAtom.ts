@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { getValueFor } from "@/utils/secureStore";
 
 type UserProfileType = {
   name: string;
@@ -19,6 +20,10 @@ const userProfile: UserProfileType = {
 export const userSession = atom({
   key: "session",
   default: false,
+});
+export const userToken = atom({
+  key: "token",
+  default: getValueFor("token"),
 });
 
 export const userProfileAtom = atom<UserProfileType>({

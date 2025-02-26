@@ -1,11 +1,11 @@
-import { useRecoilValue } from "recoil";
-import { userSession } from "@/atoms/sessionAtom";
 import { Stack } from "expo-router";
 import Page from "@/app/(tabs)/guest/guestAccountIndex";
+import { useRecoilValue } from "recoil";
+import { userToken } from "@/atoms/sessionAtom";
 
 const Layout = () => {
-  const session = useRecoilValue(userSession);
-  if (!session) return <Page />;
+  const token = useRecoilValue(userToken);
+  if (!token) return <Page />;
   return (
     <Stack>
       <Stack.Screen name="profile" options={{ headerShown: false }} />
