@@ -13,27 +13,29 @@ import { useRecoilState } from "recoil";
 import { userSession } from "@/atoms/sessionAtom";
 import LoginFormHelperText from "@/components/account/LoginFormHelperText";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import UsernameInput from "@/components/account/UsernameInput";
 import UserPasswordInput from "@/components/account/UserPasswordInput";
+import {
+  IControlledFormFieldProps,
+  TLoginFormField,
+} from "@/components/common";
+import ControlledInput from "@/components/common/ControlledInput";
+import { router } from "expo-router";
 
-type FormData = {
-  email: string;
-  password: string;
-};
 const LoginScreen = () => {
   const [session, setSession] = useRecoilState(userSession);
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<TLoginFormField>({
     defaultValues: {
-      email: "abc@abc.com",
+      username: "abc@abc.com",
       password: "abc",
     },
   });
-  const handleLogin = async (data: FormData) => {
+  const handleLogin = async (data: TLoginFormField) => {
     // axiosInstance
     //   .post("/auth/login/credentials", data)
     //   .then((response: AxiosResponse) => {
@@ -53,44 +55,44 @@ const LoginScreen = () => {
           <PageTitle title="Login" />
           <View className="h-5" />
 
-          <View className="w-full flex-col gap-y-2 px-6">
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <UsernameInput
-                  className="py-3"
-                  hasError={errors.email}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
-              )}
-              name="email"
-            />
-          </View>
-          <View className="w-full flex-col gap-y-2 px-6">
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <UserPasswordInput
-                  className="py-3"
-                  hasError={errors.password}
-                  setShowPassword={setShowPassword}
-                  showPassword={showPassword}
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={onChange}
-                />
-              )}
-              name="password"
-            />
-          </View>
+          <ControlledInput
+            className="w-full gap-y-2 px-6"
+            errors={errors}
+            control={control}
+            rules={{
+              required: true,
+            }}
+            name="email"
+            formField={({ field }: IControlledFormFieldProps) => (
+              <UsernameInput
+                className="py-3"
+                hasError={errors.username}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                value={field.value}
+              />
+            )}
+          />
+          <ControlledInput
+            className="w-full gap-y-2 px-6"
+            errors={errors}
+            control={control}
+            rules={{
+              required: true,
+            }}
+            name="password"
+            formField={({ field }: IControlledFormFieldProps) => (
+              <UserPasswordInput
+                className="py-3"
+                hasError={errors.password}
+                setShowPassword={setShowPassword}
+                showPassword={showPassword}
+                value={field.value}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+              />
+            )}
+          />
 
           <LoginFormHelperText />
           <View className="h-4" />
@@ -109,7 +111,7 @@ const LoginScreen = () => {
             <View>
               <Text>New User?</Text>
             </View>
-            <Pressable onPress={() => console.log("register press")}>
+            <Pressable onPress={() => router.push("/guest/register")}>
               <Text className="text-orange-600 underline">Sign Up</Text>
             </Pressable>
           </View>
