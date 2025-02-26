@@ -22,7 +22,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { save } from "@/utils/secureStore";
 
 const Page = () => {
-  const [token, setToken] = useRecoilState(userToken);
+  const [, setToken] = useRecoilState(userToken);
   const [formValues] = useState({
     name: "om prakash shah",
     email: "abwtccbecd@abc.com",
@@ -53,7 +53,6 @@ const Page = () => {
         save("token", token);
         setToken(response.data.data.payload.token);
         router.replace("/account/profile");
-        console.log("user registered replacing to profile screen");
       })
       .catch((error: AxiosError) => {
         setError("password_confirmation", {
