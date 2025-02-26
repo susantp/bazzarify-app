@@ -58,7 +58,7 @@ const Page = () => {
       .catch((error: AxiosError) => {
         setError("password_confirmation", {
           type: "manual",
-          message: "System Error. Please Contact us.",
+          message: `${error.message}. Please contact bazzarify support.`,
         });
         console.log("error: ", error);
       });

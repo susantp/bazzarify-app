@@ -26,6 +26,7 @@ import axiosInstance from "@/utils/axios";
 import { AxiosError, AxiosResponse } from "axios";
 import remotePaths from "@/staticData/remote.paths";
 import { save } from "@/utils/secureStore";
+import * as Sentry from "@sentry/react-native";
 
 const LoginScreen = () => {
   const [, setToken] = useRecoilState(userToken);
@@ -57,11 +58,19 @@ const LoginScreen = () => {
         router.replace("/account/profile");
       })
       .catch((error: AxiosError) => {
+        let errorMessage = "Network Error";
+        if (error.response) {
+          errorMessage = `Status: ${error.response.status} - ${JSON.stringify(error.response.data)}`;
+        } else if (error.request) {
+          errorMessage =
+            "No response received from server." + JSON.stringify(error.request);
+        }
+
+        Sentry.captureMessage(errorMessage); // Send detailed error to Sentry
         setError("password", {
           type: "manual",
           message: `${error.message}. Please contact bazzarify support.`,
         });
-        console.log("error: ", error.request);
       });
   };
   const [showPassword, setShowPassword] = useState(true);
