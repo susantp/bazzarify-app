@@ -8,3 +8,22 @@ export interface InputProps extends TextInputProps {
   hasError: FieldError | undefined;
   className?: string;
 }
+
+export interface IControlledFormFieldProps {
+  field: {
+    onChange: () => void;
+    onBlur: () => void;
+    value: string;
+  };
+}
+
+export type TRegisterFormField = {
+  username: string;
+  password: string;
+  repeatPassword: string;
+};
+
+export type TLoginFormField = {
+  username: string;
+  password: string;
+};
