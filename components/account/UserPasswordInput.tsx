@@ -60,7 +60,7 @@ const UserPasswordInput = ({
           )}
         </View>
       </TouchableOpacity>
-      {hasError && <Text className="text-red-600">This is required.</Text>}
+      {hasError && <Text className="text-red-600">{hasError.message}</Text>}
     </>
   );
 };

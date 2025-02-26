@@ -18,12 +18,13 @@ export interface IControlledFormFieldProps {
 }
 
 export type TRegisterFormField = {
-  username: string;
+  name: string;
+  email: string;
   password: string;
-  repeatPassword: string;
+  password_confirmation: string;
 };
 
 export type TLoginFormField = {
-  username: string;
+  email: string;
   password: string;
 };
