@@ -44,18 +44,23 @@ const LoginScreen = () => {
     axiosInstance
       .post(remotePaths.loginCredentials.path, data)
       .then((response: AxiosResponse) => {
-        if (response.data.metaData.errorCode) {
+        if (response.data.metaData.error) {
           setError("password", {
             type: "manual",
             message: response.data.metaData.error,
           });
+          return;
         }
-        const token = response.data.metaData.token;
+        const token = response.data.data.payload.token;
         save("token", token);
-        setToken(response.data.data.payload.token);
+        setToken(token);
         router.replace("/account/profile");
       })
       .catch((error: AxiosError) => {
+        setError("password", {
+          type: "manual",
+          message: `${error.message}. Please contact bazzarify support.`,
+        });
         console.log("error: ", error.request);
       });
   };
