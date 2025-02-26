@@ -12,17 +12,20 @@ interface IDemoModalComponent {
   children?: React.ReactNode;
   showModal: boolean;
   handlePress: (event: GestureResponderEvent) => void;
+  height?: number;
 }
 
 const DemoModalComponent = ({
   children,
   showModal,
   handlePress,
+  height,
 }: IDemoModalComponent) => {
   return (
     <Modal animationType="slide" transparent={true} visible={showModal}>
       <View
         className={`absolute bottom-0 z-30 w-full flex-col gap-y-2 border-t border-t-gray-400 bg-white p-6`}
+        style={{ height: height ? height : undefined }}
       >
         <TouchableOpacity className="w-full items-end" onPress={handlePress}>
           <AntDesign

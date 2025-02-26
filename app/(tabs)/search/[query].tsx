@@ -6,8 +6,10 @@ import ContentWrapper from "@/components/common/ContentWrapper";
 import {
   FlatList,
   ListRenderItemInfo,
+  ScrollView,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -117,6 +119,7 @@ export default function Page() {
   const [showCustomFilter, setShowCustomFilter] = useRecoilState(
     customFilterModalAtom,
   );
+  const { height } = useWindowDimensions();
   const handleFilterPress = (item: IFilterMenuItem) => {
     setFilter(item);
     item.id === FilterMenuItemEnum.PRICE && setPriceSortAsc(!priceSortAsc);
@@ -184,6 +187,7 @@ export default function Page() {
         />
       </ContentWrapper>
       <DemoModalComponent
+        height={height * 0.4}
         showModal={showCustomFilter}
         handlePress={() => {
           setShowCustomFilter(!showCustomFilter);
@@ -219,9 +223,9 @@ const CustomFilterComponent = ({
     }));
   };
   return (
-    <View className="flex-col gap-y-3">
+    <ScrollView className="flex-col" showsVerticalScrollIndicator={false}>
       {filterItems.map((item) => (
-        <View className="flex-col gap-y-2" key={item.id}>
+        <View className="flex-col gap-y-2 py-2" key={item.id}>
           <Text>{item.label}</Text>
           <View className="flex-row flex-wrap items-center gap-2">
             {item.options.map((option) => {
@@ -262,6 +266,6 @@ const CustomFilterComponent = ({
           <Text className="text-white">Done (200)</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
