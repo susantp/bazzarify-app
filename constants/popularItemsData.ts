@@ -7,6 +7,14 @@ export const popularItemsData: ItemProps[] = [
     price: 10,
     rating: 4.5,
     discount: 4,
+    location: "Bagmati Province",
+    freeDelivery: true,
+    specialSale: {
+      discountType: "percent",
+      discount: 72,
+      endDate: "2025-02-31",
+      name: "Special Sale Price",
+    },
   },
   {
     id: "p-002",
@@ -14,6 +22,7 @@ export const popularItemsData: ItemProps[] = [
     price: 10,
     rating: 4.5,
     discount: 4,
+    location: "Bagmati Province",
   },
   {
     id: "p-003",
@@ -21,6 +30,13 @@ export const popularItemsData: ItemProps[] = [
     price: 10,
     rating: 4.5,
     discount: 4,
+    location: "Kaski Province",
+    specialSale: {
+      discountType: "percent",
+      discount: 72,
+      endDate: "2025-02-31",
+      name: "Special Sale Price",
+    },
   },
   {
     id: "p-004",
@@ -28,6 +44,7 @@ export const popularItemsData: ItemProps[] = [
     price: 10,
     rating: 4.5,
     discount: 4,
+    location: "",
   },
   {
     id: "p-005",
@@ -35,12 +52,14 @@ export const popularItemsData: ItemProps[] = [
     price: 10,
     rating: 4.5,
     discount: 4,
+    location: "",
   },
   {
     id: "p-006",
     name: "beautiful product categories sub look ",
     price: 10,
     rating: 4.5,
+    location: "Bagmati Province",
     discount: 4,
   },
   {
@@ -48,6 +67,7 @@ export const popularItemsData: ItemProps[] = [
     name: "beautiful product categories sub look ",
     price: 10,
     rating: 4.5,
+    location: "Bagmati Province",
     discount: 4,
   },
   {
@@ -55,6 +75,7 @@ export const popularItemsData: ItemProps[] = [
     name: "beautiful product categories sub look ",
     price: 10,
     rating: 4.5,
+    location: "Bagmati Province",
     discount: 4,
   },
   {
@@ -62,6 +83,7 @@ export const popularItemsData: ItemProps[] = [
     name: "beautiful product categories sub look ",
     price: 10,
     rating: 4.5,
+    location: "Bagmati Province",
     discount: 4,
   },
   {
@@ -69,6 +91,7 @@ export const popularItemsData: ItemProps[] = [
     name: "beautiful product categories sub look ",
     price: 10,
     rating: 4.5,
+    location: "Bagmati Province",
     discount: 4,
   },
 ];
