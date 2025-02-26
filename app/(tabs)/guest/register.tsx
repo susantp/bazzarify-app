@@ -48,6 +48,7 @@ const Page = () => {
             type: "manual",
             message: response.data.metaData.error,
           });
+          return;
         }
         const token = response.data.metaData.token;
         save("token", token);
