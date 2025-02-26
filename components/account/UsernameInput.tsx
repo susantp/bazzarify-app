@@ -10,11 +10,13 @@ const UsernameInput = ({
   onChange,
   hasError,
   className,
+  ...rest
 }: InputProps) => (
   <>
     <TextInput
       value={value}
       onBlur={onBlur}
+      defaultValue={rest.defaultValue}
       onChangeText={onChange}
       placeholder="Your email/number"
       className={cn("rounded-md", "bg-white", "pl-14", className)}
