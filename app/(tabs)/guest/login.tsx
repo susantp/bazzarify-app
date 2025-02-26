@@ -31,7 +31,7 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm<TLoginFormField>({
     defaultValues: {
-      username: "abc@abc.com",
+      email: "abc@abc.com",
       password: "abc",
     },
   });
