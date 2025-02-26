@@ -2,7 +2,6 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import UserPasswordInput from "@/components/account/UserPasswordInput";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import PageTitle from "@/components/account/PageTitle";
 import { useRecoilState } from "recoil";
 import { userToken } from "@/atoms/sessionAtom";
@@ -20,6 +19,8 @@ import authRemotePaths from "@/staticData/remote.paths";
 import axiosInstance from "@/utils/axios";
 import { AxiosError, AxiosResponse } from "axios";
 import { save } from "@/utils/secureStore";
+import ContentWrapper from "@/components/common/ContentWrapper";
+import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 
 const Page = () => {
   const [, setToken] = useRecoilState(userToken);
@@ -64,10 +65,10 @@ const Page = () => {
       });
   };
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
+    <SafeAreaWrapper>
+      <ContentWrapper>
         <ScrollView>
-          <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4 bg-gray-100">
+          <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4">
             <PageTitle title="Register" />
             <View className="h-5" />
             <ControlledInput
@@ -77,7 +78,7 @@ const Page = () => {
               name="name"
               formField={({ field }: IControlledFormFieldProps) => (
                 <NameInput
-                  className="py-3"
+                  className="border-2 border-slate-200 py-5"
                   hasError={errors.name}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
@@ -93,7 +94,7 @@ const Page = () => {
               name="email"
               formField={({ field }: IControlledFormFieldProps) => (
                 <UsernameInput
-                  className="py-3"
+                  className="border-2 border-slate-200 py-5"
                   hasError={errors.email}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
@@ -112,7 +113,7 @@ const Page = () => {
               }}
               formField={({ field }: IControlledFormFieldProps) => (
                 <UserPasswordInput
-                  className="py-3"
+                  className="border-2 border-slate-200 py-5"
                   hasError={errors.password}
                   setShowPassword={setShowPassword}
                   showPassword={showPassword}
@@ -135,7 +136,7 @@ const Page = () => {
               }}
               formField={({ field }: IControlledFormFieldProps) => (
                 <UserPasswordInput
-                  className="py-3"
+                  className="border-2 border-slate-200 py-5"
                   hasError={errors.password_confirmation}
                   setShowPassword={setShowRepeatPassword}
                   showPassword={showRepeatPassword}
@@ -168,8 +169,8 @@ const Page = () => {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+      </ContentWrapper>
+    </SafeAreaWrapper>
   );
 };
 

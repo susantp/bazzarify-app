@@ -39,9 +39,9 @@ const UserPasswordInput = ({
         onChangeText={onChange}
         secureTextEntry={showPassword}
         placeholder="Password"
-        className={cn("rounded-md", "bg-white", "pl-14", className)}
+        className={cn("rounded-xl", "bg-white", "pl-14", className)}
       />
-      <View className="absolute inset-x-9 inset-y-1.5">
+      <View className="absolute inset-x-9 inset-y-3">
         {showPassword ? (
           <LockClosedIcon size={28} strokeWidth={1} color="gray" />
         ) : (
@@ -49,7 +49,7 @@ const UserPasswordInput = ({
         )}
       </View>
       <TouchableOpacity
-        className="absolute inset-y-1.5 right-8"
+        className="absolute inset-y-3.5 right-10"
         onPress={() => setShowPassword(!showPassword)}
       >
         <View>

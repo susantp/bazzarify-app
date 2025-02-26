@@ -27,6 +27,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import remotePaths from "@/staticData/remote.paths";
 import { save } from "@/utils/secureStore";
 import * as Sentry from "@sentry/react-native";
+import ContentWrapper from "@/components/common/ContentWrapper";
 
 const LoginScreen = () => {
   const [, setToken] = useRecoilState(userToken);
@@ -76,73 +77,75 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(true);
   return (
     <SafeAreaWrapper>
-      <ScrollView>
-        <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4 bg-gray-100">
-          <PageTitle title="Login" />
-          <View className="h-5" />
+      <ContentWrapper>
+        <ScrollView>
+          <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4">
+            <PageTitle title="Login" />
+            <View className="h-5" />
 
-          <ControlledInput
-            className="w-full gap-y-2 px-6"
-            errors={errors}
-            control={control}
-            rules={{
-              required: true,
-            }}
-            name="email"
-            formField={({ field }: IControlledFormFieldProps) => (
-              <UsernameInput
-                className="py-3"
-                hasError={errors.email}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                value={field.value}
-              />
-            )}
-          />
-          <ControlledInput
-            className="w-full gap-y-2 px-6"
-            errors={errors}
-            control={control}
-            rules={{
-              required: true,
-            }}
-            name="password"
-            formField={({ field }: IControlledFormFieldProps) => (
-              <UserPasswordInput
-                className="py-3"
-                hasError={errors.password}
-                setShowPassword={setShowPassword}
-                showPassword={showPassword}
-                value={field.value}
-                onBlur={field.onBlur}
-                onChange={field.onChange}
-              />
-            )}
-          />
+            <ControlledInput
+              className="w-full gap-y-2 px-6"
+              errors={errors}
+              control={control}
+              rules={{
+                required: true,
+              }}
+              name="email"
+              formField={({ field }: IControlledFormFieldProps) => (
+                <UsernameInput
+                  className="border-2 border-slate-200 py-5"
+                  hasError={errors.email}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  value={field.value}
+                />
+              )}
+            />
+            <ControlledInput
+              className="w-full gap-y-2 px-6"
+              errors={errors}
+              control={control}
+              rules={{
+                required: true,
+              }}
+              name="password"
+              formField={({ field }: IControlledFormFieldProps) => (
+                <UserPasswordInput
+                  className="border-2 border-slate-200 py-5"
+                  hasError={errors.password}
+                  setShowPassword={setShowPassword}
+                  showPassword={showPassword}
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChange={field.onChange}
+                />
+              )}
+            />
 
-          <LoginFormHelperText />
-          <View className="h-4" />
-          <FullWidthActionBtn
-            handleOnPress={handleSubmit(handleLogin)}
-            label="Login"
-          />
-          <Text className="text-gray-400">or</Text>
-          <TouchableOpacity>
-            <SocialLoginButton label="sign in with" provider="google" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <SocialLoginButton label="sign in with" provider="facebook" />
-          </TouchableOpacity>
-          <View className="flex-row items-center gap-x-2">
-            <View>
-              <Text>New User?</Text>
+            <LoginFormHelperText />
+            <View className="h-4" />
+            <FullWidthActionBtn
+              handleOnPress={handleSubmit(handleLogin)}
+              label="Login"
+            />
+            <Text className="text-gray-400">or</Text>
+            <TouchableOpacity>
+              <SocialLoginButton label="sign in with" provider="google" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <SocialLoginButton label="sign in with" provider="facebook" />
+            </TouchableOpacity>
+            <View className="flex-row items-center gap-x-2">
+              <View>
+                <Text>New User?</Text>
+              </View>
+              <Pressable onPress={() => router.push("/guest/register")}>
+                <Text className="text-orange-600 underline">Sign Up</Text>
+              </Pressable>
             </View>
-            <Pressable onPress={() => router.push("/guest/register")}>
-              <Text className="text-orange-600 underline">Sign Up</Text>
-            </Pressable>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </ContentWrapper>
     </SafeAreaWrapper>
   );
 };
