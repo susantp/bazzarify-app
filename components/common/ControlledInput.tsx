@@ -7,7 +7,6 @@ const ControlledInput = ({ ...props }) => {
     console.error("controlled input name required");
     return <></>;
   }
-  console.log(props.name);
   return (
     <View className={props.className}>
       <Controller

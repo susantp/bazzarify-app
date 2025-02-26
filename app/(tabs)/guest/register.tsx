@@ -15,23 +15,46 @@ import {
   IControlledFormFieldProps,
   TRegisterFormField,
 } from "@/components/common";
+import NameInput from "@/components/account/NameInput";
+import authRemotePaths from "@/staticData/remote.paths";
+import axiosInstance from "@/utils/axios";
+import { AxiosError, AxiosResponse } from "axios";
+import * as SecureStore from "expo-secure-store";
 
-const RegisterScreen = () => {
+const Page = () => {
   const [session, setSession] = useRecoilState(userSession);
+  const [formValues] = useState({
+    name: "om prakash shah",
+    email: "abwtccbecd@abc.com",
+    password: "Handsome123",
+    password_confirmation: "Handsome123",
+  });
   const {
     control,
+    setError,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<TRegisterFormField>({
-    defaultValues: {
-      username: "abc@abc.com",
-      password: "abc",
-    },
+    defaultValues: formValues,
   });
   const [showPassword, setShowPassword] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
-  const handleRegister = async () => {
-    setSession(!session);
+  const handleRegister = async (data: TRegisterFormField) => {
+    axiosInstance
+      .post(authRemotePaths.registerCredentials.path, data)
+      .then((response: AxiosResponse) => {
+        if (response.data.metaData.errorCode) {
+          setError("password_confirmation", {
+            type: "manual",
+            message: response.data.metaData.error,
+          });
+        }
+        SecureStore.setItem("token", response.data.data.payload.token);
+        setSession(!session);
+      })
+      .catch((error: AxiosError) => {
+        console.log("error: ", error);
+      });
   };
   return (
     <SafeAreaProvider>
@@ -44,11 +67,27 @@ const RegisterScreen = () => {
               className="w-full gap-y-2 px-6"
               errors={errors}
               control={control}
-              name="username"
+              name="name"
+              formField={({ field }: IControlledFormFieldProps) => (
+                <NameInput
+                  className="py-3"
+                  hasError={errors.name}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  defaultValue="Om Prakash Shah"
+                  value={field.value}
+                />
+              )}
+            />
+            <ControlledInput
+              className="w-full gap-y-2 px-6"
+              errors={errors}
+              control={control}
+              name="email"
               formField={({ field }: IControlledFormFieldProps) => (
                 <UsernameInput
                   className="py-3"
-                  hasError={errors.username}
+                  hasError={errors.email}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   defaultValue="Om Prakash Shah"
@@ -83,14 +122,14 @@ const RegisterScreen = () => {
               className="w-full gap-y-2 px-6"
               errors={errors}
               control={control}
-              name="repeat-password"
+              name="password_confirmation"
               rules={{
                 required: true,
               }}
               formField={({ field }: IControlledFormFieldProps) => (
                 <UserPasswordInput
                   className="py-3"
-                  hasError={errors.repeatPassword}
+                  hasError={errors.password_confirmation}
                   setShowPassword={setShowRepeatPassword}
                   showPassword={showRepeatPassword}
                   placeholder="Password"
@@ -103,7 +142,7 @@ const RegisterScreen = () => {
             />
             <FullWidthActionBtn
               handleOnPress={handleSubmit(handleRegister)}
-              label="Register"
+              label={isSubmitting ? "Please wait..." : "Register"}
             />
             <Text className="text-gray-400">or</Text>
             <TouchableOpacity>
@@ -127,4 +166,4 @@ const RegisterScreen = () => {
   );
 };
 
-export default RegisterScreen;
+export default Page;
