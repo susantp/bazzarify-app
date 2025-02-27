@@ -21,6 +21,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { save } from "@/utils/secureStore";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
+import * as Sentry from "@sentry/react-native";
 
 const Page = () => {
   const [, setToken] = useRecoilState(userToken);
@@ -44,13 +45,15 @@ const Page = () => {
     axiosInstance
       .post(authRemotePaths.registerCredentials.path, data)
       .then((response: AxiosResponse) => {
-        if (response.data.metaData.errorCode) {
+        console.log(response.data);
+        if (response.data.metaData.error) {
           setError("password_confirmation", {
             type: "manual",
             message: response.data.metaData.error,
           });
           return;
         }
+
         const token = response.data.metaData.token;
         save("token", token);
         setToken(response.data.data.payload.token);
@@ -59,9 +62,9 @@ const Page = () => {
       .catch((error: AxiosError) => {
         setError("password_confirmation", {
           type: "manual",
-          message: `${error.message}. Please contact bazzarify support.`,
+          message: `Oops!s Please contact bazzarify support.`,
         });
-        console.log("error: ", error);
+        Sentry.captureException(error);
       });
   };
   return (
