@@ -98,7 +98,7 @@ const Page = () => {
                   hasError={errors.email}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
-                  defaultValue="Om Prakash Shah"
+                  defaultValue="om@prakash.com"
                   value={field.value}
                 />
               )}

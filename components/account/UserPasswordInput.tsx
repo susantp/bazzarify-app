@@ -9,14 +9,6 @@ import {
 import { InputProps } from "@/components/common";
 import cn from "@/utils/tailwindHelper";
 
-const AlertDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className="text-sm" {...props} />
-));
-AlertDescription.displayName = "AlertDescription";
-
 interface PasswordInputProps extends InputProps {
   setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
   showPassword: boolean;

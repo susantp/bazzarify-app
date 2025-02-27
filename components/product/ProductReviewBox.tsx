@@ -6,17 +6,19 @@ import { Colors } from "@/constants/Colors";
 import ScrollView = Animated.ScrollView;
 
 const ProductReviewBox = () => (
-  <View id="reviews" className="flex-col gap-y-3 rounded-xl py-3">
-    <View className="flex-row items-center justify-between justify-items-center px-6">
-      <Text className="text-xl font-semibold">Reviews</Text>
-      <Text className="text-md">view more</Text>
-    </View>
+  <View className="px-4">
+    <View id="reviews" className="flex-col gap-y-3 rounded-xl">
+      <View className="flex-row items-center justify-between justify-items-center px-6">
+        <Text className="text-xl font-semibold">Reviews</Text>
+        <Text className="text-md">view more</Text>
+      </View>
 
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-      {Array.from({ length: 11 }).map((item, index) => (
-        <ProductReviewDetails key={randomUUID()} />
-      ))}
-    </ScrollView>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        {Array.from({ length: 11 }).map((item, index) => (
+          <ProductReviewDetails key={randomUUID()} />
+        ))}
+      </ScrollView>
+    </View>
   </View>
 );
 
