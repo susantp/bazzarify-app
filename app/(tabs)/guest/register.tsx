@@ -62,7 +62,7 @@ const Page = () => {
       .catch((error: AxiosError) => {
         setError("password_confirmation", {
           type: "manual",
-          message: `Oops!s Please contact bazzarify support.`,
+          message: `Oops! Please contact bazzarify support.`,
         });
         Sentry.captureException(error);
       });
