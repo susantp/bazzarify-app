@@ -1,7 +1,7 @@
 export type ItemProps = {
   id: string;
   name: string;
-  price?: number;
+  price: number;
   rating?: number;
   discount?: number;
   freeDelivery?: boolean;

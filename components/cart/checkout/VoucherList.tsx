@@ -14,17 +14,8 @@ const VoucherList = ({ className }: VoucherListProps) => {
     { component: <ShippingCoupon /> },
   ];
   return (
-    <View
-      className={cn(
-        `flex-col`,
-        `rounded-2xl`,
-        `border`,
-        `border-gray-300`,
-        `p-4`,
-        className,
-      )}
-    >
-      <View className="gap-y-2 py-2">
+    <View className={cn(`flex-col`, className)}>
+      <View className="gap-y-2 rounded-2xl border border-gray-300 p-4">
         <Text className="text-xl font-bold">Voucher</Text>
         <FlatList
           contentContainerStyle={{ columnGap: 20 }}

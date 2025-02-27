@@ -24,7 +24,7 @@ const NameInput = ({
     <View className="absolute inset-x-9 inset-y-3">
       <AntDesign name="user" size={28} strokeWidth={1} color="gray" />
     </View>
-    {hasError && <Text className="text-red-600">This is required.</Text>}
+    {hasError && <Text className="text-red-600">{hasError.message}</Text>}
   </>
 );
 

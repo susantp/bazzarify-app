@@ -15,7 +15,7 @@ const ProductSlider = () => (
     </View>
     <View
       id="actions"
-      className="flex-row justify-between justify-items-center"
+      className="flex-row justify-between justify-items-center px-4"
     >
       <TouchableOpacity className="rounded-full bg-orange-100 p-2 shadow-sm">
         <AntDesign color="black" name="hearto" size={24} />

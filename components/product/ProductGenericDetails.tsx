@@ -19,7 +19,7 @@ const DiscountBannerIcon = () => (
   </Svg>
 );
 const ProductGenericDetails = ({ item }: { item: ItemProps }) => (
-  <>
+  <View className="px-4">
     <View id="product-title" className="py-2">
       <Text className="text-2xl">{item.name}</Text>
     </View>
@@ -99,7 +99,7 @@ const ProductGenericDetails = ({ item }: { item: ItemProps }) => (
         </Text>
       </View>
     </View>
-  </>
+  </View>
 );
 
 export default ProductGenericDetails;

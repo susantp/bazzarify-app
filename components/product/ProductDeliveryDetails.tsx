@@ -16,51 +16,53 @@ const ParcelIcon = ({ size }: { size: number }) => (
   </Svg>
 );
 const ProductDeliveryDetails = () => (
-  <View
-    id="delivery-info"
-    className="flex-col gap-y-3 rounded-xl border border-gray-400 px-3 py-2"
-  >
-    <Text className="text-xl font-semibold">Delivery</Text>
-    <View className="flex-row justify-between">
-      <View className="flex-row items-center justify-items-center gap-x-2">
-        <MapPinIcon size={28} strokeWidth={1} color="black" />
-        <Text className="text-md font-semibold">
-          Bagmati Province, Kathmandu
-        </Text>
-      </View>
-      <View>
-        <TouchableOpacity>
-          <Text className="rounded-full bg-orange-600 px-2 py-1 text-white">
-            Change
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-    <View className="flex-row justify-between">
-      <View className="flex-row items-center justify-items-center gap-x-2">
-        <BackwardIcon size={28} strokeWidth={1} color="black" />
-        <Text className="text-md font-semibold">14 days free returns</Text>
-      </View>
-    </View>
-    <View className="flex-row justify-between">
-      <View className="flex-row items-center justify-items-center gap-x-2">
-        <ShieldCheckIcon size={28} strokeWidth={1} color="black" />
-        <Text className="text-md font-semibold">
-          1 year brand seller warranty
-        </Text>
-      </View>
-    </View>
-    <View className="flex-row justify-between">
-      <View className="flex-col items-center justify-items-center gap-y-2">
+  <View className="p-4">
+    <View
+      id="delivery-info"
+      className="flex-col gap-y-3 rounded-xl border border-gray-400 p-4"
+    >
+      <Text className="text-xl font-semibold">Delivery</Text>
+      <View className="flex-row justify-between">
         <View className="flex-row items-center justify-items-center gap-x-2">
-          <ParcelIcon size={28} />
-          <Text className="text-md font-semibold">Get by 23-24 Nov</Text>
+          <MapPinIcon size={28} strokeWidth={1} color="black" />
+          <Text className="text-md font-semibold">
+            Bagmati Province, Kathmandu
+          </Text>
         </View>
-        <Text className="text-sm text-gray-500">Standard Delivery</Text>
+        <View>
+          <TouchableOpacity>
+            <Text className="rounded-full bg-orange-600 px-2 py-1 text-white">
+              Change
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
+      <View className="flex-row justify-between">
+        <View className="flex-row items-center justify-items-center gap-x-2">
+          <BackwardIcon size={28} strokeWidth={1} color="black" />
+          <Text className="text-md font-semibold">14 days free returns</Text>
+        </View>
+      </View>
+      <View className="flex-row justify-between">
+        <View className="flex-row items-center justify-items-center gap-x-2">
+          <ShieldCheckIcon size={28} strokeWidth={1} color="black" />
+          <Text className="text-md font-semibold">
+            1 year brand seller warranty
+          </Text>
+        </View>
+      </View>
+      <View className="flex-row justify-between">
+        <View className="flex-col items-center justify-items-center gap-y-2">
+          <View className="flex-row items-center justify-items-center gap-x-2">
+            <ParcelIcon size={28} />
+            <Text className="text-md font-semibold">Get by 23-24 Nov</Text>
+          </View>
+          <Text className="text-sm text-gray-500">Standard Delivery</Text>
+        </View>
 
-      <View>
-        <Text className="text-md">Rs. 100</Text>
+        <View>
+          <Text className="text-md">Rs. 100</Text>
+        </View>
       </View>
     </View>
   </View>

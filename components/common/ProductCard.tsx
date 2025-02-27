@@ -57,7 +57,7 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
           </View>
           <View className="flex flex-row">
             <View>
-              <Text className="text-4xl font-semibold text-orange-600">
+              <Text className="text-3xl font-semibold text-orange-600">
                 Rs {item.price}
               </Text>
             </View>
