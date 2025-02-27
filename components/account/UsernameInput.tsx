@@ -24,7 +24,7 @@ const UsernameInput = ({
     <View className="absolute inset-x-9 inset-y-4">
       <EnvelopeIcon size={28} strokeWidth={1} color="gray" />
     </View>
-    {hasError && <Text className="text-red-600">This is required.</Text>}
+    {hasError && <Text className="text-red-600">{hasError.message}</Text>}
   </>
 );
 

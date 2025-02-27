@@ -11,17 +11,19 @@ const QuestionIconBox = () => (
   </Svg>
 );
 const AskQuestionBox = () => (
-  <View
-    id="reviews"
-    className="flex-col items-center justify-items-center gap-y-1 rounded-xl border border-gray-400 py-2"
-  >
-    <QuestionIconBox />
-    <Text className="text-xl">Ask a question.</Text>
-    <TouchableOpacity>
-      <Text className="text-md text-gray-500">
-        log-in or sign-up to ask question
-      </Text>
-    </TouchableOpacity>
+  <View className="p-4">
+    <View
+      id="reviews"
+      className="flex-col items-center justify-items-center gap-y-1 rounded-xl border border-gray-400 py-2"
+    >
+      <QuestionIconBox />
+      <Text className="text-xl">Ask a question.</Text>
+      <TouchableOpacity>
+        <Text className="text-md text-gray-500">
+          log-in or sign-up to ask question
+        </Text>
+      </TouchableOpacity>
+    </View>
   </View>
 );
 

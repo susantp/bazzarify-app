@@ -18,11 +18,13 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
 import { userToken } from "@/atoms/sessionAtom";
+import { remove } from "@/utils/secureStore";
 
 const SettingScreen = () => {
   const defaultLanguage = useRecoilValue(filteredDefaultLanguage);
   const [, setToken] = useRecoilState(userToken);
   const handleLogout = () => {
+    remove("token");
     setToken("");
     router.replace("/guest/guestAccountIndex");
   };
