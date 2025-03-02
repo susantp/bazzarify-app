@@ -32,6 +32,7 @@ const CheckoutAddressComponent = () => {
         </View>
       </TouchableOpacity>
       <DemoModalComponent
+        type="bottom"
         showModal={showModal}
         handlePress={() => setShowModal(!showModal)}
       >

@@ -27,6 +27,7 @@ export default function DeliveryBar({ className }: DeliveryBarProps) {
             <Text className="text-sm font-semibold text-white">{msg}</Text>
           </TouchableOpacity>
           <DemoModalComponent
+            type="bottom"
             showModal={showModal}
             handlePress={() => setShowModal(!showModal)}
           >

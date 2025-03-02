@@ -49,6 +49,7 @@ export default function CartScreen() {
         </BottomActionView>
       )}
       <DemoModalComponent
+        type="bottom"
         showModal={showModal}
         handlePress={() => setShowModal(!showModal)}
       >
