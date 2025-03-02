@@ -1,10 +1,10 @@
-import { OrderStatusBoxType } from "@/hooks/useProfileScreen";
+import { ProfileMenuBoxType } from "@/hooks/useProfileScreen";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import React from "react";
 
 interface OrderedItemProps {
-  statusItem: undefined | OrderStatusBoxType;
+  statusItem: undefined | ProfileMenuBoxType;
 }
 
 const OrderedItem = ({ statusItem }: OrderedItemProps) => (
@@ -30,7 +30,7 @@ const OrderedItem = ({ statusItem }: OrderedItemProps) => (
           <Text className="text-sm">Jan, 09</Text>
         </View>
         <TouchableOpacity
-          onPress={() => router.push(`/account/order/${statusItem?.id}`)}
+          onPress={() => router.push(statusItem?.routeTo as Href)}
           className="rounded-lg border border-orange-600 px-4 py-1"
         >
           <Text className="text-orange-600">{statusItem?.label}</Text>
