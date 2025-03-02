@@ -42,6 +42,7 @@ export default function useProfileScreen() {
     {
       id: "toReturn",
       label: "To Return",
+      routeTo: "/account/order/[id]/return",
       icon: <ToReturnIcon />,
     },
   ];
