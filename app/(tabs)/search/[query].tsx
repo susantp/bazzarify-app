@@ -187,6 +187,7 @@ export default function Page() {
         />
       </ContentWrapper>
       <DemoModalComponent
+        type="bottom"
         height={height * 0.4}
         showModal={showCustomFilter}
         handlePress={() => {
