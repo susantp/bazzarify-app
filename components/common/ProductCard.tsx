@@ -1,12 +1,14 @@
 import { router } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { ItemProps } from "@/components";
 import {
   AntDesign,
   FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import Svg, { Polygon } from "react-native-svg";
+import { Colors } from "@/constants/Colors";
 
 export type ProductCardProps = {
   item: ItemProps;
@@ -35,18 +37,7 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
               className="h-48 w-48 rounded-lg md:h-64 md:w-64"
             />
           </View>
-          {item.freeDelivery && (
-            <View className="relative bottom-0 left-0 flex-row justify-start">
-              <View className="w-10/12 flex-row items-center gap-x-2 rounded-tr-md bg-orange-600 px-2 py-1">
-                <MaterialCommunityIcons
-                  name="truck-delivery"
-                  size={16}
-                  color={`#fff`}
-                />
-                <Text className="uppercase text-white">free delivery</Text>
-              </View>
-            </View>
-          )}
+          {item.freeDelivery && <PolygonFreeDelivery />}
         </View>
 
         <View id="content" className="flex-col items-start gap-y-2 p-2">
@@ -84,3 +75,38 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
   );
 };
 export default ProductCard;
+
+const PolygonFreeDelivery = () => {
+  const [dimension, setDimension] = useState({ width: 0, height: 0 });
+  return (
+    <View className="relative bottom-0 left-0 flex-row justify-start">
+      <Svg
+        width={dimension.width}
+        height={dimension.height}
+        className="absolute"
+        style={{ position: "absolute", top: 0, left: 0 }}
+      >
+        <Polygon
+          points={`
+              0,0 
+              ${dimension.width * 0.88},0 
+              ${dimension.width},${dimension.height} 
+              0,${dimension.height}
+            `}
+          fill={Colors.light.tint}
+        />
+      </Svg>
+      <View
+        className="w-10/12 flex-row items-center gap-x-2 rounded-tr-md px-2 py-1"
+        onLayout={(e) => setDimension(e.nativeEvent.layout)}
+      >
+        <MaterialCommunityIcons
+          name="truck-delivery"
+          size={16}
+          color={`#fff`}
+        />
+        <Text className="uppercase text-white">free delivery</Text>
+      </View>
+    </View>
+  );
+};
