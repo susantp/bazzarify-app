@@ -1,10 +1,12 @@
 import React from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import Checkbox from "expo-checkbox";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
+import { Colors } from "@/constants/Colors";
+import StyledText from "@/components/common/StyledText";
 
 // Define type for reasons
 type Reason = {
@@ -85,6 +87,7 @@ const ReturnForm: React.FC = () => {
                   }}
                 >
                   <Checkbox
+                    color={Colors.light.tint}
                     value={field.value.some((r) => r.id === reason.id)}
                     onValueChange={(isChecked) => {
                       const updatedReasons = isChecked
@@ -120,7 +123,15 @@ const ReturnForm: React.FC = () => {
             />
           )}
 
-          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+          <TouchableOpacity
+            className="flex w-full items-center rounded-lg bg-orange-600 py-2"
+            activeOpacity={0.6}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <StyledText className="text-lg font-semibold text-white">
+              Submit
+            </StyledText>
+          </TouchableOpacity>
         </View>
       </ContentWrapper>
     </SafeAreaWrapper>
