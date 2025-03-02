@@ -44,7 +44,7 @@ export const popularItemsData: ItemProps[] = [
     price: 1599,
     rating: 4.5,
     discount: 4,
-    location: "",
+    location: "Bagmati Province",
   },
   {
     id: "p-005",
@@ -52,7 +52,7 @@ export const popularItemsData: ItemProps[] = [
     price: 1599,
     rating: 4.5,
     discount: 4,
-    location: "",
+    location: "Kaski Province",
   },
   {
     id: "p-006",
