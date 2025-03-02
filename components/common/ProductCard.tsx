@@ -37,7 +37,7 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
           </View>
           {item.freeDelivery && (
             <View className="relative bottom-0 left-0 flex-row justify-start">
-              <View className="w-10/12 flex-row items-center gap-x-2 rounded-tr-md bg-green-900 px-2 py-1">
+              <View className="w-10/12 flex-row items-center gap-x-2 rounded-tr-md bg-orange-600 px-2 py-1">
                 <MaterialCommunityIcons
                   name="truck-delivery"
                   size={16}
