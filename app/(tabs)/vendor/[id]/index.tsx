@@ -6,10 +6,10 @@ import ContentGridSection from "@/components/home/ContentGridSection";
 import { popularItemsData } from "@/constants/popularItemsData";
 import { FlatList, ImageBackground, useWindowDimensions } from "react-native";
 import { randomUUID } from "expo-crypto";
-import Slider from "@/components/home/Slider";
 import { SliderData } from "@/constants/SliderData";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
+import ImageSlider from "@/components/common/ImageSlider";
 
 export default function Page() {
   const vendor = vendorData;
@@ -62,7 +62,7 @@ export default function Page() {
     },
     {
       id: randomUUID(),
-      component: <Slider itemList={SliderData} />,
+      component: <ImageSlider images={SliderData} />,
       title: "Slider",
     },
     {
@@ -80,7 +80,7 @@ export default function Page() {
     },
     {
       id: randomUUID(),
-      component: <Slider itemList={SliderData} />,
+      component: <ImageSlider images={SliderData} />,
       title: "Slider",
     },
     {

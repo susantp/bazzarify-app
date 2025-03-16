@@ -4,9 +4,10 @@ import React from "react";
 import { router } from "expo-router";
 import { useRecoilValue } from "recoil";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
+import { CategoriesItemData } from "@/constants/categoriesItemData";
 
 export type FlashDealsProductCardProps = {
-  item: ItemProps;
+  item: ItemProps | CategoriesItemData;
 };
 
 const FlashDealsProductCard = ({ item }: FlashDealsProductCardProps) => {

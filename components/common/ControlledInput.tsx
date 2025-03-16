@@ -9,14 +9,7 @@ const ControlledInput = ({ ...props }) => {
   }
   return (
     <View className={props.className}>
-      <Controller
-        control={props.control}
-        rules={{
-          required: true,
-        }}
-        render={props.formField}
-        name={props.name}
-      />
+      <Controller name={props.name} render={props.formField} {...props} />
     </View>
   );
 };

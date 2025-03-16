@@ -9,9 +9,10 @@ import {
 } from "@expo/vector-icons";
 import Svg, { Polygon } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
+import { CategoriesItemData } from "@/constants/categoriesItemData";
 
 export type ProductCardProps = {
-  item: ItemProps;
+  item: ItemProps | CategoriesItemData;
   containerClasses?: string;
   cols: 2 | 3 | 4;
 };
@@ -37,7 +38,7 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
               className="h-48 w-48 rounded-lg md:h-64 md:w-64"
             />
           </View>
-          {item.freeDelivery && <PolygonFreeDelivery />}
+          {"freeDelivery" in item && <PolygonFreeDelivery />}
         </View>
 
         <View id="content" className="flex-col items-start gap-y-2 p-2">
@@ -47,27 +48,33 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
             </Text>
           </View>
           <View className="flex flex-row">
-            <View>
-              <Text className="text-3xl font-semibold text-orange-600">
-                Rs {item.price}
-              </Text>
-            </View>
+            {"price" in item && (
+              <View>
+                <Text className="text-3xl font-semibold text-orange-600">
+                  Rs {item?.price}
+                </Text>
+              </View>
+            )}
           </View>
           <View className="flex-row px-1">
-            <View className="w-5/12 flex-row items-center gap-x-1">
-              <AntDesign name="star" size={16} color={`#f47d58`} />
-              <Text className="text-md text-orange-600">{item.rating}</Text>
-            </View>
-            <View className="w-7/12 flex-row items-center justify-center gap-x-1">
-              <FontAwesome name="map-marker" size={16} color={`#f47d58`} />
-              <Text
-                className="text-md text-slate-600"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {item.location}
-              </Text>
-            </View>
+            {"rating" in item && (
+              <View className="w-5/12 flex-row items-center gap-x-1">
+                <AntDesign name="star" size={16} color={`#f47d58`} />
+                <Text className="text-md text-orange-600">{item?.rating}</Text>
+              </View>
+            )}
+            {"location" in item && (
+              <View className="w-7/12 flex-row items-center justify-center gap-x-1">
+                <FontAwesome name="map-marker" size={16} color={`#f47d58`} />
+                <Text
+                  className="text-md text-slate-600"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {item?.location}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>

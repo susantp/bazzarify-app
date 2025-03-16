@@ -1,5 +1,3 @@
-import Slider from "@/components/home/Slider";
-import { SliderData } from "@/constants/SliderData";
 import ContentGridSection from "@/components/home/ContentGridSection";
 import { popularItemsData } from "@/constants/popularItemsData";
 import SectionHeader from "@/components/home/SectionHeader";
@@ -7,13 +5,16 @@ import { categoriesItemData } from "@/constants/categoriesItemData";
 import React from "react";
 import { randomUUID } from "expo-crypto";
 import { Dimensions, Image, View } from "react-native";
+import ImageSlider from "@/components/common/ImageSlider";
+import { SliderData } from "@/constants/SliderData";
 
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
+
   const CARDS = [
     {
       id: randomUUID(),
-      component: <Slider itemList={SliderData} />,
+      component: <ImageSlider images={SliderData} autoplayInterval={4000} />,
       title: "Slider",
     },
     {
