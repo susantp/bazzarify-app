@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Checkbox } from "expo-checkbox";
+import { router } from "expo-router";
 
 const LoginFormHelperText = () => {
   const [checked, setChecked] = useState<boolean>(false);
@@ -11,7 +12,9 @@ const LoginFormHelperText = () => {
         <Checkbox value={checked} onValueChange={setChecked} color="#f47d58" />
         <Text>Remember me</Text>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => router.push("/(tabs)/guest/request-password-reset")}
+      >
         <Text>Forget password</Text>
       </TouchableOpacity>
     </View>

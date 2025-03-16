@@ -5,6 +5,8 @@ type TPathProps = {
 type TRemotePaths = {
   loginCredentials: TPathProps;
   registerCredentials: TPathProps;
+  passwordResetRequest: TPathProps;
+  passwordReset: TPathProps;
 };
 const authRemotePaths: TRemotePaths = {
   loginCredentials: {
@@ -14,6 +16,14 @@ const authRemotePaths: TRemotePaths = {
   registerCredentials: {
     name: "register.credentials",
     path: "/auth/register/credentials",
+  },
+  passwordResetRequest: {
+    name: "password.reset.request",
+    path: "/auth/password/reset/request",
+  },
+  passwordReset: {
+    name: "password.reset",
+    path: "/auth/password/reset",
   },
 };
 

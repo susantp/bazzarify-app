@@ -1,5 +1,6 @@
 import { TextInputProps } from "react-native";
 import { FieldError } from "react-hook-form";
+import { ReactElement } from "react";
 
 export interface InputProps extends TextInputProps {
   value: string;
@@ -7,6 +8,7 @@ export interface InputProps extends TextInputProps {
   onChange: (text: string) => void;
   hasError: FieldError | undefined;
   className?: string;
+  icon?: ReactElement;
 }
 
 export interface IControlledFormFieldProps {
@@ -27,4 +29,17 @@ export type TRegisterFormField = {
 export type TLoginFormField = {
   email: string;
   password: string;
+};
+
+export type TForgetPasswordFormField = {
+  email: string;
+  phone: string;
+};
+
+export type TForgetPasswordVerificationFormField = {
+  email: string;
+  phone: string;
+  verification_code: string;
+  password: string;
+  password_confirmation: string;
 };

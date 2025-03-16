@@ -18,7 +18,7 @@ const UsernameInput = ({
       onBlur={onBlur}
       defaultValue={rest.defaultValue}
       onChangeText={onChange}
-      placeholder="Your email/number"
+      placeholder={rest.placeholder}
       className={cn("rounded-xl", "bg-white", "pl-14", className)}
     />
     <View className="absolute inset-x-9 inset-y-4">

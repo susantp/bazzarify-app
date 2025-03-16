@@ -26,10 +26,10 @@ import * as Sentry from "@sentry/react-native";
 const Page = () => {
   const [, setToken] = useRecoilState(userToken);
   const [formValues] = useState({
-    name: "om prakash shah",
-    email: "abwtccbecd@abc.com",
-    password: "Handsome123",
-    password_confirmation: "Handsome123",
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
   });
   const {
     control,
@@ -103,6 +103,7 @@ const Page = () => {
                   onBlur={field.onBlur}
                   defaultValue="om@prakash.com"
                   value={field.value}
+                  placeholder="Your email/phone"
                 />
               )}
             />

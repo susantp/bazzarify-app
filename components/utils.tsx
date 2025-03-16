@@ -3,9 +3,10 @@ import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
 import ProductCard from "@/components/common/ProductCard";
 import React from "react";
 import CategoryCard from "@/components/common/CategoryCard";
+import { CategoriesItemData } from "@/constants/categoriesItemData";
 
 export type ComponentMapperProps = {
-  item: ItemProps;
+  item: ItemProps | CategoriesItemData;
   index: number;
   titleKey: titleKey;
   cols: 2 | 3 | 4;

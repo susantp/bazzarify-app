@@ -26,8 +26,8 @@ import axiosInstance from "@/utils/axios";
 import { AxiosError, AxiosResponse } from "axios";
 import remotePaths from "@/staticData/remote.paths";
 import { save } from "@/utils/secureStore";
-import * as Sentry from "@sentry/react-native";
 import ContentWrapper from "@/components/common/ContentWrapper";
+import { handleError } from "@/utils/handleError";
 
 const LoginScreen = () => {
   const [, setToken] = useRecoilState(userToken);
@@ -38,8 +38,8 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm<TLoginFormField>({
     defaultValues: {
-      email: "abwtccbecd@abc.com",
-      password: "Handsome123",
+      email: "",
+      password: "",
     },
   });
   const handleLogin = async (data: TLoginFormField) => {
@@ -59,18 +59,10 @@ const LoginScreen = () => {
         router.replace("/account/profile");
       })
       .catch((error: AxiosError) => {
-        let errorMessage = "Network Error";
-        if (error.response) {
-          errorMessage = `Status: ${error.response.status} - ${JSON.stringify(error.response.data)}`;
-        } else if (error.request) {
-          errorMessage =
-            "No response received from server." + JSON.stringify(error.request);
-        }
-
-        Sentry.captureMessage(errorMessage); // Send detailed error to Sentry
+        const msg = handleError(error);
         setError("password", {
           type: "manual",
-          message: `${error.message}. Please contact bazzarify support.`,
+          message: msg,
         });
       });
   };
@@ -88,7 +80,7 @@ const LoginScreen = () => {
               errors={errors}
               control={control}
               rules={{
-                required: true,
+                required: "Email/Phone is required",
               }}
               name="email"
               formField={({ field }: IControlledFormFieldProps) => (
@@ -98,6 +90,7 @@ const LoginScreen = () => {
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   value={field.value}
+                  placeholder="Enter email/phone"
                 />
               )}
             />
@@ -106,7 +99,7 @@ const LoginScreen = () => {
               errors={errors}
               control={control}
               rules={{
-                required: true,
+                required: "Password is required",
               }}
               name="password"
               formField={({ field }: IControlledFormFieldProps) => (

@@ -1,68 +1,30 @@
 import React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  LockClosedIcon,
-  LockOpenIcon,
-} from "react-native-heroicons/outline";
+import { Text, TextInput, View } from "react-native";
 import { InputProps } from "@/components/common";
 import cn from "@/utils/tailwindHelper";
 
-const AlertDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className="text-sm" {...props} />
-));
-AlertDescription.displayName = "AlertDescription";
-
-interface PasswordInputProps extends InputProps {
-  setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
-  showPassword: boolean;
-}
-
 const NumberInput = ({
   value,
-  setShowPassword,
-  showPassword,
   onBlur,
   onChange,
   hasError,
+  icon,
   className,
-}: PasswordInputProps) => {
-  return (
-    <>
-      <TextInput
-        value={value}
-        onBlur={onBlur}
-        onChangeText={onChange}
-        secureTextEntry={showPassword}
-        placeholder="Password"
-        className={cn("rounded-md", "bg-white", "pl-14", className)}
-      />
-      <View className="absolute inset-x-9 inset-y-1.5">
-        {showPassword ? (
-          <LockClosedIcon size={28} strokeWidth={1} color="gray" />
-        ) : (
-          <LockOpenIcon size={28} strokeWidth={1} color="gray" />
-        )}
-      </View>
-      <TouchableOpacity
-        className="absolute inset-y-1.5 right-8"
-        onPress={() => setShowPassword(!showPassword)}
-      >
-        <View>
-          {showPassword ? (
-            <EyeSlashIcon size={28} strokeWidth={1} color="gray" />
-          ) : (
-            <EyeIcon size={28} strokeWidth={1} color="gray" />
-          )}
-        </View>
-      </TouchableOpacity>
-      {hasError && <Text className="text-red-600">This is required.</Text>}
-    </>
-  );
-};
+  ...props
+}: InputProps) => (
+  <>
+    <TextInput
+      keyboardType="number-pad"
+      value={value}
+      defaultValue={props.defaultValue}
+      onBlur={onBlur}
+      onChangeText={onChange}
+      placeholder={props.placeholder}
+      className={cn("rounded-md", "bg-white", "pl-14", className)}
+    />
+    {icon && <View className="absolute inset-x-9 inset-y-4">{icon}</View>}
+    {hasError && <Text className="text-red-600">{hasError.message}</Text>}
+  </>
+);
 
 export default NumberInput;

@@ -9,10 +9,11 @@ import * as Crypto from "expo-crypto";
 import React from "react";
 import { ItemProps, titleKey } from "@/components";
 import { componentMapper } from "@/components/utils";
+import { CategoriesItemData } from "@/constants/categoriesItemData";
 
 export type ContentGridSectionProps = {
   title: string;
-  items: ItemProps[];
+  items: CategoriesItemData[];
   showDiscountBadge?: boolean;
   navigateTo?: string;
   className?: string;
@@ -37,7 +38,10 @@ const ContentGridSection = ({
       <FlatList
         id="content"
         data={items}
-        renderItem={({ item, index }: ListRenderItemInfo<ItemProps>) =>
+        renderItem={({
+          item,
+          index,
+        }: ListRenderItemInfo<ItemProps | CategoriesItemData>) =>
           componentMapper({
             item,
             index,

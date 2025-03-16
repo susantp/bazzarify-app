@@ -32,9 +32,7 @@ const DemoModalComponent = ({
         className="h-full"
         id="backdrop"
         style={{
-          backgroundColor: showModal
-            ? `rgba(240, 86, 37, 0.70)`
-            : "transparent",
+          backgroundColor: showModal ? `rgba(0, 0, 0, 0.40)` : "transparent",
         }}
       >
         {type === "bottom" && (
@@ -94,7 +92,7 @@ const CenterContainer = ({
   >
     {children}
     <TouchableOpacity className="w-full items-center" onPress={handlePress}>
-      <AntDesign name="closecircle" color="black" size={28} strokeWidth={2} />
+      <AntDesign name="closecircleo" color="white" size={35} strokeWidth={4} />
     </TouchableOpacity>
   </View>
 );

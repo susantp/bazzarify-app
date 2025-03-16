@@ -16,6 +16,7 @@ const FullWidthActionBtn = ({
   return (
     <View className="flex w-full px-6">
       <TouchableOpacity
+        activeOpacity={0.8}
         className="flex items-center justify-center rounded-full bg-orange-600 py-3"
         onPress={handleOnPress}
       >
