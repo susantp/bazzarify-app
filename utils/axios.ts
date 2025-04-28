@@ -1,16 +1,15 @@
 import axios, { AxiosInstance } from "axios";
 
-const remoteData = {
-  remote: "https://local-ne.bazzarify.com/api/v1", // remove android:usesCleartextTraffic="true" after ssl activated for the domain
-  local: "http://192.168.1.64/api/v1",
+const remoteConfig = {
+  remote: "https://consumer.bazzarify.com/api/v1", // remove android:usesCleartextTraffic="true" after ssl activated for the domain
   xAppKey: process.env.EXPO_PUBLIC_APP_KEY,
 };
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: remoteData.local,
+  baseURL: remoteConfig.remote,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "X-APP-KEY": remoteData.xAppKey,
+    "X-APP-KEY": remoteConfig.xAppKey,
   },
   validateStatus: (status) => status < 500,
 });
