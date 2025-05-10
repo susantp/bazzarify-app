@@ -1,40 +1,53 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/outline";
 import React, { useState } from "react";
-import { useDeliveryComponentHook } from "@/hooks/useDeliveryComponentHook";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
+import { LocationGeocodedAddress } from "expo-location";
 
 type DeliveryBarProps = {
   className: string;
+  locationError: string | null;
+  refresh: () => void;
+  displayCurrentAddress: LocationGeocodedAddress | null;
 };
 
-export default function DeliveryBar({ className }: DeliveryBarProps) {
-  const { msg, isError, handleRetry } = useDeliveryComponentHook();
+export default function DeliveryBar({
+  className,
+  locationError,
+  displayCurrentAddress,
+  refresh,
+}: DeliveryBarProps) {
   const [showModal, setShowModal] = useState(false);
   return (
     <View className={className}>
-      {isError ? (
-        <TouchableOpacity onPress={handleRetry}>
-          <Text className="text-sm font-semibold text-white underline">
-            {msg}
+      <MapPinIcon size={14} strokeWidth={2} color="white" />
+      <TouchableOpacity
+        onPress={() => setShowModal(!showModal)}
+        className="w-80"
+      >
+        {locationError ? (
+          <View className="flex-row items-center justify-between">
+            <Text className="text-white">{locationError}</Text>
+            <TouchableOpacity onPress={refresh}>
+              <Text className="font-bold text-white">Refresh Location</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <Text className="text-sm font-semibold text-white">
+            {displayCurrentAddress
+              ? displayCurrentAddress.formattedAddress
+              : "Location loading..."}
           </Text>
-        </TouchableOpacity>
-      ) : (
-        <>
-          <MapPinIcon size={14} strokeWidth={2} color="white" />
-          <TouchableOpacity onPress={() => setShowModal(!showModal)}>
-            <Text className="text-sm font-semibold text-white">{msg}</Text>
-          </TouchableOpacity>
-          <DemoModalComponent
-            type="bottom"
-            showModal={showModal}
-            handlePress={() => setShowModal(!showModal)}
-          >
-            <ChooseAddressComponent />
-          </DemoModalComponent>
-        </>
-      )}
+        )}
+      </TouchableOpacity>
+      <DemoModalComponent
+        type="bottom"
+        showModal={showModal}
+        handlePress={() => setShowModal(!showModal)}
+      >
+        <ChooseAddressComponent />
+      </DemoModalComponent>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import { Platform } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
@@ -12,28 +12,11 @@ import {
   Squares2X2Icon,
   UserIcon,
 } from "react-native-heroicons/solid";
-import { useRecoilState } from "recoil";
-import { locationAtom } from "@/atoms/locationAtom";
-import * as Location from "expo-location";
+import { useLocation } from "@/modules/core/hooks/useLocation";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const [, setLocation] = useRecoilState(locationAtom);
-
-  const getCurrentLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-  };
-
-  useEffect(() => {
-    getCurrentLocation().then(() => null);
-  });
+  useLocation();
   return (
     <Tabs
       initialRouteName="index"

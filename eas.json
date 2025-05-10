@@ -1,12 +1,12 @@
 {
   "cli": {
-    "version": ">= 14.1.0",
-    "appVersionSource": "remote"
+    "version": ">= 14.1.0"
+    //    "appVersionSource": "remote"
   },
   "build": {
     "dev": {
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://local-ne.bazzarify.com/api/v1"
+        "EXPO_PUBLIC_API_URL": "http://bazzarify.com/api/v1"
       },
       "distribution": "internal",
       "developmentClient": true,
@@ -25,7 +25,7 @@
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      //      "autoIncrement": true
     }
   },
   "submit": {
