@@ -1,16 +1,16 @@
 import * as SecureStore from "expo-secure-store";
 import * as Sentry from "@sentry/react-native";
 
-export async function save(key: string, value: string) {
+export async function setToken(key: string, value: string) {
   try {
-    return await SecureStore.setItemAsync(key, value); // Convert object to string
+    return await SecureStore.setItemAsync(key, value);
   } catch (error) {
     Sentry.captureException(error);
     return Promise.reject(error);
   }
 }
 
-export async function getValueFor(key: string) {
+export async function retrieveToken(key: string) {
   try {
     return await SecureStore.getItemAsync(key);
   } catch (error) {
@@ -19,6 +19,6 @@ export async function getValueFor(key: string) {
   }
 }
 
-export async function remove(key: string) {
+export async function deleteToken(key: string) {
   return SecureStore.deleteItemAsync(key);
 }

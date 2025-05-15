@@ -1,7 +1,10 @@
 import { ItemProps } from "@/components";
+import * as Crypto from "expo-crypto";
 
 export const popularItemsData: ItemProps[] = [
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-001",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -17,6 +20,8 @@ export const popularItemsData: ItemProps[] = [
     },
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-002",
     name: "very beautiful product categories sub look ",
     price: 1599,
@@ -25,6 +30,8 @@ export const popularItemsData: ItemProps[] = [
     location: "Bagmati Province",
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-003",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -39,6 +46,8 @@ export const popularItemsData: ItemProps[] = [
     },
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-004",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -47,6 +56,8 @@ export const popularItemsData: ItemProps[] = [
     location: "Bagmati Province",
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-005",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -55,6 +66,8 @@ export const popularItemsData: ItemProps[] = [
     location: "Kaski Province",
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-006",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -63,6 +76,8 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-007",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -71,6 +86,8 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-008",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -79,6 +96,8 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-009",
     name: "beautiful product categories sub look ",
     price: 1599,
@@ -87,6 +106,8 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    uuid: Crypto.randomUUID(),
+    slug: Crypto.randomUUID(),
     id: "p-001599",
     name: "beautiful product categories sub look ",
     price: 1599,

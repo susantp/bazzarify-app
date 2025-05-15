@@ -13,7 +13,7 @@ import { CategoriesItemData } from "@/constants/categoriesItemData";
 
 export type ContentGridSectionProps = {
   title: string;
-  items: CategoriesItemData[];
+  items: CategoriesItemData[] | undefined | null;
   showDiscountBadge?: boolean;
   navigateTo?: string;
   className?: string;

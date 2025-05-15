@@ -11,7 +11,7 @@ import {
 import ControlledInput from "@/components/common/ControlledInput";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import axiosInstance from "@/utils/axios";
+import axiosInstance from "@/modules/core/utils/axios";
 import remotePaths from "@/staticData/remote.paths";
 import { AxiosError, AxiosResponse } from "axios";
 import { router, useLocalSearchParams } from "expo-router";

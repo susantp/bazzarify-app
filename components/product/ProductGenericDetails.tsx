@@ -60,23 +60,24 @@ const ProductGenericDetails = ({ item }: { item: ItemProps }) => (
       <View className="flex-row items-center justify-between">
         <View id="price" className="flex-row items-end gap-x-3">
           <Text className="text-md text-2xl font-bold text-orange-600">
-            Rs. 1,599
+            {item.base_price &&
+              Object.values(item.base_price).reverse().join(" ")}
           </Text>
-          <Text className="text-sm text-gray-600 line-through">Rs. 3,499</Text>
+          {/*<Text className="text-sm text-gray-600 line-through">Rs. 3,499</Text>*/}
         </View>
 
-        <View id="discount" className="relative flex items-center">
-          <DiscountBannerIcon />
-          <Text className="absolute inset-x-2.5 inset-y-2.5 flex items-center pl-3 text-sm text-white">
-            -8%
-          </Text>
-        </View>
+        {/*<View id="discount" className="relative flex items-center">*/}
+        {/*  <DiscountBannerIcon />*/}
+        {/*  <Text className="absolute inset-x-2.5 inset-y-2.5 flex items-center pl-3 text-sm text-white">*/}
+        {/*    -8%*/}
+        {/*  </Text>*/}
+        {/*</View>*/}
       </View>
-      <View>
-        <Text className="text-gray-500">
-          you're saving upto rs. 2,000 don't miss it
-        </Text>
-      </View>
+      {/*<View>*/}
+      {/*  <Text className="text-gray-500">*/}
+      {/*    you're saving upto rs. 2,000 don't miss it*/}
+      {/*  </Text>*/}
+      {/*</View>*/}
       <View className="border border-gray-400"></View>
       <View>
         <Text className="text-xl font-semibold">Color: Black</Text>
