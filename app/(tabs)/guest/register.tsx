@@ -3,8 +3,6 @@ import UserPasswordInput from "@/components/account/UserPasswordInput";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
-import { useRecoilState } from "recoil";
-import { userToken } from "@/atoms/sessionAtom";
 import { Link, router } from "expo-router";
 import UsernameInput from "@/components/account/UsernameInput";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
@@ -15,16 +13,14 @@ import {
   TRegisterFormField,
 } from "@/components/common";
 import NameInput from "@/components/account/NameInput";
-import authRemotePaths from "@/staticData/remote.paths";
-import axiosInstance from "@/utils/axios";
-import { AxiosError, AxiosResponse } from "axios";
-import { save } from "@/utils/secureStore";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
+import actionRegister from "@/modules/guest/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
+import { retrieveToken } from "@/modules/core/utils/secureStore";
+import { IApiResponse } from "@/modules/core/data";
 
 const Page = () => {
-  const [, setToken] = useRecoilState(userToken);
   const [formValues] = useState({
     name: "",
     email: "",
@@ -42,30 +38,27 @@ const Page = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
   const handleRegister = async (data: TRegisterFormField) => {
-    axiosInstance
-      .post(authRemotePaths.registerCredentials.path, data)
-      .then((response: AxiosResponse) => {
-        console.log(response.data);
-        if (response.data.metaData.error) {
-          setError("password_confirmation", {
-            type: "manual",
-            message: response.data.metaData.error,
-          });
-          return;
-        }
+    try {
+      const response: IApiResponse<string> = await actionRegister(data);
 
-        const token = response.data.metaData.token;
-        save("token", token);
-        setToken(response.data.data.payload.token);
-        router.replace("/account/profile");
-      })
-      .catch((error: AxiosError) => {
+      if (response.metaData.error) {
         setError("password_confirmation", {
           type: "manual",
-          message: `Oops! Please contact bazzarify support.`,
+          message: response.metaData.error,
         });
-        Sentry.captureException(error);
+        return;
+      }
+      const token = await retrieveToken("token");
+      if (token) {
+        router.replace("/account/profile");
+      }
+    } catch (error) {
+      setError("password_confirmation", {
+        type: "manual",
+        message: `Oops! Please contact bazzarify support.`,
       });
+      Sentry.captureException(error);
+    }
   };
   return (
     <SafeAreaWrapper>

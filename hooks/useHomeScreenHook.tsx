@@ -1,15 +1,37 @@
 import ContentGridSection from "@/components/home/ContentGridSection";
-import { popularItemsData } from "@/constants/popularItemsData";
 import SectionHeader from "@/components/home/SectionHeader";
-import { categoriesItemData } from "@/constants/categoriesItemData";
 import React from "react";
 import { randomUUID } from "expo-crypto";
 import { Dimensions, Image, View } from "react-native";
 import ImageSlider from "@/components/common/ImageSlider";
 import { SliderData } from "@/constants/SliderData";
+import { useQueries } from "@tanstack/react-query";
+import getFlashDealProducts from "@/modules/product/services/home/getFlashDealProducts";
+import getPopularProducts from "@/modules/product/services/home/getPopularProducts";
+import getHomeCategories from "@/modules/product/services/home/getHomeCategories";
 
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
+  const [
+    { data: flashDealProducts },
+    { data: popularProducts },
+    { data: homeCategories },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ["flashDealProducts"],
+        queryFn: getFlashDealProducts,
+      },
+      {
+        queryKey: ["popularProducts"],
+        queryFn: getPopularProducts,
+      },
+      {
+        queryKey: ["homeCategories"],
+        queryFn: getHomeCategories,
+      },
+    ],
+  });
 
   const CARDS = [
     {
@@ -22,7 +44,7 @@ export default function useHomeScreenHook() {
       component: (
         <ContentGridSection
           title="Flash Deals"
-          items={popularItemsData.slice(0, 6)}
+          items={flashDealProducts?.slice(0, 6)}
           showDiscountBadge={true}
           navigateTo={"/index"}
           className="bg-white px-1 py-3"
@@ -43,7 +65,7 @@ export default function useHomeScreenHook() {
         <ContentGridSection
           className="bg-white px-1 py-3"
           title="Popular Items"
-          items={popularItemsData.slice(0, 4)}
+          items={popularProducts?.slice(0, 4)}
           horizontal={false}
           cols={2}
         >
@@ -72,7 +94,7 @@ export default function useHomeScreenHook() {
         <ContentGridSection
           className="flex-col bg-white px-1 py-3"
           title="Categories"
-          items={categoriesItemData.slice(0, 9)}
+          items={homeCategories?.slice(0, 9)}
           horizontal={false}
           cols={3}
         >
@@ -87,7 +109,7 @@ export default function useHomeScreenHook() {
         <ContentGridSection
           className="flex-col gap-y-4 bg-white px-1 py-3"
           title="Just for you"
-          items={popularItemsData}
+          items={popularProducts}
           horizontal={false}
           cols={2}
         >

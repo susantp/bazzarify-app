@@ -22,7 +22,7 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
       onPress={() =>
         router.push({
           pathname: "/(tabs)/products/[slug]",
-          params: { slug: item.id },
+          params: { slug: item.slug },
         })
       }
       className={`flex w-${(12 / cols).toString()}/12 p-2`}

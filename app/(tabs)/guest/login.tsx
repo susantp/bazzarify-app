@@ -9,8 +9,6 @@ import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
-import { useRecoilState } from "recoil";
-import { userToken } from "@/atoms/sessionAtom";
 import LoginFormHelperText from "@/components/account/LoginFormHelperText";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { useForm } from "react-hook-form";
@@ -22,15 +20,14 @@ import {
 } from "@/components/common";
 import ControlledInput from "@/components/common/ControlledInput";
 import { router } from "expo-router";
-import axiosInstance from "@/utils/axios";
+import axiosInstance from "@/modules/core/utils/axios";
 import { AxiosError, AxiosResponse } from "axios";
 import remotePaths from "@/staticData/remote.paths";
-import { save } from "@/utils/secureStore";
+import { setToken } from "@/modules/core/utils/secureStore";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { handleError } from "@/utils/handleError";
+import { handleError } from "@/modules/core/utils/handleError";
 
 const LoginScreen = () => {
-  const [, setToken] = useRecoilState(userToken);
   const {
     control,
     handleSubmit,
@@ -53,9 +50,8 @@ const LoginScreen = () => {
           });
           return;
         }
-        const token = response.data.data.payload.token;
-        save("token", token);
-        setToken(token);
+        const token = response.data.data.payload.token as string;
+        setToken("token", token);
         router.replace("/account/profile");
       })
       .catch((error: AxiosError) => {

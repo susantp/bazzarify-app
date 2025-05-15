@@ -15,7 +15,10 @@ const FlashDealsProductCard = ({ item }: FlashDealsProductCardProps) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        router.push({ pathname: "/products/[slug]", params: { slug: item.id } })
+        router.push({
+          pathname: "/products/[slug]",
+          params: { slug: item.slug },
+        })
       }
       style={{
         alignContent: "center",
