@@ -1,17 +1,23 @@
-import { ItemProps } from "@/components";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { router } from "expo-router";
 import { useRecoilValue } from "recoil";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
-import { CategoriesItemData } from "@/constants/categoriesItemData";
+import { ItemProps } from "@/components";
+import getImageSrc from "@/modules/core/utils/getImageSrc";
 
-export type FlashDealsProductCardProps = {
-  item: ItemProps | CategoriesItemData;
-};
+export interface FlashDealsProductCardProps {
+  item: ItemProps;
+}
 
-const FlashDealsProductCard = ({ item }: FlashDealsProductCardProps) => {
+function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
   const { width, height } = useRecoilValue(screenDimensionAtom);
+  let imageSrc = undefined;
+  if (item.images.length) {
+    imageSrc = { uri: item.images[0].s3_path_url };
+  } else {
+    imageSrc = require("@/assets/products/product.png");
+  }
   return (
     <TouchableOpacity
       onPress={() =>
@@ -39,12 +45,12 @@ const FlashDealsProductCard = ({ item }: FlashDealsProductCardProps) => {
             width: width * 0.3,
             height: height * 0.15,
           }}
-          source={require("@/assets/products/product.png")}
+          source={getImageSrc({ item })}
           className="rounded-lg border border-gray-400 p-2"
         />
       </View>
     </TouchableOpacity>
   );
-};
+}
 
 export default FlashDealsProductCard;

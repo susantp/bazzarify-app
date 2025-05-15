@@ -31,6 +31,7 @@
     "expo-constants": "~17.0.8",
     "expo-crypto": "~14.0.2",
     "expo-haptics": "~14.0.1",
+    "expo-image": "~2.0.7",
     "expo-linear-gradient": "^14.0.2",
     "expo-linking": "~7.0.5",
     "expo-location": "~18.0.10",
@@ -64,6 +65,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.26.0",
     "@tanstack/eslint-plugin-query": "^5.73.3",
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^29.5.14",

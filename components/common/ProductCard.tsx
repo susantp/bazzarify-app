@@ -9,10 +9,10 @@ import {
 } from "@expo/vector-icons";
 import Svg, { Polygon } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
-import { CategoriesItemData } from "@/constants/categoriesItemData";
+import getImageSrc from "@/modules/core/utils/getImageSrc";
 
 export type ProductCardProps = {
-  item: ItemProps | CategoriesItemData;
+  item: ItemProps;
   containerClasses?: string;
   cols: 2 | 3 | 4;
 };
@@ -34,7 +34,7 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
             className="flex-row items-center justify-center"
           >
             <Image
-              source={require("@/assets/products/product.png")}
+              source={getImageSrc({ item })}
               className="h-48 w-48 rounded-lg md:h-64 md:w-64"
             />
           </View>

@@ -14,8 +14,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import ContentGridSection from "@/components/home/ContentGridSection";
-import { popularItemsData } from "@/constants/popularItemsData";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { useRecoilState } from "recoil";
 import { customFilterModalAtom } from "@/atoms/customFilterModalAtom";
@@ -178,13 +176,13 @@ export default function Page() {
             keyExtractor={(item: IFilterMenuItem) => item.id}
           />
         </View>
-        <ContentGridSection
-          className="align-center flex-col bg-white"
-          title={"Popular Items"}
-          items={popularItemsData}
-          horizontal={false}
-          cols={2}
-        />
+        {/*<ContentGridSection*/}
+        {/*  className="align-center flex-col bg-white"*/}
+        {/*  title={"Popular Items"}*/}
+        {/*  items={popularItemsData}*/}
+        {/*  horizontal={false}*/}
+        {/*  cols={2}*/}
+        {/*/>*/}
       </ContentWrapper>
       <DemoModalComponent
         type="bottom"

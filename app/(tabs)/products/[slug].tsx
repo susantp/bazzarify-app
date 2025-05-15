@@ -40,7 +40,7 @@ export default function ProductScreen() {
           <ContentWrapper className={`flex-1 ` + (ios ? " pb-2" : " pt-3")}>
             <ScrollView style={{ width: "100%" }}>
               <ProductScreenContainer>
-                <ProductSlider />
+                <ProductSlider item={product} />
                 <SpecialSaleBanner item={product} />
                 <ProductGenericDetails item={product} />
                 <VoucherList className="border-gray-400 px-4" />

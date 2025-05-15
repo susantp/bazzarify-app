@@ -2,11 +2,11 @@ import { Platform, Text, View } from "react-native";
 import React from "react";
 import { Href, Link } from "expo-router";
 
-type SectionHeaderProps = {
+export interface SectionHeaderProps {
   title: string;
   showSeeMoreBtn?: boolean;
   seeMorePath?: Href;
-};
+}
 const SectionHeader = ({ title, seeMorePath }: SectionHeaderProps) => (
   <View
     id="header"
