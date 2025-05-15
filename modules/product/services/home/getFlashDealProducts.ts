@@ -11,7 +11,6 @@ export default async function getFlashDealProducts(): Promise<
       return response.data.metaData;
     }
     return response.data.data.payload.flashDeals;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.log(error);
     // if (error instanceof AxiosError) {

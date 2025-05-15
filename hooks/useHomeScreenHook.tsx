@@ -1,5 +1,4 @@
 import ContentGridSection from "@/components/home/ContentGridSection";
-import SectionHeader from "@/components/home/SectionHeader";
 import React from "react";
 import { randomUUID } from "expo-crypto";
 import { Dimensions, Image, View } from "react-native";
@@ -9,12 +8,16 @@ import { useQueries } from "@tanstack/react-query";
 import getFlashDealProducts from "@/modules/product/services/home/getFlashDealProducts";
 import getPopularProducts from "@/modules/product/services/home/getPopularProducts";
 import getHomeCategories from "@/modules/product/services/home/getHomeCategories";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
+import ProductCard from "@/components/common/ProductCard";
+import CategoryCard from "@/components/common/CategoryCard";
 
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
   const [
-    { data: flashDealProducts },
-    { data: popularProducts },
+    { data: flashDealProducts, isSuccess: flashDealSuccess },
+    { data: popularProducts, isSuccess: popularProductsSuccess },
     { data: homeCategories },
   ] = useQueries({
     queries: [
@@ -41,39 +44,45 @@ export default function useHomeScreenHook() {
     },
     {
       id: randomUUID(),
-      component: (
+      component: flashDealSuccess ? (
         <ContentGridSection
+          section={{
+            title: "Flash Deals",
+            seeMorePath: "/(tabs)/categories/flashDeal",
+          }}
           title="Flash Deals"
           items={flashDealProducts?.slice(0, 6)}
+          renderItem={(deal) => <FlashDealsProductCard item={deal} />}
           showDiscountBadge={true}
           navigateTo={"/index"}
           className="bg-white px-1 py-3"
           horizontal={false}
           cols={3}
-        >
-          <SectionHeader
-            title="Flash Deals"
-            seeMorePath="/(tabs)/categories/flashDeal"
-          />
-        </ContentGridSection>
+        />
+      ) : (
+        <ThemedLoader />
       ),
       title: "Flash Deals",
     },
     {
       id: randomUUID(),
-      component: (
+      component: popularProductsSuccess ? (
         <ContentGridSection
+          cols={2}
+          section={{
+            title: "Popular Items",
+            seeMorePath: "/(tabs)/categories/popular",
+          }}
           className="bg-white px-1 py-3"
           title="Popular Items"
           items={popularProducts?.slice(0, 4)}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
           horizontal={false}
-          cols={2}
-        >
-          <SectionHeader
-            title="Popular Items"
-            seeMorePath={"/(tabs)/categories/popular"}
-          />
-        </ContentGridSection>
+        />
+      ) : (
+        <ThemedLoader />
       ),
       title: "Popular Items",
     },
@@ -92,14 +101,19 @@ export default function useHomeScreenHook() {
       id: randomUUID(),
       component: (
         <ContentGridSection
+          section={{
+            title: "Categories",
+            seeMorePath: "/(tabs)/categories",
+          }}
           className="flex-col bg-white px-1 py-3"
           title="Categories"
+          cols={3}
+          renderItem={(item, index, cols) => (
+            <CategoryCard cols={cols} item={item} index={index} />
+          )}
           items={homeCategories?.slice(0, 9)}
           horizontal={false}
-          cols={3}
-        >
-          <SectionHeader title="Categories" seeMorePath="/(tabs)/categories" />
-        </ContentGridSection>
+        />
       ),
       title: "Categories",
     },
@@ -107,17 +121,16 @@ export default function useHomeScreenHook() {
       id: randomUUID(),
       component: (
         <ContentGridSection
+          cols={2}
+          section={{ title: "Just for you", seeMorePath: "/(tabs)/categories" }}
           className="flex-col gap-y-4 bg-white px-1 py-3"
           title="Just for you"
           items={popularProducts}
           horizontal={false}
-          cols={2}
-        >
-          <SectionHeader
-            title="Just for you"
-            seeMorePath="/(tabs)/categories"
-          />
-        </ContentGridSection>
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
+        />
       ),
       title: "Just for you",
     },

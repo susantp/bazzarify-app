@@ -10,7 +10,6 @@ export default async function getHomeCategories(): Promise<
       throw new Error(response.data.metaData);
     }
     return response.data.data.payload.homeCategories;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.log("getHomeCategories: ", error);
     // if (error instanceof AxiosError) {

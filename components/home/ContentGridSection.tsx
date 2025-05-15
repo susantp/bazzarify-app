@@ -1,54 +1,41 @@
-import {
-  FlatList,
-  ListRenderItemInfo,
-  StyleProp,
-  View,
-  ViewStyle,
-} from "react-native";
+import { FlatList, StyleProp, View, ViewStyle } from "react-native";
 import * as Crypto from "expo-crypto";
 import React from "react";
-import { ItemProps, titleKey } from "@/components";
-import { componentMapper } from "@/components/utils";
-import { CategoriesItemData } from "@/constants/categoriesItemData";
+import SectionHeader, {
+  SectionHeaderProps,
+} from "@/components/home/SectionHeader";
 
-export type ContentGridSectionProps = {
+export interface ContentGridSectionProps<T> {
   title: string;
-  items: CategoriesItemData[] | undefined | null;
+  items: T[] | undefined | null;
+  renderItem: (item: T, index: number, cols: 2 | 3 | 4) => React.ReactElement;
   showDiscountBadge?: boolean;
   navigateTo?: string;
   className?: string;
   cols: 2 | 3 | 4;
   horizontal: boolean;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  children?: React.ReactNode;
   id?: string;
-};
-const ContentGridSection = ({
+  section: SectionHeaderProps;
+}
+
+function ContentGridSection<T>({
   title,
   items,
   className,
   cols,
   horizontal,
   contentContainerStyle,
-  children,
-}: ContentGridSectionProps) => {
+  renderItem,
+  section,
+}: ContentGridSectionProps<T>) {
   return (
     <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
-      {children}
+      <SectionHeader title={section.title} seeMorePath={section.seeMorePath} />
       <FlatList
         id="content"
         data={items}
-        renderItem={({
-          item,
-          index,
-        }: ListRenderItemInfo<ItemProps | CategoriesItemData>) =>
-          componentMapper({
-            item,
-            index,
-            titleKey: title as titleKey,
-            cols: cols,
-          })
-        }
+        renderItem={({ item, index }) => renderItem(item as T, index, cols)}
         contentContainerStyle={contentContainerStyle}
         keyExtractor={() => Crypto.randomUUID()}
         horizontal={horizontal}
@@ -58,5 +45,6 @@ const ContentGridSection = ({
       />
     </View>
   );
-};
+}
+
 export default ContentGridSection;

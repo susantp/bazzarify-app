@@ -10,7 +10,6 @@ export default async function getProductBySlug(
       return response.data.metaData;
     }
     return response.data.data.payload.product;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.log(error);
     // if (error instanceof AxiosError) {

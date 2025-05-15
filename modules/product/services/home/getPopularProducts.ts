@@ -10,7 +10,6 @@ export default async function getPopularProducts(): Promise<
       return response.data.metaData;
     }
     return response.data.data.payload.popularProducts;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.log("fetch popular products: ", error);
     // if (error instanceof AxiosError) {

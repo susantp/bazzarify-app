@@ -4,6 +4,12 @@ export type ItemVariant = {
   available: string;
 };
 export type ItemProps = {
+  images: {
+    id: string;
+    path: string;
+    s3_path_url: string;
+    thumbnailUrl: string;
+  }[];
   id: string;
   slug: string;
   uuid: string;

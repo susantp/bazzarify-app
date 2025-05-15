@@ -6,7 +6,7 @@ import { StarIcon as StartIconOutline } from "react-native-heroicons/outline";
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 
-const DiscountBannerIcon = () => (
+export const DiscountBannerIcon = () => (
   <Svg width="51" height="32" viewBox="0 0 51 32" fill="none">
     <Path
       d="M26.5225 2.25468V4.95151C26.5225 5.25266 26.7632 5.49858 27.0643 5.50498L50.1322 5.99579C50.4612 6.00279 50.5254 5.53227 50.2065 5.45085L29.2847 0.109111C27.8844 -0.248406 26.5225 0.809484 26.5225 2.25468Z"

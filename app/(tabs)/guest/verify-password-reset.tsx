@@ -29,7 +29,7 @@ export default function Page() {
     control,
     handleSubmit,
     setError,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm<TForgetPasswordVerificationFormField>({
     defaultValues: {
       email: email,
