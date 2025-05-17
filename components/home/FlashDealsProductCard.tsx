@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { useRecoilValue } from "recoil";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
 import { ItemProps } from "@/components";
-import getImageSrc from "@/modules/core/utils/getImageSrc";
+import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 
 export interface FlashDealsProductCardProps {
   item: ItemProps;
@@ -12,18 +12,12 @@ export interface FlashDealsProductCardProps {
 
 function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
   const { width, height } = useRecoilValue(screenDimensionAtom);
-  let imageSrc = undefined;
-  if (item.images.length) {
-    imageSrc = { uri: item.images[0].s3_path_url };
-  } else {
-    imageSrc = require("@/assets/products/product.png");
-  }
   return (
     <TouchableOpacity
       onPress={() =>
         router.push({
-          pathname: "/products/[slug]",
-          params: { slug: item.slug },
+          pathname: "/products/[uuid]",
+          params: { uuid: item.uuid },
         })
       }
       style={{
@@ -45,7 +39,7 @@ function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
             width: width * 0.3,
             height: height * 0.15,
           }}
-          source={getImageSrc({ item })}
+          source={getFirstImageSource({ itemImages: item.images })}
           className="rounded-lg border border-gray-400 p-2"
         />
       </View>

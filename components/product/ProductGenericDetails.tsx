@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { ShieldCheckIcon, StarIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import { StarIcon as StartIconOutline } from "react-native-heroicons/outline";
-import React from "react";
+import React, { ReactNode } from "react";
 import Svg, { Path } from "react-native-svg";
 
 export const DiscountBannerIcon = () => (
@@ -18,7 +18,13 @@ export const DiscountBannerIcon = () => (
     />
   </Svg>
 );
-const ProductGenericDetails = ({ item }: { item: ItemProps }) => (
+const ProductGenericDetails = ({
+  item,
+  children,
+}: {
+  item: ItemProps;
+  children: ReactNode;
+}) => (
   <View className="px-4">
     <View id="product-title" className="py-2">
       <Text className="text-2xl">{item.name}</Text>
@@ -57,48 +63,7 @@ const ProductGenericDetails = ({ item }: { item: ItemProps }) => (
       id="price-info"
       className="flex-col gap-y-2 rounded-xl border border-gray-400 px-3 py-2"
     >
-      <View className="flex-row items-center justify-between">
-        <View id="price" className="flex-row items-end gap-x-3">
-          <Text className="text-md text-2xl font-bold text-orange-600">
-            {item.base_price &&
-              Object.values(item.base_price).reverse().join(" ")}
-          </Text>
-          {/*<Text className="text-sm text-gray-600 line-through">Rs. 3,499</Text>*/}
-        </View>
-
-        {/*<View id="discount" className="relative flex items-center">*/}
-        {/*  <DiscountBannerIcon />*/}
-        {/*  <Text className="absolute inset-x-2.5 inset-y-2.5 flex items-center pl-3 text-sm text-white">*/}
-        {/*    -8%*/}
-        {/*  </Text>*/}
-        {/*</View>*/}
-      </View>
-      {/*<View>*/}
-      {/*  <Text className="text-gray-500">*/}
-      {/*    you're saving upto rs. 2,000 don't miss it*/}
-      {/*  </Text>*/}
-      {/*</View>*/}
-      <View className="border border-gray-400"></View>
-      <View>
-        <Text className="text-xl font-semibold">Color: Black</Text>
-      </View>
-      <View className="flex-row items-center justify-items-center gap-x-2">
-        <View className="h-10 w-10 rounded-full border-2 border-orange-600 p-0.5">
-          <View className="h-full w-full rounded-full bg-black"></View>
-        </View>
-        <View className="h-8 w-8 rounded-full">
-          <View className="h-full w-full rounded-full bg-gray-500"></View>
-        </View>
-        <View className="h-8 w-8 rounded-full">
-          <View className="h-full w-full rounded-full bg-blue-800"></View>
-        </View>
-      </View>
-      <View className="border border-gray-400"></View>
-      <View>
-        <Text className="text-gray-500">
-          Get extra discount with coupon on shopping
-        </Text>
-      </View>
+      {children}
     </View>
   </View>
 );

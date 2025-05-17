@@ -10,6 +10,7 @@ import { SliderData } from "@/constants/SliderData";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ImageSlider from "@/components/common/ImageSlider";
+import ProductCard from "@/components/common/ProductCard";
 
 export default function Page() {
   const vendor = vendorData;
@@ -57,6 +58,9 @@ export default function Page() {
           items={popularItemsData.slice(0, 6)}
           horizontal={false}
           cols={2}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
         />
       ),
     },
@@ -75,6 +79,9 @@ export default function Page() {
           items={popularItemsData.slice(0, 6)}
           horizontal={false}
           cols={2}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
         />
       ),
     },
@@ -93,6 +100,9 @@ export default function Page() {
           items={popularItemsData.slice(0, 4)}
           horizontal={false}
           cols={2}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
         />
       ),
     },

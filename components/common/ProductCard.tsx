@@ -9,7 +9,7 @@ import {
 } from "@expo/vector-icons";
 import Svg, { Polygon } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
-import getImageSrc from "@/modules/core/utils/getImageSrc";
+import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 
 export type ProductCardProps = {
   item: ItemProps;
@@ -21,8 +21,8 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
     <TouchableOpacity
       onPress={() =>
         router.push({
-          pathname: "/(tabs)/products/[slug]",
-          params: { slug: item.slug },
+          pathname: "/(tabs)/products/[uuid]",
+          params: { uuid: item.uuid },
         })
       }
       className={`flex w-${(12 / cols).toString()}/12 p-2`}
@@ -34,7 +34,7 @@ const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
             className="flex-row items-center justify-center"
           >
             <Image
-              source={getImageSrc({ item })}
+              source={getFirstImageSource({ itemImages: item.images })}
               className="h-48 w-48 rounded-lg md:h-64 md:w-64"
             />
           </View>

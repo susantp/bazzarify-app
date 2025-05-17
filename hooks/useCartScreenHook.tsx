@@ -5,6 +5,7 @@ import { popularItemsData } from "@/constants/popularItemsData";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { cartItemsAtom } from "@/atoms/cartScreen/cartAction.atom";
+import ProductCard from "@/components/common/ProductCard";
 
 export default function useCartScreenHook() {
   const cartItems = useRecoilValue(cartItemsAtom);
@@ -33,6 +34,9 @@ export default function useCartScreenHook() {
           items={popularItemsData}
           cols={2}
           horizontal={false}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
         />
       ),
     },

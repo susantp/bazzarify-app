@@ -5,7 +5,7 @@ import React from "react";
 import VendorHeader, { vendorData } from "@/components/vendor/VendorBanner";
 import { popularItemsData } from "@/constants/popularItemsData";
 import ContentGridSection from "@/components/home/ContentGridSection";
-import SectionHeader from "@/components/home/SectionHeader";
+import ProductCard from "@/components/common/ProductCard";
 
 export default function Page() {
   const vendor = vendorData;
@@ -15,14 +15,16 @@ export default function Page() {
       <VendorHeader canGoBack={canGoBack} vendor={vendor} />
       <ContentWrapper>
         <ContentGridSection
+          section={{ title: "All Products" }}
           className="align-center flex-col bg-white py-2.5"
           title={"Popular Items"}
           items={popularItemsData}
           horizontal={false}
           cols={2}
-        >
-          <SectionHeader title="All Products" />
-        </ContentGridSection>
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
+        />
       </ContentWrapper>
     </SafeAreaWrapper>
   );

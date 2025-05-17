@@ -9,6 +9,7 @@ import { randomUUID } from "expo-crypto";
 import cn from "@/utils/tailwindHelper";
 import ContentGridSection from "@/components/home/ContentGridSection";
 import { popularItemsData } from "@/constants/popularItemsData";
+import ProductCard from "@/components/common/ProductCard";
 
 export default function Page() {
   const [selectedDiscount, setSelectedDiscount] = useState("50%");
@@ -57,6 +58,9 @@ export default function Page() {
           items={popularItemsData}
           horizontal={false}
           cols={2}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
         />
       </ContentWrapper>
     </SafeAreaWrapper>

@@ -8,6 +8,7 @@ import { findChildren } from "@/utils/getById";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import ChildCategoryHorizontal from "@/components/categories/ChildCategoryHorizontal";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
+import ProductCard from "@/components/common/ProductCard";
 
 export default function SubChildCategoryScreen() {
   const { id, child } = useLocalSearchParams();
@@ -52,6 +53,9 @@ export default function SubChildCategoryScreen() {
           items={popularItemsData}
           horizontal={false}
           cols={2}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
         />
       ),
     },

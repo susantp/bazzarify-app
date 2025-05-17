@@ -44,3 +44,4 @@ ios/
 *.apk
 .env.local
 .env
+*.sh

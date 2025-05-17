@@ -10,11 +10,12 @@ export interface IProductSliderProps {
 }
 
 const ProductSlider = ({ item }: IProductSliderProps) => {
-  const images: ImageSliderType[] = item.images.map((img) => ({
+  const images: ImageSliderType[] | undefined = item.images?.map((img) => ({
     title: "",
     image: { uri: img.s3_path_url },
     description: "",
   }));
+  if (!images || images.length === 0) return null;
   return (
     <>
       <View
