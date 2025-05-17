@@ -8,7 +8,6 @@ import { useQueries } from "@tanstack/react-query";
 import getFlashDealProducts from "@/modules/product/services/home/getFlashDealProducts";
 import getPopularProducts from "@/modules/product/services/home/getPopularProducts";
 import getHomeCategories from "@/modules/product/services/home/getHomeCategories";
-import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
 import ProductCard from "@/components/common/ProductCard";
 import CategoryCard from "@/components/common/CategoryCard";
@@ -16,8 +15,8 @@ import CategoryCard from "@/components/common/CategoryCard";
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
   const [
-    { data: flashDealProducts, isSuccess: flashDealSuccess },
-    { data: popularProducts, isSuccess: popularProductsSuccess },
+    { data: flashDealProducts },
+    { data: popularProducts },
     { data: homeCategories },
   ] = useQueries({
     queries: [
@@ -35,7 +34,6 @@ export default function useHomeScreenHook() {
       },
     ],
   });
-
   const CARDS = [
     {
       id: randomUUID(),
@@ -44,7 +42,7 @@ export default function useHomeScreenHook() {
     },
     {
       id: randomUUID(),
-      component: flashDealSuccess ? (
+      component: (
         <ContentGridSection
           section={{
             title: "Flash Deals",
@@ -59,14 +57,12 @@ export default function useHomeScreenHook() {
           horizontal={false}
           cols={3}
         />
-      ) : (
-        <ThemedLoader />
       ),
       title: "Flash Deals",
     },
     {
       id: randomUUID(),
-      component: popularProductsSuccess ? (
+      component: (
         <ContentGridSection
           cols={2}
           section={{
@@ -81,8 +77,6 @@ export default function useHomeScreenHook() {
           )}
           horizontal={false}
         />
-      ) : (
-        <ThemedLoader />
       ),
       title: "Popular Items",
     },

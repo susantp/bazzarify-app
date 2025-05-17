@@ -4,6 +4,7 @@ import React from "react";
 import SectionHeader, {
   SectionHeaderProps,
 } from "@/components/home/SectionHeader";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
 
 export interface ContentGridSectionProps<T> {
   title: string;
@@ -16,7 +17,7 @@ export interface ContentGridSectionProps<T> {
   horizontal: boolean;
   contentContainerStyle?: StyleProp<ViewStyle>;
   id?: string;
-  section: SectionHeaderProps;
+  section?: SectionHeaderProps;
 }
 
 function ContentGridSection<T>({
@@ -29,9 +30,17 @@ function ContentGridSection<T>({
   renderItem,
   section,
 }: ContentGridSectionProps<T>) {
+  if (!items || items.length === 0) {
+    return <ThemedLoader />;
+  }
   return (
     <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
-      <SectionHeader title={section.title} seeMorePath={section.seeMorePath} />
+      {section && (
+        <SectionHeader
+          title={section.title}
+          seeMorePath={section.seeMorePath}
+        />
+      )}
       <FlatList
         id="content"
         data={items}

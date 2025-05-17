@@ -13,6 +13,7 @@ import ShippingCoupon from "@/components/common/CouponComponent";
 import ContentGridSection from "@/components/home/ContentGridSection";
 import { popularItemsData } from "@/constants/popularItemsData";
 import React, { ReactElement } from "react";
+import ProductCard from "@/components/common/ProductCard";
 
 type VoucherCenterCard = { id: string; component: ReactElement };
 export default function Page() {
@@ -70,6 +71,9 @@ export default function Page() {
           items={popularItemsData}
           horizontal={false}
           cols={2}
+          renderItem={(item, index, cols) => (
+            <ProductCard item={item} key={index} cols={cols} />
+          )}
         />
       ),
     },

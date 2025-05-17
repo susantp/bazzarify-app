@@ -1,4 +1,4 @@
-import { ActivityIndicator, Animated, Platform } from "react-native";
+import { Animated, Platform } from "react-native";
 import TopBar from "@/components/home/TopBar";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -19,17 +19,36 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ProductPageBottomView from "@/components/product/ProductPageBottomView";
 import VoucherList from "@/components/cart/checkout/VoucherList";
 import SpecialSaleBanner from "@/components/product/SpecialSaleBanner";
-import { useQuery } from "@tanstack/react-query";
-import getProductBySlug from "@/modules/product/services/product/getProductBySlug";
+import useProductScreen from "@/modules/product/hooks/useProductScreen";
+import ProductCouponDiscountInfo from "@/modules/product/components/ProductCouponDiscountInfo";
+import ProductPriceComponent from "@/modules/product/components/ProductPriceComponent";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import { CartType } from "@/modules/cart/atoms/cartState";
+import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
-  const { slug } = useLocalSearchParams();
-  const { data: product } = useQuery({
-    queryFn: () => getProductBySlug(slug.toString()),
-    queryKey: ["product", slug],
-  });
+  const { uuid } = useLocalSearchParams();
+  const { product, selectedVariant, handleVariantChange } = useProductScreen(
+    uuid as string,
+  );
   const ios = Platform.OS === "ios";
+  const handleAddToCart = () => {
+    if (!product) return;
+    const cartItem: CartType = {
+      productUUID: product.uuid,
+      name: product.name,
+      quantity: 1,
+      unitPrice: selectedVariant
+        ? selectedVariant.price.amount
+        : product.base_price.amount,
+    };
+    if (selectedVariant) {
+      cartItem.variantAttributeName = selectedVariant.name;
+      cartItem.variantUUID = selectedVariant.uuid;
+    }
+    console.log(cartItem, selectedVariant?.price);
+  };
   return (
     <SafeAreaWrapper>
       <TopBar
@@ -42,7 +61,20 @@ export default function ProductScreen() {
               <ProductScreenContainer>
                 <ProductSlider item={product} />
                 <SpecialSaleBanner item={product} />
-                <ProductGenericDetails item={product} />
+                <ProductGenericDetails item={product}>
+                  <ProductPriceComponent
+                    item={product}
+                    selectedVariant={selectedVariant}
+                  />
+                  {product?.variants && product.variants.length > 0 && (
+                    <ProductVariantSelector
+                      selectedVariant={selectedVariant}
+                      variants={product.variants}
+                      onPress={handleVariantChange}
+                    />
+                  )}
+                  <ProductCouponDiscountInfo />
+                </ProductGenericDetails>
                 <VoucherList className="border-gray-400 px-4" />
                 <ProductDeliveryDetails />
                 <ProductReviewBox />
@@ -56,11 +88,11 @@ export default function ProductScreen() {
             </ScrollView>
           </ContentWrapper>
           <BottomActionView className="gap-y-3 p-3">
-            <ProductPageBottomView />
+            <ProductPageBottomView onCartAdd={handleAddToCart} />
           </BottomActionView>
         </>
       ) : (
-        <ActivityIndicator size="large" color="#ffffff" />
+        <ThemedLoader />
       )}
     </SafeAreaWrapper>
   );

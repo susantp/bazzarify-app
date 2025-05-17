@@ -78,7 +78,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="products/[slug]"
+        name="products/[uuid]"
         options={{
           tabBarStyle: {
             display: "none",

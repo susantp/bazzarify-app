@@ -1,11 +1,11 @@
 import { ItemProps } from "@/components";
 import axiosInstance from "@/modules/core/utils/axios";
 
-export default async function getProductBySlug(
-  slug: string,
+export default async function getProductByUUID(
+  uuid: string,
 ): Promise<ItemProps | null> {
   try {
-    const response = await axiosInstance.get(`/product/${slug}`);
+    const response = await axiosInstance.get(`/product/${uuid}`);
     if (response.data?.metaData?.error) {
       return response.data.metaData;
     }

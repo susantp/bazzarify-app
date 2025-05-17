@@ -5,7 +5,11 @@ import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 import PolygonButton from "@/components/common/PolygonButton";
 
-const ProductPageBottomView = () => {
+interface IProductPageBottomView {
+  onCartAdd: () => void;
+}
+
+const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
   const [leftBtnDimension, setLeftButtonDimensions] = useState({
     width: 0,
     height: 0,
@@ -37,7 +41,7 @@ const ProductPageBottomView = () => {
           <PolygonButton
             dimensions={leftBtnDimension}
             setDimensions={setLeftButtonDimensions}
-            onPress={() => router.push("/cart")}
+            onPress={onCartAdd}
             color="#1A202C"
             isLeft={true}
             label="Add To Cart"
