@@ -1,5 +1,6 @@
 import axiosInstance from "@/modules/core/utils/axios";
 import { ItemProps } from "@/components";
+import { AxiosError } from "axios";
 
 export default async function getFlashDealProducts(): Promise<
   ItemProps[] | null
@@ -11,10 +12,9 @@ export default async function getFlashDealProducts(): Promise<
     }
     return response.data.data.payload.flashDeals;
   } catch (error) {
-    console.log(error);
-    // if (error instanceof AxiosError) {
-    //   handleError(error);
-    // }
+    if (error instanceof AxiosError) {
+      console.log(error.request);
+    }
     return null;
   }
 }

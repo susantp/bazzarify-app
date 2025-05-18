@@ -2,7 +2,7 @@
   "expo": {
     "name": "Bazzarify",
     "slug": "bazzarify",
-    "version": "0.0.1",
+    "version": "v0.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/launcher.png",
     "scheme": "bazzarify",
@@ -16,7 +16,6 @@
       }
     },
     "android": {
-      "versionCode": 13,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/launcher.png"
       },

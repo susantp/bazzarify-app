@@ -1,5 +1,6 @@
 import axiosInstance from "@/modules/core/utils/axios";
 import { ItemProps } from "@/components";
+import { AxiosError } from "axios";
 
 export default async function getPopularProducts(): Promise<
   ItemProps[] | null
@@ -11,10 +12,9 @@ export default async function getPopularProducts(): Promise<
     }
     return response.data.data.payload.popularProducts;
   } catch (error) {
-    console.log("fetch popular products: ", error);
-    // if (error instanceof AxiosError) {
-    //   handleError(error);
-    // }
+    if (error instanceof AxiosError) {
+      console.log(error.request);
+    }
     return null;
   }
 }
