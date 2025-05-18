@@ -1,5 +1,6 @@
 import axiosInstance from "@/modules/core/utils/axios";
 import { CategoriesItemData } from "@/constants/categoriesItemData";
+import { AxiosError } from "axios";
 
 export default async function getHomeCategories(): Promise<
   CategoriesItemData[] | null
@@ -11,10 +12,9 @@ export default async function getHomeCategories(): Promise<
     }
     return response.data.data.payload.homeCategories;
   } catch (error) {
-    console.log("getHomeCategories: ", error);
-    // if (error instanceof AxiosError) {
-    //   handleError(error);
-    // }
+    if (error instanceof AxiosError) {
+      console.log(error.request);
+    }
     return null;
   }
 }

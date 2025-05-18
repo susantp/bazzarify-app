@@ -9,7 +9,8 @@ const remoteData: Record<string, string> = {
 const defaultConfig: CreateAxiosDefaults = {
   baseURL: remoteData.apiUrl,
   headers: {
-    "User-Agent": "BazzarifyConsumer",
+    "User-Agent":
+      "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
     "Content-Type": "application/json",
     "X-APP-Key": remoteData.appKey,
   },
