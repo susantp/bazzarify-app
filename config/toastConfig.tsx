@@ -5,14 +5,13 @@ const toastConfig = {
   success: (props: ToastProps) => (
     <BaseToast
       {...props}
-      contentContainerStyle={{
-        paddingHorizontal: 10,
+      style={{
         backgroundColor: Colors.light.tint,
-        width: "auto",
-        borderLeftColor: "yellow",
+        borderRadius: 20,
+        borderLeftColor: "transparent",
       }}
       text1Style={{
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: "400",
         color: "white",
       }}

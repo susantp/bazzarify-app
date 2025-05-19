@@ -3,6 +3,10 @@ import * as Crypto from "expo-crypto";
 
 export const popularItemsData: ItemProps[] = [
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-001",
@@ -20,6 +24,10 @@ export const popularItemsData: ItemProps[] = [
     },
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-002",
@@ -30,6 +38,10 @@ export const popularItemsData: ItemProps[] = [
     location: "Bagmati Province",
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-003",
@@ -46,6 +58,10 @@ export const popularItemsData: ItemProps[] = [
     },
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-004",
@@ -56,6 +72,10 @@ export const popularItemsData: ItemProps[] = [
     location: "Bagmati Province",
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-005",
@@ -66,6 +86,10 @@ export const popularItemsData: ItemProps[] = [
     location: "Kaski Province",
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-006",
@@ -76,6 +100,10 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-007",
@@ -86,6 +114,10 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-008",
@@ -96,6 +128,10 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-009",
@@ -106,6 +142,10 @@ export const popularItemsData: ItemProps[] = [
     discount: 4,
   },
   {
+    base_price: {
+      amount: 0,
+      currency: "NPR",
+    },
     uuid: Crypto.randomUUID(),
     slug: Crypto.randomUUID(),
     id: "p-001599",
