@@ -1,8 +1,6 @@
 import React from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { Button, FlatList, Image } from "react-native";
-import { randomUUID } from "expo-crypto";
-import ContentWrapper from "@/components/common/ContentWrapper";
 import useHomeScreenHook from "@/hooks/useHomeScreenHook";
 import TopBar from "@/components/home/TopBar";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
@@ -15,6 +13,8 @@ import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
 import { openAuthSessionAsync } from "expo-web-browser";
 import * as Linking from "expo-linking";
 import Toast from "react-native-toast-message";
+import ContentWrapper from "@/components/common/ContentWrapper";
+import { randomUUID } from "expo-crypto";
 
 export default function HomeScreen() {
   const [showModal, setShowModal] = useRecoilState(homePopupAtom);
