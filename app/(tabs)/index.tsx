@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { Button, FlatList, Image } from "react-native";
+import { FlatList, Image } from "react-native";
 import useHomeScreenHook from "@/hooks/useHomeScreenHook";
 import TopBar from "@/components/home/TopBar";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
@@ -10,9 +10,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import DeliveryBar from "@/components/home/DeliveryBar";
 import { useLocation } from "@/modules/core/hooks/useLocation";
 import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
-import { openAuthSessionAsync } from "expo-web-browser";
-import * as Linking from "expo-linking";
-import Toast from "react-native-toast-message";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { randomUUID } from "expo-crypto";
 
@@ -23,24 +20,6 @@ export default function HomeScreen() {
   const { refresh } = useLocation();
   const { CARDS } = useHomeScreenHook();
 
-  const _handlePressButtonAsync = async () => {
-    const url = "http://192.168.1.65:3000/api/browser";
-    let result = await openAuthSessionAsync(url, "bazzarify://");
-    console.log(result);
-    if (result.type === "success" && "url" in result) {
-      const { url } = result;
-      const parsedURL = Linking.parse(url);
-      const queryParams = parsedURL.queryParams;
-      if (queryParams) {
-        const { message } = queryParams;
-        Toast.show({
-          position: "bottom",
-          text1: message as string,
-          type: "success",
-        });
-      }
-    }
-  };
   return (
     <SafeAreaWrapper>
       <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
@@ -50,7 +29,6 @@ export default function HomeScreen() {
         displayCurrentAddress={address}
         className="flex-row items-center justify-center gap-2 bg-blue-950 py-2"
       />
-      <Button title="open Browser" onPress={_handlePressButtonAsync} />
       <ContentWrapper>
         <FlatList
           data={CARDS}

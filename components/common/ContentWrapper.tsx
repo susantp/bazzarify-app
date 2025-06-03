@@ -15,7 +15,6 @@ const ContentWrapper = ({
   styles,
 }: ContentWrapperProps) => {
   const tabBarHeight = useBottomTabBarHeight();
-  console.log(styles);
   const defaultStyles = { paddingBottom: tabBarHeight };
   return (
     <View

@@ -28,7 +28,6 @@ export default async function actionLogin(
     await setToken("token", token);
     return setDataResponse({ message: "success", payload: { token } });
   } catch (error) {
-    console.log("response: ", error);
     if (error instanceof AxiosError) {
       return setMetaDataResponse({
         error: error.response?.data?.metaData?.error,
