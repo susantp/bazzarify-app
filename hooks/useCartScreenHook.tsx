@@ -3,12 +3,12 @@ import CartItem from "@/components/cart/CartItem";
 import ContentGridSection from "@/components/home/ContentGridSection";
 import { popularItemsData } from "@/constants/popularItemsData";
 import React from "react";
-import { useRecoilValue } from "recoil";
 import { cartItemsAtom } from "@/atoms/cartScreen/cartAction.atom";
 import ProductCard from "@/components/common/ProductCard";
+import { useAtomValue } from "jotai";
 
 export default function useCartScreenHook() {
-  const cartItems = useRecoilValue(cartItemsAtom);
+  const cartItems = useAtomValue(cartItemsAtom);
   const selectedItemCount = cartItems.filter((item) => item.isSelected).length;
   const CARDS = [
     {

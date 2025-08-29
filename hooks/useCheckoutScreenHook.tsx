@@ -4,11 +4,11 @@ import OrderDetailsComponent from "@/components/cart/checkout/OrderDetailsCompon
 import VoucherList from "@/components/cart/checkout/VoucherList";
 import CheckoutAddressComponent from "@/components/cart/checkout/CheckoutAddressComponent";
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { cartItemsAtom } from "@/atoms/cartScreen/cartAction.atom";
 
 export default function useCheckoutScreenHook() {
-  const cartItems = useRecoilValue(cartItemsAtom);
+  const cartItems = useAtomValue(cartItemsAtom);
 
   const CARDS = [
     {

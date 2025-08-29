@@ -4,13 +4,13 @@ import ScreenHeader from "@/components/common/ScreenHeader";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { userProfileAtom } from "@/atoms/sessionAtom";
 import Toast from "react-native-toast-message";
 import TextInputV1 from "@/components/common/TextInputV1";
 
 export default function Page() {
-  const userProfile = useRecoilValue(userProfileAtom);
+  const userProfile = useAtomValue(userProfileAtom);
   const handleProfileUpdate = () => {
     Toast.show({
       position: "bottom",

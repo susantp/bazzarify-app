@@ -3,7 +3,7 @@ import {
   cartItemsAtom,
 } from "@/atoms/cartScreen/cartAction.atom";
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import {
   MinusCircleIcon,
@@ -17,7 +17,7 @@ export type CartItemProps = {
 
 const CartItem = ({ item }: CartItemProps) => {
   const [itemCount, setItemCount] = useState(1);
-  const [_, setSelectedCartItem] = useRecoilState(cartItemsAtom);
+  const [_, setSelectedCartItem] = useAtom(cartItemsAtom);
   const handleCartIncrement = () => setItemCount(itemCount + 1);
   const handleCartDecrement = () => setItemCount(itemCount - 1);
 

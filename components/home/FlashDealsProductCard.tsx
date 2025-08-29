@@ -1,7 +1,7 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { router } from "expo-router";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
 import { ItemProps } from "@/components";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
@@ -11,7 +11,7 @@ export interface FlashDealsProductCardProps {
 }
 
 function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
-  const { width, height } = useRecoilValue(screenDimensionAtom);
+  const { width, height } = useAtomValue(screenDimensionAtom);
   return (
     <TouchableOpacity
       onPress={() =>

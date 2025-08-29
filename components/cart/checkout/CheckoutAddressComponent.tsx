@@ -2,13 +2,13 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/solid";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
 import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
 import { router } from "expo-router";
 
 const CheckoutAddressComponent = () => {
-  const [showModal, setShowModal] = useRecoilState(addressModalAtom);
+  const [showModal, setShowModal] = useAtom(addressModalAtom);
   const handleAddressPress = () => {
     setShowModal(!showModal);
     router.push(`/account/setting/address/create`);

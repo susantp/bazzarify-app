@@ -1,6 +1,3 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
-export const customFilterModalAtom = atom({
-  key: "showCustomFilterModalAtom",
-  default: false,
-});
+export const customFilterModalAtom = atom(false);

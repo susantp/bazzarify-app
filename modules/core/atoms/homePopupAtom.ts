@@ -1,6 +1,3 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
-export default atom({
-  key: "homePopupAtom",
-  default: false,
-});
+export default atom<boolean>(false);

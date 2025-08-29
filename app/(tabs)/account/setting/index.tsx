@@ -15,12 +15,12 @@ import {
   SettingEnum,
   settingList,
 } from "@/components/account/setting/data/settingList";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
 import { deleteToken } from "@/modules/core/utils/secureStore";
 
 const SettingScreen = () => {
-  const defaultLanguage = useRecoilValue(filteredDefaultLanguage);
+  const defaultLanguage = useAtomValue(filteredDefaultLanguage);
   const handleLogout = () => {
     deleteToken("token").then(() => router.replace("/guest/guestAccountIndex"));
   };
