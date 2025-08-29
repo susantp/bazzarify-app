@@ -62,7 +62,9 @@
           "project": "react-native",
           "url": "https://sentry.io/"
         }
-      ]
+      ],
+      "expo-web-browser",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
@@ -74,6 +76,13 @@
       "eas": {
         "projectId": "32e3cd11-e03a-424c-8a11-110085048593"
       }
-    }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/32e3cd11-e03a-424c-8a11-110085048593"
+    },
+    "owner": "techbizz"
   }
 }

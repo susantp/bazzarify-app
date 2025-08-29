@@ -1,18 +1,12 @@
-import { atom, selector } from "recoil";
+import { atom } from "jotai";
 import {
   languageList,
   LanguageType,
 } from "@/components/account/setting/data/languageList";
 
-export const languageAtom = atom<LanguageType[]>({
-  key: "language",
-  default: languageList,
-});
+export const languageAtom = atom<LanguageType[]>(languageList);
 
-export const filteredDefaultLanguage = selector<LanguageType[]>({
-  key: "filterDefaultLanguage",
-  get: ({ get }) => {
-    const list = get(languageAtom);
-    return list.filter((item) => item.default);
-  },
+export const filteredDefaultLanguage = atom<LanguageType[]>((get) => {
+  const list = get(languageAtom);
+  return list.filter((item: LanguageType) => item.default);
 });

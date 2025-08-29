@@ -1,4 +1,4 @@
-import { atom, RecoilState, RecoilValueReadOnly, selector } from "recoil";
+import { atom } from "jotai";
 
 export interface CartItemObject {
   id: string;
@@ -34,15 +34,9 @@ const defaultCartItemState: CartItemObject[] = [
   },
 ];
 
-export const cartItemsAtom: RecoilState<CartItemObject[]> = atom({
-  key: "cart-items",
-  default: defaultCartItemState,
-});
+export const cartItemsAtom = atom<CartItemObject[]>(defaultCartItemState);
 
-export const cartItemsTotalAtom: RecoilValueReadOnly<number> = selector({
-  key: "cartItemsTotal",
-  get: ({ get }) => {
-    const list = get(cartItemsAtom);
-    return list.reduce((a: number, b: CartItemObject) => a + b.price, 0);
-  },
+export const cartItemsTotalAtom = atom<number>((get) => {
+  const list = get(cartItemsAtom);
+  return list.reduce((a: number, b: CartItemObject) => a + b.price, 0);
 });

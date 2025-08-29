@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom } from "jotai";
 
 export type CartType = {
   productUUID: string;
@@ -8,15 +8,9 @@ export type CartType = {
   quantity: number;
   variantAttributeName?: string;
 };
-export const cartState = atom<CartType[]>({
-  key: "cartState",
-  default: [],
-});
+export const cartState = atom<CartType[]>([]);
 
-export const cartTotalState = selector({
-  key: "cartTotalState",
-  get: ({ get }) => {
-    const cart = get(cartState);
-    return cart.reduce((total, item) => total + item?.unitPrice, 0);
-  },
+export const cartTotalState = atom((get) => {
+  const cart = get(cartState);
+  return cart.reduce((total, item) => total + item?.unitPrice, 0);
 });

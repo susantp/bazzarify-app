@@ -13,17 +13,17 @@ export interface LocationData {
   timezone: string;
 }
 
-export interface IApiResponse<T> {
-  data: IApiData<T>;
-  metaData: IApiMetaData;
-}
-
-export interface IApiData<T> {
+export interface IData<T> {
   message: string;
-  payload: Record<string, T>;
+  payload: T;
 }
 
-export interface IApiMetaData {
+export interface IMetaData {
   error: string | null;
-  errorCode: number;
+  errorCode?: number;
+}
+
+export interface IApiResponse<T> {
+  data: IData<T>;
+  metaData: IMetaData;
 }

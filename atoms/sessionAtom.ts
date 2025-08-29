@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
 type UserProfileType = {
   name: string;
@@ -16,7 +16,4 @@ const userProfile: UserProfileType = {
   dob: "12/12/1992",
 };
 
-export const userProfileAtom = atom<UserProfileType>({
-  key: "profile",
-  default: userProfile,
-});
+export const userProfileAtom = atom<UserProfileType>(userProfile);

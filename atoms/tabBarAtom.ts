@@ -1,6 +1,3 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
-export const tabBarAtom = atom({
-  key: "tabBarAtom",
-  default: 0,
-});
+export const tabBarAtom = atom(0);

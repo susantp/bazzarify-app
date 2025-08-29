@@ -1,4 +1,5 @@
 import {
+  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -26,6 +27,9 @@ import remotePaths from "@/staticData/remote.paths";
 import { setToken } from "@/modules/core/utils/secureStore";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { handleError } from "@/modules/core/utils/handleError";
+import { openAuthSessionAsync } from "expo-web-browser";
+import * as Linking from "expo-linking";
+import Toast from "react-native-toast-message";
 
 const LoginScreen = () => {
   const {
@@ -61,6 +65,27 @@ const LoginScreen = () => {
           message: msg,
         });
       });
+  };
+  const _handleGoogleLogin = async () => {
+    // This URL should point to your backend endpoint that initiates the OAuth flow
+    const host =
+      Platform.OS === "ios" ? "http://127.0.0.1:3000" : "http://10.0.2.2:3000";
+    const url = `${host}/api/v1/auth/redirect?provider=google`;
+    let result = await openAuthSessionAsync(url);
+    console.log(result);
+    if (result.type === "success" && "url" in result) {
+      const { url } = result;
+      const parsedURL = Linking.parse(url);
+      const queryParams = parsedURL.queryParams;
+      if (queryParams) {
+        const { token } = queryParams;
+        Toast.show({
+          position: "bottom",
+          text1: token as string,
+          type: "success",
+        });
+      }
+    }
   };
   const [showPassword, setShowPassword] = useState(true);
   return (
@@ -119,7 +144,11 @@ const LoginScreen = () => {
             />
             <Text className="text-gray-400">or</Text>
             <TouchableOpacity>
-              <SocialLoginButton label="sign in with" provider="google" />
+              <SocialLoginButton
+                label="sign in with"
+                provider="google"
+                onPress={_handleGoogleLogin}
+              />
             </TouchableOpacity>
             <TouchableOpacity>
               <SocialLoginButton label="sign in with" provider="facebook" />
