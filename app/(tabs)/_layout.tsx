@@ -1,9 +1,8 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
-import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import {
@@ -13,6 +12,7 @@ import {
   UserIcon,
 } from "react-native-heroicons/solid";
 import { useLocation } from "@/modules/core/hooks/useLocation";
+import { BlurView } from "expo-blur";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -30,7 +30,13 @@ export default function TabLayout() {
         tabBarIconStyle: {
           color: Colors.light.icon,
         },
-        tabBarBackground: TabBarBackground,
+        tabBarBackground: () => (
+          <BlurView
+            tint="light"
+            intensity={200}
+            style={StyleSheet.absoluteFill}
+          />
+        ),
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect
@@ -68,6 +74,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
+          tabBarBadge: 2,
           tabBarStyle: {
             display: "none",
           },

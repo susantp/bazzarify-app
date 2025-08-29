@@ -1,6 +1,6 @@
 import React from "react";
 import { cartItemsTotalAtom } from "@/atoms/cartScreen/cartAction.atom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useAtom, useAtomValue } from "jotai";
 import CartHeader from "@/components/cart/CartHeader";
 import { Alert, FlatList } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
@@ -14,9 +14,9 @@ import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
 import { router } from "expo-router";
 
 export default function CartScreen() {
-  const totalCartPrice = useRecoilValue(cartItemsTotalAtom);
+  const totalCartPrice = useAtomValue(cartItemsTotalAtom);
   const { CARDS, cartItems, selectedItemCount } = useCartScreenHook();
-  const [showModal, setShowModal] = useRecoilState(addressModalAtom);
+  const [showModal, setShowModal] = useAtom(addressModalAtom);
   const handlePress = () =>
     selectedItemCount < 1
       ? Alert.alert("Please select item to checkout.")

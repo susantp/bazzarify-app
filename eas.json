@@ -4,10 +4,8 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "dev": {
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://bazzarify.com/api/v1"
-      },
+    "development": {
+      "bun": "1.2.15",
       "distribution": "internal",
       "developmentClient": true,
       "autoIncrement": true,

@@ -1,11 +1,11 @@
 import { FlatList, Image, Switch, Text, View } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { languageAtom } from "@/atoms/languageAtom";
 import ContentWrapper from "@/components/common/ContentWrapper";
 
 const LanguageSettingScreen = () => {
-  const [languages, setLanguages] = useRecoilState(languageAtom);
+  const [languages, setLanguages] = useAtom(languageAtom);
 
   const handleSwitchChange = (id: string, value: boolean) => {
     setLanguages((prevLanguages) =>

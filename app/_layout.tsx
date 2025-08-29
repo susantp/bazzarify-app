@@ -9,7 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import "../global.css";
-import { RecoilRoot } from "recoil";
+import { Provider } from "jotai";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "expo-dev-client";
 import { QueryClient } from "@tanstack/query-core";
@@ -70,12 +70,12 @@ export default function RootLayout() {
     <>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
+          <Provider>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
-          </RecoilRoot>
+          </Provider>
         </QueryClientProvider>
         <StatusBar style="auto" />
       </ThemeProvider>

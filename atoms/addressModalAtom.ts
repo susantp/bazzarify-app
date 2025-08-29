@@ -1,6 +1,3 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
-export const addressModalAtom = atom({
-  key: "showAddressModalAtom",
-  default: false,
-});
+export const addressModalAtom = atom(false);

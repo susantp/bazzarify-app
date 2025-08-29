@@ -2,17 +2,11 @@ import {
   addressList,
   AddressType,
 } from "@/components/account/setting/data/addressList";
-import { atom, selector } from "recoil";
+import { atom } from "jotai";
 
-export const addressAtom = atom<AddressType[]>({
-  key: "addressAtom",
-  default: addressList,
-});
+export const addressAtom = atom<AddressType[]>(addressList);
 
-export const hasDefaultAddressBoolean = selector<boolean>({
-  key: "hasDefaultAddressBoolean",
-  get: ({ get }) => {
-    const addresses = get(addressAtom);
-    return addresses.some((address) => address.default);
-  },
+export const hasDefaultAddressBoolean = atom((get) => {
+  const addresses = get(addressAtom);
+  return addresses.some((address) => address.default);
 });

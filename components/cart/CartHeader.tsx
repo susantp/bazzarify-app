@@ -11,12 +11,12 @@ import {
   CartItemObject,
   cartItemsAtom,
 } from "@/atoms/cartScreen/cartAction.atom";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
 
 const CartHeader = () => {
-  const [_, setCartItems] = useRecoilState(cartItemsAtom);
+  const [_, setCartItems] = useAtom(cartItemsAtom);
   const handleDelete = () => {
     if (_.filter((item) => item.isSelected).length < 1) {
       Alert.alert("No item selected");
@@ -44,7 +44,7 @@ interface ICartActions {
 }
 
 export const CartActions = ({ cartItems, onPress }: ICartActions) => {
-  const [showModal, setShowModal] = useRecoilState(addressModalAtom);
+  const [showModal, setShowModal] = useAtom(addressModalAtom);
 
   return (
     <>

@@ -15,7 +15,7 @@ import CategoryCard from "@/components/common/CategoryCard";
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
   const [
-    { data: flashDealProducts },
+    { data: flashDealProducts, isError: flashDealError },
     { data: popularProducts },
     { data: homeCategories },
   ] = useQueries({
@@ -34,6 +34,7 @@ export default function useHomeScreenHook() {
       },
     ],
   });
+  console.log(flashDealProducts);
   const CARDS = [
     {
       id: randomUUID(),

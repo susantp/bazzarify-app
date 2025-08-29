@@ -2,7 +2,7 @@ import { AddressType } from "@/components/account/setting/data/addressList";
 import { FlatList, Switch, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
 
 interface IAddressListComponentProps {
@@ -14,7 +14,7 @@ const AddressListComponent = ({
   addresses,
   onSwitchChange,
 }: IAddressListComponentProps) => {
-  const [showModal, setShowModal] = useRecoilState(addressModalAtom);
+  const [showModal, setShowModal] = useAtom(addressModalAtom);
 
   const handleEditPress = (item: AddressType) => {
     setShowModal(!showModal);

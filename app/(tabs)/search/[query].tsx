@@ -15,7 +15,7 @@ import {
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 import { customFilterModalAtom } from "@/atoms/customFilterModalAtom";
 import cn from "@/utils/tailwindHelper";
 
@@ -114,7 +114,7 @@ export default function Page() {
   const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
   const [filter, setFilter] = useState<IFilterMenuItem | undefined>();
   const [priceSortAsc, setPriceSortAsc] = useState(true);
-  const [showCustomFilter, setShowCustomFilter] = useRecoilState(
+  const [showCustomFilter, setShowCustomFilter] = useAtom(
     customFilterModalAtom,
   );
   const { height } = useWindowDimensions();

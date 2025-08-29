@@ -1,24 +1,26 @@
 import React from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { FlatList, Image } from "react-native";
-import { randomUUID } from "expo-crypto";
-import ContentWrapper from "@/components/common/ContentWrapper";
 import useHomeScreenHook from "@/hooks/useHomeScreenHook";
 import TopBar from "@/components/home/TopBar";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { geocodeAddressAtom, locationErrorAtom } from "@/atoms/locationAtom";
-import { useRecoilState, useRecoilValue } from "recoil";
+
 import DeliveryBar from "@/components/home/DeliveryBar";
 import { useLocation } from "@/modules/core/hooks/useLocation";
 import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
+import ContentWrapper from "@/components/common/ContentWrapper";
+import { randomUUID } from "expo-crypto";
+import { useAtom, useAtomValue } from "jotai";
 
 export default function HomeScreen() {
-  const [showModal, setShowModal] = useRecoilState(homePopupAtom);
-  const address = useRecoilValue(geocodeAddressAtom);
-  const error = useRecoilValue(locationErrorAtom);
+  const [showModal, setShowModal] = useAtom(homePopupAtom);
+  const address = useAtomValue(geocodeAddressAtom);
+  const error = useAtomValue(locationErrorAtom);
   const { refresh } = useLocation();
   const { CARDS } = useHomeScreenHook();
+
   return (
     <SafeAreaWrapper>
       <TopBar className={`flex-row items-center justify-between px-2 py-5`} />

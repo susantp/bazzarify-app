@@ -13,7 +13,7 @@ export default async function getPopularProducts(): Promise<
     return response.data.data.payload.popularProducts;
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log(error.request);
+      console.log("fetching popular products: ", error.request);
     }
     return null;
   }

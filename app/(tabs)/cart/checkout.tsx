@@ -3,7 +3,7 @@ import ScreenHeader from "@/components/common/ScreenHeader";
 import { FlatList } from "react-native";
 import React, { useState } from "react";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { useRecoilValue } from "recoil";
+import { useAtomValue } from "jotai";
 import { cartItemsTotalAtom } from "@/atoms/cartScreen/cartAction.atom";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import BottomActionView from "@/components/common/BottomActionView";
@@ -11,7 +11,7 @@ import useCheckoutScreenHook from "@/hooks/useCheckoutScreenHook";
 import { router } from "expo-router";
 
 export default function CheckoutScreen() {
-  const totalCartPrice = useRecoilValue(cartItemsTotalAtom);
+  const totalCartPrice = useAtomValue(cartItemsTotalAtom);
   const { CARDS, cartItems } = useCheckoutScreenHook();
   const [buttonLabel, setButtonLabel] = useState("Place Order");
   const handlePress = () => {
