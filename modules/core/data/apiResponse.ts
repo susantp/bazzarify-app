@@ -1,8 +1,4 @@
-import {
-  IApiData,
-  IApiMetaData,
-  IApiResponse,
-} from "@/modules/core/data/index";
+import { IApiResponse, IData, IMetaData } from "@/modules/core/data/index";
 
 export function setResponse<T>({ data, metaData }: IApiResponse<T>) {
   return {
@@ -11,12 +7,10 @@ export function setResponse<T>({ data, metaData }: IApiResponse<T>) {
   };
 }
 
-export function setDataResponse<T>(data: IApiData<T>): IApiResponse<T> {
+export function setDataResponse<T>(data: IData<T>): IApiResponse<T> {
   return setResponse({ data, metaData: { error: null, errorCode: 200 } });
 }
 
-export function setMetaDataResponse<T>(
-  metaData: IApiMetaData,
-): IApiResponse<T> {
+export function setMetaDataResponse(metaData: IMetaData): IApiResponse<object> {
   return setResponse({ data: { message: "", payload: {} }, metaData });
 }
