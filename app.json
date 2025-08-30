@@ -16,6 +16,7 @@
       }
     },
     "android": {
+      "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/launcher.png"
       },
@@ -67,7 +68,8 @@
       "expo-font"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "reactCanary": true
     },
     "extra": {
       "router": {

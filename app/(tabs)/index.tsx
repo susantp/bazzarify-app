@@ -47,6 +47,7 @@ export default function HomeScreen() {
             className="flex items-center"
             entering={FadeIn.duration(1000)}
           >
+            {/*popup ad*/}
             <Image
               source={require("@/assets/images/ads/popup-home.png")}
               style={{ height: 315, width: 315 }}

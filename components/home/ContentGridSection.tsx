@@ -4,7 +4,6 @@ import React from "react";
 import SectionHeader, {
   SectionHeaderProps,
 } from "@/components/home/SectionHeader";
-import ThemedLoader from "@/modules/core/components/ThemedLoader";
 
 export interface ContentGridSectionProps<T> {
   title: string;
@@ -31,7 +30,7 @@ function ContentGridSection<T>({
   section,
 }: ContentGridSectionProps<T>) {
   if (!items || items.length === 0) {
-    return <ThemedLoader />;
+    return null;
   }
   return (
     <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>

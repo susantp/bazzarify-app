@@ -34,7 +34,7 @@ export default function useHomeScreenHook() {
       },
     ],
   });
-  console.log(flashDealProducts);
+
   const CARDS = [
     {
       id: randomUUID(),
