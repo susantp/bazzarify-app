@@ -32,9 +32,9 @@ export function useLocation() {
             { text: "Cancel", style: "cancel" },
             {
               text: "Open Settings",
-              onPress: () => openSettings()
-            }
-          ]
+              onPress: () => openSettings(),
+            },
+          ],
         );
       }
     }
@@ -50,7 +50,7 @@ export function useLocation() {
    */
   const doReverseGeocode = useCallback(
     (coords: Coordinates) => reverseGeocode(coords),
-    []
+    [],
   );
 
   return { refresh: fetchAndStoreLocation, reverseGeocode: doReverseGeocode };

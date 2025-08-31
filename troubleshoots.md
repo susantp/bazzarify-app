@@ -10,10 +10,14 @@ If you see this error: This is because of the old build cache.
 rm -rf node_modules android ios   
 ```
 
-- Run the build script again.
+- Run the build.
 
 ```shell
-./scripts/android-build-steps-dev.sh
+bunx expo run:android
+```
+
+```shell
+bunx expo run:ios
 ```
 
 - Install the newly built app by dragging the apk file `./android/app/build/outputs/apk/debug/app-debug.apk` into the

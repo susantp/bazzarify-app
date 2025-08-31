@@ -1,9 +1,10 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/outline";
 import React, { useState } from "react";
-import DemoModalComponent from "@/components/common/DemoModalComponent";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
 import { LocationGeocodedAddress } from "expo-location";
+import { BottomSheet } from "@expo/ui/src/swift-ui";
+import DemoModalComponent from "@/components/common/DemoModalComponent";
 
 type DeliveryBarProps = {
   className: string;
@@ -18,7 +19,7 @@ export default function DeliveryBar({
   displayCurrentAddress,
   refresh,
 }: DeliveryBarProps) {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   return (
     <View className={className}>
       <MapPinIcon size={14} strokeWidth={2} color="white" />
@@ -41,13 +42,24 @@ export default function DeliveryBar({
           </Text>
         )}
       </TouchableOpacity>
-      <DemoModalComponent
-        type="bottom"
-        showModal={showModal}
-        handlePress={() => setShowModal(!showModal)}
-      >
-        <ChooseAddressComponent />
-      </DemoModalComponent>
+      {Platform.OS === "ios" ? (
+        <BottomSheet
+          isOpened={showModal}
+          onIsOpenedChange={() => setShowModal(!showModal)}
+        >
+          <View className="p-6">
+            <ChooseAddressComponent />
+          </View>
+        </BottomSheet>
+      ) : (
+        <DemoModalComponent
+          type="bottom"
+          showModal={showModal}
+          handlePress={() => setShowModal(!showModal)}
+        >
+          <ChooseAddressComponent />
+        </DemoModalComponent>
+      )}
     </View>
   );
 }
