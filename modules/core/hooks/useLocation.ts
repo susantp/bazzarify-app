@@ -1,8 +1,17 @@
 import { useCallback, useEffect } from "react";
 import { useSetAtom } from "jotai";
 
-import { Coordinates, getCurrentCoordinates, reverseGeocode } from "../services/locationService";
-import { geocodeAddressAtom, latitudeAtom, locationErrorAtom, longitudeAtom } from "@/atoms/locationAtom";
+import {
+  Coordinates,
+  getCurrentCoordinates,
+  reverseGeocode,
+} from "../services/locationService";
+import {
+  geocodeAddressAtom,
+  latitudeAtom,
+  locationErrorAtom,
+  longitudeAtom,
+} from "@/atoms/locationAtom";
 import { Alert } from "react-native";
 import { openSettings } from "expo-linking";
 
