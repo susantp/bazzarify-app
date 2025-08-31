@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { FlatList, Image } from "react-native";
 import useHomeScreenHook from "@/hooks/useHomeScreenHook";
@@ -19,42 +19,45 @@ export default function HomeScreen() {
   const address = useAtomValue(geocodeAddressAtom);
   const error = useAtomValue(locationErrorAtom);
   const { refresh } = useLocation();
+
   const { CARDS } = useHomeScreenHook();
 
   return (
-    <SafeAreaWrapper>
-      <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
-      <DeliveryBar
-        locationError={error}
-        refresh={refresh}
-        displayCurrentAddress={address}
-        className="flex-row items-center justify-center gap-2 bg-blue-950 py-2"
-      />
-      <ContentWrapper>
-        <FlatList
-          data={CARDS}
-          renderItem={({ item, index }) => item.component}
-          keyExtractor={(index) => randomUUID()}
+    <Suspense fallback={null}>
+      <SafeAreaWrapper>
+        <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
+        <DeliveryBar
+          locationError={error}
+          refresh={refresh}
+          displayCurrentAddress={address}
+          className="flex-row items-center justify-center gap-2 bg-blue-950 py-2"
         />
-      </ContentWrapper>
-      {showModal && (
-        <DemoModalComponent
-          showModal={showModal}
-          handlePress={() => setShowModal(!showModal)}
-          type="center"
-        >
-          <Animated.View
-            className="flex items-center"
-            entering={FadeIn.duration(1000)}
+        <ContentWrapper>
+          <FlatList
+            data={CARDS}
+            renderItem={({ item, index }) => item.component}
+            keyExtractor={(index) => randomUUID()}
+          />
+        </ContentWrapper>
+        {showModal && (
+          <DemoModalComponent
+            showModal={showModal}
+            handlePress={() => setShowModal(!showModal)}
+            type="center"
           >
-            {/*popup ad*/}
-            <Image
-              source={require("@/assets/images/ads/popup-home.png")}
-              style={{ height: 315, width: 315 }}
-            />
-          </Animated.View>
-        </DemoModalComponent>
-      )}
-    </SafeAreaWrapper>
+            <Animated.View
+              className="flex items-center"
+              entering={FadeIn.duration(1000)}
+            >
+              {/*popup ad*/}
+              <Image
+                source={require("@/assets/images/ads/popup-home.png")}
+                style={{ height: 315, width: 315 }}
+              />
+            </Animated.View>
+          </DemoModalComponent>
+        )}
+      </SafeAreaWrapper>
+    </Suspense>
   );
 }

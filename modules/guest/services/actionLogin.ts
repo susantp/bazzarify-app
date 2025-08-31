@@ -5,7 +5,10 @@ import { AxiosError, AxiosResponse } from "axios";
 import { setToken } from "@/modules/core/utils/secureStore";
 import * as Sentry from "@sentry/react-native";
 import { IApiResponse } from "@/modules/core/types";
-import { setDataResponse, setMetaDataResponse } from "@/modules/core/data/apiResponse";
+import {
+  setDataResponse,
+  setMetaDataResponse,
+} from "@/modules/core/data/apiResponse";
 
 export default async function actionLogin(
   data: TRegisterFormField,

@@ -1,10 +1,10 @@
 import { router } from "expo-router";
 import { Image, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { CategoriesItemData } from "@/constants/categoriesItemData";
+import { ICategory } from "@/modules/product/types/category";
 
 export type CategoryCardProps = {
-  item: CategoriesItemData;
+  item: ICategory;
   index?: number;
   cols: 2 | 3 | 4;
 };
@@ -15,7 +15,7 @@ const CategoryCard = ({ item, cols }: CategoryCardProps) => (
     onPress={() =>
       router.push({
         pathname: "/categories/[id]",
-        params: { id: item.id },
+        params: { id: item.uuid },
       })
     }
   >

@@ -56,3 +56,29 @@ function ContentGridSection<T>({
 }
 
 export default ContentGridSection;
+
+interface GridWrapperProps {
+  navigateTo?: string;
+  className?: string;
+  section?: SectionHeaderProps;
+  title: string;
+  children: React.ReactNode;
+}
+export function GridWrapper({
+  className,
+  section,
+  title,
+  children,
+}: GridWrapperProps) {
+  return (
+    <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
+      {section && (
+        <SectionHeader
+          title={section.title}
+          seeMorePath={section.seeMorePath}
+        />
+      )}
+      {children}
+    </View>
+  );
+}

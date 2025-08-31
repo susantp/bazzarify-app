@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { IProduct } from "@/modules/product/types/product";
 
-export const ProductSchema: z.ZodType<IProduct> = z
+export const ProductSchema = z
   .object({
     type: z.enum(["retail", "wholesale"]),
     uuid: z.string(),

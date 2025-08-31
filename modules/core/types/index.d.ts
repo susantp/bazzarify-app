@@ -27,3 +27,15 @@ export interface IApiMetaData {
   executionTime?: number | null;
   errorCode: number | null;
 }
+export interface ISimplePaginated<T> {
+  current_page: number | string | null;
+  current_page_url: string;
+  data: T;
+  first_page_url: string | null;
+  from: number | string | null;
+  next_page_url: string | null;
+  path: string;
+  per_page: number | string | null;
+  prev_page_url: string | null;
+  to: number | string | null;
+}

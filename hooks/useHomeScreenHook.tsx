@@ -1,7 +1,8 @@
-import ContentGridSection from "@/components/home/ContentGridSection";
+import { GridWrapper } from "@/components/home/ContentGridSection";
 import React from "react";
+import * as Crypto from "expo-crypto";
 import { randomUUID } from "expo-crypto";
-import { Dimensions, Image, View } from "react-native";
+import { Dimensions, FlatList, Image, View } from "react-native";
 import ImageSlider from "@/components/common/ImageSlider";
 import { SliderData } from "@/constants/SliderData";
 import { useQueries } from "@tanstack/react-query";
@@ -11,13 +12,29 @@ import getHomeCategories from "@/modules/product/services/home/getHomeCategories
 import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
 import ProductCard from "@/components/common/ProductCard";
 import CategoryCard from "@/components/common/CategoryCard";
+import { ThemedText } from "@/components/ThemedText";
 
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
   const [
-    { data: flashDealProducts, isError: flashDealError },
-    { data: popularProducts },
-    { data: homeCategories },
+    {
+      data: flashDealProducts,
+      isLoading: flashDealProductsLoading,
+      isError: flashDealProductsError,
+      error: flashDealProductsErrorMessage,
+    },
+    {
+      data: popularProducts,
+      isLoading: popularProductsLoading,
+      isError: popularProductsError,
+      error: popularProductsErrorMessage,
+    },
+    {
+      data: homeCategories,
+      isLoading: homeCategoriesLoading,
+      isError: homeCategoriesError,
+      error: homeCategoriesErrorMessage,
+    },
   ] = useQueries({
     queries: [
       {
@@ -44,42 +61,64 @@ export default function useHomeScreenHook() {
     {
       id: randomUUID(),
       component: (
-        <ContentGridSection
+        <GridWrapper
+          title="Flash Deals"
+          className="bg-white px-1 py-3"
           section={{
             title: "Flash Deals",
             seeMorePath: "/(tabs)/categories/flashDeal",
           }}
-          title="Flash Deals"
-          items={flashDealProducts?.slice(0, 6)}
-          renderItem={(deal) => <FlashDealsProductCard item={deal} />}
-          showDiscountBadge={true}
-          navigateTo={"/index"}
-          className="bg-white px-1 py-3"
-          horizontal={false}
-          cols={3}
-        />
+        >
+          {flashDealProductsLoading ? (
+            <ThemedText>Loading</ThemedText>
+          ) : flashDealProductsError ? (
+            <ThemedText>{flashDealProductsErrorMessage.message}</ThemedText>
+          ) : (
+            <FlatList
+              id="content"
+              data={flashDealProducts?.flashDeals.data}
+              renderItem={({ item }) => <FlashDealsProductCard item={item} />}
+              keyExtractor={() => Crypto.randomUUID()}
+              horizontal={false}
+              numColumns={3}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            />
+          )}
+        </GridWrapper>
       ),
-      title: "Flash Deals",
     },
     {
       id: randomUUID(),
       component: (
-        <ContentGridSection
-          cols={2}
+        <GridWrapper
+          className="bg-white px-1 py-3"
+          title="Popular Items"
           section={{
             title: "Popular Items",
             seeMorePath: "/(tabs)/categories/popular",
           }}
-          className="bg-white px-1 py-3"
-          title="Popular Items"
-          items={popularProducts?.slice(0, 4)}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
+        >
+          {popularProductsLoading ? (
+            <ThemedText>Loading</ThemedText>
+          ) : popularProductsError ? (
+            <ThemedText>{popularProductsErrorMessage.message}</ThemedText>
+          ) : (
+            <FlatList
+              id="content"
+              data={popularProducts?.popularProducts.data}
+              renderItem={({ item, index }) => (
+                <ProductCard item={item} key={index} cols={2} />
+              )}
+              keyExtractor={() => Crypto.randomUUID()}
+              horizontal={false}
+              numColumns={3}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            />
           )}
-          horizontal={false}
-        />
+        </GridWrapper>
       ),
-      title: "Popular Items",
     },
     {
       id: randomUUID(),
@@ -95,40 +134,53 @@ export default function useHomeScreenHook() {
     {
       id: randomUUID(),
       component: (
-        <ContentGridSection
+        <GridWrapper
+          className="flex-col bg-white px-1 py-3"
+          title="Categories"
           section={{
             title: "Categories",
             seeMorePath: "/(tabs)/categories",
           }}
-          className="flex-col bg-white px-1 py-3"
-          title="Categories"
-          cols={3}
-          renderItem={(item, index, cols) => (
-            <CategoryCard cols={cols} item={item} index={index} />
+        >
+          {homeCategoriesLoading ? (
+            <ThemedText>Loading</ThemedText>
+          ) : homeCategoriesError ? (
+            <ThemedText>{homeCategoriesErrorMessage.message}</ThemedText>
+          ) : (
+            <FlatList
+              id="content"
+              data={homeCategories?.homeCategories.data}
+              renderItem={({ item, index }) => (
+                <CategoryCard cols={3} item={item} index={index} />
+              )}
+              keyExtractor={() => Crypto.randomUUID()}
+              horizontal={false}
+              numColumns={3}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            />
           )}
-          items={homeCategories?.slice(0, 9)}
-          horizontal={false}
-        />
+        </GridWrapper>
       ),
-      title: "Categories",
     },
-    {
-      id: randomUUID(),
-      component: (
-        <ContentGridSection
-          cols={2}
-          section={{ title: "Just for you", seeMorePath: "/(tabs)/categories" }}
-          className="flex-col gap-y-4 bg-white px-1 py-3"
-          title="Just for you"
-          items={popularProducts}
-          horizontal={false}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
-      ),
-      title: "Just for you",
-    },
+    //TODO: enable when popular products api is ready and design it like request next page after view ends
+    // {
+    //   id: randomUUID(),
+    //   component: (
+    //     <ContentGridSection
+    //       cols={2}
+    //       section={{ title: "Just for you", seeMorePath: "/(tabs)/categories" }}
+    //       className="flex-col gap-y-4 bg-white px-1 py-3"
+    //       title="Just for you"
+    //       items={popularProducts}
+    //       horizontal={false}
+    //       renderItem={(item, index, cols) => (
+    //         <ProductCard item={item} key={index} cols={cols} />
+    //       )}
+    //     />
+    //   ),
+    //   title: "Just for you",
+    // },
   ];
 
   return {
