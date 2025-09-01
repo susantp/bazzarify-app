@@ -46,6 +46,21 @@ export default function useHomeScreenHook() {
     },
   });
 
+  const refreshing =
+    flashDealsQueryResult.isRefetching ||
+    popularProductsQueryResult.isRefetching ||
+    homeCategoriesQueryResult.isRefetching ||
+    justForYouProducts.isRefetching;
+
+  const onRefresh = async () => {
+    await Promise.all([
+      flashDealsQueryResult.refetch(),
+      popularProductsQueryResult.refetch(),
+      homeCategoriesQueryResult.refetch(),
+      justForYouProducts.refetch(),
+    ]);
+  };
+
   const CARDS = [
     {
       id: randomUUID(),
@@ -87,5 +102,7 @@ export default function useHomeScreenHook() {
 
   return {
     CARDS,
+    refreshing,
+    onRefresh,
   };
 }

@@ -1,6 +1,6 @@
-import React, { Suspense, useCallback, useState } from "react";
+import React, { Suspense } from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { FlatList, Image } from "react-native";
+import { FlatList, Image, RefreshControl } from "react-native";
 import useHomeScreenHook from "@/modules/home/hooks/useHomeScreenHook";
 import TopBar from "@/components/home/TopBar";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
@@ -13,7 +13,6 @@ import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { randomUUID } from "expo-crypto";
 import { useAtom, useAtomValue } from "jotai";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function HomeScreen() {
   const [showModal, setShowModal] = useAtom(homePopupAtom);
@@ -21,24 +20,7 @@ export default function HomeScreen() {
   const error = useAtomValue(locationErrorAtom);
   const { refresh } = useLocation();
 
-  const { CARDS } = useHomeScreenHook();
-
-  const queryClient = useQueryClient();
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    try {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["flashDealProducts"] }),
-        queryClient.invalidateQueries({ queryKey: ["popularProducts"] }),
-        queryClient.invalidateQueries({ queryKey: ["homeCategories"] }),
-        queryClient.invalidateQueries({ queryKey: ["just-for-you-products"] }),
-        refresh(),
-      ]);
-    } finally {
-      setRefreshing(false);
-    }
-  }, [queryClient, refresh]);
+  const { CARDS, refreshing, onRefresh } = useHomeScreenHook();
 
   return (
     <Suspense fallback={null}>
@@ -55,9 +37,12 @@ export default function HomeScreen() {
             data={CARDS}
             renderItem={({ item, index }) => item.component}
             keyExtractor={(index) => randomUUID()}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={Boolean(refreshing)}
+                onRefresh={onRefresh}
+              />
+            }
           />
         </ContentWrapper>
         {showModal && (
