@@ -6,7 +6,7 @@ export const JustForYouProductsPayloadSchema = z
   .object({
     justForYouProducts: z.union([
       SimplePaginatedSchema(ProductWithImageSchema),
-      z.array(z.any()).length(0),
+      z.array(z.unknown()).length(0),
     ]),
   })
   .strip();

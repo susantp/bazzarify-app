@@ -6,7 +6,7 @@ export const HomeCategoriesPayloadSchema = z
   .object({
     homeCategories: z.union([
       SimplePaginatedSchema(CategoryListWithImageSchema),
-      z.array(z.any()).length(0),
+      z.array(z.unknown()).length(0),
     ]),
   })
   .strip();
