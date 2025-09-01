@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useCallback, useState } from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { FlatList, Image } from "react-native";
 import useHomeScreenHook from "@/modules/home/hooks/useHomeScreenHook";
@@ -13,6 +13,7 @@ import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { randomUUID } from "expo-crypto";
 import { useAtom, useAtomValue } from "jotai";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function HomeScreen() {
   const [showModal, setShowModal] = useAtom(homePopupAtom);
@@ -21,6 +22,23 @@ export default function HomeScreen() {
   const { refresh } = useLocation();
 
   const { CARDS } = useHomeScreenHook();
+
+  const queryClient = useQueryClient();
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["flashDealProducts"] }),
+        queryClient.invalidateQueries({ queryKey: ["popularProducts"] }),
+        queryClient.invalidateQueries({ queryKey: ["homeCategories"] }),
+        queryClient.invalidateQueries({ queryKey: ["just-for-you-products"] }),
+        refresh(),
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [queryClient, refresh]);
 
   return (
     <Suspense fallback={null}>
@@ -37,6 +55,9 @@ export default function HomeScreen() {
             data={CARDS}
             renderItem={({ item, index }) => item.component}
             keyExtractor={(index) => randomUUID()}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            showsVerticalScrollIndicator={false}
           />
         </ContentWrapper>
         {showModal && (
