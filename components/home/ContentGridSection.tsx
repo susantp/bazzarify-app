@@ -4,7 +4,7 @@ import React from "react";
 import SectionHeader, {
   SectionHeaderProps,
 } from "@/components/home/SectionHeader";
-import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import { Href } from "expo-router";
 
 export interface ContentGridSectionProps<T> {
   title: string;
@@ -31,7 +31,7 @@ function ContentGridSection<T>({
   section,
 }: ContentGridSectionProps<T>) {
   if (!items || items.length === 0) {
-    return <ThemedLoader />;
+    return null;
   }
   return (
     <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
@@ -57,3 +57,23 @@ function ContentGridSection<T>({
 }
 
 export default ContentGridSection;
+
+interface GridWrapperProps {
+  seeMorePath: Href;
+  className?: string;
+  title: string;
+  children: React.ReactNode;
+}
+export function GridWrapper({
+  className,
+  seeMorePath,
+  title,
+  children,
+}: GridWrapperProps) {
+  return (
+    <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
+      <SectionHeader title={title} seeMorePath={seeMorePath} />
+      {children}
+    </View>
+  );
+}

@@ -18,7 +18,7 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import actionRegister from "@/modules/guest/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
 import { retrieveToken } from "@/modules/core/utils/secureStore";
-import { IApiResponse } from "@/modules/core/data";
+import { IApiResponse } from "@/modules/core/types";
 
 const Page = () => {
   const [formValues] = useState({

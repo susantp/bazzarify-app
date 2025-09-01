@@ -3,15 +3,18 @@ import React from "react";
 import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
-import { ItemProps } from "@/components";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
+import { IProductWithImage } from "@/modules/product/types/product";
 
 export interface FlashDealsProductCardProps {
-  item: ItemProps;
+  item: IProductWithImage;
 }
 
-function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
+export default function FlashDealsProductCard({
+  item,
+}: FlashDealsProductCardProps) {
   const { width, height } = useAtomValue(screenDimensionAtom);
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -39,12 +42,10 @@ function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
             width: width * 0.3,
             height: height * 0.15,
           }}
-          source={getFirstImageSource({ itemImages: item.images })}
+          source={getFirstImageSource({ item: item })}
           className="rounded-lg border border-gray-400 p-2"
         />
       </View>
     </TouchableOpacity>
   );
 }
-
-export default FlashDealsProductCard;

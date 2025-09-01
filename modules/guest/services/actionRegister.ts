@@ -4,7 +4,7 @@ import { TRegisterFormField } from "@/components/common";
 import { AxiosError, AxiosResponse } from "axios";
 import { setToken } from "@/modules/core/utils/secureStore";
 import * as Sentry from "@sentry/react-native";
-import { IApiResponse } from "@/modules/core/data";
+import { IApiResponse } from "@/modules/core/types";
 import {
   setDataResponse,
   setMetaDataResponse,
