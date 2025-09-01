@@ -36,7 +36,7 @@ export default function HomeScreen() {
           <FlatList
             data={CARDS}
             renderItem={({ item, index }) => item.component}
-            keyExtractor={(index) => randomUUID()}
+            keyExtractor={() => randomUUID()}
             refreshControl={
               <RefreshControl
                 refreshing={Boolean(refreshing)}

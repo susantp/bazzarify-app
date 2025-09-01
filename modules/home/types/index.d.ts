@@ -1,9 +1,9 @@
-import React from "react";
+import { ReactElement } from "react";
 import { UseInfiniteQueryResult, UseQueryResult } from "@tanstack/react-query";
 
 export interface IHomeCard {
   id: string;
-  component: React.ReactNode;
+  component: ReactElement;
   title: string;
 }
 export interface IHomeCardComponent<T> {
