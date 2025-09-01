@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { FlatList } from "react-native";
 import * as Crypto from "expo-crypto";
 import React from "react";
-import { IHomeCards } from "@/components/home/types";
+import { IHomeCardComponent } from "@/modules/home/types";
 import { ICategoryListWithImagePayload } from "@/modules/product/types/payloads";
 import CategoryCard from "@/components/common/CategoryCard";
 
@@ -14,7 +14,7 @@ const id = "categories";
 const numCols = 3;
 export default function HomeCategories({
   queryResult,
-}: IHomeCards<ICategoryListWithImagePayload | undefined>) {
+}: IHomeCardComponent<ICategoryListWithImagePayload | undefined>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
     <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>

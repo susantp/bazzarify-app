@@ -4,7 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { FlatList } from "react-native";
 import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
 import * as Crypto from "expo-crypto";
-import { IHomeCards } from "@/components/home/types";
+import { IHomeCardComponent } from "@/modules/home/types";
 
 const className = "bg-white px-1 py-3";
 const title = "Flash Deals";
@@ -13,7 +13,7 @@ const id = "flashDeals";
 const numCols = 3;
 export default function FlashDealCard({
   queryResult,
-}: IHomeCards<IFlashDealsPayload | undefined>) {
+}: IHomeCardComponent<IFlashDealsPayload | undefined>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
     <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>

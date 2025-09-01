@@ -4,7 +4,7 @@ import { FlatList } from "react-native";
 import ProductCard from "@/components/common/ProductCard";
 import * as Crypto from "expo-crypto";
 import React from "react";
-import { IHomeCards } from "@/components/home/types";
+import { IHomeCardComponent } from "@/modules/home/types";
 import { IPopularProductsPayload } from "@/modules/product/types/payloads";
 
 const className = "bg-white px-1 py-3";
@@ -14,7 +14,7 @@ const id = "popularItems";
 const numCols = 2;
 export default function PopularItems({
   queryResult,
-}: IHomeCards<IPopularProductsPayload | undefined>) {
+}: IHomeCardComponent<IPopularProductsPayload | undefined>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
     <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>

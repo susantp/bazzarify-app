@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { FlatList, View } from "react-native";
 import ProductCard from "@/components/common/ProductCard";
 import React from "react";
-import { IHomeInfiniteCards } from "@/components/home/types";
+import { IHomeInfiniteCardComponent } from "@/components/home/types";
 import { IJustForYouProductsPayload } from "@/modules/product/types/payloads";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
@@ -16,7 +16,7 @@ const id = "JustForYou";
 const numCols = 2;
 export default function JustForYou({
   queryResult,
-}: IHomeInfiniteCards<IJustForYouProductsPayload>) {
+}: IHomeInfiniteCardComponent<IJustForYouProductsPayload>) {
   const { data, isLoading, isError, error } =
     queryResult as UseInfiniteQueryResult<
       InfiniteData<IJustForYouProductsPayload>,

@@ -12,6 +12,7 @@ import FlashDealCard from "@/components/home/cards/FlashDealCard";
 import PopularItems from "@/components/home/cards/PopularItems";
 import JustForYou from "@/components/home/cards/JustForYou";
 import HomeCategories from "@/components/home/cards/HomeCategories";
+import { IHomeCard } from "@/modules/home/types";
 
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
@@ -61,7 +62,7 @@ export default function useHomeScreenHook() {
     ]);
   };
 
-  const CARDS = [
+  const CARDS: IHomeCard[] = [
     {
       id: randomUUID(),
       component: <ImageSlider images={SliderData} autoplayInterval={4000} />,
@@ -87,6 +88,7 @@ export default function useHomeScreenHook() {
           />
         </View>
       ),
+      title: "Ad Banner",
     },
     {
       id: randomUUID(),
