@@ -4,6 +4,7 @@ import React from "react";
 import SectionHeader, {
   SectionHeaderProps,
 } from "@/components/home/SectionHeader";
+import { Href } from "expo-router";
 
 export interface ContentGridSectionProps<T> {
   title: string;
@@ -58,26 +59,20 @@ function ContentGridSection<T>({
 export default ContentGridSection;
 
 interface GridWrapperProps {
-  navigateTo?: string;
+  seeMorePath: Href;
   className?: string;
-  section?: SectionHeaderProps;
   title: string;
   children: React.ReactNode;
 }
 export function GridWrapper({
   className,
-  section,
+  seeMorePath,
   title,
   children,
 }: GridWrapperProps) {
   return (
     <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
-      {section && (
-        <SectionHeader
-          title={section.title}
-          seeMorePath={section.seeMorePath}
-        />
-      )}
+      <SectionHeader title={title} seeMorePath={seeMorePath} />
       {children}
     </View>
   );

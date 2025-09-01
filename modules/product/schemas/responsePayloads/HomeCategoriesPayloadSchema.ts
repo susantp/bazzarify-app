@@ -4,6 +4,9 @@ import { CategoryListWithImageSchema } from "@/modules/product/schemas/CategoryS
 
 export const HomeCategoriesPayloadSchema = z
   .object({
-    homeCategories: SimplePaginatedSchema(CategoryListWithImageSchema),
+    homeCategories: z.union([
+      SimplePaginatedSchema(CategoryListWithImageSchema),
+      z.array(z.any()).length(0),
+    ]),
   })
   .strip();

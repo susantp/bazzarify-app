@@ -19,7 +19,7 @@ export default function DeliveryBar({
   displayCurrentAddress,
   refresh,
 }: DeliveryBarProps) {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   return (
     <View className={className}>
       <MapPinIcon size={14} strokeWidth={2} color="white" />

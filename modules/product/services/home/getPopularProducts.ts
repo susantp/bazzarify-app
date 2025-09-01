@@ -12,7 +12,7 @@ export default async function getPopularProducts(): Promise<IPopularProductsPayl
   try {
     upstream = await axiosInstance.get(upstreamRequestPath);
   } catch (error: unknown) {
-    const err = new Error("Unable to fetch flash deal products", {
+    const err = new Error("Unable to fetch popular products", {
       cause: error,
     });
     Sentry.captureException(err);

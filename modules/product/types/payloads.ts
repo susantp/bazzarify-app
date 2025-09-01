@@ -8,6 +8,9 @@ export interface IFlashDealsPayload {
 export interface IPopularProductsPayload {
   popularProducts: ISimplePaginated<IProductWithImage[]>;
 }
+export interface IJustForYouProductsPayload {
+  justForYouProducts: ISimplePaginated<IProductWithImage[]>;
+}
 export interface ICategoryListWithImagePayload {
   homeCategories: ISimplePaginated<ICategoryListWithImage[]>;
 }

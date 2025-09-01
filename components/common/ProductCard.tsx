@@ -9,10 +9,10 @@ import { IProductWithImage } from "@/modules/product/types/product";
 
 export type ProductCardProps = {
   item: IProductWithImage;
-  containerClasses?: string;
   cols: 2 | 3 | 4;
 };
-const ProductCard = ({ item, containerClasses, cols }: ProductCardProps) => {
+const ProductCard = ({ item, cols }: ProductCardProps) => {
+  if (!item) return null;
   return (
     <TouchableOpacity
       onPress={() =>

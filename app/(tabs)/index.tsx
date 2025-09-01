@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { FlatList, Image } from "react-native";
-import useHomeScreenHook from "@/hooks/useHomeScreenHook";
+import useHomeScreenHook from "@/modules/home/hooks/useHomeScreenHook";
 import TopBar from "@/components/home/TopBar";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import Animated, { FadeIn } from "react-native-reanimated";
