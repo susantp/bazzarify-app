@@ -2,7 +2,11 @@ import React from "react";
 import { Dimensions, Image, View } from "react-native";
 import ImageSlider from "@/components/common/ImageSlider";
 import { SliderData } from "@/constants/SliderData";
-import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueries,
+  useQueryClient,
+} from "@tanstack/react-query";
 import FlashDealCard from "@/components/home/cards/FlashDealCard";
 import PopularItems from "@/components/home/cards/PopularItems";
 import JustForYou from "@/components/home/cards/JustForYou";
@@ -11,6 +15,7 @@ import { IHomeCard } from "@/modules/home/types";
 import homeService from "@/modules/product/services/homeService";
 
 export default function useHomeScreenHook() {
+  const queryClient = useQueryClient();
   const { width, height } = Dimensions.get("window");
   const [
     flashDealsQueryResult,
@@ -53,10 +58,18 @@ export default function useHomeScreenHook() {
     justForYouProducts.isRefetching;
 
   const onRefresh = async () => {
+    // Reset the infinite list so it starts from page 1 again on pull-to-refresh
+    // Clear cached pages for the infinite query so it restarts from initialPageParam (1)
+    queryClient.removeQueries({
+      queryKey: ["just-for-you-products"],
+      exact: true,
+    });
+
     await Promise.all([
       flashDealsQueryResult.refetch(),
       popularProductsQueryResult.refetch(),
       homeCategoriesQueryResult.refetch(),
+      // After removal, refetch will fetch from the initialPageParam (1)
       justForYouProducts.refetch(),
     ]);
   };
