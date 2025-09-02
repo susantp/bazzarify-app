@@ -11,7 +11,6 @@ import DeliveryBar from "@/components/home/DeliveryBar";
 import { useLocation } from "@/modules/core/hooks/useLocation";
 import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { randomUUID } from "expo-crypto";
 import { useAtom, useAtomValue } from "jotai";
 
 export default function HomeScreen() {
@@ -35,8 +34,12 @@ export default function HomeScreen() {
         <ContentWrapper>
           <FlatList
             data={CARDS}
-            renderItem={({ item, index }) => item.component}
-            keyExtractor={() => randomUUID()}
+            renderItem={({ item }) => item.component}
+            keyExtractor={(item) => item.id}
+            initialNumToRender={4}
+            windowSize={5}
+            maxToRenderPerBatch={6}
+            removeClippedSubviews
             refreshControl={
               <RefreshControl
                 refreshing={Boolean(refreshing)}

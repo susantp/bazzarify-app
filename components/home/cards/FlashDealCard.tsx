@@ -1,9 +1,7 @@
 import { GridWrapper } from "@/components/home/ContentGridSection";
-import { IFlashDealsPayload } from "@/modules/product/types/payloads";
 import { ThemedText } from "@/components/ThemedText";
 import { FlatList } from "react-native";
 import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
-import * as Crypto from "expo-crypto";
 import { IHomeCardComponent } from "@/modules/home/types";
 import { TFlashDealsPayload } from "@/modules/product/schemas/responsePayloads/FlashDealsPayloadSchema";
 
@@ -27,7 +25,7 @@ export default function FlashDealCard({
           id={id}
           data={data?.flashDeals?.data}
           renderItem={({ item }) => <FlashDealsProductCard item={item} />}
-          keyExtractor={() => Crypto.randomUUID()}
+          keyExtractor={(item) => item.uuid}
           horizontal={false}
           numColumns={numCols}
           showsVerticalScrollIndicator={false}

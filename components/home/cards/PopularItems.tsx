@@ -2,7 +2,6 @@ import { GridWrapper } from "@/components/home/ContentGridSection";
 import { ThemedText } from "@/components/ThemedText";
 import { FlatList } from "react-native";
 import ProductCard from "@/components/common/ProductCard";
-import * as Crypto from "expo-crypto";
 import React from "react";
 import { IHomeCardComponent } from "@/modules/home/types";
 import { TPopularProductsPayload } from "@/modules/product/schemas/responsePayloads/PopularProductsPayloadSchema";
@@ -26,10 +25,8 @@ export default function PopularItems({
         <FlatList
           id={id}
           data={data?.popularProducts?.data}
-          renderItem={({ item, index }) => (
-            <ProductCard item={item} key={index} cols={numCols} />
-          )}
-          keyExtractor={() => Crypto.randomUUID()}
+          renderItem={({ item }) => <ProductCard item={item} cols={numCols} />}
+          keyExtractor={(item) => item.uuid}
           horizontal={false}
           numColumns={numCols}
           showsVerticalScrollIndicator={false}

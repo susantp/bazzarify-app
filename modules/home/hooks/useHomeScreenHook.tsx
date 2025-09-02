@@ -1,5 +1,4 @@
 import React from "react";
-import { randomUUID } from "expo-crypto";
 import { Dimensions, Image, View } from "react-native";
 import ImageSlider from "@/components/common/ImageSlider";
 import { SliderData } from "@/constants/SliderData";
@@ -64,22 +63,22 @@ export default function useHomeScreenHook() {
 
   const CARDS: IHomeCard[] = [
     {
-      id: randomUUID(),
+      id: "slider",
       component: <ImageSlider images={SliderData} autoplayInterval={4000} />,
       title: "Slider",
     },
     {
-      id: randomUUID(),
+      id: "flash-deals",
       component: <FlashDealCard queryResult={flashDealsQueryResult} />,
       title: "Flash Deals",
     },
     {
-      id: randomUUID(),
+      id: "popular-items",
       component: <PopularItems queryResult={popularProductsQueryResult} />,
       title: "Popular Items",
     },
     {
-      id: randomUUID(),
+      id: "ad-banner",
       component: (
         <View className="flex w-full items-center">
           <Image
@@ -91,12 +90,12 @@ export default function useHomeScreenHook() {
       title: "Ad Banner",
     },
     {
-      id: randomUUID(),
+      id: "categories",
       component: <HomeCategories queryResult={homeCategoriesQueryResult} />,
       title: "Categories",
     },
     {
-      id: randomUUID(),
+      id: "just-for-you",
       component: <JustForYou queryResult={justForYouProducts} />,
       title: "Just For You",
     },

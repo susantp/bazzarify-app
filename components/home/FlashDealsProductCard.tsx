@@ -4,19 +4,13 @@ import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
-import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
-import {
-  OmittedProductWithImagesSchema,
-  TOmittedProductWithImages,
-} from "@/modules/product/schemas/ProductSchema";
+import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
 
 export interface FlashDealsProductCardProps {
   item: TOmittedProductWithImages;
 }
 
-export default function FlashDealsProductCard({
-  item,
-}: FlashDealsProductCardProps) {
+function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
   const { width, height } = useAtomValue(screenDimensionAtom);
 
   return (
@@ -56,3 +50,5 @@ export default function FlashDealsProductCard({
     </TouchableOpacity>
   );
 }
+
+export default React.memo(FlashDealsProductCard);

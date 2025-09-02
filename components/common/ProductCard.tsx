@@ -80,7 +80,7 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
     </TouchableOpacity>
   );
 };
-export default ProductCard;
+export default React.memo(ProductCard);
 
 const PolygonFreeDelivery = () => {
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
