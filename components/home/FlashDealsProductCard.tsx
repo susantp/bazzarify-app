@@ -4,10 +4,10 @@ import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
-import { IProductWithImage } from "@/modules/product/types/product";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 
 export interface FlashDealsProductCardProps {
-  item: IProductWithImage;
+  item: TProductWithVariantAndImage;
 }
 
 export default function FlashDealsProductCard({
@@ -42,7 +42,10 @@ export default function FlashDealsProductCard({
             width: width * 0.3,
             height: height * 0.15,
           }}
-          source={getFirstImageSource({ item: item })}
+          source={getFirstImageSource({
+            images: item.images,
+            baseUrl: item.image_base_url,
+          })}
           className="rounded-lg border border-gray-400 p-2"
         />
       </View>

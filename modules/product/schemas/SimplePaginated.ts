@@ -7,7 +7,7 @@ export const SimplePaginatedSchema = <T extends z.ZodTypeAny>(item: T) =>
         .union([z.number().int().nonnegative(), z.string()])
         .nullable(),
       current_page_url: z.string(),
-      data: z.array(item),
+      data: z.array(item).nullable(),
       first_page_url: z.string(),
       from: z.union([z.number().int().nonnegative(), z.string()]).nullable(),
       next_page_url: z.string().nullable(),

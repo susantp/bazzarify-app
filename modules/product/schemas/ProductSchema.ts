@@ -1,20 +1,51 @@
 import { z } from "zod";
+import { ImageSchema } from "@/modules/product/schemas/ImageSchema";
+import SpecificationSchema from "@/modules/product/schemas/SpecificationSchema";
+import TimeStampsSchema from "@/modules/core/schemas/TimeStampsSchema";
 
 export const ProductSchema = z
   .object({
     type: z.enum(["retail", "wholesale"]),
-    uuid: z.string(),
-    image_base_path: z.string().optional(),
-    image_base_url: z.string().optional(),
-    id: z.string(),
+    uuid: z.uuid(),
+    user_uuid: z.uuid().nullable(),
+    image_base_path: z.string(),
+    image_base_url: z.string(),
+    id: z.number().nullable(),
     name: z.string(),
     slug: z.string(),
     base_price: z.number().nonnegative(),
-    description: z.string().optional(),
-    highlights: z.string().optional(),
-    box_items: z.string().optional(),
+    description: z.looseObject({}).nullable(),
+    highlights: z.looseObject({}).nullable(),
+    box_items: z.string().nullable(),
     status_text: z.string(),
+    brand_uuid: z.uuid().nullable(),
     status: z.number().nonnegative(),
-    specifications: z.record(z.string(), z.string()),
+    brand: z.object().nullable().optional(),
+    images: z.union([z.array(ImageSchema).optional(), z.array(z.unknown())]),
+  })
+  .extend({
+    specifications: SpecificationSchema,
+  }) //TODO remove this from core product schema, extend it later
+  .extend(TimeStampsSchema.shape)
+  .strict();
+export const OmittedProductWithImagesSchema = ProductSchema.omit({
+  id: true,
+  box_items: true,
+  specifications: true,
+  highlights: true,
+  description: true,
+  brand: true,
+  user_uuid: true,
+  brand_uuid: true,
+  created_at: true,
+  updated_at: true,
+  deleted_at: true,
+})
+  .extend({
+    images: z.array(ImageSchema).nullable(),
   })
   .strict();
+
+export type TOmittedProductWithImages = z.infer<
+  typeof OmittedProductWithImagesSchema
+>;

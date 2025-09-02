@@ -1,11 +1,9 @@
 import { FlatList, View } from "react-native";
 import CartItem from "@/components/cart/CartItem";
-import ContentGridSection from "@/components/home/ContentGridSection";
-import { popularItemsData } from "@/constants/popularItemsData";
 import React from "react";
 import { cartItemsAtom } from "@/atoms/cartScreen/cartAction.atom";
-import ProductCard from "@/components/common/ProductCard";
 import { useAtomValue } from "jotai";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
 
 export default function useCartScreenHook() {
   const cartItems = useAtomValue(cartItemsAtom);
@@ -28,16 +26,17 @@ export default function useCartScreenHook() {
     {
       title: "other-products",
       component: (
-        <ContentGridSection
-          className="align-center flex-col pl-4"
-          title={"Just for you"}
-          items={popularItemsData}
-          cols={2}
-          horizontal={false}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
+        <ThemedLoader />
+        // <ContentGridSection
+        //   className="align-center flex-col pl-4"
+        //   title={"Just for you"}
+        //   items={popularItemsData}
+        //   cols={2}
+        //   horizontal={false}
+        //   renderItem={(item, index, cols) => (
+        //     <ProductCard item={item} key={index} cols={cols} />
+        //   )}
+        // />
       ),
     },
   ];

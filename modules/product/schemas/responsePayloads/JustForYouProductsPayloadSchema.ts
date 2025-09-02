@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { ProductWithImageSchema } from "@/modules/product/schemas/ProductWithImageSchema";
+import { OmittedProductWithImagesSchema } from "@/modules/product/schemas/ProductSchema";
 import { SimplePaginatedSchema } from "@/modules/product/schemas/SimplePaginated";
 
 export const JustForYouProductsPayloadSchema = z
   .object({
     justForYouProducts: z.union([
-      SimplePaginatedSchema(ProductWithImageSchema),
+      SimplePaginatedSchema(OmittedProductWithImagesSchema),
       z.array(z.unknown()).length(0),
     ]),
   })

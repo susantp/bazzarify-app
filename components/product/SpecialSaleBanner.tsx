@@ -1,10 +1,10 @@
-import { ItemProps } from "@/components";
 import { formatDistance } from "date-fns";
 import { View } from "react-native";
 import StyledText from "@/components/common/StyledText";
 import React from "react";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 
-const SpecialSaleBanner = ({ item }: { item: ItemProps }) => {
+const SpecialSaleBanner = ({ item }: { item: TProductWithVariantAndImage }) => {
   if (!item.specialSale) return <></>;
   const { specialSale, price } = item;
   const timeDistance = formatDistance(

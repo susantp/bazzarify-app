@@ -1,21 +1,24 @@
 import { TouchableOpacity, View } from "react-native";
 import React from "react";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
-import { ItemProps } from "@/components";
 import ImageSlider from "@/components/common/ImageSlider";
-import { ImageSliderType } from "@/constants/SliderData";
+import constructProductImagesUrl from "@/modules/product/utils/constructImageUrl";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 
 export interface IProductSliderProps {
-  item: ItemProps;
+  item: TProductWithVariantAndImage;
 }
 
 const ProductSlider = ({ item }: IProductSliderProps) => {
-  const images: ImageSliderType[] | undefined = item.images?.map((img) => ({
-    title: "",
-    image: { uri: img.s3_path_url },
-    description: "",
-  }));
-  if (!images || images.length === 0) return null;
+  let images = constructProductImagesUrl(item);
+  if (!images || images.length === 0)
+    images = [
+      {
+        title: "default",
+        description: "default",
+        image: { uri: require("@/assets/products/product.png") },
+      },
+    ];
   return (
     <>
       <View

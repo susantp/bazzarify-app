@@ -1,13 +1,14 @@
-import { ItemProps, ItemVariant } from "@/components";
 import { Text, View } from "react-native";
 import React from "react";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 
 const ProductPriceComponent = ({
   item,
   selectedVariant,
 }: {
-  item: ItemProps;
-  selectedVariant?: ItemVariant;
+  item: TProductWithVariantAndImage;
+  selectedVariant?: TVariantListWithImage;
 }) => {
   const price = selectedVariant ? selectedVariant.price : item.base_price;
   return (
@@ -15,7 +16,7 @@ const ProductPriceComponent = ({
       <View className="flex-row items-center justify-between">
         <View id="price" className="flex-row items-end gap-x-3">
           <Text className="text-md text-2xl font-bold text-orange-600">
-            {Object.values(price).reverse().join(" ")}
+            {price.toString()}
           </Text>
           {/*<Text className="text-sm text-gray-600 line-through">Rs. 3,499</Text>*/}
         </View>

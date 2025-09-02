@@ -5,10 +5,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Svg, { Polygon } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
-import { IProductWithImage } from "@/modules/product/types/product";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 
 export type ProductCardProps = {
-  item: IProductWithImage;
+  item: TProductWithVariantAndImage;
   cols: 2 | 3 | 4;
 };
 const ProductCard = ({ item, cols }: ProductCardProps) => {
@@ -30,7 +30,10 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
             className="flex-row items-center justify-center"
           >
             <Image
-              source={getFirstImageSource({ item: item })}
+              source={getFirstImageSource({
+                images: item.images,
+                baseUrl: item.image_base_url,
+              })}
               className="h-48 w-48 rounded-lg md:h-64 md:w-64"
             />
           </View>

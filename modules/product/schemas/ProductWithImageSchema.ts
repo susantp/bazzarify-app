@@ -10,6 +10,6 @@ export const ProductWithImageSchema = ProductSchema.omit({
   description: true,
 })
   .extend({
-    images: z.array(ImageSchema).optional(),
+    images: z.array(ImageSchema).nullable(),
   })
   .strip();

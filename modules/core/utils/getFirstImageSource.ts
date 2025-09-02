@@ -1,20 +1,25 @@
 import { ImageSourcePropType } from "react-native";
-import { IProductWithImage } from "@/modules/product/types/product";
+import { TImage } from "@/modules/product/schemas/ImageSchema";
 
 interface IGetImageSrc {
-  item: IProductWithImage;
+  images: TImage[] | undefined | null;
+  baseUrl: string;
   index?: number;
 }
 
 export default function getFirstImageSource({
-  item,
+  images,
+  baseUrl,
   index = 0,
 }: IGetImageSrc): ImageSourcePropType {
-  if (!item.images?.length) {
-    return require("@/assets/products/product.png");
-  }
+  const defaultImage =
+    baseUrl && baseUrl.includes("category")
+      ? require("@/assets/products/cat-img.png")
+      : require("@/assets/products/product.png");
 
-  return {
-    uri: item.image_base_url?.concat(item.images[index].file),
-  };
+  if (!images?.length) return defaultImage;
+
+  const safeIndex = index < 0 || index >= images.length ? 0 : index;
+
+  return { uri: baseUrl.concat(images[safeIndex].file) };
 }

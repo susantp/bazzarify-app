@@ -10,10 +10,8 @@ import {
   View,
 } from "react-native";
 import ShippingCoupon from "@/components/common/CouponComponent";
-import ContentGridSection from "@/components/home/ContentGridSection";
-import { popularItemsData } from "@/constants/popularItemsData";
 import React, { ReactElement } from "react";
-import ProductCard from "@/components/common/ProductCard";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
 
 type VoucherCenterCard = { id: string; component: ReactElement };
 export default function Page() {
@@ -65,16 +63,17 @@ export default function Page() {
     {
       id: "productList",
       component: (
-        <ContentGridSection
-          className="align-center flex-col bg-white"
-          title={"Popular Items"}
-          items={popularItemsData}
-          horizontal={false}
-          cols={2}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
+        <ThemedLoader />
+        // <ContentGridSection
+        //   className="align-center flex-col bg-white"
+        //   title={"Popular Items"}
+        //   items={popularItemsData}
+        //   horizontal={false}
+        //   cols={2}
+        //   renderItem={(item, index, cols) => (
+        //     <ProductCard item={item} key={index} cols={cols} />
+        //   )}
+        // />
       ),
     },
   ];

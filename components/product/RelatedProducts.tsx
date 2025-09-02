@@ -1,6 +1,4 @@
 import { Text, View } from "react-native";
-import ProductCard from "@/components/common/ProductCard";
-import { popularItemsData } from "@/constants/popularItemsData";
 import React from "react";
 
 const RelatedProducts = () => (
@@ -12,30 +10,14 @@ const RelatedProducts = () => (
         </Text>
         <Text>See more</Text>
       </View>
-      <View className="flex-row">
-        <ProductCard
-          cols={2}
-          item={popularItemsData[0]}
-          containerClasses={`w-6/12 h-full py-2 px-1 bg-white`}
-        />
-        <ProductCard
-          cols={2}
-          item={popularItemsData[0]}
-          containerClasses={`w-6/12 h-full py-2 px-1 bg-white`}
-        />
-      </View>
-      <View className="flex-row">
-        <ProductCard
-          cols={2}
-          item={popularItemsData[0]}
-          containerClasses={`w-6/12 h-full py-2 px-1 bg-white`}
-        />
-        <ProductCard
-          cols={2}
-          item={popularItemsData[0]}
-          containerClasses={`w-6/12 h-full py-2 px-1 bg-white`}
-        />
-      </View>
+      {/*<View className="flex-row">*/}
+      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
+      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
+      {/*</View>*/}
+      {/*<View className="flex-row">*/}
+      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
+      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
+      {/*</View>*/}
     </View>
   </View>
 );
