@@ -4,15 +4,12 @@ import { Dimensions, Image, View } from "react-native";
 import ImageSlider from "@/components/common/ImageSlider";
 import { SliderData } from "@/constants/SliderData";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
-import getFlashDealProducts from "@/modules/product/services/home/getFlashDealProducts";
-import getHomeCategories from "@/modules/product/services/home/getHomeCategories";
-import getJustForYouProducts from "@/modules/product/services/home/getJustForYouProducts";
-import getPopularProducts from "@/modules/product/services/home/getPopularProducts";
 import FlashDealCard from "@/components/home/cards/FlashDealCard";
 import PopularItems from "@/components/home/cards/PopularItems";
 import JustForYou from "@/components/home/cards/JustForYou";
 import HomeCategories from "@/components/home/cards/HomeCategories";
 import { IHomeCard } from "@/modules/home/types";
+import homeService from "@/modules/product/services/homeService";
 
 export default function useHomeScreenHook() {
   const { width, height } = Dimensions.get("window");
@@ -24,15 +21,15 @@ export default function useHomeScreenHook() {
     queries: [
       {
         queryKey: ["flashDealProducts"],
-        queryFn: getFlashDealProducts,
+        queryFn: homeService.getFlashDealProducts,
       },
       {
         queryKey: ["popularProducts"],
-        queryFn: getPopularProducts,
+        queryFn: homeService.getPopularProducts,
       },
       {
         queryKey: ["homeCategories"],
-        queryFn: getHomeCategories,
+        queryFn: homeService.getHomeCategories,
       },
     ],
   });
@@ -40,10 +37,13 @@ export default function useHomeScreenHook() {
     queryKey: ["just-for-you-products"],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
-      getJustForYouProducts({ perPage: "10", page: String(pageParam) }),
+      homeService.getJustForYouProducts({
+        perPage: "10",
+        page: String(pageParam),
+      }),
     getNextPageParam: (lastPage) => {
-      const p = lastPage.justForYouProducts;
-      return p.next_page_url ? Number(p.current_page) + 1 : undefined;
+      const p = lastPage?.justForYouProducts;
+      return p?.next_page_url ? Number(p.current_page) + 1 : undefined;
     },
   });
 

@@ -5,9 +5,13 @@ import { useAtomValue } from "jotai";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import {
+  OmittedProductWithImagesSchema,
+  TOmittedProductWithImages,
+} from "@/modules/product/schemas/ProductSchema";
 
 export interface FlashDealsProductCardProps {
-  item: TProductWithVariantAndImage;
+  item: TOmittedProductWithImages;
 }
 
 export default function FlashDealsProductCard({

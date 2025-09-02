@@ -5,6 +5,7 @@ import { FlatList } from "react-native";
 import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
 import * as Crypto from "expo-crypto";
 import { IHomeCardComponent } from "@/modules/home/types";
+import { TFlashDealsPayload } from "@/modules/product/schemas/responsePayloads/FlashDealsPayloadSchema";
 
 const className = "bg-white px-1 py-3";
 const title = "Flash Deals";
@@ -13,7 +14,7 @@ const id = "flashDeals";
 const numCols = 3;
 export default function FlashDealCard({
   queryResult,
-}: IHomeCardComponent<IFlashDealsPayload | undefined>) {
+}: IHomeCardComponent<TFlashDealsPayload>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
     <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>
@@ -24,7 +25,7 @@ export default function FlashDealCard({
       ) : (
         <FlatList
           id={id}
-          data={data?.flashDeals.data}
+          data={data?.flashDeals?.data}
           renderItem={({ item }) => <FlashDealsProductCard item={item} />}
           keyExtractor={() => Crypto.randomUUID()}
           horizontal={false}

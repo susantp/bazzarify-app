@@ -5,7 +5,7 @@ import ProductCard from "@/components/common/ProductCard";
 import * as Crypto from "expo-crypto";
 import React from "react";
 import { IHomeCardComponent } from "@/modules/home/types";
-import { IPopularProductsPayload } from "@/modules/product/types/payloads";
+import { TPopularProductsPayload } from "@/modules/product/schemas/responsePayloads/PopularProductsPayloadSchema";
 
 const className = "bg-white px-1 py-3";
 const title = "Popular Items";
@@ -14,7 +14,7 @@ const id = "popularItems";
 const numCols = 2;
 export default function PopularItems({
   queryResult,
-}: IHomeCardComponent<IPopularProductsPayload | undefined>) {
+}: IHomeCardComponent<TPopularProductsPayload>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
     <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>
@@ -25,7 +25,7 @@ export default function PopularItems({
       ) : (
         <FlatList
           id={id}
-          data={data?.popularProducts.data}
+          data={data?.popularProducts?.data}
           renderItem={({ item, index }) => (
             <ProductCard item={item} key={index} cols={numCols} />
           )}

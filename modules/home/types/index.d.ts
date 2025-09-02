@@ -7,7 +7,7 @@ export interface IHomeCard {
   title: string;
 }
 export interface IHomeCardComponent<T> {
-  queryResult: UseQueryResult<T, Error>;
+  queryResult: UseQueryResult<T | null>;
 }
 export interface IHomeInfiniteCardComponent<T> {
   queryResult: UseInfiniteQueryResult<InfiniteData<T>, Error>;

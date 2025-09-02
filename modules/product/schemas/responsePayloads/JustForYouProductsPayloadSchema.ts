@@ -4,9 +4,12 @@ import { SimplePaginatedSchema } from "@/modules/product/schemas/SimplePaginated
 
 export const JustForYouProductsPayloadSchema = z
   .object({
-    justForYouProducts: z.union([
-      SimplePaginatedSchema(OmittedProductWithImagesSchema),
-      z.array(z.unknown()).length(0),
-    ]),
+    justForYouProducts: SimplePaginatedSchema(
+      OmittedProductWithImagesSchema,
+    ).nullable(),
   })
   .strip();
+
+export type TJustForYouProductsPayload = z.infer<
+  typeof JustForYouProductsPayloadSchema
+>;

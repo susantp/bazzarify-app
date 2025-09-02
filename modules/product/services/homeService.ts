@@ -1,0 +1,95 @@
+import { AxiosResponse } from "axios";
+import axiosInstance from "@/modules/core/utils/axios";
+import * as Sentry from "@sentry/react-native";
+import { DataSchema } from "@/modules/core/schemas/DataSchema";
+import {
+  FlashDealsPayloadSchema,
+  TFlashDealsPayload,
+} from "@/modules/product/schemas/responsePayloads/FlashDealsPayloadSchema";
+import { formattedIssues } from "@/modules/core/utils/zod.util";
+import {
+  HomeCategoriesPayloadSchema,
+  THomeCategoriesPayload,
+} from "@/modules/product/schemas/responsePayloads/HomeCategoriesPayloadSchema";
+import {
+  JustForYouProductsPayloadSchema,
+  TJustForYouProductsPayload,
+} from "@/modules/product/schemas/responsePayloads/JustForYouProductsPayloadSchema";
+import {
+  PopularProductsPayloadSchema,
+  TPopularProductsPayload,
+} from "@/modules/product/schemas/responsePayloads/PopularProductsPayloadSchema";
+import { z } from "zod";
+
+async function fetchDataAndValidate<T extends z.ZodType>(
+  endpoint: string,
+  payloadSchema: T,
+  errorMessage: string,
+  params?: Record<string, string>,
+): Promise<z.infer<T>> {
+  let upstream: AxiosResponse<unknown>;
+  try {
+    upstream = await axiosInstance.get(endpoint, { params });
+  } catch (error: unknown) {
+    const err = new Error(errorMessage, { cause: error });
+    Sentry.captureException(err);
+    throw err;
+  }
+  const parsed = payloadSchema.safeParse(upstream.data);
+
+  if (!parsed.success) {
+    const issues = formattedIssues(parsed.error.issues);
+    console.log(issues);
+    Sentry.captureException(issues);
+    throw new Error("API response schema validation failed", { cause: issues });
+  }
+
+  return parsed.data;
+}
+
+export async function getFlashDealProducts(): Promise<TFlashDealsPayload | null> {
+  const response = await fetchDataAndValidate(
+    "/home/getFlashDealProducts",
+    DataSchema(FlashDealsPayloadSchema),
+    "Unable to fetch flash deal products",
+  );
+  return response.payload;
+}
+
+export async function getHomeCategories(): Promise<THomeCategoriesPayload | null> {
+  const response = await fetchDataAndValidate(
+    "/home/getHomeCategories",
+    DataSchema(HomeCategoriesPayloadSchema),
+    "Unable to fetch home categories",
+  );
+  return response.payload;
+}
+
+export async function getJustForYouProducts(
+  params?: Record<string, string>,
+): Promise<TJustForYouProductsPayload | null> {
+  const response = await fetchDataAndValidate(
+    "/home/getJustForYouProducts",
+    DataSchema(JustForYouProductsPayloadSchema),
+    "Unable to just for you products",
+    params,
+  );
+  return response.payload;
+}
+
+export async function getPopularProducts(): Promise<TPopularProductsPayload | null> {
+  const response = await fetchDataAndValidate(
+    "/home/getPopularProducts",
+    DataSchema(PopularProductsPayloadSchema),
+    "Unable to fetch popular products",
+  );
+  return response.payload;
+}
+
+const homeService = {
+  getFlashDealProducts,
+  getJustForYouProducts,
+  getPopularProducts,
+  getHomeCategories,
+};
+export default homeService;

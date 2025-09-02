@@ -5,10 +5,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Svg, { Polygon } from "react-native-svg";
 import { Colors } from "@/constants/Colors";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
-import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
 
 export type ProductCardProps = {
-  item: TProductWithVariantAndImage;
+  item: TOmittedProductWithImages | null;
   cols: 2 | 3 | 4;
 };
 const ProductCard = ({ item, cols }: ProductCardProps) => {
