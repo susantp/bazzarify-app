@@ -13,29 +13,32 @@ const ProductVariantSelector = ({
       <View>
         <Text className="text-xl font-semibold">
           Option:{" "}
-          {selectedVariant?.name || (
+          {selectedVariant?.name.replace("|", " ") || (
             <Text className="text-red-600">Select the option</Text>
           )}
         </Text>
       </View>
       <View className="flex-row items-center justify-items-center gap-x-3">
-        {variants.map((variant) => (
-          <TouchableOpacity
-            key={variant.uuid}
-            onPress={() => onPress(variant)}
-            className="h-10 w-10 rounded-full border-2 border-orange-600 p-0.5"
-          >
-            <View className="h-full w-full rounded-full bg-black">
-              <Image
-                source={getFirstImageSource({
-                  images: variant.images,
-                  baseUrl: variant.image_base_url,
-                })}
-                className="h-full w-full rounded-full"
-              />
-            </View>
-          </TouchableOpacity>
-        ))}
+        {variants.map((variant) => {
+          const bg = "bg-".concat(variant.name.split("|")[0]).concat("-200");
+          return (
+            <TouchableOpacity
+              key={variant.uuid}
+              onPress={() => onPress(variant)}
+              className="h-10 w-10 rounded-full border-2 border-orange-600 p-0.5"
+            >
+              <View className={`h-full w-full rounded-full ${bg}`}>
+                <Image
+                  source={getFirstImageSource({
+                    images: variant.images,
+                    baseUrl: variant.image_base_url,
+                  })}
+                  className="h-full w-full rounded-full"
+                />
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </View>
   );

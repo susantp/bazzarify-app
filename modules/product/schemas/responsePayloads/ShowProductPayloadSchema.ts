@@ -4,7 +4,12 @@ import { ProductWithVariantAndImageSchema } from "@/modules/product/schemas/Prod
 export const ShowProductPayloadSchema = z
   .object({
     product: ProductWithVariantAndImageSchema,
+    currency: z
+      .object({
+        code: z.string(),
+      })
+      .strict(),
   })
-  .strip();
+  .strict();
 
 export type IProductShowPayload = z.infer<typeof ShowProductPayloadSchema>;

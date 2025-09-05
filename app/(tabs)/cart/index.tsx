@@ -1,33 +1,28 @@
 import React from "react";
-import { cartItemsTotalAtom } from "@/atoms/cartScreen/cartAction.atom";
-import { useAtom, useAtomValue } from "jotai";
 import CartHeader from "@/components/cart/CartHeader";
-import { Alert, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import BottomActionView from "@/components/common/BottomActionView";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import useCartScreenHook from "@/hooks/useCartScreenHook";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import { addressModalAtom } from "@/atoms/addressModalAtom";
 import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
-import { router } from "expo-router";
 
 export default function CartScreen() {
-  const totalCartPrice = useAtomValue(cartItemsTotalAtom);
-  const { CARDS, cartItems, selectedItemCount } = useCartScreenHook();
-  const [showModal, setShowModal] = useAtom(addressModalAtom);
-  const handlePress = () =>
-    selectedItemCount < 1
-      ? Alert.alert("Please select item to checkout.")
-      : router.push("/cart/checkout");
-  const handleAddressPress = () => {
-    setShowModal(!showModal);
-    router.push(`/account/setting/address/create`);
-  };
+  const {
+    CARDS,
+    items,
+    sub_total,
+    showAddressModal,
+    handleAddressModal,
+    handleAddressPress,
+    handleCheckoutPress,
+  } = useCartScreenHook();
+
   return (
     <SafeAreaWrapper>
-      <CartHeader />
+      <CartHeader onAddressButtonPress={handleAddressModal} />
       <ContentWrapper>
         <FlatList
           className="bg-white"
@@ -35,23 +30,21 @@ export default function CartScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartItems.length > 0 && (
+      {items.length > 0 && (
         <BottomActionView>
           <CheckoutBottomActionView
-            handlePress={handlePress}
-            totalPrice={totalCartPrice}
+            handlePress={handleCheckoutPress}
+            totalPrice={sub_total}
             btnLabel={
-              cartItems.length > 0
-                ? `Checkout (${selectedItemCount})`
-                : "Checkout"
+              items.length > 0 ? `Checkout (${items.length})` : "Checkout"
             }
           />
         </BottomActionView>
       )}
       <DemoModalComponent
         type="bottom"
-        showModal={showModal}
-        handlePress={() => setShowModal(!showModal)}
+        showModal={showAddressModal}
+        handlePress={handleAddressModal}
       >
         <SelectAddressModalView
           title="Choose delivery address"

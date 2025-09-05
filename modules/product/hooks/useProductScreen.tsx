@@ -30,6 +30,7 @@ export default function useProductScreen(uuid: string) {
     isError,
     error,
     product: data?.product,
+    currency: data?.currency,
     handleVariantChange,
     selectedVariant,
   };

@@ -12,6 +12,7 @@ export const ProductSchema = z
     image_base_url: z.string(),
     id: z.number().nullable(),
     name: z.string(),
+    sku: z.string().min(8).max(32),
     slug: z.string(),
     base_price: z.number().nonnegative(),
     description: z.looseObject({}).nullable(),

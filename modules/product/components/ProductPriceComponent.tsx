@@ -5,18 +5,20 @@ import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 
 const ProductPriceComponent = ({
   item,
+  currency,
   selectedVariant,
 }: {
   item: TProductWithVariantAndImage;
   selectedVariant?: TVariantListWithImage;
+  currency: { code: string };
 }) => {
   const price = selectedVariant ? selectedVariant.price : item.base_price;
   return (
-    <View className="border-b-2 border-gray-400 px-4 py-2">
+    <View className="border-b-2 border-gray-400 py-2">
       <View className="flex-row items-center justify-between">
-        <View id="price" className="flex-row items-end gap-x-3">
+        <View id="price" className="flex-row items-end">
           <Text className="text-md text-2xl font-bold text-orange-600">
-            {price.toString()}
+            {currency.code.concat(" ").concat(String(price))}
           </Text>
           {/*<Text className="text-sm text-gray-600 line-through">Rs. 3,499</Text>*/}
         </View>

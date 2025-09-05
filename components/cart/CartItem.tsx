@@ -1,43 +1,29 @@
-import {
-  CartItemObject,
-  cartItemsAtom,
-} from "@/atoms/cartScreen/cartAction.atom";
-import React, { useState } from "react";
-import { useAtom } from "jotai";
+import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import {
   MinusCircleIcon,
   PlusCircleIcon,
 } from "react-native-heroicons/outline";
-import { Checkbox } from "expo-checkbox";
+import { TCartItem } from "@/modules/order/schemas/orderSchema";
+import { useCartQuantityHandlers } from "@/modules/cart/hooks/useCartQuantityHandlers";
+import { XCircleIcon } from "react-native-heroicons/solid";
+import { Colors } from "@/constants/Colors";
 
 export type CartItemProps = {
-  item: CartItemObject;
+  item: TCartItem;
 };
 
 const CartItem = ({ item }: CartItemProps) => {
-  const [itemCount, setItemCount] = useState(1);
-  const [_, setSelectedCartItem] = useAtom(cartItemsAtom);
-  const handleCartIncrement = () => setItemCount(itemCount + 1);
-  const handleCartDecrement = () => setItemCount(itemCount - 1);
+  const { increment, decrement, remove } = useCartQuantityHandlers();
 
-  const toggleSelectItem = (selectedCartItem: CartItemObject) => {
-    setSelectedCartItem(
-      _.map((item) =>
-        item.id === selectedCartItem.id
-          ? { ...item, isSelected: !item.isSelected }
-          : item,
-      ),
-    );
-  };
   return (
     <View className="flex flex-row items-center py-2">
       <View id="select-action" className="w-1/12">
-        <Checkbox
-          value={item.isSelected}
-          onValueChange={() => toggleSelectItem(item)}
-          color={"#f47d58"}
-        />
+        <TouchableOpacity
+          onPress={() => remove(item.uuid, item.variant_attrs?.uuid)}
+        >
+          <XCircleIcon size={30} color={Colors.light.tint} />
+        </TouchableOpacity>
       </View>
 
       <View id="content-thumbnail" className="flex w-4/12 items-center">
@@ -51,36 +37,44 @@ const CartItem = ({ item }: CartItemProps) => {
         <View id="cart-item-title">
           <Text className="text-md">{item.name}</Text>
         </View>
+        {item.variant_attrs && (
+          <View>
+            <Text>{item.variant_attrs.name.replace("|", "-")}</Text>
+          </View>
+        )}
         <View id="vendor">
-          <Text className="text-sm">{item.vendor}</Text>
+          <Text className="text-sm">item.vendor</Text>
         </View>
         <View id="delivery-info">
-          <Text className="text-sm">{item.deliveryDate}</Text>
+          <Text className="text-sm">item.deliveryDate</Text>
         </View>
         <View id="price-action" className="flex-row">
           <View className="w-6/12 flex-col">
             <Text className="text-md text-orange-600">
-              Rs {item.discountedPrice}
+              {/*item.discountedPrice*/}
+              Rs {item.unit_price}
             </Text>
             <Text className="text-sm text-gray-600 line-through">
-              Rs {item.price}
+              Rs {item.unit_price}
             </Text>
           </View>
 
           <View className="w-6/12 flex-row gap-x-2">
-            <TouchableOpacity onPress={handleCartIncrement}>
+            <TouchableOpacity
+              onPress={() => increment(item.uuid, item.variant_attrs?.uuid)}
+            >
               <PlusCircleIcon size={30} color="#f47d58" strokeWidth={2} />
             </TouchableOpacity>
             <View className="px-2 py-2">
-              <Text>{itemCount}</Text>
+              <Text>{item.qty_ordered}</Text>
             </View>
             <TouchableOpacity
-              disabled={itemCount <= 0}
-              onPress={handleCartDecrement}
+              disabled={item.qty_ordered <= 0}
+              onPress={() => decrement(item.uuid, item.variant_attrs?.uuid)}
             >
               <MinusCircleIcon
                 size={30}
-                color={itemCount > 0 ? "#f47d58" : "gray"}
+                color={item.qty_ordered > 0 ? "#f47d58" : "gray"}
                 strokeWidth={2}
               />
             </TouchableOpacity>

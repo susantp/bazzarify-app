@@ -1,12 +1,8 @@
-import { AxiosResponse } from "axios";
-import axiosInstance from "@/modules/core/utils/axios";
-import * as Sentry from "@sentry/react-native";
 import { DataSchema } from "@/modules/core/schemas/DataSchema";
 import {
   FlashDealsPayloadSchema,
   TFlashDealsPayload,
 } from "@/modules/product/schemas/responsePayloads/FlashDealsPayloadSchema";
-import { formattedIssues } from "@/modules/core/utils/zod.util";
 import {
   HomeCategoriesPayloadSchema,
   THomeCategoriesPayload,
@@ -19,33 +15,7 @@ import {
   PopularProductsPayloadSchema,
   TPopularProductsPayload,
 } from "@/modules/product/schemas/responsePayloads/PopularProductsPayloadSchema";
-import { z } from "zod";
-
-async function fetchDataAndValidate<T extends z.ZodType>(
-  endpoint: string,
-  payloadSchema: T,
-  errorMessage: string,
-  params?: Record<string, string>,
-): Promise<z.infer<T>> {
-  let upstream: AxiosResponse<unknown>;
-  try {
-    upstream = await axiosInstance.get(endpoint, { params });
-  } catch (error: unknown) {
-    const err = new Error(errorMessage, { cause: error });
-    Sentry.captureException(err);
-    throw err;
-  }
-  const parsed = payloadSchema.safeParse(upstream.data);
-
-  if (!parsed.success) {
-    const issues = formattedIssues(parsed.error.issues);
-    console.log(issues);
-    Sentry.captureException(issues);
-    throw new Error("API response schema validation failed", { cause: issues });
-  }
-
-  return parsed.data;
-}
+import fetchDataAndValidate from "@/modules/core/utils/fetchDataAndValidate";
 
 export async function getFlashDealProducts(): Promise<TFlashDealsPayload | null> {
   const response = await fetchDataAndValidate(

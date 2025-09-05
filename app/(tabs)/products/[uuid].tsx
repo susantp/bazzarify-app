@@ -22,28 +22,30 @@ import useProductScreen from "@/modules/product/hooks/useProductScreen";
 import ProductCouponDiscountInfo from "@/modules/product/components/ProductCouponDiscountInfo";
 import ProductPriceComponent from "@/modules/product/components/ProductPriceComponent";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
-import { CartType } from "@/modules/cart/atoms/cartState";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import { ThemedText } from "@/components/ThemedText";
 import ScrollView = Animated.ScrollView;
+import useCart from "@/modules/cart/hooks/useCart";
+import { useAtomValue } from "jotai";
+import { cartAtom } from "@/modules/cart/atoms";
+import { AnimatedScrollView } from "react-native-reanimated/src/component/ScrollView";
+import {
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from "react-native-reanimated";
 
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
-  const { product, selectedVariant, handleVariantChange, isError } =
+  const { product, currency, selectedVariant, handleVariantChange, isError } =
     useProductScreen(uuid as string);
+  const { handleAddToCart } = useCart();
   const ios = Platform.OS === "ios";
-  const handleAddToCart = () => {
-    if (!product) return;
-    const cartItem: CartType = {
-      productUUID: product.uuid,
-      name: product.name,
-      quantity: 1,
-      unitPrice: selectedVariant ? selectedVariant.price : product.base_price,
-    };
-    if (selectedVariant) {
-      cartItem.variantAttributeName = selectedVariant.name;
-      cartItem.variantUUID = selectedVariant.uuid;
-    }
+  const FetchErrorComponent = () => {
+    return (
+      <ThemedText type="title" style={{ color: "#fff" }} className="p-4">
+        Sorry, something went wrong fetching the product.
+      </ThemedText>
+    );
   };
 
   return (
@@ -52,10 +54,8 @@ export default function ProductScreen() {
         className={`mx-4 my-6 flex-row items-center justify-between gap-3`}
       />
       {isError ? (
-        <ThemedText type="title" style={{ color: "#fff" }} className="p-4">
-          Sorry, something went wrong fetching the product.{" "}
-        </ThemedText>
-      ) : product ? (
+        <FetchErrorComponent />
+      ) : product && currency ? (
         <>
           <ContentWrapper className={`flex-1 ` + (ios ? " pb-2" : " pt-3")}>
             <ScrollView style={{ width: "100%" }}>
@@ -65,6 +65,7 @@ export default function ProductScreen() {
                 <ProductGenericDetails item={product}>
                   <ProductPriceComponent
                     item={product}
+                    currency={currency}
                     selectedVariant={selectedVariant}
                   />
                   {product?.variants && product.variants.length > 0 && (
@@ -89,7 +90,9 @@ export default function ProductScreen() {
             </ScrollView>
           </ContentWrapper>
           <BottomActionView className="gap-y-3 p-3">
-            <ProductPageBottomView onCartAdd={handleAddToCart} />
+            <ProductPageBottomView
+              onCartAdd={() => handleAddToCart(product, selectedVariant)}
+            />
           </BottomActionView>
         </>
       ) : (

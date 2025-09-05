@@ -1,9 +1,10 @@
 import { TouchableOpacity, View } from "react-native";
-import React from "react";
-import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
-import ImageSlider from "@/components/common/ImageSlider";
+import React, { useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
 import constructProductImagesUrl from "@/modules/product/utils/constructImageUrl";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { Card } from "react-native-paper";
+import { Colors } from "@/constants/Colors";
 
 export interface IProductSliderProps {
   item: TProductWithVariantAndImage;
@@ -11,6 +12,7 @@ export interface IProductSliderProps {
 
 const ProductSlider = ({ item }: IProductSliderProps) => {
   let images = constructProductImagesUrl(item);
+  const [isFav, setIsFav] = useState(false);
   if (!images || images.length === 0)
     images = [
       {
@@ -20,25 +22,37 @@ const ProductSlider = ({ item }: IProductSliderProps) => {
       },
     ];
   return (
-    <>
-      <View
-        id="product-slider"
-        className="flex items-center justify-items-center"
-      >
-        <ImageSlider images={images} autoplayInterval={5000} />
-      </View>
+    <Card>
+      {/*<View*/}
+      {/*  id="product-slider"*/}
+      {/*  className="flex items-center justify-items-center"*/}
+      {/*>*/}
+      {/*  <ImageSlider images={images} autoplayInterval={5000} />*/}
+      {/*</View>*/}
+      <Card.Cover
+        style={{ borderRadius: 0 }}
+        source={{ uri: "https://picsum.photos/700" }}
+      />
+
       <View
         id="actions"
         className="flex-row justify-between justify-items-center px-4"
       >
-        <TouchableOpacity className="rounded-full bg-orange-100 p-2 shadow-sm">
-          <AntDesign color="black" name="hearto" size={24} />
+        <TouchableOpacity
+          className="rounded-full bg-orange-100 p-2 shadow-sm"
+          onPress={() => setIsFav(!isFav)}
+        >
+          <AntDesign
+            color={Colors.light.tint}
+            name={isFav ? `heart` : `hearto`}
+            size={40}
+          />
         </TouchableOpacity>
         <TouchableOpacity className="rounded-full bg-orange-100 p-2 shadow-sm">
-          <SimpleLineIcons name="share-alt" size={24} />
+          <AntDesign name="sharealt" size={40} color={Colors.light.tint} />
         </TouchableOpacity>
       </View>
-    </>
+    </Card>
   );
 };
 

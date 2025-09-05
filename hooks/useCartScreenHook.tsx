@@ -1,13 +1,28 @@
-import { FlatList, View } from "react-native";
-import CartItem from "@/components/cart/CartItem";
+import { Alert, View } from "react-native";
 import React from "react";
-import { cartItemsAtom } from "@/atoms/cartScreen/cartAction.atom";
-import { useAtomValue } from "jotai";
-import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import { useAtom, useAtomValue } from "jotai";
+import { cartAtom } from "@/modules/cart/atoms";
+import { addressModalAtom } from "@/atoms/addressModalAtom";
+import { router } from "expo-router";
+import CartItem from "@/components/cart/CartItem";
+import { ThemedText } from "@/components/ThemedText";
+import { Card } from "react-native-paper";
 
 export default function useCartScreenHook() {
-  const cartItems = useAtomValue(cartItemsAtom);
-  const selectedItemCount = cartItems.filter((item) => item.isSelected).length;
+  const { items, sub_total } = useAtomValue(cartAtom);
+  const [showAddressModal, setShowAddressModal] = useAtom(addressModalAtom);
+  const handleAddressModal = () => {
+    setShowAddressModal(!showAddressModal);
+  };
+  const handleAddressPress = () => {
+    setShowAddressModal(!showAddressModal);
+    router.push(`/account/setting/address/create`);
+  };
+
+  const handleCheckoutPress = () =>
+    items.length < 1
+      ? Alert.alert("Please select item to checkout.")
+      : router.push("/cart/checkout");
   const CARDS = [
     {
       title: "wel",
@@ -16,17 +31,17 @@ export default function useCartScreenHook() {
     {
       title: "cart-items",
       component: (
-        <FlatList
-          className="px-2"
-          data={cartItems}
-          renderItem={({ item }) => <CartItem key={item.id} item={item} />}
-        />
+        <Card className="flex-1">
+          {items.map((item) => (
+            <CartItem key={item.variant_attrs?.uuid ?? item.uuid} item={item} />
+          ))}
+        </Card>
       ),
     },
     {
       title: "other-products",
       component: (
-        <ThemedLoader />
+        <ThemedText>Popular Items section</ThemedText>
         // <ContentGridSection
         //   className="align-center flex-col pl-4"
         //   title={"Just for you"}
@@ -40,5 +55,13 @@ export default function useCartScreenHook() {
       ),
     },
   ];
-  return { CARDS, cartItems, selectedItemCount };
+  return {
+    CARDS,
+    items,
+    sub_total,
+    showAddressModal,
+    handleAddressModal,
+    handleAddressPress,
+    handleCheckoutPress,
+  };
 }
