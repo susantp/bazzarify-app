@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
 import { cartItemsAtom } from "@/modules/cart/atoms";
-import { Badge, Tooltip } from "react-native-paper";
+import { Badge } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
 
 export const SearchBox = ({ className }: SearchBoxProps) => {

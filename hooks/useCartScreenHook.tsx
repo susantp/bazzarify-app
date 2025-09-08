@@ -9,7 +9,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { Card } from "react-native-paper";
 
 export default function useCartScreenHook() {
-  const { items, sub_total } = useAtomValue(cartAtom);
+  const cartData = useAtomValue(cartAtom);
   const [showAddressModal, setShowAddressModal] = useAtom(addressModalAtom);
   const handleAddressModal = () => {
     setShowAddressModal(!showAddressModal);
@@ -20,7 +20,7 @@ export default function useCartScreenHook() {
   };
 
   const handleCheckoutPress = () =>
-    items.length < 1
+    cartData?.items.length! < 1
       ? Alert.alert("Please select item to checkout.")
       : router.push("/cart/checkout");
   const CARDS = [
@@ -32,7 +32,7 @@ export default function useCartScreenHook() {
       title: "cart-items",
       component: (
         <Card className="flex-1">
-          {items.map((item) => (
+          {cartData?.items.map((item) => (
             <CartItem key={item.variant_attrs?.uuid ?? item.uuid} item={item} />
           ))}
         </Card>
@@ -57,8 +57,7 @@ export default function useCartScreenHook() {
   ];
   return {
     CARDS,
-    items,
-    sub_total,
+    cartData,
     showAddressModal,
     handleAddressModal,
     handleAddressPress,

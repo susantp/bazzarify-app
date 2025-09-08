@@ -1,10 +1,10 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import React from "react";
 import { Button } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
 
 interface ICheckoutBottomActionViewProps {
-  totalPrice: number;
+  totalPrice: number | undefined;
   btnLabel: string;
   deliveryPrice?: number;
   handlePress: () => void | undefined;

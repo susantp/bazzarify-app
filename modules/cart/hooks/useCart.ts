@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 import { cartItemsAtom } from "@/modules/cart/atoms";
 import Toast from "react-native-toast-message";
-import { CartItem } from "@/modules/order/schemas/orderSchema";
+import { CartItem, TCartItem } from "@/modules/order/schemas/orderSchema";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
@@ -15,7 +15,7 @@ export default function useCart() {
   ) => {
     if (!product) return;
 
-    const data = {
+    const data: TCartItem = {
       name: product.name,
       uuid: product.uuid,
       sku: product.sku,
@@ -28,6 +28,8 @@ export default function useCart() {
         : null,
       qty_ordered: 1,
       unit_price: selectedVariant?.price ?? product.base_price,
+      row_tax: 0,
+      row_discount: 0,
       row_total: selectedVariant?.price ?? product.base_price,
     };
 

@@ -1,10 +1,26 @@
-import { TCartItem } from "@/modules/order/schemas/orderSchema";
-import { atom } from "jotai"; // 🧱 Raw storage (private)
+// atoms/index.ts
+import { atom } from "jotai";
+import {
+  Cart,
+  TCart,
+  TCartItem,
+  TCartMeta,
+} from "@/modules/order/schemas/orderSchema";
 
-// 🧱 Raw storage (private)
+// 🧱 Raw storage
 const _cartItemsBaseAtom = atom<TCartItem[]>([]);
+const _cartMetaAtom = atom<TCartMeta>({
+  sub_total: 0,
+  discount_total: 0,
+  tax_total: 0,
+  shipping_total: 0,
+  grand_total: 0,
+});
 
-// 🧠 Smart writer: handles merging items
+// 🔒 Cart locked (checkout mode)
+export const cartLockedAtom = atom(false);
+
+// 🧠 Smart writer: merges or adds
 export const cartItemsAtom = atom<TCartItem[], [TCartItem], void>(
   (get) => get(_cartItemsBaseAtom),
   (get, set, newItem) => {
@@ -18,11 +34,11 @@ export const cartItemsAtom = atom<TCartItem[], [TCartItem], void>(
     if (i !== -1) {
       const updated = [...items];
       const existing = updated[i];
-      const qty = existing.qty_ordered + newItem.qty_ordered;
       updated[i] = {
         ...existing,
-        qty_ordered: qty,
-        row_total: qty * existing.unit_price,
+        qty_ordered: existing.qty_ordered + newItem.qty_ordered,
+        row_total:
+          (existing.qty_ordered + newItem.qty_ordered) * existing.unit_price,
       };
       set(_cartItemsBaseAtom, updated);
     } else {
@@ -31,46 +47,51 @@ export const cartItemsAtom = atom<TCartItem[], [TCartItem], void>(
   },
 );
 
-// ➕ Quantity +1
+// ➕ Increment
 export const incrementCartItemAtom = atom(
   null,
   (get, set, { uuid, variantUuid }: { uuid: string; variantUuid?: string }) => {
-    const items = get(_cartItemsBaseAtom).map((item) =>
-      item.uuid === uuid && item.variant_attrs?.uuid === variantUuid
-        ? {
-            ...item,
-            qty_ordered: item.qty_ordered + 1,
-            row_total: (item.qty_ordered + 1) * item.unit_price,
-          }
-        : item,
-    );
-    set(_cartItemsBaseAtom, items);
+    if (get(cartLockedAtom)) return;
+    const updated = get(_cartItemsBaseAtom).map((item) => {
+      if (item.uuid === uuid && item.variant_attrs?.uuid === variantUuid) {
+        return {
+          ...item,
+          qty_ordered: item.qty_ordered + 1,
+          row_total: (item.qty_ordered + 1) * item.unit_price,
+        };
+      }
+      return item;
+    });
+    set(_cartItemsBaseAtom, updated);
   },
 );
 
-// ➖ Quantity -1 (removes if 0)
+// ➖ Decrement
 export const decrementCartItemAtom = atom(
   null,
   (get, set, { uuid, variantUuid }: { uuid: string; variantUuid?: string }) => {
-    const items = get(_cartItemsBaseAtom)
-      .map((item) =>
-        item.uuid === uuid && item.variant_attrs?.uuid === variantUuid
-          ? {
-              ...item,
-              qty_ordered: item.qty_ordered - 1,
-              row_total: (item.qty_ordered - 1) * item.unit_price,
-            }
-          : item,
-      )
+    if (get(cartLockedAtom)) return;
+    const updated = get(_cartItemsBaseAtom)
+      .map((item) => {
+        if (item.uuid === uuid && item.variant_attrs?.uuid === variantUuid) {
+          return {
+            ...item,
+            qty_ordered: item.qty_ordered - 1,
+            row_total: (item.qty_ordered - 1) * item.unit_price,
+          };
+        }
+        return item;
+      })
       .filter((item) => item.qty_ordered > 0);
-    set(_cartItemsBaseAtom, items);
+    set(_cartItemsBaseAtom, updated);
   },
 );
 
-// ❌ Remove item completely
+// ❌ Remove
 export const removeCartItemAtom = atom(
   null,
   (get, set, { uuid, variantUuid }: { uuid: string; variantUuid?: string }) => {
+    if (get(cartLockedAtom)) return;
     const filtered = get(_cartItemsBaseAtom).filter(
       (item) =>
         !(item.uuid === uuid && item.variant_attrs?.uuid === variantUuid),
@@ -80,22 +101,58 @@ export const removeCartItemAtom = atom(
 );
 
 // 🧼 Clear all
-export const clearCartAtom = atom(null, (_, set) =>
-  set(_cartItemsBaseAtom, []),
+export const clearCartAtom = atom(null, (get, set) => {
+  if (get(cartLockedAtom)) return;
+  set(_cartItemsBaseAtom, []);
+  set(_cartMetaAtom, {
+    sub_total: 0,
+    discount_total: 0,
+    tax_total: 0,
+    shipping_total: 0,
+    grand_total: 0,
+  });
+});
+
+// 🧾 Final cart read/write
+export const cartAtom = atom<TCart, [TCart], void>(
+  (get) => {
+    const base = get(_cartMetaAtom);
+    const items = get(_cartItemsBaseAtom);
+
+    return {
+      sub_total: base.sub_total ?? 0,
+      discount_total: base.discount_total ?? 0,
+      tax_total: base.tax_total ?? 0,
+      shipping_total: base.shipping_total ?? 0,
+      grand_total: base.grand_total ?? 0,
+      items: items.length > 0 ? items : [],
+    } as TCart;
+  },
+  (get, set, next) => {
+    const result = Cart.safeParse(next);
+    if (!result.success) return;
+
+    const data = result.data;
+    if (!data || !Array.isArray(data.items)) return;
+
+    set(_cartItemsBaseAtom, data.items);
+    const { items: _, ...meta } = data;
+    set(_cartMetaAtom, meta);
+  },
 );
 
-// 💰 Subtotal derived
-export const cartSubTotalAtom = atom((get) =>
-  get(_cartItemsBaseAtom).reduce((sum, item) => sum + item.row_total, 0),
-);
+// ✅ API setter util
+export const setCartFromApi = atom<null, [TCart], void>(
+  null,
+  (_, set, payload) => {
+    const result = Cart.safeParse(payload);
+    if (!result.success) return;
 
-// 🧾 Full cart object (readonly + write support)
-export const cartAtom = atom(
-  (get) => ({
-    sub_total: get(cartSubTotalAtom),
-    items: get(_cartItemsBaseAtom),
-  }),
-  (_, set, next: { items?: TCartItem[] }) => {
-    if (next.items) set(_cartItemsBaseAtom, next.items);
+    const data = result.data;
+    if (!data || !Array.isArray(data.items)) return;
+
+    set(_cartItemsBaseAtom, data.items);
+    const { items: __, ...meta } = data;
+    set(_cartMetaAtom, meta);
   },
 );

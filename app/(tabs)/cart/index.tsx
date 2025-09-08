@@ -12,14 +12,13 @@ import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
 export default function CartScreen() {
   const {
     CARDS,
-    items,
-    sub_total,
+    cartData,
     showAddressModal,
     handleAddressModal,
     handleAddressPress,
     handleCheckoutPress,
   } = useCartScreenHook();
-
+  console.log(cartData);
   return (
     <SafeAreaWrapper>
       <CartHeader onAddressButtonPress={handleAddressModal} />
@@ -30,13 +29,15 @@ export default function CartScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {items.length > 0 && (
+      {cartData?.items.length! > 0 && (
         <BottomActionView>
           <CheckoutBottomActionView
             handlePress={handleCheckoutPress}
-            totalPrice={sub_total}
+            totalPrice={cartData?.grand_total ?? 0}
             btnLabel={
-              items.length > 0 ? `Checkout (${items.length})` : "Checkout"
+              cartData?.items.length! > 0
+                ? `Checkout (${cartData?.items.length})`
+                : "Checkout"
             }
           />
         </BottomActionView>

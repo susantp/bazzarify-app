@@ -1,26 +1,14 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { FlatList } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { useAtomValue } from "jotai";
-import { cartItemsTotalAtom } from "@/atoms/cartScreen/cartAction.atom";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import BottomActionView from "@/components/common/BottomActionView";
 import useCheckoutScreenHook from "@/hooks/useCheckoutScreenHook";
-import { router } from "expo-router";
 
 export default function CheckoutScreen() {
-  const totalCartPrice = useAtomValue(cartItemsTotalAtom);
-  const { CARDS, cartItems } = useCheckoutScreenHook();
-  const [buttonLabel, setButtonLabel] = useState("Place Order");
-  const handlePress = () => {
-    setButtonLabel("Creating Order...");
-    setTimeout(() => {
-      setButtonLabel("Place Order");
-      router.push("/cart/payment");
-    }, 3000);
-  };
+  const { btnLabel, CARDS, cart, handleCheckout } = useCheckoutScreenHook();
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Checkout" />
@@ -35,13 +23,13 @@ export default function CheckoutScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartItems.length > 0 && (
+      {cart?.items.length! > 0 && (
         <BottomActionView>
           <CheckoutBottomActionView
-            totalPrice={totalCartPrice}
-            btnLabel={buttonLabel}
+            totalPrice={cart?.sub_total}
+            btnLabel={btnLabel}
             deliveryPrice={110}
-            handlePress={handlePress}
+            handlePress={handleCheckout}
           />
         </BottomActionView>
       )}

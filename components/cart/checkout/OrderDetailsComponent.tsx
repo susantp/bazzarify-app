@@ -1,7 +1,11 @@
 import { Text, View } from "react-native";
 import React from "react";
+import { TCart } from "@/modules/order/schemas/orderSchema";
 
-const OrderDetailsComponent = () => {
+interface Props {
+  cart: TCart;
+}
+const OrderDetailsComponent = ({ cart }: Props) => {
   return (
     <View className="flex-row">
       <View className="flex-col gap-y-2 rounded-2xl border border-gray-300 p-4">

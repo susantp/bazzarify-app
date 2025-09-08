@@ -3,13 +3,13 @@ import OrderItem from "@/components/cart/checkout/OrderItem";
 import OrderDetailsComponent from "@/components/cart/checkout/OrderDetailsComponent";
 import VoucherList from "@/components/cart/checkout/VoucherList";
 import CheckoutAddressComponent from "@/components/cart/checkout/CheckoutAddressComponent";
-import React from "react";
+import React, { useState } from "react";
 import { useAtomValue } from "jotai";
-import { cartItemsAtom } from "@/atoms/cartScreen/cartAction.atom";
+import { cartAtom } from "@/modules/cart/atoms";
 
 export default function useCheckoutScreenHook() {
-  const cartItems = useAtomValue(cartItemsAtom);
-
+  const cart = useAtomValue(cartAtom);
+  const [btnLabel, setBtnLabel] = useState("Place Order");
   const CARDS = [
     {
       title: "address",
@@ -19,7 +19,7 @@ export default function useCheckoutScreenHook() {
     {
       title: "checkoutItems",
       id: randomUUID(),
-      component: <OrderItem />,
+      component: <OrderItem items={cart?.items} />,
     },
     {
       title: "vouchers",
@@ -29,8 +29,16 @@ export default function useCheckoutScreenHook() {
     {
       title: "orderDetails",
       id: randomUUID(),
-      component: <OrderDetailsComponent />,
+      component: <OrderDetailsComponent cart={cart} />,
     },
   ];
-  return { CARDS, cartItems };
+  const handleCheckout = () => {
+    setBtnLabel("Creating Order...");
+    setTimeout(() => {
+      setBtnLabel("Place Order");
+      // router.push("/cart/payment");
+      console.log(cart);
+    }, 3000);
+  };
+  return { btnLabel, CARDS, cart, handleCheckout };
 }

@@ -26,13 +26,6 @@ import ProductVariantSelector from "@/modules/product/components/ProductVariantS
 import { ThemedText } from "@/components/ThemedText";
 import ScrollView = Animated.ScrollView;
 import useCart from "@/modules/cart/hooks/useCart";
-import { useAtomValue } from "jotai";
-import { cartAtom } from "@/modules/cart/atoms";
-import { AnimatedScrollView } from "react-native-reanimated/src/component/ScrollView";
-import {
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from "react-native-reanimated";
 
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
