@@ -69,7 +69,7 @@ export default function TabLayout() {
         name="categories"
         options={{
           title: "Categories",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <Squares2X2Icon size={28} color={color} focusable={true} />
           ),
         }}
