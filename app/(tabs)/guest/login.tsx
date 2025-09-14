@@ -27,9 +27,10 @@ import remotePaths from "@/staticData/remote.paths";
 import { setToken } from "@/modules/core/utils/secureStore";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { handleError } from "@/modules/core/utils/handleError";
-import { openAuthSessionAsync } from "expo-web-browser";
 import * as Linking from "expo-linking";
 import Toast from "react-native-toast-message";
+import { initAuthSession } from "@/modules/auth/utils";
+import { openAuthSessionAsync } from "expo-web-browser";
 
 const LoginScreen = () => {
   const {
@@ -72,6 +73,7 @@ const LoginScreen = () => {
       Platform.OS === "ios" ? "http://127.0.0.1:3000" : "http://10.0.2.2:3000";
     const url = `${host}/api/v1/auth/redirect?provider=google`;
     let result = await openAuthSessionAsync(url);
+    // let result = await initAuthSession("google");
     console.log(result);
     if (result.type === "success" && "url" in result) {
       const { url } = result;

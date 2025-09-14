@@ -28,7 +28,7 @@ Build and Configuration
 3) Environment configuration
 
 - Environment variables consumed by the app are namespaced via EXPO_PUBLIC_* so they’re available on the client:
-    - EXPO_PUBLIC_API_URL: Base API endpoint for axios. Defaults to https://consumer.bazzarify.com/api/v1/consumers if
+    - EXPO_PUBLIC_CONSUMER_URL: Base API endpoint for axios. Defaults to https://consumer.bazzarify.com/api/v1/consumers if
       unset.
     - EXPO_PUBLIC_APP_KEY: App key forwarded as X-APP-Key header by axios.
 - Axios instance (modules/core/utils/axios.ts):

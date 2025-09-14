@@ -1,17 +1,12 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
+import { app } from "@/modules/core/configs/app";
 
-const remoteData: Record<string, string> = {
-  apiUrl:
-    process.env.EXPO_PUBLIC_API_URL ||
-    "https://consumer.bazzarify.com/api/v1/consumers",
-  appKey: process.env.EXPO_PUBLIC_APP_KEY || "",
-};
 const defaultConfig: CreateAxiosDefaults = {
-  baseURL: remoteData.apiUrl,
+  baseURL: app.publicConsumerUrl,
   headers: {
     "User-Agent": "BazzarifyConsumer",
     "Content-Type": "application/json",
-    "X-APP-Key": remoteData.appKey,
+    "X-APP-Key": app.publicAppKey,
   },
 };
 

@@ -1,6 +1,6 @@
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import constructProductImagesUrl from "@/modules/product/utils/constructImageUrl";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import { Card } from "react-native-paper";
@@ -38,18 +38,18 @@ const ProductSlider = ({ item }: IProductSliderProps) => {
         id="actions"
         className="flex-row justify-between justify-items-center px-4"
       >
-        <TouchableOpacity
+        <Pressable
           className="rounded-full bg-orange-100 p-2 shadow-sm"
           onPress={() => setIsFav(!isFav)}
         >
-          <AntDesign
+          <Entypo
             color={Colors.light.tint}
-            name={isFav ? `heart` : `hearto`}
+            name={isFav ? `heart` : `heart-outlined`}
             size={40}
           />
-        </TouchableOpacity>
+        </Pressable>
         <TouchableOpacity className="rounded-full bg-orange-100 p-2 shadow-sm">
-          <AntDesign name="sharealt" size={40} color={Colors.light.tint} />
+          <AntDesign name="share-alt" size={40} color={Colors.light.tint} />
         </TouchableOpacity>
       </View>
     </Card>
