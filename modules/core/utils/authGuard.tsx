@@ -22,6 +22,7 @@ export function AuthGuard({ requireAuth, children }: AuthGuardProps) {
       setChecked(false);
       (async () => {
         const token = await retrieveToken("token");
+        console.log(token);
         if (requireAuth && !token) {
           router.replace("/guest/guestAccountIndex");
         } else if (!requireAuth && token) {

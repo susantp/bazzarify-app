@@ -12,7 +12,7 @@ import {
 
 export default async function actionRegister(
   data: TRegisterFormField,
-): Promise<IApiResponse<string>> {
+): Promise<IApiResponse<object | string>> {
   try {
     const response: AxiosResponse = await axiosInstance.post(
       authRemotePaths.registerCredentials.path,

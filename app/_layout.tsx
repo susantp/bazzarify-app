@@ -17,6 +17,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import toastConfig from "@/config/toastConfig";
 import * as Sentry from "@sentry/react-native";
+import { deleteToken } from "@/modules/core/utils/secureStore";
 
 Sentry.init({
   dsn: "https://5711ab58e2cef392cd161c1452d1db40@o4508887288446976.ingest.de.sentry.io/4508887290282064",
@@ -55,7 +56,6 @@ export default function RootLayout() {
   const loaded = true;
   useEffect(() => {
     const timeout = setTimeout(() => null, 100000);
-
     if (loaded) {
       SplashScreen.hideAsync();
     }
@@ -65,7 +65,6 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-
   return (
     <>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
