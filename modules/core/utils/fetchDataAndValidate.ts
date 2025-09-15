@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AxiosResponse } from "axios";
-import axiosInstance from "@/modules/core/utils/axios";
+import { axiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
 

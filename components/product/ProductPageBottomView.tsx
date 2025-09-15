@@ -4,6 +4,7 @@ import { FontAwesome5, Octicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 import PolygonButton from "@/components/common/PolygonButton";
+import { retrieveStorage } from "@/modules/core/utils/secureStore";
 
 interface IProductPageBottomView {
   onCartAdd: () => void;
@@ -18,6 +19,7 @@ const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
     width: 0,
     height: 0,
   });
+
   return (
     <>
       <View className="w-full flex-row justify-center">
@@ -37,24 +39,30 @@ const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
             <Text>Chat</Text>
           </TouchableOpacity>
         </View>
-        <View className="w-9/12 flex-row justify-end">
-          <PolygonButton
-            dimensions={leftBtnDimension}
-            setDimensions={setLeftButtonDimensions}
-            onPress={onCartAdd}
-            color="#1A202C"
-            isLeft={true}
-            label="Add To Cart"
-          />
-          <PolygonButton
-            isLeft={false}
-            dimensions={rightBtnDimension}
-            setDimensions={setRightButtonDimensions}
-            onPress={() => router.push("/cart/checkout")}
-            color={Colors.light.tint}
-            label="Buy Now"
-          />
-        </View>
+        {retrieveStorage("token").then((token) => {
+          if (token) {
+            return (
+              <View className="w-9/12 flex-row justify-end">
+                <PolygonButton
+                  dimensions={leftBtnDimension}
+                  setDimensions={setLeftButtonDimensions}
+                  onPress={onCartAdd}
+                  color="#1A202C"
+                  isLeft={true}
+                  label="Add To Cart"
+                />
+                <PolygonButton
+                  isLeft={false}
+                  dimensions={rightBtnDimension}
+                  setDimensions={setRightButtonDimensions}
+                  onPress={() => router.push("/cart/checkout")}
+                  color={Colors.light.tint}
+                  label="Buy Now"
+                />
+              </View>
+            );
+          }
+        })}
       </View>
     </>
   );

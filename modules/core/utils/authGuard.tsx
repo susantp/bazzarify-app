@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
-import { retrieveToken } from "@/modules/core/utils/secureStore";
+import { retrieveStorage } from "@/modules/core/utils/secureStore";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 
 interface AuthGuardProps {
@@ -15,14 +15,12 @@ interface AuthGuardProps {
 export function AuthGuard({ requireAuth, children }: AuthGuardProps) {
   const router = useRouter();
   const [checked, setChecked] = useState(false);
-
   useFocusEffect(
     useCallback(() => {
       let active = true;
       setChecked(false);
       (async () => {
-        const token = await retrieveToken("token");
-        console.log(token);
+        const token = await retrieveStorage("token");
         if (requireAuth && !token) {
           router.replace("/guest/guestAccountIndex");
         } else if (!requireAuth && token) {

@@ -18,7 +18,7 @@ export default function CartScreen() {
     handleAddressPress,
     handleCheckoutPress,
   } = useCartScreenHook();
-  console.log(cartData);
+
   return (
     <SafeAreaWrapper>
       <CartHeader onAddressButtonPress={handleAddressModal} />

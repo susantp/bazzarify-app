@@ -24,8 +24,9 @@ import ProductPriceComponent from "@/modules/product/components/ProductPriceComp
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import { ThemedText } from "@/components/ThemedText";
-import ScrollView = Animated.ScrollView;
 import useCart from "@/modules/cart/hooks/useCart";
+import { retrieveStorage } from "@/modules/core/utils/secureStore";
+import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
@@ -83,9 +84,15 @@ export default function ProductScreen() {
             </ScrollView>
           </ContentWrapper>
           <BottomActionView className="gap-y-3 p-3">
-            <ProductPageBottomView
-              onCartAdd={() => handleAddToCart(product, selectedVariant)}
-            />
+            {retrieveStorage("token").then((token) => {
+              if (token) {
+                return (
+                  <ProductPageBottomView
+                    onCartAdd={() => handleAddToCart(product, selectedVariant)}
+                  />
+                );
+              }
+            })}
           </BottomActionView>
         </>
       ) : (

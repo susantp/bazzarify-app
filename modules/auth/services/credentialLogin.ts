@@ -1,5 +1,5 @@
 import { TLoginFormField } from "@/components/common";
-import axiosInstance from "@/modules/core/utils/axios";
+import { axiosInstance } from "@/modules/core/utils/axios";
 import { AxiosError } from "axios";
 import authRemotePaths from "@/staticData/remote.paths";
 import { handleError } from "@/modules/core/utils/handleError";

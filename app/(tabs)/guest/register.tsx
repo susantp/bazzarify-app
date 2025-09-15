@@ -17,7 +17,7 @@ import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import actionRegister from "@/modules/auth/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
-import { retrieveToken } from "@/modules/core/utils/secureStore";
+import { retrieveStorage } from "@/modules/core/utils/secureStore";
 import { IApiResponse } from "@/modules/core/types";
 
 const Page = () => {
@@ -49,7 +49,7 @@ const Page = () => {
         });
         return;
       }
-      const token = await retrieveToken("token");
+      const token = await retrieveStorage("token");
       if (token) {
         router.replace("/account/profile");
       }

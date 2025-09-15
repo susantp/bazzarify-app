@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { app } from "@/modules/core/configs/app";
+import { deleteStorage } from "@/modules/core/utils/secureStore";
+import { router } from "expo-router";
 
 const defaultConfig: CreateAxiosDefaults = {
   baseURL: app.publicConsumerUrl,
@@ -9,27 +11,29 @@ const defaultConfig: CreateAxiosDefaults = {
     "X-APP-Key": app.publicAppKey,
   },
 };
+const defaultConfigWithToken = (token: string) => {
+  return {
+    ...defaultConfig,
+    baseURL: app.publicAuthUrl,
+    headers: { ...defaultConfig.headers, "x-api-token": token },
+  };
+};
 
-const axiosInstance: AxiosInstance = axios.create(defaultConfig);
+export const axiosInstance: AxiosInstance = axios.create(defaultConfig);
 
-export default axiosInstance;
-
-// export const authAxiosInstance = async () => {
-//   const payload: JWTPayload | null = await getSessionPayload();
-//   if (!payload) {
-//     redirect("/login");
-//   }
-//   const token = payload.token;
-//   const instance = axios.create({
-//     ...defaultConfig,
-//     headers: { Authorization: `Bearer ${token}` },
-//   });
-//   instance.interceptors.response.use((response) => {
-//     if (response.data?.metaData?.errorCode === 401) {
-//       deleteSession();
-//       redirect("/login");
-//     }
-//     return response;
-//   });
-//   return instance;
-// };
+export const authAxiosInstance = async (token: string | undefined) => {
+  if (!token) {
+    router.replace("/(tabs)/guest/guestAccountIndex");
+    return;
+  }
+  const config = defaultConfigWithToken(token);
+  const instance = axios.create(config);
+  instance.interceptors.response.use((response) => {
+    if (response.data?.metaData?.errorCode === 401) {
+      deleteStorage("token");
+      router.replace("/(tabs)/guest/guestAccountIndex");
+    }
+    return response;
+  });
+  return instance;
+};

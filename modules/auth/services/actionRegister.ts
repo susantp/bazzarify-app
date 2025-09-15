@@ -1,8 +1,8 @@
-import axiosInstance from "@/modules/core/utils/axios";
+import { axiosInstance } from "@/modules/core/utils/axios";
 import authRemotePaths from "@/staticData/remote.paths";
 import { TRegisterFormField } from "@/components/common";
 import { AxiosError, AxiosResponse } from "axios";
-import { setToken } from "@/modules/core/utils/secureStore";
+import { setStorage } from "@/modules/core/utils/secureStore";
 import * as Sentry from "@sentry/react-native";
 import { IApiResponse } from "@/modules/core/types";
 import {
@@ -26,7 +26,7 @@ export default async function actionRegister(
       });
     }
     const token = response.data.data.payload.token as string;
-    await setToken("token", token);
+    await setStorage("token", token);
     return setDataResponse({ message: "success", payload: { token } });
   } catch (error) {
     if (error instanceof AxiosError) {
