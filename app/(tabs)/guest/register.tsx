@@ -19,6 +19,7 @@ import actionRegister from "@/modules/auth/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
 import { retrieveStorage } from "@/modules/core/utils/secureStore";
 import { IApiResponse } from "@/modules/core/types";
+import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
 
 const Page = () => {
   const [formValues] = useState({
@@ -49,7 +50,7 @@ const Page = () => {
         });
         return;
       }
-      const token = await retrieveStorage("token");
+      const token = await retrieveStorage(AUTH_TOKEN_KEY);
       if (token) {
         router.replace("/account/profile");
       }

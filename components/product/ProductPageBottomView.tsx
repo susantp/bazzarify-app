@@ -5,6 +5,7 @@ import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 import PolygonButton from "@/components/common/PolygonButton";
 import { retrieveStorage } from "@/modules/core/utils/secureStore";
+import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
 
 interface IProductPageBottomView {
   onCartAdd: () => void;
@@ -39,7 +40,7 @@ const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
             <Text>Chat</Text>
           </TouchableOpacity>
         </View>
-        {retrieveStorage("token").then((token) => {
+        {retrieveStorage(AUTH_TOKEN_KEY).then((token) => {
           if (token) {
             return (
               <View className="w-9/12 flex-row justify-end">

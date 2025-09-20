@@ -39,3 +39,5 @@ export interface ISimplePaginated<T> {
   prev_page_url: string | null;
   to: number | string | null;
 }
+export type Setter<T> = (value: T) => void;
+export type BootTask = () => Promise<void>;

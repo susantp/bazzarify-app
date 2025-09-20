@@ -1,7 +1,7 @@
 import { Animated, Platform } from "react-native";
 import TopBar from "@/components/home/TopBar";
 import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import ProductScreenContainer from "@/components/product/ProductScreenContainer";
 import ProductGenericDetails from "@/components/product/ProductGenericDetails";
 import ProductDeliveryDetails from "@/components/product/ProductDeliveryDetails";
@@ -25,11 +25,14 @@ import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import { ThemedText } from "@/components/ThemedText";
 import useCart from "@/modules/cart/hooks/useCart";
-import { retrieveStorage } from "@/modules/core/utils/secureStore";
+import { useAtomValue } from "jotai";
+import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
+  const token = useAtomValue(tokenAtom);
+  console.log("token on product page: ", token);
   const { product, currency, selectedVariant, handleVariantChange, isError } =
     useProductScreen(uuid as string);
   const { handleAddToCart } = useCart();
@@ -42,6 +45,9 @@ export default function ProductScreen() {
     );
   };
 
+  useEffect(() => {
+    console.log("token in screen:", token);
+  }, [token]);
   return (
     <SafeAreaWrapper>
       <TopBar
@@ -84,15 +90,11 @@ export default function ProductScreen() {
             </ScrollView>
           </ContentWrapper>
           <BottomActionView className="gap-y-3 p-3">
-            {retrieveStorage("token").then((token) => {
-              if (token) {
-                return (
-                  <ProductPageBottomView
-                    onCartAdd={() => handleAddToCart(product, selectedVariant)}
-                  />
-                );
-              }
-            })}
+            {token && (
+              <ProductPageBottomView
+                onCartAdd={() => handleAddToCart(product, selectedVariant)}
+              />
+            )}
           </BottomActionView>
         </>
       ) : (

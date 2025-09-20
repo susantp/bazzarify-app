@@ -13,8 +13,8 @@ export async function setStorage(key: string, value: string) {
 export async function retrieveStorage(key: string) {
   try {
     return await SecureStore.getItemAsync(key);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    Sentry.captureException(error);
     return null;
   }
 }

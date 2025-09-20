@@ -2,6 +2,7 @@ import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { app } from "@/modules/core/configs/app";
 import { deleteStorage } from "@/modules/core/utils/secureStore";
 import { router } from "expo-router";
+import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
 
 const defaultConfig: CreateAxiosDefaults = {
   baseURL: app.publicConsumerUrl,
@@ -30,7 +31,7 @@ export const authAxiosInstance = async (token: string | undefined) => {
   const instance = axios.create(config);
   instance.interceptors.response.use((response) => {
     if (response.data?.metaData?.errorCode === 401) {
-      deleteStorage("token");
+      deleteStorage(AUTH_TOKEN_KEY);
       router.replace("/(tabs)/guest/guestAccountIndex");
     }
     return response;

@@ -12,6 +12,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Href, useFocusEffect } from "expo-router";
 import { retrieveStorage } from "@/modules/core/utils/secureStore";
 import { TUser } from "@/modules/auth/schemas/UserSchema";
+import { USER_KEY } from "@/modules/auth/config";
 
 export type ProfileMenuBoxType = {
   label: string;
@@ -23,7 +24,7 @@ export default function useProfileScreen() {
   const [user, setUser] = useState<TUser | null>(null);
   useFocusEffect(
     useCallback(() => {
-      retrieveStorage("user").then((response) => {
+      retrieveStorage(USER_KEY).then((response) => {
         if (response) {
           const user = JSON.parse(response);
           setUser(user);

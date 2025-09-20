@@ -9,6 +9,7 @@ import {
   setDataResponse,
   setMetaDataResponse,
 } from "@/modules/core/data/apiResponse";
+import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
 
 export default async function actionRegister(
   data: TRegisterFormField,
@@ -26,7 +27,7 @@ export default async function actionRegister(
       });
     }
     const token = response.data.data.payload.token as string;
-    await setStorage("token", token);
+    await setStorage(AUTH_TOKEN_KEY, token);
     return setDataResponse({ message: "success", payload: { token } });
   } catch (error) {
     if (error instanceof AxiosError) {

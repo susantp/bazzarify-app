@@ -18,12 +18,13 @@ import {
 import { useAtomValue } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
 import { deleteStorage } from "@/modules/core/utils/secureStore";
+import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
 
 const SettingScreen = () => {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);
   const handleLogout = async () => {
-    await deleteStorage("user");
-    await deleteStorage("token");
+    await deleteStorage(USER_KEY);
+    await deleteStorage(AUTH_TOKEN_KEY);
     router.replace("/guest/guestAccountIndex");
   };
   const renderItem = ({ item }: ListRenderItemInfo<IProfileMenu>) => {
