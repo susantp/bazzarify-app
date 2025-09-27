@@ -13,7 +13,6 @@ export function useBootstrapApp() {
   const queryClient = new QueryClient();
   const setToken = useSetAtom(tokenAtom);
   const [ready, setReady] = useState(false);
-
   useEffect(() => {
     let active = true;
 
@@ -28,7 +27,6 @@ export function useBootstrapApp() {
 
     run().then(() => undefined);
     const unsubscribe = subscribeOnResume(run);
-    console.log("hydration complete, token set");
     return () => {
       active = false;
       unsubscribe();

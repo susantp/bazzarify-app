@@ -8,8 +8,6 @@ import ContentWrapper from "@/components/common/ContentWrapper";
 import useCartScreenHook from "@/hooks/useCartScreenHook";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
-import { useAtomValue } from "jotai";
-import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 
 export default function CartScreen() {
   const {
@@ -20,8 +18,7 @@ export default function CartScreen() {
     handleAddressPress,
     handleCheckoutPress,
   } = useCartScreenHook();
-  const token = useAtomValue(tokenAtom);
-  console.log("token on cart page: ", token);
+
   return (
     <SafeAreaWrapper>
       <CartHeader onAddressButtonPress={handleAddressModal} />

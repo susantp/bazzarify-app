@@ -30,13 +30,19 @@ export default function useCartScreenHook() {
     },
     {
       title: "cart-items",
-      component: (
-        <Card className="flex-1">
-          {cartData?.items.map((item) => (
-            <CartItem key={item.variant_attrs?.uuid ?? item.uuid} item={item} />
-          ))}
-        </Card>
-      ),
+      component:
+        cartData?.items.length! > 0 ? (
+          <Card className="flex-1">
+            {cartData?.items.map((item) => (
+              <CartItem
+                key={item.variant_attrs?.uuid ?? item.uuid}
+                item={item}
+              />
+            ))}
+          </Card>
+        ) : (
+          <ThemedText type="title">No Items on cart</ThemedText>
+        ),
     },
     {
       title: "other-products",

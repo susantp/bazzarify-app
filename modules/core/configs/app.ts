@@ -7,7 +7,7 @@ export const app = {
   publicConsumerUrl:
     process.env.EXPO_PUBLIC_CONSUMER_URL ||
     "https://consumer.bazzarify.com/api/v1/consumers",
-  publicAppKey: process.env.EXPO_PUBLIC_APP_KEY || "",
+  publicAppKey: process.env.APP_KEY || "",
   modules: {
     auth: {
       path: "/api/v1/auth",

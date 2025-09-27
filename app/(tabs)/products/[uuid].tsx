@@ -1,7 +1,7 @@
 import { Animated, Platform } from "react-native";
 import TopBar from "@/components/home/TopBar";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import ProductScreenContainer from "@/components/product/ProductScreenContainer";
 import ProductGenericDetails from "@/components/product/ProductGenericDetails";
 import ProductDeliveryDetails from "@/components/product/ProductDeliveryDetails";
@@ -23,38 +23,27 @@ import ProductCouponDiscountInfo from "@/modules/product/components/ProductCoupo
 import ProductPriceComponent from "@/modules/product/components/ProductPriceComponent";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
-import { ThemedText } from "@/components/ThemedText";
 import useCart from "@/modules/cart/hooks/useCart";
 import { useAtomValue } from "jotai";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
+import FetchingErrorComponent from "@/modules/core/components/FetchingErrorComponent";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
   const token = useAtomValue(tokenAtom);
-  console.log("token on product page: ", token);
   const { product, currency, selectedVariant, handleVariantChange, isError } =
     useProductScreen(uuid as string);
   const { handleAddToCart } = useCart();
   const ios = Platform.OS === "ios";
-  const FetchErrorComponent = () => {
-    return (
-      <ThemedText type="title" style={{ color: "#fff" }} className="p-4">
-        Sorry, something went wrong fetching the product.
-      </ThemedText>
-    );
-  };
 
-  useEffect(() => {
-    console.log("token in screen:", token);
-  }, [token]);
   return (
     <SafeAreaWrapper>
       <TopBar
         className={`mx-4 my-6 flex-row items-center justify-between gap-3`}
       />
       {isError ? (
-        <FetchErrorComponent />
+        <FetchingErrorComponent message="Sorry, something went wrong fetching the product." />
       ) : product && currency ? (
         <>
           <ContentWrapper className={`flex-1 ` + (ios ? " pb-2" : " pt-3")}>

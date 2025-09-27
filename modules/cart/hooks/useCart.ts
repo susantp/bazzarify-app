@@ -5,6 +5,7 @@ import { CartItem, TCartItem } from "@/modules/order/schemas/orderSchema";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
+import { addCartItem } from "@/modules/cart/actions/cartService";
 
 export default function useCart() {
   const addToCart = useSetAtom(cartItemsAtom);
@@ -43,7 +44,11 @@ export default function useCart() {
       console.log(formattedIssues(parsed.error.issues));
       return;
     }
-    addToCart(parsed.data);
+    // post request to addToCart api the on success add to cart
+    addCartItem(parsed.data).then((result) => {
+      console.log(result);
+      // addToCart(parsed.data);
+    });
   };
 
   return { handleAddToCart };
