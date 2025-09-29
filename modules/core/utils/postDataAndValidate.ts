@@ -4,46 +4,39 @@ import { authAxiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
 
-export interface IPostDataAndValidate<
-  RQ extends z.ZodType,
-  RS extends z.ZodType,
-> {
-  endpoint: string;
-  requestPayloadSchema: RQ;
-  responsePayloadSchema: RS;
-  errorMessage: string;
-  token: string;
-}
 export default async function postDataAndValidate<
-  RQ extends z.ZodType,
-  RS extends z.ZodType,
->(params: IPostDataAndValidate<RQ, RS>): Promise<z.infer<RS>> {
-  const {
+  TData,
+  TResponse extends z.ZodType,
+>(
+  endpoint: { module: string; path: string },
+  data: TData,
+  responseSchema: TResponse,
+  errorMessage: string,
+  token: string,
+): Promise<z.infer<TResponse>> {
+  const instance = await authAxiosInstance({
     token,
-    requestPayloadSchema,
-    responsePayloadSchema,
-    errorMessage,
-    endpoint,
-  } = params;
-  const instance = await authAxiosInstance(token);
-  let upstream: AxiosResponse<unknown>;
+    modulePath: endpoint.module,
+  });
+  let upstream: AxiosResponse<z.infer<TResponse>>;
   if (!instance) {
     throw new Error("Authentication error.");
   }
   try {
-    upstream = await instance.post(endpoint, requestPayloadSchema);
-  } catch (error: unknown) {
-    const err = new Error(errorMessage, { cause: error });
-    Sentry.captureException(err);
+    upstream = await instance.post(endpoint.path, data);
+    console.log("Upstream", data);
+  } catch (error) {
+    const err = new Error(errorMessage);
+    Sentry.captureException(error);
     throw err;
   }
-  const parsed = responsePayloadSchema.safeParse(upstream.data);
+  const parsed = responseSchema.safeParse(upstream.data);
 
   if (!parsed.success) {
     const issues = formattedIssues(parsed.error.issues);
-    console.log("fetchAndValidate", issues);
+    console.log("postDataAndValidate", issues);
     Sentry.captureException(issues);
-    throw new Error("API response schema validation failed", { cause: issues });
+    throw new Error("API response schema validation failed");
   }
 
   return parsed.data;

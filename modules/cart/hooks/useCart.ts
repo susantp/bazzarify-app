@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import { cartItemsAtom } from "@/modules/cart/atoms";
+import { cartAtom } from "@/modules/cart/atoms";
 import Toast from "react-native-toast-message";
 import { CartItem, TCartItem } from "@/modules/order/schemas/orderSchema";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
@@ -8,7 +8,7 @@ import { formattedIssues } from "@/modules/core/utils/zod.util";
 import { addCartItem } from "@/modules/cart/actions/cartService";
 
 export default function useCart() {
-  const addToCart = useSetAtom(cartItemsAtom);
+  const addToCart = useSetAtom(cartAtom);
 
   const handleAddToCart = (
     product: TProductWithVariantAndImage,
@@ -34,6 +34,7 @@ export default function useCart() {
       row_total: selectedVariant?.price ?? product.base_price,
     };
 
+    console.log("Adding to cart before parsed:", data);
     const parsed = CartItem.safeParse(data);
     if (!parsed.success) {
       Toast.show({
@@ -44,11 +45,25 @@ export default function useCart() {
       console.log(formattedIssues(parsed.error.issues));
       return;
     }
-    // post request to addToCart api the on success add to cart
-    addCartItem(parsed.data).then((result) => {
-      console.log(result);
-      // addToCart(parsed.data);
-    });
+    // post request to addToCart api then on success add to cart
+
+    console.log("Adding to cart after parsed:", data);
+    addCartItem(parsed.data)
+      .then((result) => {
+        if (result?.cart) {
+          addToCart(result.cart);
+        }
+        console.log("add item to state:", result);
+      })
+      .catch((error) => {
+        console.error("Failed to add item to cart:", error.message);
+        Toast.show({
+          position: "bottom",
+          text1: "Failed to add item to cart",
+          text2: error.message,
+          type: "error",
+        });
+      });
   };
 
   return { handleAddToCart };

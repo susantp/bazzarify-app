@@ -5,7 +5,7 @@ import { ArrowLeftIcon } from "react-native-heroicons/micro";
 import { router } from "expo-router";
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
-import { cartItemsAtom } from "@/modules/cart/atoms";
+import { cartAtom } from "@/modules/cart/atoms";
 import { Badge } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
 
@@ -56,7 +56,7 @@ export const SearchBox = ({ className }: SearchBoxProps) => {
 };
 
 export const TopBarIcons = ({ className }: HeaderIconsProps) => {
-  const cartItems = useAtomValue(cartItemsAtom);
+  const cart = useAtomValue(cartAtom);
   return (
     <View className={className}>
       <TouchableOpacity>
@@ -73,7 +73,7 @@ export const TopBarIcons = ({ className }: HeaderIconsProps) => {
             color: Colors.light.tint,
           }}
         >
-          {cartItems.length!}
+          {cart?.cart?.totals.items_count}
         </Badge>
       </TouchableOpacity>
     </View>

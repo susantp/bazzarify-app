@@ -14,6 +14,7 @@ export default function useLoginHook() {
   const handleOAuthLogin = async (provider: LoginProvider) => {
     try {
       const token = await actionOAuthLogin(provider);
+      console.log("token: ", token);
       await processAuth(token);
 
       Toast.show({
@@ -27,7 +28,9 @@ export default function useLoginHook() {
       Sentry.captureException(error);
       Toast.show({
         position: "bottom",
-        text1: "Sorry process failed",
+        text1: "please try again later.",
+        text2:
+          error instanceof Error ? error.message : "Sorry cannot login now !",
         type: "error",
       });
     }

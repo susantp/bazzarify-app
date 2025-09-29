@@ -21,9 +21,9 @@ export const OrderItemSchema = z
     qty_shipped: z.number().int().nonnegative().default(0),
     qty_refunded: z.number().int().nonnegative().default(0),
 
-    unit_price: z.number().int().nonnegative(),
-    row_discount: z.number().int().nonnegative().default(0),
-    row_tax: z.number().int().nonnegative().default(0),
+    unit_price: z.float64().nonnegative(),
+    row_discount: z.float64().nonnegative().default(0),
+    row_tax: z.float64().nonnegative().default(0),
     row_total: z.float64().nonnegative().nonoptional(),
 
     meta: z.record(z.any(), z.string()).nullable(), // JSON column
@@ -39,6 +39,8 @@ export const OrderSchema = z
     buyer_type: z.string(),
     order_number: z.string(),
     status: z.string().max(32),
+    items_count: z.number().int().nonnegative().default(0),
+    items_quantity: z.number().int().nonnegative().default(0),
     sub_total: z.number().int().nonnegative().default(0),
     discount_total: z.number().int().nonnegative().default(0),
     tax_total: z.number().int().nonnegative().default(0),
@@ -69,21 +71,19 @@ export const CartItem = OrderItemSchema.pick({
 }).strict();
 
 export const CartMeta = OrderSchema.pick({
-  buyer_type: true,
-  buyer_uuid: true,
-  placed_at: true,
   sub_total: true,
   discount_total: true,
   tax_total: true,
   shipping_total: true,
   grand_total: true,
+  items_count: true,
+  items_quantity: true
 }).strict();
 
 export const Cart = z
-  .object()
-  .extend(CartMeta.shape)
-  .extend({
+  .object({
     items: z.array(CartItem).nonempty(),
+    totals: CartMeta,
   })
   .strict()
   .nullable();

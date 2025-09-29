@@ -32,6 +32,7 @@ import ScrollView = Animated.ScrollView;
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
   const token = useAtomValue(tokenAtom);
+  console.log("product page: ", token);
   const { product, currency, selectedVariant, handleVariantChange, isError } =
     useProductScreen(uuid as string);
   const { handleAddToCart } = useCart();
@@ -78,13 +79,13 @@ export default function ProductScreen() {
               </ProductScreenContainer>
             </ScrollView>
           </ContentWrapper>
-          <BottomActionView className="gap-y-3 p-3">
-            {token && (
+          {token && (
+            <BottomActionView className="gap-y-3 p-3">
               <ProductPageBottomView
                 onCartAdd={() => handleAddToCart(product, selectedVariant)}
               />
-            )}
-          </BottomActionView>
+            </BottomActionView>
+          )}
         </>
       ) : (
         <ThemedLoader />

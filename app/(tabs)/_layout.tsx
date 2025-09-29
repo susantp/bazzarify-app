@@ -14,12 +14,12 @@ import {
 import { useLocation } from "@/modules/core/hooks/useLocation";
 import { BlurView } from "expo-blur";
 import { useAtomValue } from "jotai";
-import { cartItemsAtom } from "@/modules/cart/atoms";
+import { cartAtom } from "@/modules/cart/atoms";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   useLocation();
-  const cartItems = useAtomValue(cartItemsAtom);
+  const cart = useAtomValue(cartAtom);
   return (
     <Tabs
       initialRouteName="index"
@@ -77,7 +77,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          tabBarBadge: cartItems.length!,
+          tabBarBadge: cart?.cart?.totals.items_count,
           tabBarStyle: {
             display: "none",
           },

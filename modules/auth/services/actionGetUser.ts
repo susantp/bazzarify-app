@@ -10,7 +10,7 @@ import { DataSchema } from "@/modules/core/schemas/DataSchema";
 export default async function actionGetUser(
   token: string,
 ): Promise<TUserPayload | null> {
-  const instance = await authAxiosInstance(token);
+  const instance = await authAxiosInstance({ token, modulePath: "auth" });
   let upstream: AxiosResponse<unknown>;
   if (!instance) {
     throw new Error("Authentication error.");
@@ -19,7 +19,7 @@ export default async function actionGetUser(
   try {
     upstream = await instance.get("/user");
   } catch (error) {
-    const err = new Error("Unable to fetch flash deal products", {
+    const err = new Error("Unable to fetch user", {
       cause: error,
     });
     Sentry.captureException(err);

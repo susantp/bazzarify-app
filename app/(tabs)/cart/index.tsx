@@ -18,7 +18,6 @@ export default function CartScreen() {
     handleAddressPress,
     handleCheckoutPress,
   } = useCartScreenHook();
-
   return (
     <SafeAreaWrapper>
       <CartHeader onAddressButtonPress={handleAddressModal} />
@@ -29,14 +28,14 @@ export default function CartScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartData?.items.length! > 0 && (
+      {cartData?.cart?.totals.items_count && (
         <BottomActionView>
           <CheckoutBottomActionView
             handlePress={handleCheckoutPress}
-            totalPrice={cartData?.grand_total ?? 0}
+            totalPrice={cartData?.cart?.totals.grand_total}
             btnLabel={
-              cartData?.items.length! > 0
-                ? `Checkout (${cartData?.items.length})`
+              cartData?.cart?.totals.items_count
+                ? `Checkout (${cartData?.cart?.totals.items_count})`
                 : "Checkout"
             }
           />

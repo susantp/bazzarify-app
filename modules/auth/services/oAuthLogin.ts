@@ -2,6 +2,7 @@ import LoginProvider from "@/modules/auth/enums/loginProvider";
 import * as Linking from "expo-linking";
 import { app } from "@/modules/core/configs/app";
 import { openAuthSessionAsync } from "expo-web-browser";
+import * as Sentry from "@sentry/react-native";
 
 const _initAuthSession = async (provider: string) => {
   const {
@@ -33,6 +34,9 @@ const _processGoogleLogin = async (): Promise<string> => {
   const { url } = result;
   const parsedURL = Linking.parse(url);
   const queryParams = parsedURL.queryParams;
+  Sentry.captureMessage(
+    "OAuth login success query params: " + queryParams?.sucess,
+  );
   if (!queryParams) {
     throw new Error("No query params found.");
   }

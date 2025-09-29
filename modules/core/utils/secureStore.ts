@@ -15,6 +15,8 @@ export async function retrieveStorage(key: string) {
     return await SecureStore.getItemAsync(key);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.log(error);
+    Sentry.captureException(error);
     return null;
   }
 }
