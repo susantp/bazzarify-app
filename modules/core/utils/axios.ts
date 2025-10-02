@@ -43,12 +43,24 @@ export const authAxiosInstance = async ({
   }
   const config = defaultConfigWithToken({ token, modulePath });
   const instance = axios.create(config);
-  instance.interceptors.response.use((response) => {
-    if (response.data?.metaData?.errorCode === 401) {
-      deleteStorage(AUTH_TOKEN_KEY);
-      router.replace("/(tabs)/guest/guestAccountIndex");
-    }
-    return response;
-  });
+  instance.interceptors.response.use(
+    (response) => {
+      // Handle successful responses that contain error codes in metadata
+      if (response.data?.metaData?.errorCode === 401) {
+        deleteStorage(AUTH_TOKEN_KEY);
+        router.replace("/(tabs)/guest/guestAccountIndex");
+      }
+      return response;
+    },
+    (error) => {
+      // Handle HTTP error responses (401, 403, 500, etc.)
+      if (error.response?.status === 401) {
+        deleteStorage(AUTH_TOKEN_KEY);
+        router.replace("/(tabs)/guest/guestAccountIndex");
+      }
+      // Re-throw the error so it can be handled by the calling code
+      return Promise.reject(error);
+    },
+  );
   return instance;
 };

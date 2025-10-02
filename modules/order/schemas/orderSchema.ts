@@ -3,6 +3,7 @@ import { VariantSchema } from "@/modules/product/schemas/VariantSchema";
 
 export const OrderItemSchema = z
   .object({
+    line_id: z.string().optional(),
     uuid: z.uuid(),
     order_uuid: z.uuid(),
     orderable_uuid: z.uuid(),
@@ -60,6 +61,7 @@ export const OrderSchema = z
   })
   .strict();
 export const CartItem = OrderItemSchema.pick({
+  line_id: true,
   uuid: true,
   name: true,
   sku: true,
@@ -90,8 +92,18 @@ export const Cart = z
   .strict()
   .nullable();
 
+export const CartItemToUpdateQuantitySchema = CartItem.pick({
+  line_id: true,
+  uuid: true,
+  variant_attrs: true,
+  qty_ordered: true,
+});
+
 export type TOrder = z.infer<typeof OrderSchema>;
 export type TOrderItem = z.infer<typeof OrderItemSchema>;
 export type TCart = z.infer<typeof Cart>;
 export type TCartMeta = z.infer<typeof CartMeta>;
 export type TCartItem = z.infer<typeof CartItem>;
+export type TCartItemToUpdateQuantity = z.infer<
+  typeof CartItemToUpdateQuantitySchema
+>;
