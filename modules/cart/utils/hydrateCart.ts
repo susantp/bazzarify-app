@@ -1,5 +1,5 @@
 import { Setter } from "@/modules/core/types";
-import { TAddCartPayload } from "@/modules/cart/schemas/responsePayloads/AddCartResponsePayload";
+import { TAddCartPayload } from "@/modules/cart/schemas/responsePayloads/CartResponsePayload";
 import { getCart } from "@/modules/cart/actions/cartService";
 
 export default async function hydrateCart(

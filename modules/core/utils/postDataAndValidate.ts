@@ -26,6 +26,7 @@ export default async function postDataAndValidate<
     upstream = await instance.post(endpoint.path, data);
     console.log("Upstream", data);
   } catch (error) {
+    console.error("postDataAndValidate error", error);
     const err = new Error(errorMessage);
     Sentry.captureException(error);
     throw err;

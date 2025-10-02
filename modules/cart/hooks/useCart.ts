@@ -8,7 +8,7 @@ import { formattedIssues } from "@/modules/core/utils/zod.util";
 import { addCartItem } from "@/modules/cart/actions/cartService";
 
 export default function useCart() {
-  const addToCart = useSetAtom(cartAtom);
+  const addToCartState = useSetAtom(cartAtom);
 
   const handleAddToCart = (
     product: TProductWithVariantAndImage,
@@ -30,6 +30,7 @@ export default function useCart() {
       qty_ordered: 1,
       unit_price: selectedVariant?.price ?? product.base_price,
       row_tax: 0,
+      row_shipping: 0,
       row_discount: 0,
       row_total: selectedVariant?.price ?? product.base_price,
     };
@@ -51,7 +52,7 @@ export default function useCart() {
     addCartItem(parsed.data)
       .then((result) => {
         if (result?.cart) {
-          addToCart(result.cart);
+          addToCartState(result);
         }
         console.log("add item to state:", result);
       })

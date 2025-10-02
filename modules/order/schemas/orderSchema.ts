@@ -24,6 +24,7 @@ export const OrderItemSchema = z
     unit_price: z.float64().nonnegative(),
     row_discount: z.float64().nonnegative().default(0),
     row_tax: z.float64().nonnegative().default(0),
+    row_shipping: z.float64().nonnegative().default(0),
     row_total: z.float64().nonnegative().nonoptional(),
 
     meta: z.record(z.any(), z.string()).nullable(), // JSON column
@@ -66,6 +67,7 @@ export const CartItem = OrderItemSchema.pick({
   unit_price: true,
   row_discount: true,
   row_tax: true,
+  row_shipping: true,
   row_total: true,
   qty_ordered: true,
 }).strict();
@@ -77,7 +79,7 @@ export const CartMeta = OrderSchema.pick({
   shipping_total: true,
   grand_total: true,
   items_count: true,
-  items_quantity: true
+  items_quantity: true,
 }).strict();
 
 export const Cart = z
