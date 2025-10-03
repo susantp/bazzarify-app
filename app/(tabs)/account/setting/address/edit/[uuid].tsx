@@ -2,7 +2,9 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { useLocalSearchParams } from "expo-router";
-import AddressFormComponent from "@/modules/account/components/settings/AddressFormComponent";
+import AddressFormComponent, {
+  AddressFormRef,
+} from "@/modules/account/components/settings/AddressFormComponent";
 import addressFields from "@/modules/account/data/address/addressFields";
 import { useAtomValue } from "jotai";
 import { getAddressByUuidAtom } from "@/modules/user/atoms/addresessAtom";
@@ -12,9 +14,13 @@ export default function Page() {
   const { uuid } = useLocalSearchParams();
   const getAddress = useAtomValue(getAddressByUuidAtom);
   const existingAddress = getAddress(uuid.toString());
-  const formRef = useRef(null);
+  const formRef = useRef<AddressFormRef>(null);
   const handleUpdate = () => {
-    console.log(formRef.current);
+    if (formRef.current) {
+      const fieldValues = formRef.current.getFieldValues();
+      console.log("Form field values:", fieldValues);
+      // Here you can process the field values, e.g., save to backend
+    }
   };
   return (
     <SafeAreaWrapper>
