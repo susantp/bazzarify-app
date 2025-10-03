@@ -24,7 +24,6 @@ export default async function postDataAndValidate<
   }
   try {
     upstream = await instance.post(endpoint.path, data);
-    console.log("Upstream", data);
   } catch (error) {
     console.error("postDataAndValidate error", error);
     const err = new Error(errorMessage);

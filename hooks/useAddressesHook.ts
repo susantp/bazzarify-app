@@ -1,10 +1,11 @@
 import { useAtomValue } from "jotai";
 import { getAddressListWithDefaultAtom } from "@/modules/user/atoms/addresessAtom";
+import { TUserAddressDefault } from "@/modules/user/schemas/UserAddress";
 
 const useAddressesHook = () => {
   const addresses = useAtomValue(getAddressListWithDefaultAtom);
-  const handleSwitchChange = (id: string, value: boolean) => {
-    console.log({ id, value });
+  const handleSwitchChange = ({ uuid, is_default }: TUserAddressDefault) => {
+    console.log({ uuid, is_default });
     // setAddresses((prevAddresses: AddressType[]) =>
     //   prevAddresses.map((address: AddressType) => ({
     //     ...address,

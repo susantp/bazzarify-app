@@ -4,8 +4,8 @@ import { MapPinIcon } from "react-native-heroicons/solid";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { useAtom } from "jotai";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
-import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
 import { router } from "expo-router";
+import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
 
 const CheckoutAddressComponent = () => {
   const [showModal, setShowModal] = useAtom(addressModalAtom);
@@ -36,10 +36,7 @@ const CheckoutAddressComponent = () => {
         showModal={showModal}
         handlePress={() => setShowModal(!showModal)}
       >
-        <SelectAddressModalView
-          title="Choose delivery address"
-          onPress={handleAddressPress}
-        />
+        <AddressSettingScreen />
       </DemoModalComponent>
     </>
   );

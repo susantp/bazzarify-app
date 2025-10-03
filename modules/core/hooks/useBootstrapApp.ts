@@ -21,7 +21,6 @@ export function useBootstrapApp() {
   const setAddresses = useSetAtom(addressListAtom);
   const [ready, setReady] = useState(false);
 
-  console.log("app state in useEffect: ", AppState.currentState);
   useEffect(() => {
     let active = true;
 

@@ -20,7 +20,6 @@ export async function fetchAuthDataAndValidate<TResponse extends z.ZodType>(
   }
   try {
     upstream = await instance.get(endpoint.path);
-    console.log("Upstream", upstream.data);
   } catch (error: unknown) {
     const err = new Error(errorMessage, { cause: error });
     Sentry.captureException(err);

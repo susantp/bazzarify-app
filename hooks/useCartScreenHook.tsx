@@ -57,9 +57,6 @@ export default function useCartScreenHook() {
       console.log(formattedIssues(parsed.error.issues));
       return;
     }
-
-    console.log("updating cart after parsed:", data);
-
     incrementCartItem(parsed.data)
       .then((result) => {
         if (result?.cart) {
@@ -72,7 +69,7 @@ export default function useCartScreenHook() {
         Toast.show({
           position: "bottom",
           text1: "Failed to add item to cart",
-          text2: error.message,
+          text2: "please try again later",
           type: "error",
         });
       });
@@ -102,9 +99,6 @@ export default function useCartScreenHook() {
       console.log(formattedIssues(parsed.error.issues));
       return;
     }
-
-    console.log("updating cart after parsed:", data);
-
     decrementCartItem(parsed.data)
       .then((result) => {
         if (result?.cart) {
@@ -178,7 +172,13 @@ export default function useCartScreenHook() {
       component: cartData?.cart?.totals.items_count ? (
         <Card className="flex-1">
           {cartData?.cart?.items.map((item) => (
-            <CartItem key={item.variant_attrs?.uuid ?? item.uuid} item={item} />
+            <CartItem
+              key={item.variant_attrs?.uuid ?? item.uuid}
+              item={item}
+              onIncrement={() => handleLineItemIncrement(item)}
+              onDecrement={() => handleLineItemDecrement(item)}
+              onRemove={() => handleLineItemRemove(item)}
+            />
           ))}
         </Card>
       ) : (

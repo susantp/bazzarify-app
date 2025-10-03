@@ -1,15 +1,12 @@
-import Toast from "react-native-toast-message";
-import { router } from "expo-router";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
+import { InputModeOptions } from "react-native";
 
 export type AddressFieldType = {
-  id: keyof TUserAddress | "action";
+  id: keyof Omit<TUserAddress, "uuid" | "user_uuid" | "is_default"> | "action";
   label: string;
-  type?: string;
+  type: InputModeOptions;
   required?: boolean;
   placeholder?: string;
-  action?: () => void;
-  value?: string | number;
 };
 const addressFields: AddressFieldType[] = [
   {
@@ -21,8 +18,8 @@ const addressFields: AddressFieldType[] = [
   },
   {
     id: "phone",
-    label: "Phone No.",
-    type: "text",
+    label: "Phone",
+    type: "numeric",
     required: true,
     placeholder: "Number",
   },
@@ -57,16 +54,7 @@ const addressFields: AddressFieldType[] = [
   {
     id: "action",
     label: "Update",
-    action: () => {
-      Toast.show({
-        position: "bottom",
-        text1: "Address Update Successfully!",
-        type: "success",
-      });
-      setTimeout(() => {
-        router.back();
-      }, 3000);
-    },
+    type: "none",
   },
 ];
 

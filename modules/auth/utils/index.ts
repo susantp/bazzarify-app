@@ -8,7 +8,6 @@ export async function hydrateToken(
 ): Promise<void> {
   try {
     const value = await retrieveStorage(AUTH_TOKEN_KEY);
-    console.log("Hydrated token:", value);
     setToken(value);
     Sentry.captureMessage("Auth token hydrated: " + !!value);
   } catch (err) {

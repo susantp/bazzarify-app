@@ -7,23 +7,24 @@ import {
 import { TCartItem } from "@/modules/order/schemas/orderSchema";
 import { XCircleIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
-import useCartScreenHook from "@/hooks/useCartScreenHook";
 
 export type CartItemProps = {
   item: TCartItem;
+  onIncrement: () => void;
+  onDecrement: () => void;
+  onRemove: () => void;
 };
 
-const CartItem = ({ item }: CartItemProps) => {
-  const {
-    handleLineItemIncrement,
-    handleLineItemDecrement,
-    handleLineItemRemove,
-  } = useCartScreenHook();
-
+const CartItem = ({
+  item,
+  onIncrement,
+  onDecrement,
+  onRemove,
+}: CartItemProps) => {
   return (
     <View className="flex flex-row items-center py-2">
       <View id="select-action" className="w-1/12">
-        <TouchableOpacity onPress={() => handleLineItemRemove(item)}>
+        <TouchableOpacity onPress={onRemove}>
           <XCircleIcon size={30} color={Colors.light.tint} />
         </TouchableOpacity>
       </View>
@@ -61,7 +62,7 @@ const CartItem = ({ item }: CartItemProps) => {
           </View>
 
           <View className="w-6/12 flex-row gap-x-2">
-            <TouchableOpacity onPress={() => handleLineItemIncrement(item)}>
+            <TouchableOpacity onPress={onIncrement}>
               <PlusCircleIcon size={30} color="#f47d58" strokeWidth={2} />
             </TouchableOpacity>
             <View className="px-2 py-2">
@@ -69,7 +70,7 @@ const CartItem = ({ item }: CartItemProps) => {
             </View>
             <TouchableOpacity
               disabled={item.qty_ordered <= 0}
-              onPress={() => handleLineItemDecrement(item)}
+              onPress={onDecrement}
             >
               <MinusCircleIcon
                 size={30}

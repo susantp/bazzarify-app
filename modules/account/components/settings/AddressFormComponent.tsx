@@ -1,4 +1,9 @@
-import { FlatList, Text, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  GestureResponderEvent,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import TextInputV1 from "@/components/common/TextInputV1";
 import { AddressFieldType } from "@/modules/account/data/address/addressFields";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
@@ -8,7 +13,7 @@ interface Props {
   id?: string;
   fields: AddressFieldType[];
   existingAddress: TUserAddress | null;
-  onUpdate: () => void;
+  onSubmit: (e: GestureResponderEvent) => void;
 }
 
 export interface AddressFormRef {
@@ -16,7 +21,7 @@ export interface AddressFormRef {
 }
 
 const AddressFormComponent = forwardRef<AddressFormRef, Props>(
-  ({ id, fields, existingAddress, onUpdate }, ref) => {
+  ({ id, fields, existingAddress, onSubmit }, ref) => {
     const [fieldValues, setFieldValues] = useState<Partial<TUserAddress>>({});
 
     useEffect(() => {
@@ -25,7 +30,7 @@ const AddressFormComponent = forwardRef<AddressFormRef, Props>(
         const initialValues: Partial<TUserAddress> = {};
         fields.forEach((field) => {
           if (field.id !== "action") {
-            const fieldKey = field.id as keyof TUserAddress;
+            const fieldKey = field.id;
             initialValues[fieldKey] = existingAddress[fieldKey];
           }
         });
@@ -52,7 +57,7 @@ const AddressFormComponent = forwardRef<AddressFormRef, Props>(
           if (item.id === "action") {
             return (
               <TouchableOpacity
-                onPress={onUpdate}
+                onPress={(e: GestureResponderEvent) => onSubmit(e)}
                 activeOpacity={0.6}
                 className="mt-4 flex flex-1 items-center rounded-lg bg-orange-600 py-3.5"
               >
@@ -64,6 +69,7 @@ const AddressFormComponent = forwardRef<AddressFormRef, Props>(
           } else {
             return (
               <TextInputV1
+                inputMode={item.type}
                 legend={item.label}
                 value={
                   fieldValues[item.id as keyof TUserAddress]?.toString() || ""

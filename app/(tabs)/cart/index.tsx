@@ -7,7 +7,7 @@ import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomA
 import ContentWrapper from "@/components/common/ContentWrapper";
 import useCartScreenHook from "@/hooks/useCartScreenHook";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
+import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
 
 export default function CartScreen() {
   const {
@@ -45,7 +45,7 @@ export default function CartScreen() {
         showModal={showAddressModal}
         handlePress={handleAddressModal}
       >
-        <SelectAddressModalView title="Choose delivery address" />
+        <AddressSettingScreen />
       </DemoModalComponent>
     </SafeAreaWrapper>
   );
