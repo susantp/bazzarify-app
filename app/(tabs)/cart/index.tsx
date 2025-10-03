@@ -15,7 +15,6 @@ export default function CartScreen() {
     cartData,
     showAddressModal,
     handleAddressModal,
-    handleAddressPress,
     handleCheckoutPress,
   } = useCartScreenHook();
   return (
@@ -46,10 +45,7 @@ export default function CartScreen() {
         showModal={showAddressModal}
         handlePress={handleAddressModal}
       >
-        <SelectAddressModalView
-          title="Choose delivery address"
-          onPress={handleAddressPress}
-        />
+        <SelectAddressModalView title="Choose delivery address" />
       </DemoModalComponent>
     </SafeAreaWrapper>
   );

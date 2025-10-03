@@ -27,10 +27,6 @@ export default function useCartScreenHook() {
   const handleAddressModal = () => {
     setShowAddressModal(!showAddressModal);
   };
-  const handleAddressPress = () => {
-    setShowAddressModal(!showAddressModal);
-    router.push(`/account/setting/address/create`);
-  };
 
   const handleCheckoutPress = () =>
     cartData?.cart?.totals.items_count
@@ -211,7 +207,6 @@ export default function useCartScreenHook() {
     cartData,
     showAddressModal,
     handleAddressModal,
-    handleAddressPress,
     handleCheckoutPress,
     handleLineItemIncrement,
     handleLineItemDecrement,
