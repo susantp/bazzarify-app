@@ -19,3 +19,11 @@ export const getDefaultAddressAtom = atom((get) => {
   if (isDefault) return isDefault;
   return addresses && addresses.length > 0 ? addresses[0] : null;
 });
+
+// get address by uuid
+export const getAddressByUuidAtom = atom((get) => {
+  const addresses = get(addressListAtom);
+  return (uuid: string) => {
+    return addresses?.find((address) => address.uuid === uuid) || null;
+  };
+});

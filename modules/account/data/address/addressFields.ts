@@ -1,13 +1,15 @@
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 
 export type AddressFieldType = {
-  id: string;
+  id: keyof TUserAddress | "action";
   label: string;
   type?: string;
   required?: boolean;
   placeholder?: string;
   action?: () => void;
+  value?: string | number;
 };
 const addressFields: AddressFieldType[] = [
   {
@@ -32,18 +34,11 @@ const addressFields: AddressFieldType[] = [
     placeholder: "State",
   },
   {
-    id: "province",
-    label: "Province",
+    id: "zip",
+    label: "Zip code",
     type: "text",
     required: true,
-    placeholder: "Province",
-  },
-  {
-    id: "postalCode",
-    label: "Postal Code",
-    type: "text",
-    required: true,
-    placeholder: "Postal Code",
+    placeholder: "Zip Code",
   },
   {
     id: "city",
@@ -53,7 +48,7 @@ const addressFields: AddressFieldType[] = [
     placeholder: "City",
   },
   {
-    id: "streetAddress",
+    id: "street",
     label: "Street",
     type: "text",
     required: true,
