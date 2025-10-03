@@ -1,6 +1,6 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { useLocalSearchParams } from "expo-router";
-import { settingList } from "@/components/account/setting/data/settingList";
+import { settingList } from "@/modules/account/data/settings/settingList";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { getById } from "@/utils/getById";
 

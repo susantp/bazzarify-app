@@ -5,7 +5,7 @@ import { CartItem, TCartItem } from "@/modules/order/schemas/orderSchema";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
-import { addCartItem } from "@/modules/cart/actions/cartService";
+import { addCartItem, makeCartItem } from "@/modules/cart/actions/cartService";
 
 export default function useCart() {
   const addToCartState = useSetAtom(cartAtom);
@@ -16,24 +16,7 @@ export default function useCart() {
   ) => {
     if (!product) return;
 
-    const data: TCartItem = {
-      name: product.name,
-      uuid: product.uuid,
-      sku: product.sku,
-      variant_attrs: selectedVariant
-        ? {
-            uuid: selectedVariant.uuid,
-            name: selectedVariant.name,
-            sku: selectedVariant.sku,
-          }
-        : null,
-      qty_ordered: 1,
-      unit_price: selectedVariant?.price ?? product.base_price,
-      row_tax: 0,
-      row_shipping: 0,
-      row_discount: 0,
-      row_total: selectedVariant?.price ?? product.base_price,
-    };
+    const data: TCartItem = makeCartItem(product, selectedVariant);
 
     console.log("Adding to cart before parsed:", data);
     const parsed = CartItem.safeParse(data);

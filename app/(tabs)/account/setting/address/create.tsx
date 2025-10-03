@@ -1,8 +1,8 @@
 import ScreenHeader from "@/components/common/ScreenHeader";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import AddressFormComponent from "@/components/account/setting/address/AddressFormComponent";
-import addressFields from "@/constants/addressFields";
+import AddressFormComponent from "@/modules/account/components/settings/AddressFormComponent";
+import addressFields from "@/modules/account/data/address/addressFields";
 import Toast from "react-native-toast-message";
 import { Alert } from "react-native";
 import { router } from "expo-router";

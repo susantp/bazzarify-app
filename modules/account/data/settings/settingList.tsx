@@ -1,10 +1,10 @@
 import React from "react";
-import LanguageSettingScreen from "@/components/account/setting/screens/languageScreen";
-import AddressSettingScreen from "@/components/account/setting/screens/addressSettingScreen";
-import TermsPolicyScreen from "@/components/account/setting/screens/TermsPolicyScreen";
-import PermissionSettingScreen from "@/components/account/setting/screens/permissionSetting";
-import NotificationSettingScreen from "@/components/account/setting/screens/notificationsSetting";
-import FaqScreen from "@/components/account/setting/screens/FaqScreen";
+import LanguageSettingScreen from "@/modules/account/components/settings/languageScreen";
+import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
+import TermsPolicyScreen from "@/modules/account/components/settings/TermsPolicyScreen";
+import PermissionSettingScreen from "@/modules/account/components/settings/permissionSetting";
+import NotificationSettingScreen from "@/modules/account/components/settings/notificationsSetting";
+import FaqScreen from "@/modules/account/components/settings/FaqScreen";
 
 export interface IProfileMenu {
   id: string;

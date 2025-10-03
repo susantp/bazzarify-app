@@ -10,12 +10,15 @@ import { QueryClient } from "@tanstack/query-core";
 import { AppState } from "react-native";
 import { createCartTask } from "@/modules/auth/boot/cartTask";
 import { cartAtom } from "@/modules/cart/atoms";
+import createAddressesTask from "@/modules/auth/boot/createAddressesTask";
+import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
 
 export function useBootstrapApp() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
   const setToken = useSetAtom(tokenAtom);
   const setCart = useSetAtom(cartAtom);
+  const setAddresses = useSetAtom(addressListAtom);
   const [ready, setReady] = useState(false);
 
   console.log("app state in useEffect: ", AppState.currentState);
@@ -26,6 +29,7 @@ export function useBootstrapApp() {
       await bootstrapApp([
         createTokenTask(setToken),
         createCartTask(setCart),
+        createAddressesTask(setAddresses),
         splashTask,
         // plug more tasks later
       ]);
@@ -38,7 +42,7 @@ export function useBootstrapApp() {
       active = false;
       unsubscribe();
     };
-  }, [setCart, setToken]);
+  }, [setAddresses, setCart, setToken]);
 
   return {
     ready,

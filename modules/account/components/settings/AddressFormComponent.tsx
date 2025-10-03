@@ -1,6 +1,6 @@
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import TextInputV1 from "@/components/common/TextInputV1";
-import { AddressFieldType } from "@/constants/addressFields";
+import { AddressFieldType } from "@/modules/account/data/address/addressFields";
 
 interface AddressFormComponentProps {
   id?: string;

@@ -9,6 +9,8 @@ import { CartResponsePayload } from "@/modules/cart/schemas/responsePayloads/Car
 import { DataSchema } from "@/modules/core/schemas/DataSchema";
 import * as Sentry from "@sentry/react-native";
 import { fetchAuthDataAndValidate } from "@/modules/core/utils/fetchAuthDataAndValidate";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 
 export async function getCart() {
   const token = await retrieveStorage(AUTH_TOKEN_KEY);
@@ -104,3 +106,25 @@ export async function removeCartItem(
   );
   return response.payload;
 }
+
+export const makeCartItem = (
+  product: TProductWithVariantAndImage,
+  selectedVariant?: TVariantListWithImage,
+): TCartItem => ({
+  name: product.name,
+  uuid: product.uuid,
+  sku: product.sku,
+  variant_attrs: selectedVariant
+    ? {
+        uuid: selectedVariant.uuid,
+        name: selectedVariant.name,
+        sku: selectedVariant.sku,
+      }
+    : null,
+  qty_ordered: 1,
+  unit_price: selectedVariant?.price ?? product.base_price,
+  row_tax: 0,
+  row_shipping: 0,
+  row_discount: 0,
+  row_total: selectedVariant?.price ?? product.base_price,
+});

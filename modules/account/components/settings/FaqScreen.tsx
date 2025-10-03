@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaqList } from "@/components/account/setting/data/faqList";
+import { FaqList } from "@/modules/account/data/settings/faqList";
 import { Pressable, Text, View } from "react-native";
 import {
   ChevronDownIcon,

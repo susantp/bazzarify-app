@@ -53,11 +53,10 @@ const CartItem = ({ item }: CartItemProps) => {
         <View id="price-action" className="flex-row">
           <View className="w-6/12 flex-col">
             <Text className="text-md text-orange-600">
-              {/*item.discountedPrice*/}
               Rs {item.unit_price}
             </Text>
             <Text className="text-sm text-gray-600 line-through">
-              Rs {item.unit_price}
+              {item.row_discount ? `Rs ${item.row_discount}` : null}
             </Text>
           </View>
 

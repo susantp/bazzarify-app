@@ -1,36 +1,31 @@
 import { FlatList, Switch, Text, View } from "react-native";
 import { useState } from "react";
-import { Colors } from "@/constants/Colors";
 import {
-  notificationSettingList,
-  NotificationSettingType,
-} from "@/components/account/setting/data/notification";
+  permissionSetting,
+  PermissionType,
+} from "@/modules/account/data/settings/permissions";
+import { Colors } from "@/constants/Colors";
 import ContentWrapper from "@/components/common/ContentWrapper";
 
-const NotificationSettingScreen = () => {
-  const [notifications, setNotifications] = useState(notificationSettingList);
+const PermissionSettingScreen = () => {
+  const [permissions, setPermissions] = useState(permissionSetting);
   const handleSwitchChange = (id: string, value: boolean) => {
-    setNotifications((prevNotification: NotificationSettingType[]) =>
-      prevNotification.map((notification: NotificationSettingType) =>
-        notification.id === id
-          ? { ...notification, active: value }
-          : notification,
+    setPermissions((prevPermissions: PermissionType[]) =>
+      prevPermissions.map((permission: PermissionType) =>
+        permission.id === id ? { ...permission, active: value } : permission,
       ),
     );
   };
   return (
-    notifications.length > 0 && (
+    permissions.length > 0 && (
       <ContentWrapper className="bg-white">
         <FlatList
-          data={notifications}
+          data={permissions}
           renderItem={({ item }) => {
             return (
-              <View className="flex-row items-center justify-items-center border-b border-gray-400 px-2 py-4">
-                <View className="w-10/12 flex-col gap-y-2">
+              <View className="flex-row items-center justify-between border-b border-gray-400 px-2 py-6">
+                <View className="w-10/12">
                   <Text className="text-md font-semibold">{item.label}</Text>
-                  <Text className="text-[0.8rem] font-light">
-                    {item.helperText}
-                  </Text>
                 </View>
                 <View className="w-2/12 items-end">
                   <Switch
@@ -51,4 +46,4 @@ const NotificationSettingScreen = () => {
   );
 };
 
-export default NotificationSettingScreen;
+export default PermissionSettingScreen;

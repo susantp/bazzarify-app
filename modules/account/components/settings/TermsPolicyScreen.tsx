@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   TermPolicyType,
   termsPolicy,
-} from "@/components/account/setting/data/termsPolicy";
+} from "@/modules/account/data/settings/termsPolicy";
 import ContentWrapper from "@/components/common/ContentWrapper";
 
 const TermsPolicyScreen = () => {

@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import AddressSettingScreen from "@/components/account/setting/screens/addressSettingScreen";
+import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
 import React from "react";
 
 interface SelectAddressModalViewProps {

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import UserSchema from "@/modules/auth/schemas/UserSchema";
+import { UserSchema } from "@/modules/auth/schemas/UserSchema";
 
 const UserPayloadSchema = z
   .object({
