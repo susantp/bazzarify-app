@@ -34,8 +34,12 @@ export default function useSettingScreen() {
         {item.id === SettingEnum.LANGUAGE && defaultLanguage.length > 0 ? (
           <View className="flex-row items-center">
             <Text className="w-10/12 text-xl">{item.label}</Text>
-            <View className="h-0 w-2/12 items-end justify-center">
-              <Image source={defaultLanguage[0].imgSource} />
+            <View className="items-end justify-center">
+              <Image
+                source={defaultLanguage[0].imgSource}
+                width={10}
+                height={10}
+              />
             </View>
           </View>
         ) : (
