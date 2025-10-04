@@ -5,18 +5,19 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import BottomActionView from "@/components/common/BottomActionView";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import useCartScreenHook from "@/hooks/useCartScreenHook";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
+import useCartHook from "@/modules/cart/hooks/useCartHook";
+import useCartCardsHook from "@/modules/cart/hooks/useCartCardsHook";
 
 export default function CartScreen() {
   const {
-    CARDS,
-    cartData,
+    cartState,
     showAddressModal,
     handleAddressModal,
     handleCheckoutPress,
-  } = useCartScreenHook();
+  } = useCartHook();
+  const { CARDS } = useCartCardsHook();
   return (
     <SafeAreaWrapper>
       <CartHeader onAddressButtonPress={handleAddressModal} />
@@ -27,14 +28,14 @@ export default function CartScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartData?.cart?.totals.items_count && (
+      {cartState?.cart?.totals.items_count && (
         <BottomActionView>
           <CheckoutBottomActionView
             handlePress={handleCheckoutPress}
-            totalPrice={cartData?.cart?.totals.grand_total}
+            totalPrice={cartState?.cart?.totals.grand_total}
             btnLabel={
-              cartData?.cart?.totals.items_count
-                ? `Checkout (${cartData?.cart?.totals.items_count})`
+              cartState?.cart?.totals.items_count
+                ? `Checkout (${cartState?.cart?.totals.items_count})`
                 : "Checkout"
             }
           />

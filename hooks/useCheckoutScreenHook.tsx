@@ -1,5 +1,4 @@
 import { randomUUID } from "expo-crypto";
-import OrderItem from "@/components/cart/checkout/OrderItem";
 import OrderDetailsComponent from "@/components/cart/checkout/OrderDetailsComponent";
 import VoucherList from "@/components/cart/checkout/VoucherList";
 import CheckoutAddressComponent from "@/components/cart/checkout/CheckoutAddressComponent";
@@ -8,7 +7,7 @@ import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 
 export default function useCheckoutScreenHook() {
-  const cart = useAtomValue(cartAtom);
+  const cartState = useAtomValue(cartAtom);
   const [btnLabel, setBtnLabel] = useState("Place Order");
   const CARDS = [
     {
@@ -16,20 +15,23 @@ export default function useCheckoutScreenHook() {
       id: randomUUID(),
       component: <CheckoutAddressComponent />,
     },
+    // {
+    //   title: "checkoutItems",
+    //   id: randomUUID(),
+    //   component: <OrderItem items={cart?.items} />,
+    // },
+
     {
-      title: "checkoutItems",
+      title: "orderDetails",
       id: randomUUID(),
-      component: <OrderItem items={cart?.items} />,
+      component: cartState?.cart?.totals.items_count! ? (
+        <OrderDetailsComponent cart={cartState?.cart} />
+      ) : null,
     },
     {
       title: "vouchers",
       id: randomUUID(),
       component: <VoucherList />,
-    },
-    {
-      title: "orderDetails",
-      id: randomUUID(),
-      component: <OrderDetailsComponent cart={cart} />,
     },
   ];
   const handleCheckout = () => {
@@ -37,8 +39,8 @@ export default function useCheckoutScreenHook() {
     setTimeout(() => {
       setBtnLabel("Place Order");
       // router.push("/cart/payment");
-      console.log(cart);
+      console.log(cartState?.cart);
     }, 3000);
   };
-  return { btnLabel, CARDS, cart, handleCheckout };
+  return { btnLabel, CARDS, cartState, handleCheckout };
 }

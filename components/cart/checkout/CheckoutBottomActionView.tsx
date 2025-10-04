@@ -21,14 +21,12 @@ const CheckoutBottomActionView = ({
       <View className="flex-col gap-y-2">
         <Text className="text-xl font-bold">
           Total:
-          <Text className="text-xl text-orange-600"> Rs. {totalPrice}</Text>
+          <Text className="text-xl text-orange-600">{` Rs. ${totalPrice}`}</Text>
         </Text>
-        {deliveryPrice && (
-          <Text className="text-sm font-light">
-            Delivery fee:{" "}
-            <Text className="text-orange-600">Rs. {deliveryPrice}</Text>
-          </Text>
-        )}
+        <Text className="text-sm font-light">
+          Delivery fee:
+          <Text className="text-orange-600">{` Rs. ${deliveryPrice}`}</Text>
+        </Text>
       </View>
       <Button
         icon="cart-arrow-right"

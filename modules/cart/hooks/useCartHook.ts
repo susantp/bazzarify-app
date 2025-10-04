@@ -1,37 +1,76 @@
-import { Alert, View } from "react-native";
-import React from "react";
 import { useAtom } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
-import { addressModalAtom } from "@/atoms/addressModalAtom";
-import { router } from "expo-router";
-import CartItem from "@/components/cart/CartItem";
-import { ThemedText } from "@/components/ThemedText";
-import { Card } from "react-native-paper";
+import Toast from "react-native-toast-message";
 import {
+  CartItem,
   CartItemToUpdateQuantitySchema,
   TCartItem,
   TCartItemToUpdateQuantity,
 } from "@/modules/order/schemas/orderSchema";
-import Toast from "react-native-toast-message";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
 import {
+  addCartItem,
   decrementCartItem,
   incrementCartItem,
+  makeCartItem,
   removeCartItem,
 } from "@/modules/cart/actions/cartService";
+import { addressModalAtom } from "@/atoms/addressModalAtom";
+import { router } from "expo-router";
+import { Alert } from "react-native";
+import getCartItemToUpdate from "@/modules/cart/utils/getCartItemToUpdate";
 
-export default function useCartScreenHook() {
-  const [cartData, setCartData] = useAtom(cartAtom);
-
+export default function useCartHook() {
+  const [cartState, setCartState] = useAtom(cartAtom);
   const [showAddressModal, setShowAddressModal] = useAtom(addressModalAtom);
   const handleAddressModal = () => {
     setShowAddressModal(!showAddressModal);
   };
+  const handleAddToCart = (
+    product: TProductWithVariantAndImage,
+    selectedVariant?: TVariantListWithImage,
+  ) => {
+    if (!product) return;
+
+    const data: TCartItem = makeCartItem(product, selectedVariant);
+
+    console.log("Adding to cart before parsed:", data);
+    const parsed = CartItem.safeParse(data);
+    if (!parsed.success) {
+      Toast.show({
+        position: "bottom",
+        text1: "Cannot add item to cart",
+        type: "error",
+      });
+      console.log(formattedIssues(parsed.error.issues));
+      return;
+    }
+    // post request to addToCart api then on success add to cart
+
+    console.log("Adding to cart after parsed:", data);
+    addCartItem(parsed.data)
+      .then((result) => {
+        if (result?.cart) {
+          setCartState(result);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to add item to cart:", error.message);
+        Toast.show({
+          position: "bottom",
+          text1: "Failed to add item to cart",
+          text2: error.message,
+          type: "error",
+        });
+      });
+  };
 
   const handleCheckoutPress = () =>
-    cartData?.cart?.totals.items_count
-      ? Alert.alert("Please select item to checkout.")
-      : router.push("/cart/checkout");
+    cartState?.cart?.totals.items_count
+      ? router.push("/cart/checkout")
+      : Alert.alert("Please select item to checkout.");
 
   const handleLineItemIncrement = (item: TCartItem) => {
     if (!item) return;
@@ -60,9 +99,8 @@ export default function useCartScreenHook() {
     incrementCartItem(parsed.data)
       .then((result) => {
         if (result?.cart) {
-          setCartData(result);
+          setCartState(result);
         }
-        console.log("add item to state:", result);
       })
       .catch((error) => {
         console.error("Failed to add item to cart:", error.message);
@@ -77,18 +115,7 @@ export default function useCartScreenHook() {
 
   const handleLineItemDecrement = (item: TCartItem) => {
     if (!item) return;
-    const data: TCartItemToUpdateQuantity = {
-      line_id: item.line_id,
-      uuid: item.uuid,
-      variant_attrs: item.variant_attrs
-        ? {
-            uuid: item.variant_attrs.uuid,
-            name: item.variant_attrs.name,
-            sku: item.variant_attrs.sku,
-          }
-        : null,
-      qty_ordered: 1,
-    };
+    const data = getCartItemToUpdate({ ...item, qty_ordered: 1 });
     const parsed = CartItemToUpdateQuantitySchema.safeParse(data);
     if (!parsed.success) {
       Toast.show({
@@ -102,9 +129,8 @@ export default function useCartScreenHook() {
     decrementCartItem(parsed.data)
       .then((result) => {
         if (result?.cart) {
-          setCartData(result);
+          setCartState(result);
         }
-        console.log("add item to state:", result);
       })
       .catch((error) => {
         console.error("Failed to add item to cart:", error.message);
@@ -119,18 +145,7 @@ export default function useCartScreenHook() {
 
   const handleLineItemRemove = (item: TCartItem) => {
     if (!item) return;
-    const data: TCartItemToUpdateQuantity = {
-      line_id: item.line_id,
-      uuid: item.uuid,
-      variant_attrs: item.variant_attrs
-        ? {
-            uuid: item.variant_attrs.uuid,
-            name: item.variant_attrs.name,
-            sku: item.variant_attrs.sku,
-          }
-        : null,
-      qty_ordered: 0,
-    };
+    const data = getCartItemToUpdate({ ...item, qty_ordered: 0 });
     console.log("remove item from state:", item);
     const parsed = CartItemToUpdateQuantitySchema.safeParse(data);
     if (!parsed.success) {
@@ -148,7 +163,7 @@ export default function useCartScreenHook() {
     removeCartItem(parsed.data)
       .then((result) => {
         if (result?.cart) {
-          setCartData(result);
+          setCartState(result);
         }
         console.log("remove item to state:", result);
       })
@@ -162,54 +177,15 @@ export default function useCartScreenHook() {
         });
       });
   };
-  const CARDS = [
-    {
-      title: "wel",
-      component: <View className="h-3 bg-gray-100" />,
-    },
-    {
-      title: "cart-items",
-      component: cartData?.cart?.totals.items_count ? (
-        <Card className="flex-1">
-          {cartData?.cart?.items.map((item) => (
-            <CartItem
-              key={item.variant_attrs?.uuid ?? item.uuid}
-              item={item}
-              onIncrement={() => handleLineItemIncrement(item)}
-              onDecrement={() => handleLineItemDecrement(item)}
-              onRemove={() => handleLineItemRemove(item)}
-            />
-          ))}
-        </Card>
-      ) : (
-        <ThemedText type="title">No Items on cart</ThemedText>
-      ),
-    },
-    {
-      title: "other-products",
-      component: (
-        <ThemedText>Popular Items section</ThemedText>
-        // <ContentGridSection
-        //   className="align-center flex-col pl-4"
-        //   title={"Just for you"}
-        //   items={popularItemsData}
-        //   cols={2}
-        //   horizontal={false}
-        //   renderItem={(item, index, cols) => (
-        //     <ProductCard item={item} key={index} cols={cols} />
-        //   )}
-        // />
-      ),
-    },
-  ];
+
   return {
-    CARDS,
-    cartData,
-    showAddressModal,
+    handleAddToCart,
     handleAddressModal,
-    handleCheckoutPress,
+    cartState,
+    showAddressModal,
     handleLineItemIncrement,
-    handleLineItemDecrement,
     handleLineItemRemove,
+    handleLineItemDecrement,
+    handleCheckoutPress,
   };
 }

@@ -7,11 +7,12 @@ import { createTokenTask } from "@/modules/auth/boot/tokenTask";
 import { splashTask } from "@/modules/core/boot/splashTask";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { QueryClient } from "@tanstack/query-core";
-import { AppState } from "react-native";
 import { createCartTask } from "@/modules/auth/boot/cartTask";
 import { cartAtom } from "@/modules/cart/atoms";
 import createAddressesTask from "@/modules/auth/boot/createAddressesTask";
 import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
+import { createUserTask } from "@/modules/auth/boot/userTask";
 
 export function useBootstrapApp() {
   const colorScheme = useColorScheme();
@@ -19,6 +20,7 @@ export function useBootstrapApp() {
   const setToken = useSetAtom(tokenAtom);
   const setCart = useSetAtom(cartAtom);
   const setAddresses = useSetAtom(addressListAtom);
+  const setUser = useSetAtom(userAtom);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export function useBootstrapApp() {
     const run = async () => {
       await bootstrapApp([
         createTokenTask(setToken),
+        createUserTask(setUser),
         createCartTask(setCart),
         createAddressesTask(setAddresses),
         splashTask,

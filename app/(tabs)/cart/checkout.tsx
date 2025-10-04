@@ -8,7 +8,8 @@ import BottomActionView from "@/components/common/BottomActionView";
 import useCheckoutScreenHook from "@/hooks/useCheckoutScreenHook";
 
 export default function CheckoutScreen() {
-  const { btnLabel, CARDS, cart, handleCheckout } = useCheckoutScreenHook();
+  const { btnLabel, CARDS, handleCheckout, cartState } =
+    useCheckoutScreenHook();
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Checkout" />
@@ -23,12 +24,12 @@ export default function CheckoutScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cart?.items.length! > 0 && (
+      {cartState?.cart?.items.length! > 0 && (
         <BottomActionView>
           <CheckoutBottomActionView
-            totalPrice={cart?.sub_total}
+            totalPrice={cartState?.cart?.totals.grand_total}
             btnLabel={btnLabel}
-            deliveryPrice={110}
+            deliveryPrice={cartState?.cart?.totals.shipping_total}
             handlePress={handleCheckout}
           />
         </BottomActionView>

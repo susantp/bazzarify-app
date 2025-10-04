@@ -2,17 +2,16 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/solid";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
-import { router } from "expo-router";
 import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
+import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
 
 const CheckoutAddressComponent = () => {
   const [showModal, setShowModal] = useAtom(addressModalAtom);
-  const handleAddressPress = () => {
-    setShowModal(!showModal);
-    router.push(`/account/setting/address/create`);
-  };
+  const user = useAtomValue(userAtom);
+  const defaultDeliveryAddress = useAtomValue(getDefaultAddressAtom);
   return (
     <>
       <TouchableOpacity
@@ -23,9 +22,19 @@ const CheckoutAddressComponent = () => {
           <MapPinIcon size={26} color="black" />
         </View>
         <View className="w-9/12 flex-col">
-          <Text>Om Prakash Shaha &nbsp; &nbsp;98XXXXXXXX</Text>
-          <Text>Koshi, Province</Text>
-          <Text>Morang, Biratnagar</Text>
+          <Text>{[user?.name, defaultDeliveryAddress?.phone].join(", ")}</Text>
+          <Text>
+            {[
+              defaultDeliveryAddress?.street,
+              defaultDeliveryAddress?.city,
+            ].join(", ")}
+          </Text>
+          <Text>
+            {[
+              defaultDeliveryAddress?.state,
+              defaultDeliveryAddress?.country,
+            ].join(", ")}
+          </Text>
         </View>
         <View className="w-2/12 flex-row items-center">
           <Text className="text-sm">Change</Text>
