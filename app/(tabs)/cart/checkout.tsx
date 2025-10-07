@@ -5,7 +5,7 @@ import React from "react";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import BottomActionView from "@/components/common/BottomActionView";
-import useCheckoutScreenHook from "@/hooks/useCheckoutScreenHook";
+import useCheckoutScreenHook from "@/modules/checkout/hooks/useCheckoutScreenHook";
 
 export default function CheckoutScreen() {
   const { btnLabel, CARDS, handleCheckout, cartState } =

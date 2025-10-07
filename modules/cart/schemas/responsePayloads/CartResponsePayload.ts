@@ -8,3 +8,4 @@ export const CartResponsePayload = z
   .strip();
 
 export type TAddCartPayload = z.infer<typeof CartResponsePayload>;
+export type TCartResponsePayload = z.infer<typeof CartResponsePayload>;

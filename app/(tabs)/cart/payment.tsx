@@ -9,7 +9,7 @@ import PaymentMethodView from "@/components/cart/payment/PaymentMethodView";
 import BottomActionView from "@/components/common/BottomActionView";
 
 export default function PaymentScreen() {
-  const { paymentMethodSections } = usePaymentScreenHook();
+  const { paymentMethodSections, orderTotals } = usePaymentScreenHook();
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Payment" />
@@ -33,12 +33,12 @@ export default function PaymentScreen() {
         <View className="flex-col gap-y-4 px-4 py-9">
           <View className="flex-row justify-between">
             <Text className="text-sm font-light">Subtotal</Text>
-            <Text className="font-semibold">Rs. 329</Text>
+            <Text className="font-semibold">{`Rs. ${orderTotals?.sub_total}`}</Text>
           </View>
           <View className="flex-row justify-between">
             <Text className="text-xl">Total Amount</Text>
             <Text className="text-xl font-semibold text-orange-600">
-              Rs. 329
+              {`Rs. ${orderTotals?.grand_total}`}
             </Text>
           </View>
         </View>

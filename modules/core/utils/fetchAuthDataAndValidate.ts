@@ -8,7 +8,7 @@ export async function fetchAuthDataAndValidate<TResponse extends z.ZodType>(
   endpoint: { module: string; path: string },
   responsePayloadSchema: TResponse,
   errorMessage: string,
-  token: string
+  token: string,
 ): Promise<z.infer<TResponse>> {
   const instance = await authAxiosInstance({
     token,

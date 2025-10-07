@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { UserSchema } from "@/modules/auth/schemas/UserSchema";
 
 export const UserAddress = z.object({
   uuid: z.uuid(),
@@ -28,7 +29,15 @@ export const UserAddressCreate = UserAddress.pick({
   phone: true,
 });
 
+export const ShippingInformationSchema = UserAddress.extend(
+  UserSchema.pick({
+    name: true,
+    phone: true,
+  }).shape,
+);
+
 export type TUserUuid = z.infer<typeof UserUuid>;
 export type TUserAddress = z.infer<typeof UserAddress>;
 export type TUserAddressDefault = z.infer<typeof UserAddressDefault>;
 export type TUserAddressCreate = z.infer<typeof UserAddressCreate>;
+export type TShippingInformation = z.infer<typeof ShippingInformationSchema>;
