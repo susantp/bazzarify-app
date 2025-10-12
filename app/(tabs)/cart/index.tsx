@@ -28,8 +28,9 @@ export default function CartScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartState?.cart?.totals.items_count ? (
-        <BottomActionView>
+
+      <BottomActionView>
+        {cartState?.cart?.totals.items_count ? (
           <CheckoutBottomActionView
             handlePress={handleCheckoutPress}
             totalPrice={cartState?.cart?.totals.grand_total}
@@ -39,8 +40,9 @@ export default function CartScreen() {
                 : "Checkout"
             }
           />
-        </BottomActionView>
-      ) : null}
+        ) : null}
+      </BottomActionView>
+
       <DemoModalComponent
         type="bottom"
         showModal={showAddressModal}
