@@ -17,7 +17,6 @@ const CODPaymentBottomActionView = ({
   actionBtn,
   action,
 }: ICODPaymentMethodViewProps) => {
-
   return (
     <View className="w-full px-4 py-9">
       <View className="flex-col gap-y-4">

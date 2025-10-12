@@ -47,12 +47,7 @@ export default function useCheckoutScreenHook() {
     },
   ];
   const handleCheckout = () => {
-    setBtnLabel("Creating Order...");
-    setTimeout(() => {
-      setBtnLabel("Place Order");
-      router.push("/cart/payment");
-      console.log(cartState?.cart);
-    }, 3000);
+    router.push("/cart/payment");
   };
   return { btnLabel, CARDS, cartState, handleCheckout };
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome5, Octicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
@@ -22,7 +22,7 @@ const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
   });
 
   return (
-    <>
+    <Suspense fallback={<Text>Item is adding to cart</Text>}>
       <View className="w-full flex-row justify-center">
         <Text>512+ sold in last month</Text>
       </View>
@@ -65,7 +65,7 @@ const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
           }
         })}
       </View>
-    </>
+    </Suspense>
   );
 };
 

@@ -23,6 +23,9 @@ export async function getFlashDealProducts(): Promise<TFlashDealsPayload | null>
     DataSchema(FlashDealsPayloadSchema),
     "Unable to fetch flash deal products",
   );
+
+  console.log("response", response);
+
   return response.payload;
 }
 

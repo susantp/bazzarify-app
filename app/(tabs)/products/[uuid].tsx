@@ -79,13 +79,11 @@ export default function ProductScreen() {
               </ProductScreenContainer>
             </ScrollView>
           </ContentWrapper>
-          {token && (
-            <BottomActionView className="gap-y-3 p-3">
-              <ProductPageBottomView
-                onCartAdd={() => handleAddToCart(product, selectedVariant)}
-              />
-            </BottomActionView>
-          )}
+          <BottomActionView className="gap-y-3 p-3">
+            <ProductPageBottomView
+              onCartAdd={() => handleAddToCart(product, selectedVariant)}
+            />
+          </BottomActionView>
         </>
       ) : (
         <ThemedLoader />
