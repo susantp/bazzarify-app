@@ -28,7 +28,7 @@ export default function CartScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartState?.cart?.totals.items_count && (
+      {cartState?.cart?.totals.items_count ? (
         <BottomActionView>
           <CheckoutBottomActionView
             handlePress={handleCheckoutPress}
@@ -40,7 +40,7 @@ export default function CartScreen() {
             }
           />
         </BottomActionView>
-      )}
+      ) : null}
       <DemoModalComponent
         type="bottom"
         showModal={showAddressModal}

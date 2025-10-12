@@ -13,8 +13,14 @@ export const SearchBox = ({ className }: SearchBoxProps) => {
   const canGoBack = router.canGoBack();
 
   const goSearch = () => router.push("/search");
-  const goBack = () => router.back();
-
+  const goBack = () => {
+    try {
+      router.back();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      router.replace("/");
+    }
+  };
   return (
     <View className={clsx("relative", className)}>
       {/* Make the entire pill tappable */}

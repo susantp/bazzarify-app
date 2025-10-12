@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { axiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
@@ -14,6 +14,9 @@ export default async function fetchDataAndValidate<T extends z.ZodType>(
   try {
     upstream = await axiosInstance.get(endpoint, { params });
   } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      console.log(error.request);
+    }
     const err = new Error(errorMessage, { cause: error });
     Sentry.captureException(err);
     throw err;
