@@ -1,33 +1,26 @@
 import React from "react";
-import { cartItemsTotalAtom } from "@/atoms/cartScreen/cartAction.atom";
-import { useAtom, useAtomValue } from "jotai";
 import CartHeader from "@/components/cart/CartHeader";
-import { Alert, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import BottomActionView from "@/components/common/BottomActionView";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import useCartScreenHook from "@/hooks/useCartScreenHook";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import { addressModalAtom } from "@/atoms/addressModalAtom";
-import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
-import { router } from "expo-router";
+import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
+import useCartHook from "@/modules/cart/hooks/useCartHook";
+import useCartCardsHook from "@/modules/cart/hooks/useCartCardsHook";
 
 export default function CartScreen() {
-  const totalCartPrice = useAtomValue(cartItemsTotalAtom);
-  const { CARDS, cartItems, selectedItemCount } = useCartScreenHook();
-  const [showModal, setShowModal] = useAtom(addressModalAtom);
-  const handlePress = () =>
-    selectedItemCount < 1
-      ? Alert.alert("Please select item to checkout.")
-      : router.push("/cart/checkout");
-  const handleAddressPress = () => {
-    setShowModal(!showModal);
-    router.push(`/account/setting/address/create`);
-  };
+  const {
+    cartState,
+    showAddressModal,
+    handleAddressModal,
+    handleCheckoutPress,
+  } = useCartHook();
+  const { CARDS } = useCartCardsHook();
   return (
     <SafeAreaWrapper>
-      <CartHeader />
+      <CartHeader onAddressButtonPress={handleAddressModal} />
       <ContentWrapper>
         <FlatList
           className="bg-white"
@@ -35,28 +28,27 @@ export default function CartScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartItems.length > 0 && (
-        <BottomActionView>
+
+      <BottomActionView>
+        {cartState?.cart?.totals.items_count ? (
           <CheckoutBottomActionView
-            handlePress={handlePress}
-            totalPrice={totalCartPrice}
+            handlePress={handleCheckoutPress}
+            totalPrice={cartState?.cart?.totals.grand_total}
             btnLabel={
-              cartItems.length > 0
-                ? `Checkout (${selectedItemCount})`
+              cartState?.cart?.totals.items_count
+                ? `Checkout (${cartState?.cart?.totals.items_count})`
                 : "Checkout"
             }
           />
-        </BottomActionView>
-      )}
+        ) : null}
+      </BottomActionView>
+
       <DemoModalComponent
         type="bottom"
-        showModal={showModal}
-        handlePress={() => setShowModal(!showModal)}
+        showModal={showAddressModal}
+        handlePress={handleAddressModal}
       >
-        <SelectAddressModalView
-          title="Choose delivery address"
-          onPress={handleAddressPress}
-        />
+        <AddressSettingScreen />
       </DemoModalComponent>
     </SafeAreaWrapper>
   );

@@ -34,7 +34,7 @@ export default function Page() {
                 className="absolute bottom-2 right-2"
               >
                 <AntDesign
-                  name="pluscircle"
+                  name="plus-circle"
                   size={24}
                   color={Colors.light.tint}
                 />

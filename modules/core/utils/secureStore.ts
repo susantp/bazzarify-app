@@ -1,7 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import * as Sentry from "@sentry/react-native";
 
-export async function setToken(key: string, value: string) {
+export async function setStorage(key: string, value: string) {
   try {
     return await SecureStore.setItemAsync(key, value);
   } catch (error) {
@@ -10,15 +10,17 @@ export async function setToken(key: string, value: string) {
   }
 }
 
-export async function retrieveToken(key: string) {
+export async function retrieveStorage(key: string) {
   try {
     return await SecureStore.getItemAsync(key);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.log(error);
     Sentry.captureException(error);
     return null;
   }
 }
 
-export async function deleteToken(key: string) {
+export async function deleteStorage(key: string) {
   return SecureStore.deleteItemAsync(key);
 }

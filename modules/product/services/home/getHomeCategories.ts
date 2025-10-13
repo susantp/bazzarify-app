@@ -1,4 +1,4 @@
-import axiosInstance from "@/modules/core/utils/axios";
+import { axiosInstance } from "@/modules/core/utils/axios";
 import { AxiosResponse } from "axios";
 import * as Sentry from "@sentry/react-native";
 import { DataSchema } from "@/modules/core/schemas/DataSchema";

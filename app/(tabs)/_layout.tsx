@@ -13,10 +13,13 @@ import {
 } from "react-native-heroicons/solid";
 import { useLocation } from "@/modules/core/hooks/useLocation";
 import { BlurView } from "expo-blur";
+import { useAtomValue } from "jotai";
+import { cartAtom } from "@/modules/cart/atoms";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   useLocation();
+  const cart = useAtomValue(cartAtom);
   return (
     <Tabs
       initialRouteName="index"
@@ -66,7 +69,7 @@ export default function TabLayout() {
         name="categories"
         options={{
           title: "Categories",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <Squares2X2Icon size={28} color={color} focusable={true} />
           ),
         }}
@@ -74,7 +77,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          tabBarBadge: 2,
+          tabBarBadge: cart?.cart?.totals.items_count,
           tabBarStyle: {
             display: "none",
           },

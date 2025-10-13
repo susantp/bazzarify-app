@@ -1,20 +1,17 @@
-import { ItemProps } from "@/components";
-import axiosInstance from "@/modules/core/utils/axios";
+import { DataSchema } from "@/modules/core/schemas/DataSchema";
+import {
+  IProductShowPayload,
+  ShowProductPayloadSchema,
+} from "@/modules/product/schemas/responsePayloads/ShowProductPayloadSchema";
+import fetchDataAndValidate from "@/modules/core/utils/fetchDataAndValidate";
 
 export default async function getProductByUUID(
   uuid: string,
-): Promise<ItemProps | null> {
-  try {
-    const response = await axiosInstance.get(`/product/${uuid}`);
-    if (response.data?.metaData?.error) {
-      return response.data.metaData;
-    }
-    return response.data.data.payload.product;
-  } catch (error) {
-    console.log(error);
-    // if (error instanceof AxiosError) {
-    //   handleError(error);
-    // }
-    return null;
-  }
+): Promise<IProductShowPayload | null> {
+  const response = await fetchDataAndValidate(
+    `/product/${uuid}`,
+    DataSchema(ShowProductPayloadSchema),
+    "Unable to product",
+  );
+  return response.payload;
 }

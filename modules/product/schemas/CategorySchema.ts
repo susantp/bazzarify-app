@@ -3,31 +3,31 @@ import { ImageSchema } from "@/modules/product/schemas/ImageSchema";
 
 export const CategoryCore = z
   .object({
-    uuid: z.string(),
+    uuid: z.uuid(),
     id: z.string().optional(),
     name: z.string(),
     position: z.string().optional(),
     slug: z.string(),
+    image_base_path: z.string(),
+    image_base_url: z.string(),
     specifications: z.array(z.string()).optional(),
     attributes: z.array(z.string()).optional(),
   })
   .strict();
 
-export const CategoryListWithImageSchema = CategoryCore.omit({
-  id: true,
-  position: true,
-  specifications: true,
-  attributes: true,
-})
-  .extend({
-    images: z.array(ImageSchema).optional(),
-  })
-  .strict();
+export const CategoryWithImageSchema = CategoryCore.extend({
+  images: z.array(ImageSchema).nullable(),
+}).strict();
 
-export const CategoryRecursiveWithImageSchema: typeof CategoryListWithImageSchema =
-  CategoryListWithImageSchema.extend({
+export const CategoryRecursiveWithImageSchema: typeof CategoryWithImageSchema =
+  CategoryWithImageSchema.extend({
     parent: z.lazy(() => CategoryRecursiveWithImageSchema).optional(),
     children: z
       .array(z.lazy(() => CategoryRecursiveWithImageSchema))
       .optional(),
   });
+export type TCategoryCore = z.infer<typeof CategoryCore>;
+export type TCategoryWithImageSchema = z.infer<typeof CategoryWithImageSchema>;
+export type TCategoryRecursiveWithImage = z.infer<
+  typeof CategoryRecursiveWithImageSchema
+>;

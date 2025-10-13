@@ -1,4 +1,4 @@
-import { StyleProp, View, ViewStyle } from "react-native";
+import { Animated, StyleProp, View, ViewStyle } from "react-native";
 import React from "react";
 import cn from "@/utils/tailwindHelper";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";

@@ -2,7 +2,7 @@ import { atom } from "jotai";
 import {
   languageList,
   LanguageType,
-} from "@/components/account/setting/data/languageList";
+} from "@/modules/account/data/settings/languageList";
 
 export const languageAtom = atom<LanguageType[]>(languageList);
 

@@ -1,4 +1,4 @@
-import axiosInstance from "@/modules/core/utils/axios";
+import { axiosInstance } from "@/modules/core/utils/axios";
 import { FlashDealsPayloadSchema } from "@/modules/product/schemas/responsePayloads/FlashDealsPayloadSchema";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
 import { IFlashDealsPayload } from "@/modules/product/types/payloads";

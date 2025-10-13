@@ -4,8 +4,8 @@ import { FlatList } from "react-native";
 import * as Crypto from "expo-crypto";
 import React from "react";
 import { IHomeCardComponent } from "@/modules/home/types";
-import { ICategoryListWithImagePayload } from "@/modules/product/types/payloads";
 import CategoryCard from "@/components/common/CategoryCard";
+import { THomeCategoriesPayload } from "@/modules/product/schemas/responsePayloads/HomeCategoriesPayloadSchema";
 
 const className = "flex-col bg-white px-1 py-3";
 const title = "Categories";
@@ -14,7 +14,7 @@ const id = "categories";
 const numCols = 3;
 export default function HomeCategories({
   queryResult,
-}: IHomeCardComponent<ICategoryListWithImagePayload | undefined>) {
+}: IHomeCardComponent<THomeCategoriesPayload | undefined>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
     <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>
@@ -25,7 +25,7 @@ export default function HomeCategories({
       ) : (
         <FlatList
           id={id}
-          data={data?.homeCategories.data}
+          data={data?.homeCategories?.data}
           renderItem={({ item, index }) => (
             <CategoryCard cols={numCols} item={item} index={index} />
           )}

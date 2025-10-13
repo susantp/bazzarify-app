@@ -1,10 +1,11 @@
 import { router } from "expo-router";
 import { Image, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { ICategory } from "@/modules/product/types/category";
+import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
+import { TCategoryWithImageSchema } from "@/modules/product/schemas/CategorySchema";
 
 export type CategoryCardProps = {
-  item: ICategory;
+  item: TCategoryWithImageSchema;
   index?: number;
   cols: 2 | 3 | 4;
 };
@@ -21,7 +22,10 @@ const CategoryCard = ({ item, cols }: CategoryCardProps) =>
       }
     >
       <Image
-        source={require("@/assets/products/cat-img.png")}
+        source={getFirstImageSource({
+          images: item.images,
+          baseUrl: item.image_base_url,
+        })}
         className={`h-28 w-24 md:h-56 md:w-48`}
       />
       <Text>{item.name.substring(0, 10)}</Text>

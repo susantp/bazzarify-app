@@ -1,6 +1,6 @@
-import { Href } from "expo-router";
+import { Href, router } from "expo-router";
 import _ from "underscore";
-import React from "react";
+import React, { useState, useTransition } from "react";
 import CardPaymentComponent from "@/components/cart/payment/CardPaymentComponent";
 import BottomActionView from "@/components/common/BottomActionView";
 import CardPaymentBottomActionView from "@/components/cart/payment/CardPaymentBottomActionView";
@@ -8,6 +8,14 @@ import CODPaymentComponent from "@/components/cart/payment/CODPaymentComponent";
 import CODPaymentBottomActionView from "@/components/cart/payment/CODPaymentBottomActionView";
 import ImePayPaymentComponent from "@/components/cart/payment/ImePayPaymentComponent";
 import ImePayPaymentBottomActionView from "@/components/cart/payment/ImePayPaymentBottomActionView";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { orderTotalsAfterOrderCreation } from "@/modules/order/atoms/orderTotalsAfterOrderCreation";
+import { cartAtom } from "@/modules/cart/atoms";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
+import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
+import actionPlaceOrder from "@/modules/checkout/actions/actionPlaceOrder";
+import { Text } from "react-native";
+import Toast from "react-native-toast-message";
 
 export type PaymentMethodSection = {
   sectionTitle: string;
@@ -21,6 +29,36 @@ export type PaymentMethodType = {
   voucherMsg?: string;
 };
 export default function usePaymentScreenHook(id?: string) {
+  const [cartState, setCartState] = useAtom(cartAtom);
+  const setOrderTotals = useSetAtom(orderTotalsAfterOrderCreation);
+  const user = useAtomValue(userAtom);
+  const defaultDeliveryAddress = useAtomValue(getDefaultAddressAtom);
+  const [codPaymentFee] = useState(10);
+  const [isPending, startTransition] = useTransition();
+
+  const handleCODPayment = () => {
+    if (!defaultDeliveryAddress) return null;
+    startTransition(async () => {
+      const response = await actionPlaceOrder({
+        shippingInformation: {
+          ...defaultDeliveryAddress,
+          phone: user?.phone || "0000000000",
+          name: user?.name || "No Name",
+        },
+      });
+      if (response?.cart === null) {
+        setCartState(response?.cart);
+      }
+      setOrderTotals(response?.orderTotals || null);
+    });
+    Toast.show({
+      type: "success",
+      text1: "Your order is processing.",
+      position: "bottom",
+    });
+    router.replace("/");
+  };
+
   const componentMap: Record<PaymentMethodType["id"], React.ReactNode> = {
     card: (
       <>
@@ -38,12 +76,19 @@ export default function usePaymentScreenHook(id?: string) {
       <>
         <CODPaymentComponent />
         <BottomActionView>
-          <CODPaymentBottomActionView
-            actionBtn="Confirm Order"
-            cashPaymentFee={10}
-            totalPrice={333}
-            subTotalPrice={323}
-          />
+          {!isPending ? (
+            <CODPaymentBottomActionView
+              action={handleCODPayment}
+              actionBtn="Confirm Order"
+              cashPaymentFee={codPaymentFee}
+              totalPrice={
+                (cartState?.cart?.totals.grand_total || 0) + codPaymentFee
+              }
+              subTotalPrice={cartState?.cart?.totals.grand_total || 0}
+            />
+          ) : (
+            <Text>Placing Order...</Text>
+          )}
         </BottomActionView>
       </>
     ),
@@ -115,5 +160,6 @@ export default function usePaymentScreenHook(id?: string) {
     paymentMethodSections,
     paymentMethodById,
     componentMap,
+    cartState,
   };
 }

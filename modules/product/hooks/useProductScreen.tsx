@@ -1,31 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import getProductByUUID from "@/modules/product/services/product/getProductByUUID";
 import { useEffect, useState } from "react";
-import { ItemVariant } from "@/components";
+import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 
 export interface IProductVariantSelectorProps {
-  variants: ItemVariant[];
-  onPress: (variant: ItemVariant) => void;
-  selectedVariant: ItemVariant | undefined;
+  variants: TVariantListWithImage[];
+  onPress: (variant: TVariantListWithImage) => void;
+  selectedVariant: TVariantListWithImage | undefined;
 }
 
 export default function useProductScreen(uuid: string) {
-  const { data: product, isSuccess } = useQuery({
+  const { data, isSuccess, isLoading, isError, error } = useQuery({
     queryFn: () => getProductByUUID(uuid.toString()),
     queryKey: ["product", uuid],
   });
   const [selectedVariant, setSelectedVariant] = useState<
-    ItemVariant | undefined
+    TVariantListWithImage | undefined
   >();
-  const handleVariantChange = (variant: ItemVariant) => {
+  const handleVariantChange = (variant: TVariantListWithImage) => {
     setSelectedVariant(variant);
   };
   useEffect(() => {
-    setSelectedVariant(product?.variants?.at(0) || undefined);
-  }, [product, isSuccess]);
+    setSelectedVariant(data?.product?.variants?.at(0) || undefined);
+  }, [data?.product, isSuccess]);
 
   return {
-    product,
+    isSuccess,
+    isLoading,
+    isError,
+    error,
+    product: data?.product,
+    currency: data?.currency,
     handleVariantChange,
     selectedVariant,
   };

@@ -3,7 +3,7 @@ import { AuthGuard } from "@/modules/core/utils/authGuard";
 
 const Home = () => {
   return (
-    <AuthGuard requireAuth={false}>
+    <AuthGuard requireAuth={true}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="checkout" options={{ headerShown: false }} />

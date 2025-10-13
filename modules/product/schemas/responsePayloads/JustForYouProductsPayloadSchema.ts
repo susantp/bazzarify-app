@@ -1,12 +1,15 @@
 import { z } from "zod";
-import { ProductWithImageSchema } from "@/modules/product/schemas/ProductWithImageSchema";
+import { OmittedProductWithImagesSchema } from "@/modules/product/schemas/ProductSchema";
 import { SimplePaginatedSchema } from "@/modules/product/schemas/SimplePaginated";
 
 export const JustForYouProductsPayloadSchema = z
   .object({
-    justForYouProducts: z.union([
-      SimplePaginatedSchema(ProductWithImageSchema),
-      z.array(z.unknown()).length(0),
-    ]),
+    justForYouProducts: SimplePaginatedSchema(
+      OmittedProductWithImagesSchema,
+    ).nullable(),
   })
   .strip();
+
+export type TJustForYouProductsPayload = z.infer<
+  typeof JustForYouProductsPayloadSchema
+>;

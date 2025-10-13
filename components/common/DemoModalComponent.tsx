@@ -68,7 +68,7 @@ const BottomDrawerContainer = ({
   >
     <TouchableOpacity className="w-full items-end" onPress={handlePress}>
       <AntDesign
-        name="closecircle"
+        name="close-circle"
         color={Colors.light.tint}
         size={28}
         strokeWidth={2}
@@ -92,7 +92,7 @@ const CenterContainer = ({
   >
     {children}
     <TouchableOpacity className="w-full items-center" onPress={handlePress}>
-      <AntDesign name="closecircleo" color="white" size={35} strokeWidth={4} />
+      <AntDesign name="close-circle" color="white" size={35} strokeWidth={4} />
     </TouchableOpacity>
   </View>
 );

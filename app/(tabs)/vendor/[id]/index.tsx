@@ -2,15 +2,12 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import React from "react";
 import VendorBanner, { vendorData } from "@/components/vendor/VendorBanner";
-import ContentGridSection from "@/components/home/ContentGridSection";
-import { popularItemsData } from "@/constants/popularItemsData";
 import { FlatList, ImageBackground, useWindowDimensions } from "react-native";
 import { randomUUID } from "expo-crypto";
 import { SliderData } from "@/constants/SliderData";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ImageSlider from "@/components/common/ImageSlider";
-import ProductCard from "@/components/common/ProductCard";
 
 export default function Page() {
   const vendor = vendorData;
@@ -48,64 +45,64 @@ export default function Page() {
         />
       ),
     },
-    {
-      id: randomUUID(),
-      title: "popular6Items",
-      component: (
-        <ContentGridSection
-          className="align-center flex-col bg-white"
-          title={"Popular Items"}
-          items={popularItemsData.slice(0, 6)}
-          horizontal={false}
-          cols={2}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
-      ),
-    },
-    {
-      id: randomUUID(),
-      component: <ImageSlider images={SliderData} />,
-      title: "Slider",
-    },
-    {
-      id: randomUUID(),
-      title: "popular6Items",
-      component: (
-        <ContentGridSection
-          className="align-center flex-col bg-white"
-          title={"Popular Items"}
-          items={popularItemsData.slice(0, 6)}
-          horizontal={false}
-          cols={2}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
-      ),
-    },
+    // {
+    //   id: randomUUID(),
+    //   title: "popular6Items",
+    //   component: (
+    //     <ContentGridSection
+    //       className="align-center flex-col bg-white"
+    //       title={"Popular Items"}
+    //       items={popularItemsData.slice(0, 6)}
+    //       horizontal={false}
+    //       cols={2}
+    //       renderItem={(item, index, cols) => (
+    //         <ProductCard item={item} key={index} cols={cols} />
+    //       )}
+    //     />
+    //   ),
+    // },
     {
       id: randomUUID(),
       component: <ImageSlider images={SliderData} />,
       title: "Slider",
     },
+    // {
+    //   id: randomUUID(),
+    //   title: "popular6Items",
+    //   component: (
+    //     <ContentGridSection
+    //       className="align-center flex-col bg-white"
+    //       title={"Popular Items"}
+    //       items={popularItemsData.slice(0, 6)}
+    //       horizontal={false}
+    //       cols={2}
+    //       renderItem={(item, index, cols) => (
+    //         <ProductCard item={item} key={index} cols={cols} />
+    //       )}
+    //     />
+    //   ),
+    // },
     {
       id: randomUUID(),
-      title: "popular6Items",
-      component: (
-        <ContentGridSection
-          className="align-center flex-col bg-white"
-          title={"Popular Items"}
-          items={popularItemsData.slice(0, 4)}
-          horizontal={false}
-          cols={2}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
-      ),
+      component: <ImageSlider images={SliderData} />,
+      title: "Slider",
     },
+    // {
+    //   id: randomUUID(),
+    //   title: "popular6Items",
+    //   component: (
+    //     <ContentGridSection
+    //       className="align-center flex-col bg-white"
+    //       title={"Popular Items"}
+    //       items={popularItemsData.slice(0, 4)}
+    //       horizontal={false}
+    //       cols={2}
+    //       renderItem={(item, index, cols) => (
+    //         <ProductCard item={item} key={index} cols={cols} />
+    //       )}
+    //     />
+    //   ),
+    // },
   ];
   const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
 

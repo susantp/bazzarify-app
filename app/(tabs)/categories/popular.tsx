@@ -1,12 +1,8 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import ContentWrapper from "@/components/common/ContentWrapper";
-import { popularItemsData } from "@/constants/popularItemsData";
-import ContentGridSection from "@/components/home/ContentGridSection";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import ProductCard from "@/components/common/ProductCard";
 
 export default function Page() {
   return (
@@ -22,18 +18,18 @@ export default function Page() {
           />
         </TouchableOpacity>
       </View>
-      <ContentWrapper>
-        <ContentGridSection
-          className="align-center flex-col bg-white"
-          title={"Popular Items"}
-          items={popularItemsData}
-          horizontal={false}
-          cols={2}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
-      </ContentWrapper>
+      {/*<ContentWrapper>*/}
+      {/*  <ContentGridSection*/}
+      {/*    className="align-center flex-col bg-white"*/}
+      {/*    title={"Popular Items"}*/}
+      {/*    items={popularItemsData}*/}
+      {/*    horizontal={false}*/}
+      {/*    cols={2}*/}
+      {/*    renderItem={(item, index, cols) => (*/}
+      {/*      <ProductCard item={item} key={index} cols={cols} />*/}
+      {/*    )}*/}
+      {/*  />*/}
+      {/*</ContentWrapper>*/}
     </SafeAreaWrapper>
   );
 }

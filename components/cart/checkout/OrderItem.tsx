@@ -1,7 +1,15 @@
 import { Image, Text, View } from "react-native";
-import React from "react";
+import React, { ReactNode } from "react";
+import { TCartItem } from "@/modules/order/schemas/orderSchema";
 
-const OrderItem = () => (
+interface OrderItemProps {
+  items: TCartItem[] | undefined;
+}
+interface WrapperProps {
+  children: ReactNode;
+}
+
+const OrderItem = ({ items }: OrderItemProps) => (
   <View className="flex-row items-center bg-white">
     <View id="content-thumbnail" className="flex w-4/12 items-center">
       <Image
@@ -10,29 +18,35 @@ const OrderItem = () => (
       />
     </View>
 
-    <View id="content" className="flex w-8/12 flex-col items-start gap-y-2">
-      <View id="cart-item-title">
-        <Text className="text-md">
-          Ultima Boom 141 ANC Earbuds (30 dB) | 45Hrs | game mode....
-        </Text>
-      </View>
-      <View id="vendor">
-        <Text className="text-sm">ultima lifestyle</Text>
-      </View>
-      <View
-        id="price-action"
-        className="w-full flex-row items-center justify-between"
-      >
-        <View className="flex-col">
-          <Text className="text-md text-orange-600">Rs 3999</Text>
-          <Text className="text-sm text-gray-600 line-through">Rs 1999</Text>
+    {items?.map((item) => (
+      <Wrapper key={item.uuid}>
+        <View id="cart-item-title">
+          <Text className="text-md">{item.name}</Text>
         </View>
+        <View id="vendor">
+          <Text className="text-sm">item.vendor</Text>
+        </View>
+        <View
+          id="price-action"
+          className="w-full flex-row items-center justify-between"
+        >
+          <View className="flex-col">
+            <Text className="text-md text-orange-600">{item.unit_price}</Text>
+            {/*<Text className="text-sm text-gray-600 line-through">Rs 1999</Text>*/}
+          </View>
 
-        <View className="gap-x-2">
-          <Text className="text-gray-700">Qty 1</Text>
+          <View className="gap-x-2">
+            <Text className="text-gray-700">x {item.qty_ordered}</Text>
+          </View>
         </View>
-      </View>
-    </View>
+      </Wrapper>
+    ))}
   </View>
 );
 export default OrderItem;
+
+const Wrapper = ({ children }: WrapperProps) => (
+  <View id="content" className="flex w-8/12 flex-col items-start gap-y-2">
+    {children}
+  </View>
+);

@@ -11,12 +11,12 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 
 export default function Page() {
-  const { orderStatusBoxes, otherMenus } = useProfileScreen();
+  const { orderStatusBoxes, otherMenus, user } = useProfileScreen();
   return (
     <SafeAreaWrapper>
       <AccountHeader />
       <View className="flex-1 flex-col bg-white px-2 py-2">
-        <ProfileInfo />
+        <ProfileInfo user={user} />
         <OrderStatus orderStatuses={orderStatusBoxes} />
         <View className="my-6 h-0.5 bg-slate-200" />
         <View className="flex-row flex-wrap gap-y-6">

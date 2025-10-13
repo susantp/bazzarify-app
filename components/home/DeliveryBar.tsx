@@ -3,7 +3,6 @@ import { MapPinIcon } from "react-native-heroicons/outline";
 import React, { useState } from "react";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
 import { LocationGeocodedAddress } from "expo-location";
-import { BottomSheet } from "@expo/ui/src/swift-ui";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 
 type DeliveryBarProps = {
@@ -42,24 +41,13 @@ export default function DeliveryBar({
           </Text>
         )}
       </TouchableOpacity>
-      {Platform.OS === "ios" ? (
-        <BottomSheet
-          isOpened={showModal}
-          onIsOpenedChange={() => setShowModal(!showModal)}
-        >
-          <View className="p-6">
-            <ChooseAddressComponent />
-          </View>
-        </BottomSheet>
-      ) : (
-        <DemoModalComponent
-          type="bottom"
-          showModal={showModal}
-          handlePress={() => setShowModal(!showModal)}
-        >
-          <ChooseAddressComponent />
-        </DemoModalComponent>
-      )}
+      <DemoModalComponent
+        type="bottom"
+        showModal={showModal}
+        handlePress={() => setShowModal(!showModal)}
+      >
+        <ChooseAddressComponent />
+      </DemoModalComponent>
     </View>
   );
 }

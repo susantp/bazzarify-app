@@ -1,12 +1,13 @@
 import { z } from "zod";
-import { ProductWithImageSchema } from "@/modules/product/schemas/ProductWithImageSchema";
+import { OmittedProductWithImagesSchema } from "@/modules/product/schemas/ProductSchema";
 import { SimplePaginatedSchema } from "@/modules/product/schemas/SimplePaginated";
 
 export const FlashDealsPayloadSchema = z
   .object({
-    flashDeals: z.union([
-      SimplePaginatedSchema(ProductWithImageSchema),
-      z.array(z.unknown()).length(0),
-    ]),
+    flashDeals: SimplePaginatedSchema(
+      OmittedProductWithImagesSchema,
+    ).nullable(),
   })
   .strip();
+
+export type TFlashDealsPayload = z.infer<typeof FlashDealsPayloadSchema>;
