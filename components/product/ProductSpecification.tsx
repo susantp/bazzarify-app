@@ -1,9 +1,13 @@
 import { Text, View } from "react-native";
-import { randomUUID } from "expo-crypto";
 import React from "react";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { LexicalContentView } from "@/modules/core/components/LexicalContentView";
 
-const ProductSpecification = () => {
-  const specifications = [{}, {}, {}, {}, {}, {}, {}, {}];
+const ProductSpecification = ({
+  product,
+}: {
+  product: TProductWithVariantAndImage;
+}) => {
   return (
     <View className="p-4">
       <View
@@ -12,13 +16,7 @@ const ProductSpecification = () => {
       >
         <Text className="text-xl font-semibold">Specification</Text>
         <View className="flex-col gap-y-2">
-          {specifications.map((spec, i) => (
-            <View key={randomUUID()} className="flex-row justify-between p-2">
-              <Text>
-                specification {i}: info {i}
-              </Text>
-            </View>
-          ))}
+          <LexicalContentView value={product.highlights} />
         </View>
       </View>
     </View>

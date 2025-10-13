@@ -15,8 +15,8 @@ export const ProductSchema = z
     sku: z.string().min(8).max(32),
     slug: z.string(),
     base_price: z.number().nonnegative(),
-    description: z.looseObject({}).nullable(),
-    highlights: z.looseObject({}).nullable(),
+    description: z.union([z.string(), z.record(z.string(), z.any())]),
+    highlights: z.union([z.string(), z.record(z.string(), z.any())]),
     box_items: z.string().nullable(),
     status_text: z.string(),
     brand_uuid: z.uuid().nullable(),
@@ -50,3 +50,5 @@ export const OmittedProductWithImagesSchema = ProductSchema.omit({
 export type TOmittedProductWithImages = z.infer<
   typeof OmittedProductWithImagesSchema
 >;
+
+export type TProduct = z.infer<typeof ProductSchema>;

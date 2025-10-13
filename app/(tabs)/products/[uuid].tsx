@@ -24,20 +24,16 @@ import ProductPriceComponent from "@/modules/product/components/ProductPriceComp
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import useCartHook from "@/modules/cart/hooks/useCartHook";
-import { useAtomValue } from "jotai";
-import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import FetchingErrorComponent from "@/modules/core/components/FetchingErrorComponent";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
-  const token = useAtomValue(tokenAtom);
-  console.log("product page: ", token);
   const { product, currency, selectedVariant, handleVariantChange, isError } =
     useProductScreen(uuid as string);
   const { handleAddToCart } = useCartHook();
   const ios = Platform.OS === "ios";
-
+  console.log("product page: ", product?.description);
   return (
     <SafeAreaWrapper>
       <TopBar
@@ -67,14 +63,15 @@ export default function ProductScreen() {
                   )}
                   <ProductCouponDiscountInfo />
                 </ProductGenericDetails>
+                ≈
                 <VoucherList className="border-gray-400 px-4" />
                 <ProductDeliveryDetails />
                 <ProductReviewBox />
                 <AskQuestionBox />
                 <TopSellingComponent />
                 <ProductVendorDetails />
-                <ProductDescription />
-                <ProductSpecification />
+                <ProductDescription product={product} />
+                <ProductSpecification product={product} />
                 <RelatedProducts />
               </ProductScreenContainer>
             </ScrollView>
