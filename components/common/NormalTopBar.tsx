@@ -18,7 +18,6 @@ export default function NormalTopBar({
   onChangeText,
   textInputDefaultValue,
 }: NormalHeaderProps) {
-
   return (
     <View className="flex-row items-center justify-between px-2 py-5">
       <View

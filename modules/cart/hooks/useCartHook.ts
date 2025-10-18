@@ -44,7 +44,7 @@ export default function useCartHook() {
         text1: "Cannot add item to cart",
         type: "error",
       });
-      console.log(formattedIssues(parsed.error.issues));
+      console.log("add to cart error: ", formattedIssues(parsed.error.issues));
       return;
     }
     // post request to addToCart api then on success add to cart

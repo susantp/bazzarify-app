@@ -48,7 +48,7 @@ export default function HomeScreen() {
             }
           />
         </ContentWrapper>
-        {showModal && (
+        {showModal ? (
           <DemoModalComponent
             showModal={showModal}
             handlePress={() => setShowModal(!showModal)}
@@ -65,7 +65,7 @@ export default function HomeScreen() {
               />
             </Animated.View>
           </DemoModalComponent>
-        )}
+        ) : null}
       </SafeAreaWrapper>
     </Suspense>
   );

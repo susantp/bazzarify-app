@@ -18,6 +18,8 @@ import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { useAtom } from "jotai";
 import { customFilterModalAtom } from "@/atoms/customFilterModalAtom";
 import cn from "@/utils/tailwindHelper";
+import { useQuery } from "@tanstack/react-query";
+import getProductByQuery from "@/modules/product/services/product/getProductByQuery";
 
 enum FilterMenuItemEnum {
   BEST_Selling = "bestSelling",
@@ -118,6 +120,11 @@ export default function Page() {
     customFilterModalAtom,
   );
   const { height } = useWindowDimensions();
+  const { data, isSuccess, isLoading, isError, error } = useQuery({
+    queryFn: () => getProductByQuery(query.toString()),
+    queryKey: ["product", query],
+  });
+  console.log("search: ", data);
   const handleFilterPress = (item: IFilterMenuItem) => {
     setFilter(item);
     item.id === FilterMenuItemEnum.PRICE && setPriceSortAsc(!priceSortAsc);

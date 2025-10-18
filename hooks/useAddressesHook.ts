@@ -5,7 +5,7 @@ import { TUserAddressDefault } from "@/modules/user/schemas/UserAddress";
 const useAddressesHook = () => {
   const addresses = useAtomValue(getAddressListWithDefaultAtom);
   const handleSwitchChange = ({ uuid, is_default }: TUserAddressDefault) => {
-    console.log({ uuid, is_default });
+    console.log("get address: ", { uuid, is_default });
     // setAddresses((prevAddresses: AddressType[]) =>
     //   prevAddresses.map((address: AddressType) => ({
     //     ...address,

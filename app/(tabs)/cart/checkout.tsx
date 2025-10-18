@@ -24,7 +24,7 @@ export default function CheckoutScreen() {
           renderItem={({ item }) => item.component}
         />
       </ContentWrapper>
-      {cartState?.cart?.items.length! > 0 && (
+      {cartState?.cart?.items.length! > 0 ? (
         <BottomActionView>
           <CheckoutBottomActionView
             totalPrice={cartState?.cart?.totals.grand_total}
@@ -33,7 +33,7 @@ export default function CheckoutScreen() {
             handlePress={handleCheckout}
           />
         </BottomActionView>
-      )}
+      ) : null}
     </SafeAreaWrapper>
   );
 }

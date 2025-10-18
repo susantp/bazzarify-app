@@ -70,17 +70,19 @@ export const TopBarIcons = ({ className }: HeaderIconsProps) => {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push("/cart")}>
         <ShoppingCartIcon size={36} strokeWidth={2} color="white" />
-        <Badge
-          style={{
-            position: "absolute",
-            top: -4,
-            right: -4,
-            backgroundColor: "#fff",
-            color: Colors.light.tint,
-          }}
-        >
-          {cart?.cart?.totals.items_count}
-        </Badge>
+        {cart?.cart?.totals.items_count ? (
+          <Badge
+            style={{
+              position: "absolute",
+              top: -4,
+              right: -4,
+              backgroundColor: "#fff",
+              color: Colors.light.tint,
+            }}
+          >
+            {cart?.cart?.totals.items_count}
+          </Badge>
+        ) : null}
       </TouchableOpacity>
     </View>
   );

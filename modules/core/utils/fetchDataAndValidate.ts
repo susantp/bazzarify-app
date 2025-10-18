@@ -15,7 +15,7 @@ export default async function fetchDataAndValidate<T extends z.ZodType>(
     upstream = await axiosInstance.get(endpoint, { params });
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      console.log(error.request);
+      console.log("fetch and validate error: ", error.request.data);
     }
     const err = new Error(errorMessage, { cause: error });
     Sentry.captureException(err);

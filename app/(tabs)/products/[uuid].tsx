@@ -33,7 +33,6 @@ export default function ProductScreen() {
     useProductScreen(uuid as string);
   const { handleAddToCart } = useCartHook();
   const ios = Platform.OS === "ios";
-  console.log("product page: ", product?.description);
   return (
     <SafeAreaWrapper>
       <TopBar
@@ -54,16 +53,15 @@ export default function ProductScreen() {
                     currency={currency}
                     selectedVariant={selectedVariant}
                   />
-                  {product?.variants && product.variants.length > 0 && (
+                  {product?.variants && product.variants.length > 0 ? (
                     <ProductVariantSelector
                       selectedVariant={selectedVariant}
                       variants={product.variants}
                       onPress={handleVariantChange}
                     />
-                  )}
+                  ) : null}
                   <ProductCouponDiscountInfo />
                 </ProductGenericDetails>
-                ≈
                 <VoucherList className="border-gray-400 px-4" />
                 <ProductDeliveryDetails />
                 <ProductReviewBox />

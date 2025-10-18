@@ -60,7 +60,7 @@ export default function Page() {
         router.replace("/guest/login");
       })
       .catch((error: AxiosError) => {
-        console.log(error);
+        console.log("password reset: ", error);
         Sentry.captureException(error);
         setError("phone", {
           type: "manual",
