@@ -3,11 +3,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { FlatList, View } from "react-native";
 import ProductCard from "@/components/common/ProductCard";
 import React from "react";
-import { IHomeInfiniteCardComponent } from "@/components/home/types";
 import { IJustForYouProductsPayload } from "@/modules/product/types/payloads";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
 import { InfiniteData } from "@tanstack/query-core";
+import { IHomeInfiniteCardComponent } from "@/modules/home/types";
 
 const className = "bg-white px-1 py-3";
 const title = "Just For You";
@@ -22,7 +22,6 @@ export default function JustForYou({
       InfiniteData<IJustForYouProductsPayload>,
       Error
     >;
-
   return (
     <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>
       {isLoading ? (

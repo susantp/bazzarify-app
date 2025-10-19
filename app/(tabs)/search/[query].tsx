@@ -18,8 +18,10 @@ import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { useAtom } from "jotai";
 import { customFilterModalAtom } from "@/atoms/customFilterModalAtom";
 import cn from "@/utils/tailwindHelper";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import getProductByQuery from "@/modules/product/services/product/getProductByQuery";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import JustForYou from "@/components/home/cards/JustForYou";
 
 enum FilterMenuItemEnum {
   BEST_Selling = "bestSelling",
@@ -112,19 +114,40 @@ const customFilterItems: ICustomFilterItem[] = [
 ];
 
 export default function Page() {
-  const { query } = useLocalSearchParams();
-  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
+  const { query: rawQuery } = useLocalSearchParams();
+  const currentQuery = Array.isArray(rawQuery)
+    ? (rawQuery[0] ?? "")
+    : (rawQuery ?? "");
+  const { canGoBack, onSearchSubmit, handleChangeText } =
+    useSearchBarHook(currentQuery);
   const [filter, setFilter] = useState<IFilterMenuItem | undefined>();
   const [priceSortAsc, setPriceSortAsc] = useState(true);
   const [showCustomFilter, setShowCustomFilter] = useAtom(
     customFilterModalAtom,
   );
   const { height } = useWindowDimensions();
-  const { data, isSuccess, isLoading, isError, error } = useQuery({
-    queryFn: () => getProductByQuery(query.toString()),
-    queryKey: ["product", query],
+  const queryResult = useInfiniteQuery({
+    queryKey: ["product", currentQuery],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
+      getProductByQuery({
+        perPage: "10",
+        page: String(pageParam),
+      }),
+    getNextPageParam: (lastPage) => {
+      const p = lastPage?.products;
+      return p?.next_page_url ? Number(p.current_page) + 1 : undefined;
+    },
   });
-  console.log("search: ", data);
+  // const queryResult = useInfiniteQuery({
+  //   initialPageParam: 1,
+  //   queryFn: () => getProductByQuery(currentQuery),
+  //   queryKey: ["product", currentQuery],
+  //   enabled: Boolean(currentQuery),
+  // });
+  const { data, isSuccess, isLoading, isError, error } = queryResult;
+  console.log("query page: ", data);
+
   const handleFilterPress = (item: IFilterMenuItem) => {
     setFilter(item);
     item.id === FilterMenuItemEnum.PRICE && setPriceSortAsc(!priceSortAsc);
@@ -166,30 +189,28 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <NormalTopBar
-        textInputDefaultValue={query.toString()}
+        textInputDefaultValue={currentQuery}
         onChangeText={handleChangeText}
         canGoBack={canGoBack}
         searchPlaceHolder="Hoodie for men"
         handleSubmitEditing={onSearchSubmit}
       />
       <ContentWrapper>
-        <View>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            contentContainerClassName="p-1 flex gap-x-2 items-center"
-            data={filterMenuItems}
-            renderItem={renderFilterItem}
-            keyExtractor={(item: IFilterMenuItem) => item.id}
-          />
-        </View>
-        {/*<ContentGridSection*/}
-        {/*  className="align-center flex-col bg-white"*/}
-        {/*  title={"Popular Items"}*/}
-        {/*  items={popularItemsData}*/}
-        {/*  horizontal={false}*/}
-        {/*  cols={2}*/}
-        {/*/>*/}
+        {isLoading ? (
+          <ThemedLoader />
+        ) : (
+          <View>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              contentContainerClassName="p-1 flex gap-x-2 items-center"
+              data={filterMenuItems}
+              renderItem={renderFilterItem}
+              keyExtractor={(item: IFilterMenuItem) => item.id}
+            />
+          </View>
+        )}
+        {!isSuccess ? null : <JustForYou queryResult={queryResult} />}
       </ContentWrapper>
       <DemoModalComponent
         type="bottom"

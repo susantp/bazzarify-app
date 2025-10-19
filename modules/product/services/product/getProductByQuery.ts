@@ -6,13 +6,14 @@ import {
 } from "@/modules/product/schemas/responsePayloads/ProductSearchPayloadSchema";
 
 export default async function getProductByQuery(
-  query: string,
+  params?: Record<string, string>,
 ): Promise<TProductSearchPayload | null> {
-  const endpoint = ["/search/product/", query].join("?filter[name]=");
+  // const endpoint = ["/search/product/", query].join("?filter[name]=");
   const response = await fetchDataAndValidate(
-    endpoint,
+    "/search/product",
     DataSchema(ProductSearchPayloadSchema),
-    "Unable to product",
+    "Unable to just for you products",
+    params,
   );
   return response.payload;
 }
