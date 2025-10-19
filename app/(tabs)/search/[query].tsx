@@ -21,7 +21,8 @@ import cn from "@/utils/tailwindHelper";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import getProductByQuery from "@/modules/product/services/product/getProductByQuery";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
-import JustForYou from "@/components/home/cards/JustForYou";
+import ProductCard from "@/components/common/ProductCard";
+import InfiniteProductGrid from "@/components/common/InfiniteProductGrid";
 
 enum FilterMenuItemEnum {
   BEST_Selling = "bestSelling",
@@ -133,18 +134,14 @@ export default function Page() {
       getProductByQuery({
         perPage: "10",
         page: String(pageParam),
+        "filter[name]": currentQuery,
       }),
     getNextPageParam: (lastPage) => {
       const p = lastPage?.products;
       return p?.next_page_url ? Number(p.current_page) + 1 : undefined;
     },
+    enabled: Boolean(currentQuery),
   });
-  // const queryResult = useInfiniteQuery({
-  //   initialPageParam: 1,
-  //   queryFn: () => getProductByQuery(currentQuery),
-  //   queryKey: ["product", currentQuery],
-  //   enabled: Boolean(currentQuery),
-  // });
   const { data, isSuccess, isLoading, isError, error } = queryResult;
   console.log("query page: ", data);
 
@@ -210,7 +207,18 @@ export default function Page() {
             />
           </View>
         )}
-        {!isSuccess ? null : <JustForYou queryResult={queryResult} />}
+        {!isSuccess ? null : (
+          <InfiniteProductGrid
+            id="SearchResults"
+            numColumns={2}
+            queryResult={queryResult}
+            selectItems={(p) => p?.products?.data ?? []}
+            renderItem={({ item, index }) => (
+              <ProductCard item={item} key={index} cols={2} />
+            )}
+            keyExtractor={(item) => item?.uuid}
+          />
+        )}
       </ContentWrapper>
       <DemoModalComponent
         type="bottom"

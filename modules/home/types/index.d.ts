@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { UseInfiniteQueryResult, UseQueryResult } from "@tanstack/react-query";
+import { InfiniteData } from "@tanstack/query-core";
 
 export interface IHomeCard {
   id: string;
