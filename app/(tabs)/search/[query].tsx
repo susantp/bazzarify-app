@@ -4,7 +4,6 @@ import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import {
-  FlatList,
   ListRenderItemInfo,
   ScrollView,
   Text,
@@ -195,18 +194,17 @@ export default function Page() {
       <ContentWrapper>
         {isLoading ? (
           <ThemedLoader />
-        ) : (
-          <View>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              contentContainerClassName="p-1 flex gap-x-2 items-center"
-              data={filterMenuItems}
-              renderItem={renderFilterItem}
-              keyExtractor={(item: IFilterMenuItem) => item.id}
-            />
-          </View>
-        )}
+        ) : // <View>
+        //   <FlatList
+        //     showsHorizontalScrollIndicator={false}
+        //     horizontal={true}
+        //     contentContainerClassName="p-1 flex gap-x-2 items-center"
+        //     data={filterMenuItems}
+        //     renderItem={renderFilterItem}
+        //     keyExtractor={(item: IFilterMenuItem) => item.id}
+        //   />
+        // </View>
+        null}
         {!isSuccess ? null : (
           <InfiniteProductGrid
             id="SearchResults"
