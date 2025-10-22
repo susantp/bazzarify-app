@@ -13,7 +13,7 @@ import { orderTotalsAfterOrderCreation } from "@/modules/order/atoms/orderTotals
 import { cartAtom } from "@/modules/cart/atoms";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
-import actionPlaceOrder from "@/modules/checkout/actions/actionPlaceOrder";
+import actionPlaceOrder from "@/modules/order/actions/actionPlaceOrder";
 import { Text } from "react-native";
 import Toast from "react-native-toast-message";
 
