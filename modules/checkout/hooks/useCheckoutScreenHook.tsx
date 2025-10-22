@@ -5,10 +5,10 @@ import CheckoutAddressComponent from "@/components/cart/checkout/CheckoutAddress
 import React, { useState } from "react";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
-import Toast from "react-native-toast-message";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
 import { router } from "expo-router";
+import Toast from "react-native-toast-message";
 
 export default function useCheckoutScreenHook() {
   const cartState = useAtomValue(cartAtom);
@@ -47,6 +47,14 @@ export default function useCheckoutScreenHook() {
     },
   ];
   const handleCheckout = () => {
+    if (!defaultDeliveryAddress) {
+      Toast.show({
+        position: "bottom",
+        text1: "Please fill out the address checkout",
+        type: "error",
+      });
+      return;
+    }
     router.push("/cart/payment");
   };
   return { btnLabel, CARDS, cartState, handleCheckout };

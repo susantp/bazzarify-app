@@ -5,10 +5,14 @@ import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 import actionUpdateAddress from "@/modules/user/actions/actionUpdateAddress";
 import Toast from "react-native-toast-message";
+import { Link } from "expo-router";
+import { ThemedText } from "@/components/ThemedText";
+import { Colors } from "@/constants/Colors";
 
 const AddressSettingScreen = () => {
   const addresses = useAtomValue(addressListAtom);
   const setAddresses = useSetAtom(addressListAtom);
+  console.log("address index: ", addresses);
 
   const handleSwitch = async (payload: TUserAddress) => {
     const isDefaultExists = addresses?.find(
@@ -42,13 +46,24 @@ const AddressSettingScreen = () => {
     });
   };
   return (
-    <ContentWrapper className="bg-white">
-      {addresses && addresses.length > 0 && (
+    <ContentWrapper className="flex-col items-center gap-y-5 bg-white">
+      {addresses && addresses.length > 0 ? (
         <AddressListComponent
           addresses={addresses}
           onSwitchChange={handleSwitch}
         />
-      )}
+      ) : null}
+      <Link
+        href={`/account/setting/address/create`}
+        className="rounded-full bg-orange-600 px-4 py-3"
+      >
+        <ThemedText
+          lightColor={Colors.light.background}
+          style={{ fontSize: 20 }}
+        >
+          Create new address
+        </ThemedText>
+      </Link>
     </ContentWrapper>
   );
 };
