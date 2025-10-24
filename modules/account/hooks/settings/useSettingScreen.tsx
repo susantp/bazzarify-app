@@ -13,14 +13,21 @@ import {
   SettingEnum,
 } from "@/modules/account/data/settings/settingList";
 import React from "react";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
+import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 
 export default function useSettingScreen() {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);
+  const setUser = useSetAtom(userAtom);
+  const setToken = useSetAtom(tokenAtom);
   const handleLogout = async () => {
+    //TODO request to logout api
     await deleteStorage(USER_KEY);
     await deleteStorage(AUTH_TOKEN_KEY);
+    setUser(null);
+    setToken(null);
     router.replace("/guest/guestAccountIndex");
   };
 

@@ -13,6 +13,8 @@ import createAddressesTask from "@/modules/auth/boot/createAddressesTask";
 import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { createUserTask } from "@/modules/auth/boot/userTask";
+import { createOrderTask } from "@/modules/order/boot/orderTask";
+import { consumerOrders } from "@/modules/order/atoms/consumerOrders";
 
 export function useBootstrapApp() {
   const colorScheme = useColorScheme();
@@ -21,6 +23,7 @@ export function useBootstrapApp() {
   const setCart = useSetAtom(cartAtom);
   const setAddresses = useSetAtom(addressListAtom);
   const setUser = useSetAtom(userAtom);
+  const setConsumerOrders = useSetAtom(consumerOrders);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -32,6 +35,7 @@ export function useBootstrapApp() {
         createUserTask(setUser),
         createCartTask(setCart),
         createAddressesTask(setAddresses),
+        createOrderTask(setConsumerOrders),
         splashTask,
         // plug more tasks later
       ]);

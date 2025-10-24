@@ -6,13 +6,13 @@ import {
   ToReviewIcon,
   ToShipIcon,
 } from "@/components/common/icons";
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Href, useFocusEffect } from "expo-router";
-import { retrieveStorage } from "@/modules/core/utils/secureStore";
+import { Href } from "expo-router";
 import { TUser } from "@/modules/auth/schemas/UserSchema";
-import { USER_KEY } from "@/modules/auth/config";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
 
 export type ProfileMenuBoxType = {
   label: string;
@@ -21,17 +21,9 @@ export type ProfileMenuBoxType = {
   routeTo?: Href;
 };
 export default function useProfileScreen() {
-  const [user, setUser] = useState<TUser | null>(null);
-  useFocusEffect(
-    useCallback(() => {
-      retrieveStorage(USER_KEY).then((response) => {
-        if (response) {
-          const user = JSON.parse(response);
-          setUser(user);
-        }
-      });
-    }, []),
-  );
+  const user = useAtomValue<TUser | null>(userAtom);
+  console.log("useProfileScreen", user);
+
   const orderStatusBoxes: ProfileMenuBoxType[] = [
     {
       id: "toPay",

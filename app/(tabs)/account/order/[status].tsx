@@ -24,7 +24,7 @@ export default function Page() {
             <Text>LGS-192927839300763731</Text>
           </View>
           <TouchableOpacity>
-            <AntDesign name="copy1" color={Colors.light.tint} size={24} />
+            <AntDesign name="copy" color={Colors.light.tint} size={24} />
           </TouchableOpacity>
         </View>
         <View className="flex-row items-center gap-x-4 rounded-lg border border-slate-300 bg-slate-100 p-3">

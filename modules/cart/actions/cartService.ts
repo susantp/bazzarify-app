@@ -12,14 +12,7 @@ import { fetchAuthDataAndValidate } from "@/modules/core/utils/fetchAuthDataAndV
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
 
-export async function getCart() {
-  const token = await retrieveStorage(AUTH_TOKEN_KEY);
-  if (!token) {
-    const err = new Error("No auth token found");
-    Sentry.captureException(err);
-    throw err;
-  }
-
+export async function getCart(token: string) {
   const response = await fetchAuthDataAndValidate(
     { module: "consumers", path: "cart/items" },
     DataSchema(CartResponsePayload),

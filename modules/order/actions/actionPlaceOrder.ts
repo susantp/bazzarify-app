@@ -28,7 +28,7 @@ export default async function actionPlaceOrder({
     { module: "consumers", path: "orders/place" },
     payload,
     DataSchema(CreateOrderResponsePayload),
-    "Unable to fetch cart",
+    "Unable to place order",
     token,
   );
   return response.payload;
