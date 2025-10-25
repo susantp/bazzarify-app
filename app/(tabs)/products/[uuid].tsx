@@ -13,7 +13,7 @@ import ProductDescription from "@/components/product/ProductDescription";
 import ProductSlider from "@/modules/product/components/ProductSlider";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductSpecification from "@/components/product/ProductSpecification";
-import BottomActionView from "@/components/common/BottomActionView";
+import BottomActionView from "@/modules/core/components/BottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ProductPageBottomView from "@/components/product/ProductPageBottomView";
@@ -36,7 +36,7 @@ export default function ProductScreen() {
   return (
     <SafeAreaWrapper>
       <TopBar
-        className={`mx-4 my-6 flex-row items-center justify-between gap-3`}
+        className={`flex-row items-center justify-between gap-3 bg-orange-600 p-4`}
       />
       {isError ? (
         <FetchingErrorComponent message="Sorry, something went wrong fetching the product." />

@@ -8,7 +8,7 @@ import { TPopularProductsPayload } from "@/modules/product/schemas/responsePaylo
 
 const className = "bg-white px-1 py-3";
 const title = "Popular Items";
-const seeMorePath = "/(tabs)/categories/popular-items";
+// const seeMorePath = "/(tabs)/categories/popular-items";
 const id = "popularItems";
 const numCols = 2;
 export default function PopularItems({
@@ -16,7 +16,7 @@ export default function PopularItems({
 }: IHomeCardComponent<TPopularProductsPayload>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
-    <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>
+    <GridWrapper className={className} title={title}>
       {isLoading ? (
         <ThemedText>Loading</ThemedText>
       ) : isError ? (

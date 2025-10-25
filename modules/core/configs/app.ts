@@ -32,6 +32,9 @@ export const app = {
       getHomeCategories: {
         path: "/consumers/home/getHomeCategories",
       },
+      getCategories: {
+        path: "categories",
+      },
     },
   },
 };

@@ -46,7 +46,7 @@ export interface IIconProps {
 }
 
 export const ToShipIcon = () => (
-  <Svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+  <Svg width="44" height="44" viewBox="0 0 26 26" fill="none">
     <Path
       d="M10.3609 9.45754L10.9188 11.4758C11.4442 13.377 11.7064 14.3282 12.4788 14.7605C13.2512 15.1938 14.2316 14.9381 16.1925 14.429L18.2725 13.8873C20.2333 13.3781 21.2137 13.1235 21.6601 12.375C22.1064 11.6253 21.8442 10.6741 21.3177 8.77287L20.7609 6.75571C20.2355 4.85337 19.9722 3.90221 19.2009 3.46996C18.4274 3.03662 17.447 3.29229 15.4861 3.80254L13.4061 4.34204C11.4453 4.8512 10.4649 5.10687 10.0196 5.85654C9.5733 6.60512 9.83547 7.55629 10.3609 9.45754Z"
       fill="#F05625"
@@ -59,7 +59,7 @@ export const ToShipIcon = () => (
 );
 
 export const ToReceiveIcon = () => (
-  <Svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+  <Svg width="44" height="44" viewBox="0 0 26 26" fill="none">
     <Mask
       id="mask0_219_3577"
       style={{ maskType: "luminance" }}
@@ -98,7 +98,7 @@ export const ToReceiveIcon = () => (
 );
 
 export const ToReviewIcon = () => (
-  <Svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+  <Svg width="44" height="44" viewBox="0 0 26 26" fill="none">
     <Path
       d="M21.6667 2.16663H4.33341C3.14175 2.16663 2.16675 3.14163 2.16675 4.33329V23.8333L6.50008 19.5H21.6667C22.8584 19.5 23.8334 18.525 23.8334 17.3333V4.33329C23.8334 3.14163 22.8584 2.16663 21.6667 2.16663ZM6.50008 15.1666V12.4908L13.9534 5.03746C14.1701 4.82079 14.5059 4.82079 14.7226 5.03746L16.6401 6.95496C16.8567 7.17163 16.8567 7.50746 16.6401 7.72413L9.17591 15.1666H6.50008ZM18.4167 15.1666H11.3751L13.5417 13H18.4167C19.0126 13 19.5001 13.4875 19.5001 14.0833C19.5001 14.6791 19.0126 15.1666 18.4167 15.1666Z"
       fill="#F05625"
@@ -107,7 +107,7 @@ export const ToReviewIcon = () => (
 );
 
 export const ToReturnIcon = () => (
-  <Svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+  <Svg width="44" height="44" viewBox="0 0 26 26" fill="none">
     <Path
       fill-rule="evenodd"
       clip-rule="evenodd"

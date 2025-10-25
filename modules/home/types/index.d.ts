@@ -4,7 +4,7 @@ import { InfiniteData } from "@tanstack/query-core";
 
 export interface IHomeCard {
   id: string;
-  component: ReactElement;
+  component: ReactElement | undefined | null;
   title: string;
 }
 export interface IHomeCardComponent<T> {

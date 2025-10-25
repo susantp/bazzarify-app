@@ -77,7 +77,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          tabBarBadge: cart?.cart?.totals.items_count,
+          tabBarBadge: cart?.cart?.totals.items_count || undefined,
           tabBarStyle: {
             display: "none",
           },

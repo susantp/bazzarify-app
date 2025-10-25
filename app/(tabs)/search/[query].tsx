@@ -21,7 +21,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import getProductByQuery from "@/modules/product/services/product/getProductByQuery";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductCard from "@/components/common/ProductCard";
-import InfiniteProductGrid from "@/components/common/InfiniteProductGrid";
+import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
 
 enum FilterMenuItemEnum {
   BEST_Selling = "bestSelling",

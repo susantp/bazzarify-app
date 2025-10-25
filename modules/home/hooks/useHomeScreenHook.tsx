@@ -1,5 +1,4 @@
 import React from "react";
-import { Dimensions, Image, View } from "react-native";
 import ImageSlider from "@/components/common/ImageSlider";
 import { SliderData } from "@/constants/SliderData";
 import {
@@ -16,7 +15,6 @@ import homeService from "@/modules/product/services/homeService";
 
 export default function useHomeScreenHook() {
   const queryClient = useQueryClient();
-  const { width, height } = Dimensions.get("window");
   const [
     flashDealsQueryResult,
     popularProductsQueryResult,
@@ -37,7 +35,7 @@ export default function useHomeScreenHook() {
       },
     ],
   });
-  const justForYouProducts = useInfiniteQuery({
+  const justForYouProductsQueryResult = useInfiniteQuery({
     queryKey: ["just-for-you-products"],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
@@ -55,7 +53,7 @@ export default function useHomeScreenHook() {
     flashDealsQueryResult.isRefetching ||
     popularProductsQueryResult.isRefetching ||
     homeCategoriesQueryResult.isRefetching ||
-    justForYouProducts.isRefetching;
+    justForYouProductsQueryResult.isRefetching;
 
   const onRefresh = async () => {
     // Reset the infinite list so it starts from page 1 again on pull-to-refresh
@@ -70,7 +68,7 @@ export default function useHomeScreenHook() {
       popularProductsQueryResult.refetch(),
       homeCategoriesQueryResult.refetch(),
       // After removal, refetch will fetch from the initialPageParam (1)
-      justForYouProducts.refetch(),
+      justForYouProductsQueryResult.refetch(),
     ]);
   };
 
@@ -82,34 +80,42 @@ export default function useHomeScreenHook() {
     },
     {
       id: "flash-deals",
-      component: <FlashDealCard queryResult={flashDealsQueryResult} />,
+      component: flashDealsQueryResult?.data?.flashDeals?.data?.length! ? (
+        <FlashDealCard queryResult={flashDealsQueryResult} />
+      ) : undefined,
       title: "Flash Deals",
     },
     {
       id: "popular-items",
-      component: <PopularItems queryResult={popularProductsQueryResult} />,
+      component: popularProductsQueryResult?.data?.popularProducts?.data
+        ?.length! ? (
+        <PopularItems queryResult={popularProductsQueryResult} />
+      ) : undefined,
       title: "Popular Items",
     },
-    {
-      id: "ad-banner",
-      component: (
-        <View className="flex w-full items-center">
-          <Image
-            source={require("@/assets/images/ads/homeAd.png")}
-            style={{ width: width * 0.99, height: height * 0.2 }}
-          />
-        </View>
-      ),
-      title: "Ad Banner",
-    },
+    // {
+    //   id: "ad-banner",
+    //   component: (
+    //     <View className="flex w-full items-center">
+    //       <Image
+    //         source={require("@/assets/images/ads/homeAd.png")}
+    //         style={{ width: width * 0.99, height: height * 0.2 }}
+    //       />
+    //     </View>
+    //   ),
+    //   title: "Ad Banner",
+    // },
     {
       id: "categories",
-      component: <HomeCategories queryResult={homeCategoriesQueryResult} />,
+      component: homeCategoriesQueryResult?.data?.homeCategories?.data
+        ?.length! ? (
+        <HomeCategories queryResult={homeCategoriesQueryResult} />
+      ) : undefined,
       title: "Categories",
     },
     {
       id: "just-for-you",
-      component: <JustForYou queryResult={justForYouProducts} />,
+      component: <JustForYou queryResult={justForYouProductsQueryResult} />,
       title: "Just For You",
     },
   ];
@@ -118,5 +124,6 @@ export default function useHomeScreenHook() {
     CARDS,
     refreshing,
     onRefresh,
+    justForYouProductsQueryResult,
   };
 }

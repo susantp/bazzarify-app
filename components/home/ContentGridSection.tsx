@@ -59,7 +59,7 @@ function ContentGridSection<T>({
 export default ContentGridSection;
 
 interface GridWrapperProps {
-  seeMorePath: Href;
+  seeMorePath?: Href;
   className?: string;
   title: string;
   children: React.ReactNode;

@@ -20,7 +20,9 @@ export interface InfiniteProductGridProps<TPage, TItem> {
   ListEmptyComponent?: React.ReactElement | null;
 }
 
-export default function InfiniteProductGrid<TPage, TItem>(props: InfiniteProductGridProps<TPage, TItem>) {
+export default function InfiniteProductGrid<TPage, TItem>(
+  props: InfiniteProductGridProps<TPage, TItem>,
+) {
   const {
     queryResult,
     selectItems,
@@ -32,12 +34,18 @@ export default function InfiniteProductGrid<TPage, TItem>(props: InfiniteProduct
     ListEmptyComponent,
   } = props;
 
-  const { data, isLoading, isError, error, hasNextPage, isFetchingNextPage, fetchNextPage } = queryResult;
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = queryResult;
 
   const flatData: TItem[] = React.useMemo(() => {
     const pages = data?.pages ?? [];
-    const items = pages.flatMap((p) => selectItems(p) as TItem[]);
-    return items;
+    return pages.flatMap((p) => selectItems(p) as TItem[]);
   }, [data, selectItems]);
 
   if (isLoading) {
@@ -51,9 +59,9 @@ export default function InfiniteProductGrid<TPage, TItem>(props: InfiniteProduct
   if (isError) {
     return (
       <View style={{ paddingVertical: 16 }}>
-        {/* Keep simple text to avoid introducing a new ThemedText import here */}
-        {/* eslint-disable-next-line react/no-unescaped-entities */}
-        <View><></></View>
+        <View>
+          <></>
+        </View>
       </View>
     );
   }
@@ -74,11 +82,13 @@ export default function InfiniteProductGrid<TPage, TItem>(props: InfiniteProduct
         }
       }}
       onEndReachedThreshold={onEndReachedThreshold}
-      ListFooterComponent={isFetchingNextPage ? (
-        <View style={{ paddingVertical: 16 }}>
-          <ThemedLoader />
-        </View>
-      ) : null}
+      ListFooterComponent={
+        isFetchingNextPage ? (
+          <View style={{ paddingVertical: 16 }}>
+            <ThemedLoader />
+          </View>
+        ) : null
+      }
       ListEmptyComponent={ListEmptyComponent ?? null}
     />
   );
