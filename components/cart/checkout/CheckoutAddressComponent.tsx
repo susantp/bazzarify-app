@@ -4,15 +4,16 @@ import { MapPinIcon } from "react-native-heroicons/solid";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { useAtom } from "jotai";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
-import SelectAddressModalView from "@/components/cart/SelectAddressModalView";
-import { router } from "expo-router";
+import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
+import { TUser } from "@/modules/auth/schemas/UserSchema";
+import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 
-const CheckoutAddressComponent = () => {
+interface Props {
+  user: TUser | null;
+  defaultDeliveryAddress: TUserAddress | null;
+}
+const CheckoutAddressComponent = ({ user, defaultDeliveryAddress }: Props) => {
   const [showModal, setShowModal] = useAtom(addressModalAtom);
-  const handleAddressPress = () => {
-    setShowModal(!showModal);
-    router.push(`/account/setting/address/create`);
-  };
   return (
     <>
       <TouchableOpacity
@@ -23,9 +24,19 @@ const CheckoutAddressComponent = () => {
           <MapPinIcon size={26} color="black" />
         </View>
         <View className="w-9/12 flex-col">
-          <Text>Om Prakash Shaha &nbsp; &nbsp;98XXXXXXXX</Text>
-          <Text>Koshi, Province</Text>
-          <Text>Morang, Biratnagar</Text>
+          <Text>{[user?.name, defaultDeliveryAddress?.phone].join(", ")}</Text>
+          <Text>
+            {[
+              defaultDeliveryAddress?.street,
+              defaultDeliveryAddress?.city,
+            ].join(", ")}
+          </Text>
+          <Text>
+            {[
+              defaultDeliveryAddress?.state,
+              defaultDeliveryAddress?.country,
+            ].join(", ")}
+          </Text>
         </View>
         <View className="w-2/12 flex-row items-center">
           <Text className="text-sm">Change</Text>
@@ -36,10 +47,7 @@ const CheckoutAddressComponent = () => {
         showModal={showModal}
         handlePress={() => setShowModal(!showModal)}
       >
-        <SelectAddressModalView
-          title="Choose delivery address"
-          onPress={handleAddressPress}
-        />
+        <AddressSettingScreen />
       </DemoModalComponent>
     </>
   );

@@ -2,7 +2,7 @@ import { ImageSourcePropType } from "react-native";
 
 export type ImageSliderType = {
   title: string;
-  image: ImageSourcePropType;
+  image: ImageSourcePropType | undefined;
   description: string;
 };
 export const SliderData: ImageSliderType[] = [

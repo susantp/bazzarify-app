@@ -2,13 +2,10 @@ import { FlatList } from "react-native";
 import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { categoriesItemData } from "@/constants/categoriesItemData";
-import ContentGridSection from "@/components/home/ContentGridSection";
-import { popularItemsData } from "@/constants/popularItemsData";
 import { findChildren } from "@/utils/getById";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import ChildCategoryHorizontal from "@/components/categories/ChildCategoryHorizontal";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import ProductCard from "@/components/common/ProductCard";
 
 export default function SubChildCategoryScreen() {
   const { id, child } = useLocalSearchParams();
@@ -44,21 +41,21 @@ export default function SubChildCategoryScreen() {
         />
       ),
     },
-    {
-      title: "Related Items",
-      element: (
-        <ContentGridSection
-          className="align-center flex-col bg-white"
-          title={"Popular Items"}
-          items={popularItemsData}
-          horizontal={false}
-          cols={2}
-          renderItem={(item, index, cols) => (
-            <ProductCard item={item} key={index} cols={cols} />
-          )}
-        />
-      ),
-    },
+    // {
+    //   title: "Related Items",
+    //   element: (
+    //     <ContentGridSection
+    //       className="align-center flex-col bg-white"
+    //       title={"Popular Items"}
+    //       items={popularItemsData}
+    //       horizontal={false}
+    //       cols={2}
+    //       renderItem={(item, index, cols) => (
+    //         <ProductCard item={item} key={index} cols={cols} />
+    //       )}
+    //     />
+    //   ),
+    // },
   ];
 
   return (

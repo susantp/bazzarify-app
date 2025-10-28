@@ -1,12 +1,13 @@
-import { Button, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import React from "react";
-import { Colors } from "@/constants/Colors";
+import { ThemedText } from "@/components/ThemedText";
 
 interface ICODPaymentMethodViewProps {
   totalPrice: number;
   cashPaymentFee: number;
   subTotalPrice: number;
   actionBtn: string;
+  action: () => void;
 }
 
 const CODPaymentBottomActionView = ({
@@ -14,6 +15,7 @@ const CODPaymentBottomActionView = ({
   cashPaymentFee,
   subTotalPrice,
   actionBtn,
+  action,
 }: ICODPaymentMethodViewProps) => {
   return (
     <View className="w-full px-4 py-9">
@@ -32,7 +34,20 @@ const CODPaymentBottomActionView = ({
             Rs. {totalPrice}
           </Text>
         </View>
-        <Button title={actionBtn} color={Colors.light.tint} />
+        <Pressable
+          className="w-full flex-row items-center justify-center rounded-md bg-orange-600 p-4"
+          onPress={action}
+        >
+          <ThemedText
+            type="subtitle"
+            style={{
+              color: "#ffffff",
+              textAlign: "center",
+            }}
+          >
+            {actionBtn}
+          </ThemedText>
+        </Pressable>
       </View>
     </View>
   );

@@ -10,6 +10,9 @@ import React from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Href } from "expo-router";
+import { TUser } from "@/modules/auth/schemas/UserSchema";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
 
 export type ProfileMenuBoxType = {
   label: string;
@@ -18,6 +21,9 @@ export type ProfileMenuBoxType = {
   routeTo?: Href;
 };
 export default function useProfileScreen() {
+  const user = useAtomValue<TUser | null>(userAtom);
+  console.log("useProfileScreen", user);
+
   const orderStatusBoxes: ProfileMenuBoxType[] = [
     {
       id: "toPay",
@@ -62,5 +68,5 @@ export default function useProfileScreen() {
       ),
     },
   ];
-  return { orderStatusBoxes, otherMenus };
+  return { orderStatusBoxes, otherMenus, user };
 }

@@ -1,9 +1,9 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/outline";
 import React, { useState } from "react";
-import DemoModalComponent from "@/components/common/DemoModalComponent";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
 import { LocationGeocodedAddress } from "expo-location";
+import DemoModalComponent from "@/components/common/DemoModalComponent";
 
 type DeliveryBarProps = {
   className: string;

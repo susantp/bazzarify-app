@@ -1,10 +1,10 @@
-import { ItemProps } from "@/components";
 import { Text, View } from "react-native";
 import { ShieldCheckIcon, StarIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import { StarIcon as StartIconOutline } from "react-native-heroicons/outline";
 import React, { ReactNode } from "react";
 import Svg, { Path } from "react-native-svg";
+import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 
 export const DiscountBannerIcon = () => (
   <Svg width="51" height="32" viewBox="0 0 51 32" fill="none">
@@ -22,7 +22,7 @@ const ProductGenericDetails = ({
   item,
   children,
 }: {
-  item: ItemProps;
+  item: TProductWithVariantAndImage;
   children: ReactNode;
 }) => (
   <View className="px-4">

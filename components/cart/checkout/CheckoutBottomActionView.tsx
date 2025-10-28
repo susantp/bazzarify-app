@@ -1,8 +1,10 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import React from "react";
+import { Button } from "react-native-paper";
+import { Colors } from "@/constants/Colors";
 
 interface ICheckoutBottomActionViewProps {
-  totalPrice: number;
+  totalPrice: number | undefined;
   btnLabel: string;
   deliveryPrice?: number;
   handlePress: () => void | undefined;
@@ -19,21 +21,25 @@ const CheckoutBottomActionView = ({
       <View className="flex-col gap-y-2">
         <Text className="text-xl font-bold">
           Total:
-          <Text className="text-xl text-orange-600"> Rs. {totalPrice}</Text>
+          <Text className="text-xl text-orange-600">{` Rs. ${totalPrice}`}</Text>
         </Text>
-        {deliveryPrice && (
-          <Text className="text-sm font-light">
-            Delivery fee:{" "}
-            <Text className="text-orange-600">Rs. {deliveryPrice}</Text>
-          </Text>
-        )}
+        <Text className="text-sm font-light">
+          Delivery fee:
+          <Text className="text-orange-600">{` Rs. ${deliveryPrice}`}</Text>
+        </Text>
       </View>
-      <TouchableOpacity
+      <Button
+        icon="cart-arrow-right"
+        mode="contained"
         onPress={handlePress}
-        className="flex-row items-end rounded-full bg-orange-600 px-6 py-4"
+        style={{
+          backgroundColor: Colors.light.tint,
+          paddingHorizontal: 1.5,
+          paddingVertical: 1,
+        }}
       >
-        <Text className="text-md text-white">{btnLabel}</Text>
-      </TouchableOpacity>
+        {btnLabel}
+      </Button>
     </View>
   );
 };

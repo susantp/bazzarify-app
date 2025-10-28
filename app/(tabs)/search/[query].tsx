@@ -4,7 +4,6 @@ import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import {
-  FlatList,
   ListRenderItemInfo,
   ScrollView,
   Text,
@@ -18,6 +17,11 @@ import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { useAtom } from "jotai";
 import { customFilterModalAtom } from "@/atoms/customFilterModalAtom";
 import cn from "@/utils/tailwindHelper";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import getProductByQuery from "@/modules/product/services/product/getProductByQuery";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import ProductCard from "@/components/common/ProductCard";
+import InfiniteProductGrid from "@/components/common/InfiniteProductGrid";
 
 enum FilterMenuItemEnum {
   BEST_Selling = "bestSelling",
@@ -110,14 +114,36 @@ const customFilterItems: ICustomFilterItem[] = [
 ];
 
 export default function Page() {
-  const { query } = useLocalSearchParams();
-  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
+  const { query: rawQuery } = useLocalSearchParams();
+  const currentQuery = Array.isArray(rawQuery)
+    ? (rawQuery[0] ?? "")
+    : (rawQuery ?? "");
+  const { canGoBack, onSearchSubmit, handleChangeText } =
+    useSearchBarHook(currentQuery);
   const [filter, setFilter] = useState<IFilterMenuItem | undefined>();
   const [priceSortAsc, setPriceSortAsc] = useState(true);
   const [showCustomFilter, setShowCustomFilter] = useAtom(
     customFilterModalAtom,
   );
   const { height } = useWindowDimensions();
+  const queryResult = useInfiniteQuery({
+    queryKey: ["product", currentQuery],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
+      getProductByQuery({
+        perPage: "10",
+        page: String(pageParam),
+        "filter[name]": currentQuery,
+      }),
+    getNextPageParam: (lastPage) => {
+      const p = lastPage?.products;
+      return p?.next_page_url ? Number(p.current_page) + 1 : undefined;
+    },
+    enabled: Boolean(currentQuery),
+  });
+  const { data, isSuccess, isLoading, isError, error } = queryResult;
+  console.log("query page: ", data);
+
   const handleFilterPress = (item: IFilterMenuItem) => {
     setFilter(item);
     item.id === FilterMenuItemEnum.PRICE && setPriceSortAsc(!priceSortAsc);
@@ -159,30 +185,38 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <NormalTopBar
-        textInputDefaultValue={query.toString()}
+        textInputDefaultValue={currentQuery}
         onChangeText={handleChangeText}
         canGoBack={canGoBack}
         searchPlaceHolder="Hoodie for men"
         handleSubmitEditing={onSearchSubmit}
       />
       <ContentWrapper>
-        <View>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            contentContainerClassName="p-1 flex gap-x-2 items-center"
-            data={filterMenuItems}
-            renderItem={renderFilterItem}
-            keyExtractor={(item: IFilterMenuItem) => item.id}
+        {isLoading ? (
+          <ThemedLoader />
+        ) : // <View>
+        //   <FlatList
+        //     showsHorizontalScrollIndicator={false}
+        //     horizontal={true}
+        //     contentContainerClassName="p-1 flex gap-x-2 items-center"
+        //     data={filterMenuItems}
+        //     renderItem={renderFilterItem}
+        //     keyExtractor={(item: IFilterMenuItem) => item.id}
+        //   />
+        // </View>
+        null}
+        {!isSuccess ? null : (
+          <InfiniteProductGrid
+            id="SearchResults"
+            numColumns={2}
+            queryResult={queryResult}
+            selectItems={(p) => p?.products?.data ?? []}
+            renderItem={({ item, index }) => (
+              <ProductCard item={item} key={index} cols={2} />
+            )}
+            keyExtractor={(item) => item?.uuid}
           />
-        </View>
-        {/*<ContentGridSection*/}
-        {/*  className="align-center flex-col bg-white"*/}
-        {/*  title={"Popular Items"}*/}
-        {/*  items={popularItemsData}*/}
-        {/*  horizontal={false}*/}
-        {/*  cols={2}*/}
-        {/*/>*/}
+        )}
       </ContentWrapper>
       <DemoModalComponent
         type="bottom"

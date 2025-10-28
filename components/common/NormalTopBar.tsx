@@ -23,11 +23,11 @@ export default function NormalTopBar({
       <View
         className={`flex-1 flex-row items-center gap-x-2 rounded-full bg-white pl-4`}
       >
-        {canGoBack ? (
-          <TouchableOpacity onPress={() => router.back()}>
-            <ArrowLeftIcon size={24} strokeWidth={9} color="black" />
-          </TouchableOpacity>
-        ) : null}
+        <TouchableOpacity
+          onPress={() => (canGoBack ? router.back() : router.replace("/"))}
+        >
+          <ArrowLeftIcon size={24} strokeWidth={9} color="black" />
+        </TouchableOpacity>
         <TextInput
           defaultValue={textInputDefaultValue}
           onChangeText={onChangeText}

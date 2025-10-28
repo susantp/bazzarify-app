@@ -3,7 +3,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import cn from "@/utils/tailwindHelper";
 
 interface SafeAreaWrapperProps {
-  children: React.ReactNode[] | React.ReactNode;
+  children: React.ReactNode;
   className?: string;
 }
 
@@ -14,8 +14,9 @@ export const SafeAreaWrapper = ({
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        className={cn("flex-col", "bg-orange-600", className)}
+        edges={["top", "left", "right", "bottom"]}
         style={{ flex: 1 }}
+        className={cn("flex-col bg-orange-600", className)}
       >
         {children}
       </SafeAreaView>

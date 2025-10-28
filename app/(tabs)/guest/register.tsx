@@ -15,10 +15,11 @@ import {
 import NameInput from "@/components/account/NameInput";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import actionRegister from "@/modules/guest/services/actionRegister";
+import actionRegister from "@/modules/auth/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
-import { retrieveToken } from "@/modules/core/utils/secureStore";
-import { IApiResponse } from "@/modules/core/data";
+import { retrieveStorage } from "@/modules/core/utils/secureStore";
+import { IApiResponse } from "@/modules/core/types";
+import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
 
 const Page = () => {
   const [formValues] = useState({
@@ -39,16 +40,17 @@ const Page = () => {
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
   const handleRegister = async (data: TRegisterFormField) => {
     try {
-      const response: IApiResponse<string> = await actionRegister(data);
+      const response: IApiResponse<string | object> =
+        await actionRegister(data);
 
       if (response.metaData.error) {
         setError("password_confirmation", {
           type: "manual",
-          message: response.metaData.error,
+          message: "Oops",
         });
         return;
       }
-      const token = await retrieveToken("token");
+      const token = await retrieveStorage(AUTH_TOKEN_KEY);
       if (token) {
         router.replace("/account/profile");
       }

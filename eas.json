@@ -5,7 +5,7 @@
   },
   "build": {
     "development": {
-      "bun": "1.2.15",
+      "bun": "1.2.22",
       "distribution": "internal",
       "developmentClient": true,
       "autoIncrement": true,
@@ -14,16 +14,19 @@
       },
       "ios": {
         "simulator": true
-      }
+      },
+      "environment": "development"
     },
     "preview": {
       "android": {
         "buildType": "app-bundle"
       },
-      "distribution": "internal"
+      "distribution": "internal",
+      "environment": "preview"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "environment": "production"
     }
   },
   "submit": {

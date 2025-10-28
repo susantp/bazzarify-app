@@ -16,9 +16,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
 }) => {
   const pagerRef = useRef<PagerView>(null);
   const [currentPage, setCurrentPage] = useState(0);
-
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let intervalId: number;
 
     const autoScroll = () => {
       const nextIndex = (currentPage + 1) % images.length;
