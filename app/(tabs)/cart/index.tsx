@@ -2,7 +2,7 @@ import React from "react";
 import CartHeader from "@/components/cart/CartHeader";
 import { FlatList } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import BottomActionView from "@/components/common/BottomActionView";
+import BottomActionView from "@/modules/core/components/BottomActionView";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import DemoModalComponent from "@/components/common/DemoModalComponent";

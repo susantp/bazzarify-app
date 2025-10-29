@@ -4,7 +4,7 @@ import { FlatList } from "react-native";
 import React from "react";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
-import BottomActionView from "@/components/common/BottomActionView";
+import BottomActionView from "@/modules/core/components/BottomActionView";
 import useCheckoutScreenHook from "@/modules/checkout/hooks/useCheckoutScreenHook";
 
 export default function CheckoutScreen() {

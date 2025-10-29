@@ -43,7 +43,7 @@ export const OmittedProductWithImagesSchema = ProductSchema.omit({
   deleted_at: true,
 })
   .extend({
-    images: z.array(ImageSchema).nullable(),
+    images: z.array(ImageSchema).optional().nullable(),
   })
   .strict();
 

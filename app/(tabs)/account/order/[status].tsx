@@ -12,7 +12,6 @@ import useOrderTracking from "@/hooks/useOrderTracking";
 
 export default function Page() {
   const orderTrackingData = useOrderTracking();
-
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Track Your Product" />

@@ -14,7 +14,7 @@ import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { createUserTask } from "@/modules/auth/boot/userTask";
 import { createOrderTask } from "@/modules/order/boot/orderTask";
-import { consumerOrders } from "@/modules/order/atoms/consumerOrders";
+import { ordersState } from "@/modules/order/atoms/ordersState";
 
 export function useBootstrapApp() {
   const colorScheme = useColorScheme();
@@ -23,7 +23,7 @@ export function useBootstrapApp() {
   const setCart = useSetAtom(cartAtom);
   const setAddresses = useSetAtom(addressListAtom);
   const setUser = useSetAtom(userAtom);
-  const setConsumerOrders = useSetAtom(consumerOrders);
+  const setConsumerOrders = useSetAtom(ordersState);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {

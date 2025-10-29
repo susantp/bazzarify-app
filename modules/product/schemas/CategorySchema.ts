@@ -15,19 +15,25 @@ export const CategoryCore = z
   })
   .strict();
 
-export const CategoryWithImageSchema = CategoryCore.extend({
-  images: z.array(ImageSchema).nullable(),
-}).strict();
+export const CategoryWithImageSchema = CategoryCore.pick({
+  uuid: true,
+  slug: true,
+  name: true,
+  image_base_path: true,
+  image_base_url: true,
+})
+  .extend({
+    images: z.array(ImageSchema).optional(),
+  })
+  .strip();
 
-export const CategoryRecursiveWithImageSchema: typeof CategoryWithImageSchema =
-  CategoryWithImageSchema.extend({
-    parent: z.lazy(() => CategoryRecursiveWithImageSchema).optional(),
-    children: z
-      .array(z.lazy(() => CategoryRecursiveWithImageSchema))
-      .optional(),
-  });
-export type TCategoryCore = z.infer<typeof CategoryCore>;
-export type TCategoryWithImageSchema = z.infer<typeof CategoryWithImageSchema>;
+export const CategoryRecursiveWithImageSchema = CategoryWithImageSchema.extend({
+  parent: CategoryWithImageSchema.optional(),
+  children: z.array(CategoryWithImageSchema).optional(),
+  images: z.array(ImageSchema).optional(),
+});
+
+export type TCategoryWithImage = z.infer<typeof CategoryWithImageSchema>;
 export type TCategoryRecursiveWithImage = z.infer<
   typeof CategoryRecursiveWithImageSchema
 >;

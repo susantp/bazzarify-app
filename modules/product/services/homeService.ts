@@ -17,7 +17,7 @@ import {
 } from "@/modules/product/schemas/responsePayloads/PopularProductsPayloadSchema";
 import fetchDataAndValidate from "@/modules/core/utils/fetchDataAndValidate";
 
-export async function getFlashDealProducts(): Promise<TFlashDealsPayload | null> {
+async function getFlashDealProducts(): Promise<TFlashDealsPayload | null> {
   const response = await fetchDataAndValidate(
     "/home/getFlashDealProducts",
     DataSchema(FlashDealsPayloadSchema),
@@ -27,7 +27,16 @@ export async function getFlashDealProducts(): Promise<TFlashDealsPayload | null>
   return response.payload;
 }
 
-export async function getHomeCategories(): Promise<THomeCategoriesPayload | null> {
+async function getPopularProducts(): Promise<TPopularProductsPayload | null> {
+  const response = await fetchDataAndValidate(
+    "/home/getPopularProducts",
+    DataSchema(PopularProductsPayloadSchema),
+    "Unable to fetch popular products",
+  );
+  return response.payload;
+}
+
+async function getHomeCategories(): Promise<THomeCategoriesPayload | null> {
   const response = await fetchDataAndValidate(
     "/home/getHomeCategories",
     DataSchema(HomeCategoriesPayloadSchema),
@@ -36,7 +45,7 @@ export async function getHomeCategories(): Promise<THomeCategoriesPayload | null
   return response.payload;
 }
 
-export async function getJustForYouProducts(
+async function getJustForYouProducts(
   params?: Record<string, string>,
 ): Promise<TJustForYouProductsPayload | null> {
   const response = await fetchDataAndValidate(
@@ -44,15 +53,6 @@ export async function getJustForYouProducts(
     DataSchema(JustForYouProductsPayloadSchema),
     "Unable to just for you products",
     params,
-  );
-  return response.payload;
-}
-
-export async function getPopularProducts(): Promise<TPopularProductsPayload | null> {
-  const response = await fetchDataAndValidate(
-    "/home/getPopularProducts",
-    DataSchema(PopularProductsPayloadSchema),
-    "Unable to fetch popular products",
   );
   return response.payload;
 }

@@ -7,7 +7,7 @@ import { TFlashDealsPayload } from "@/modules/product/schemas/responsePayloads/F
 
 const className = "bg-white px-1 py-3";
 const title = "Flash Deals";
-const seeMorePath = "/(tabs)/categories/flashDeal";
+// const seeMorePath = "/(tabs)/categories/flashDeal";
 const id = "flashDeals";
 const numCols = 3;
 export default function FlashDealCard({
@@ -15,7 +15,7 @@ export default function FlashDealCard({
 }: IHomeCardComponent<TFlashDealsPayload>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
-    <GridWrapper className={className} title={title} seeMorePath={seeMorePath}>
+    <GridWrapper className={className} title={title} >
       {isLoading ? (
         <ThemedText>Loading</ThemedText>
       ) : isError ? (

@@ -5,8 +5,8 @@ import { SimplePaginatedSchema } from "@/modules/product/schemas/SimplePaginated
 export const JustForYouProductsPayloadSchema = z
   .object({
     justForYouProducts: SimplePaginatedSchema(
-      OmittedProductWithImagesSchema,
-    ).nullable(),
+      z.nullable(OmittedProductWithImagesSchema),
+    ),
   })
   .strip();
 

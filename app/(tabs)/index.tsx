@@ -12,6 +12,9 @@ import { useLocation } from "@/modules/core/hooks/useLocation";
 import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { useAtom, useAtomValue } from "jotai";
+import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import { ThemedText } from "@/components/ThemedText";
+import { Colors } from "@/constants/Colors";
 
 export default function HomeScreen() {
   const [showModal, setShowModal] = useAtom(homePopupAtom);
@@ -19,7 +22,8 @@ export default function HomeScreen() {
   const error = useAtomValue(locationErrorAtom);
   const { refresh } = useLocation();
 
-  const { CARDS, refreshing, onRefresh } = useHomeScreenHook();
+  const { CARDS, refreshing, onRefresh, justForYouProductsQueryResult } =
+    useHomeScreenHook();
 
   return (
     <Suspense fallback={null}>
@@ -34,7 +38,7 @@ export default function HomeScreen() {
         <ContentWrapper>
           <FlatList
             data={CARDS}
-            renderItem={({ item }) => item.component}
+            renderItem={({ item }) => (item.component ? item.component : null)}
             keyExtractor={(item) => item.id}
             initialNumToRender={4}
             windowSize={5}
@@ -45,6 +49,19 @@ export default function HomeScreen() {
                 refreshing={Boolean(refreshing)}
                 onRefresh={onRefresh}
               />
+            }
+            ListEmptyComponent={
+              justForYouProductsQueryResult.isLoading ? (
+                <ThemedLoader />
+              ) : (
+                <ThemedText
+                  type="title"
+                  darkColor={Colors.light.tint}
+                  lightColor={Colors.light.tint}
+                >
+                  No child categories found
+                </ThemedText>
+              )
             }
           />
         </ContentWrapper>
