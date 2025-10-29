@@ -12,10 +12,7 @@ export default function getFirstImageSource({
   baseUrl,
   index = 0,
 }: IGetImageSrc): ImageSourcePropType {
-  const defaultImage =
-    baseUrl && baseUrl.includes("category")
-      ? require("@/assets/products/cat-img.png")
-      : require("@/assets/products/product.png");
+  const defaultImage = require("@/assets/images/iconSquare.png");
 
   if (!images?.length) return defaultImage;
 

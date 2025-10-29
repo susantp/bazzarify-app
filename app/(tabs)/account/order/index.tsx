@@ -2,10 +2,11 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import useProfileScreen from "@/hooks/useProfileScreen";
 import React, { useEffect, useState } from "react";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import OrderedItem from "@/components/account/order/OrderedItem";
+import useOrderStatusBox from "@/modules/order/hooks/useOrderStatusBox";
+import useOrder from "@/modules/order/hooks/useOrder";
 
 export default function Page() {
   const { statusId } = useLocalSearchParams();
@@ -13,10 +14,12 @@ export default function Page() {
   useEffect(() => {
     setStatus(statusId.toString());
   }, [statusId]);
-  const { orderStatusBoxes } = useProfileScreen();
+  const { getFilteredOrder } = useOrder();
+  const { orderStatusBoxes } = useOrderStatusBox();
   const statusItem = orderStatusBoxes.find(
     (orderStatus) => orderStatus.id === status,
   );
+
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Your Order" />
@@ -36,7 +39,16 @@ export default function Page() {
             </TouchableOpacity>
           ))}
         </View>
-        <OrderedItem statusItem={statusItem} />
+        {getFilteredOrder(statusItem)?.map((order) =>
+          order.items.map((item) => (
+            <OrderedItem
+              key={item.uuid}
+              order={order}
+              item={item}
+              statusItem={statusItem}
+            />
+          )),
+        )}
       </ContentWrapper>
     </SafeAreaWrapper>
   );

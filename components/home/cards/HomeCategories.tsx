@@ -1,11 +1,11 @@
 import { GridWrapper } from "@/components/home/ContentGridSection";
 import { ThemedText } from "@/components/ThemedText";
 import { FlatList } from "react-native";
-import * as Crypto from "expo-crypto";
 import React from "react";
 import { IHomeCardComponent } from "@/modules/home/types";
-import CategoryCard from "@/components/common/CategoryCard";
+import CategoryCard from "@/modules/categories/components/CategoryCard";
 import { THomeCategoriesPayload } from "@/modules/product/schemas/responsePayloads/HomeCategoriesPayloadSchema";
+import { router } from "expo-router";
 
 const className = "flex-col bg-white px-1 py-3";
 const title = "Categories";
@@ -27,9 +27,20 @@ export default function HomeCategories({
           id={id}
           data={data?.homeCategories?.data}
           renderItem={({ item, index }) => (
-            <CategoryCard cols={numCols} item={item} index={index} />
+            <CategoryCard
+              cols={numCols}
+              item={item}
+              index={index}
+              hasImages={item?.images?.length! > 0}
+              onPress={() =>
+                router.push({
+                  pathname: "/(tabs)/categories/[child]",
+                  params: { child: encodeURIComponent(item.slug) },
+                })
+              }
+            />
           )}
-          keyExtractor={() => Crypto.randomUUID()}
+          keyExtractor={(item) => item.uuid}
           horizontal={false}
           numColumns={numCols}
           showsVerticalScrollIndicator={false}

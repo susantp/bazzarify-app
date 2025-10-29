@@ -19,7 +19,7 @@ export default function NormalTopBar({
   textInputDefaultValue,
 }: NormalHeaderProps) {
   return (
-    <View className="flex-row items-center justify-between px-2 py-5">
+    <View className="flex-row items-center justify-between bg-orange-600 px-2 py-5">
       <View
         className={`flex-1 flex-row items-center gap-x-2 rounded-full bg-white pl-4`}
       >

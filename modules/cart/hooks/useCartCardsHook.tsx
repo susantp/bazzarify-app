@@ -32,25 +32,29 @@ export default function useCartCardsHook() {
           ))}
         </Card>
       ) : (
-        <ThemedText type="title">No Items on cart</ThemedText>
+        <ThemedText type="title" darkColor="#0000" lightColor="#0000">
+          No Items on cart
+        </ThemedText>
       ),
     },
-    {
-      title: "other-products",
-      component: (
-        <ThemedText>Popular Items section</ThemedText>
-        // <ContentGridSection
-        //   className="align-center flex-col pl-4"
-        //   title={"Just for you"}
-        //   items={popularItemsData}
-        //   cols={2}
-        //   horizontal={false}
-        //   renderItem={(item, index, cols) => (
-        //     <ProductCard item={item} key={index} cols={cols} />
-        //   )}
-        // />
-      ),
-    },
+    // {
+    //   title: "other-products",
+    //   component: (
+    //     <ThemedText darkColor="#0000" lightColor="#0000">
+    //       Popular Items section
+    //     </ThemedText>
+    //     // <ContentGridSection
+    //     //   className="align-center flex-col pl-4"
+    //     //   title={"Just for you"}
+    //     //   items={popularItemsData}
+    //     //   cols={2}
+    //     //   horizontal={false}
+    //     //   renderItem={(item, index, cols) => (
+    //     //     <ProductCard item={item} key={index} cols={cols} />
+    //     //   )}
+    //     // />
+    //   ),
+    // },
   ];
   return {
     CARDS,

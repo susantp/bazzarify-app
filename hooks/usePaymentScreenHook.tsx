@@ -2,7 +2,7 @@ import { Href, router } from "expo-router";
 import _ from "underscore";
 import React, { useState, useTransition } from "react";
 import CardPaymentComponent from "@/components/cart/payment/CardPaymentComponent";
-import BottomActionView from "@/components/common/BottomActionView";
+import BottomActionView from "@/modules/core/components/BottomActionView";
 import CardPaymentBottomActionView from "@/components/cart/payment/CardPaymentBottomActionView";
 import CODPaymentComponent from "@/components/cart/payment/CODPaymentComponent";
 import CODPaymentBottomActionView from "@/components/cart/payment/CODPaymentBottomActionView";

@@ -1,8 +1,9 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import cn from "@/utils/tailwindHelper";
+import { ThemedText } from "@/components/ThemedText";
 
 interface ScreenHeaderProps {
   title?: string;
@@ -24,6 +25,7 @@ const ScreenHeader = ({
         "items-center",
         "justify-between",
         "px-1",
+        "bg-orange-600",
       )}
     >
       <TouchableOpacity
@@ -34,16 +36,17 @@ const ScreenHeader = ({
         {canGoBack ? (
           <AntDesign size={18} name="left" color={iconColor ?? "white"} />
         ) : undefined}
-        <Text
-          className={cn(
-            "text-xl",
-            "font-semibold",
-            "text-white",
-            textClassname,
-          )}
-        >
-          {title}
-        </Text>
+        <View style={{ flex: 1 }}>
+          <ThemedText
+            darkColor="#ffff"
+            lightColor="#ffff"
+            ellipsizeMode={"tail"}
+            numberOfLines={1}
+            type="defaultSemiBold"
+          >
+            {title}
+          </ThemedText>
+        </View>
       </TouchableOpacity>
     </View>
   );

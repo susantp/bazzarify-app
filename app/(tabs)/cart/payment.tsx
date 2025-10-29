@@ -6,7 +6,7 @@ import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
 import { randomUUID } from "expo-crypto";
 import React from "react";
 import PaymentMethodView from "@/components/cart/payment/PaymentMethodView";
-import BottomActionView from "@/components/common/BottomActionView";
+import BottomActionView from "@/modules/core/components/BottomActionView";
 
 export default function PaymentScreen() {
   const { paymentMethodSections, cartState } = usePaymentScreenHook();

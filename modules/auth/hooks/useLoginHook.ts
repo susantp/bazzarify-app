@@ -7,7 +7,7 @@ import actionLogin from "@/modules/auth/services/credentialLogin";
 import { useState } from "react";
 import { router } from "expo-router";
 import { useSetAtom } from "jotai";
-import { consumerOrders } from "@/modules/order/atoms/consumerOrders";
+import { ordersState } from "@/modules/order/atoms/ordersState";
 import actionGetOrders from "@/modules/order/actions/actionGetOrders";
 import { TUserPayload } from "@/modules/auth/schemas/responsePayloads/UserPayloadSchema";
 import actionGetUser from "@/modules/auth/services/actionGetUser";
@@ -17,7 +17,7 @@ import { userAtom } from "@/modules/auth/atoms/userAtom";
 
 export default function useLoginHook() {
   const [showPassword, setShowPassword] = useState(true);
-  const setOrders = useSetAtom(consumerOrders);
+  const setOrders = useSetAtom(ordersState);
   const setUser = useSetAtom(userAtom);
   const handleShowPassword = () => setShowPassword(!showPassword);
 

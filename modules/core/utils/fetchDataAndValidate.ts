@@ -15,7 +15,7 @@ export default async function fetchDataAndValidate<T extends z.ZodType>(
     upstream = await axiosInstance.get(endpoint, { params });
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      console.log("fetch and validate error: ", error.request.data);
+      console.log("fetch and validate error: ", error);
     }
     const err = new Error(errorMessage, { cause: error });
     Sentry.captureException(err);
@@ -25,7 +25,6 @@ export default async function fetchDataAndValidate<T extends z.ZodType>(
 
   if (!parsed.success) {
     const issues = formattedIssues(parsed.error.issues);
-    console.log("fetchAndValidate", issues);
     Sentry.captureException(issues);
     throw new Error("API response schema validation failed", { cause: issues });
   }

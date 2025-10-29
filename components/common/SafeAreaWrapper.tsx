@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import cn from "@/utils/tailwindHelper";
+import { View } from "react-native";
 
 interface SafeAreaWrapperProps {
   children: React.ReactNode;
@@ -18,7 +19,9 @@ export const SafeAreaWrapper = ({
         style={{ flex: 1 }}
         className={cn("flex-col bg-orange-600", className)}
       >
-        {children}
+        <View style={{ flex: 1, backgroundColor: "#ffff" }}>
+          {children ? children : null}
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

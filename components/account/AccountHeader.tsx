@@ -5,7 +5,7 @@ import { Cog6ToothIcon } from "react-native-heroicons/outline";
 
 const AccountHeader = () => {
   return (
-    <View className="flex-row items-center justify-between px-2">
+    <View className="flex-row items-center justify-between">
       <ScreenHeader title="Account" />
       <TouchableOpacity
         activeOpacity={0.4}

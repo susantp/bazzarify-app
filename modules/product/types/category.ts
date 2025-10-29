@@ -10,11 +10,6 @@ export interface ICategory {
   attributes?: string[];
 }
 
-export interface ICategoryWithRecursiveParentChildren extends ICategory {
-  parent?: ICategory;
-  children?: ICategory[];
-}
-
 export interface ICategoryListWithImage
   extends Omit<ICategory, "id" | "position" | "specifications" | "attributes"> {
   images: IImage[];
