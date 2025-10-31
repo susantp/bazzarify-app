@@ -5,7 +5,6 @@
   },
   "build": {
     "development": {
-      "bun": "1.2.22",
       "distribution": "internal",
       "developmentClient": true,
       "autoIncrement": true,
