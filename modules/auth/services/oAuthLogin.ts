@@ -6,22 +6,17 @@ import * as Sentry from "@sentry/react-native";
 
 const _initAuthSession = async (provider: string) => {
   const {
-    publicRootUrl,
+    publicAuthUrl,
     remotePaths: {
       auth: {
         redirect: { path: redirectPath },
       },
     },
-    modules: {
-      auth: { path: modulePath },
-    },
   } = app;
   const redirectUri = Linking.createURL("guest/login");
-  const url = publicRootUrl
-    .concat(modulePath)
-    .concat(redirectPath.replace(":provider", provider))
-    .trim();
-
+  const url = [publicAuthUrl, redirectPath.replace(":provider", provider)].join(
+    "/",
+  );
   return await openAuthSessionAsync(url, redirectUri);
 };
 
