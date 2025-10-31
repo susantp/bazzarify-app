@@ -1,4 +1,4 @@
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
@@ -9,12 +9,14 @@ interface ScreenHeaderProps {
   title?: string;
   iconColor?: string;
   textClassname?: string;
+  containerClassname?: string;
 }
 
 const ScreenHeader = ({
   title,
   iconColor,
   textClassname,
+  containerClassname,
 }: ScreenHeaderProps) => {
   const canGoBack = router.canGoBack();
   return (
@@ -26,6 +28,7 @@ const ScreenHeader = ({
         "justify-between",
         "px-1",
         "bg-orange-600",
+        containerClassname,
       )}
     >
       <TouchableOpacity

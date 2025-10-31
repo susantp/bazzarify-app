@@ -12,7 +12,6 @@ import { Colors } from "@/constants/Colors";
 const AddressSettingScreen = () => {
   const addresses = useAtomValue(addressListAtom);
   const setAddresses = useSetAtom(addressListAtom);
-  console.log("address index: ", addresses);
 
   const handleSwitch = async (payload: TUserAddress) => {
     const isDefaultExists = addresses?.find(

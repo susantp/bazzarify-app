@@ -70,7 +70,7 @@ module.exports = {
   ],
   experiments: {
     typedRoutes: true,
-    reactCanary: true,
+    reactCompiler: true,
   },
   extra: {
     router: {
