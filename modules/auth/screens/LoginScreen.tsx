@@ -49,7 +49,7 @@ const LoginScreen = () => {
           <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4">
             <PageTitle title="Login" />
             <View className="h-5" />
-
+            <Text>testUrl: {process.env.EXPO_PUBLIC_ROOT_URL}</Text>
             <ControlledInput
               className="w-full gap-y-2 px-6"
               errors={errors}

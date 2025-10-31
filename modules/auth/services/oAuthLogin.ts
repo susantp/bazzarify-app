@@ -6,7 +6,7 @@ import * as Sentry from "@sentry/react-native";
 
 const _initAuthSession = async (provider: string) => {
   const {
-    tempHost,
+    publicRootUrl,
     remotePaths: {
       auth: {
         redirect: { path: redirectPath },
@@ -17,7 +17,7 @@ const _initAuthSession = async (provider: string) => {
     },
   } = app;
   const redirectUri = Linking.createURL("guest/login");
-  const url = tempHost
+  const url = publicRootUrl
     .concat(modulePath)
     .concat(redirectPath.replace(":provider", provider))
     .trim();

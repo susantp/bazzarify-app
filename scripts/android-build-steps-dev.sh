@@ -2,7 +2,7 @@
 set -e
 
 # Prebuild native Android project
-npx expo prebuild --clean --platform android
+bunx expo prebuild --clean --platform android
 
 # For development builds, use a Debug variant and do not embed a production bundle.
 # If you need to test without Metro, you can export with --dev true, but for typical
