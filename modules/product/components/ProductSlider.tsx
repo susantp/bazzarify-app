@@ -5,6 +5,7 @@ import constructProductImagesUrl from "@/modules/product/utils/constructImageUrl
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import { Card } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
+import ImageSlider from "@/components/common/ImageSlider";
 
 export interface IProductSliderProps {
   item: TProductWithVariantAndImage;
@@ -18,21 +19,17 @@ const ProductSlider = ({ item }: IProductSliderProps) => {
       {
         title: "default",
         description: "default",
-        image: { uri: require("@/assets/products/product.png") },
+        image: { uri: "https://picsum.photos/700" },
       },
     ];
   return (
     <Card>
-      {/*<View*/}
-      {/*  id="product-slider"*/}
-      {/*  className="flex items-center justify-items-center"*/}
-      {/*>*/}
-      {/*  <ImageSlider images={images} autoplayInterval={5000} />*/}
-      {/*</View>*/}
-      <Card.Cover
-        style={{ borderRadius: 0 }}
-        source={{ uri: "https://picsum.photos/700" }}
-      />
+      <View
+        id="product-slider"
+        className="flex items-center justify-items-center"
+      >
+        <ImageSlider images={images} autoplayInterval={5000} />
+      </View>
 
       <View
         id="actions"

@@ -8,6 +8,6 @@ export default function constructProductImagesUrl(
   return product.images.map((img) => ({
     title: "",
     description: "",
-    image: { uri: product.image_base_url.concat(img.file) },
+    image: { uri: [product.image_base_url, img.file].join("/") },
   }));
 }
