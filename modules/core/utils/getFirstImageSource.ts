@@ -17,6 +17,5 @@ export default function getFirstImageSource({
   if (!images?.length) return defaultImage;
 
   const safeIndex = index < 0 || index >= images.length ? 0 : index;
-
-  return { uri: baseUrl.concat(images[safeIndex].file) };
+  return { uri: [baseUrl, images[safeIndex].file].join("/") };
 }
