@@ -45,7 +45,7 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
             </Text>
           </View>
           <View className="flex flex-row">
-            {"price" in item && (
+            {"base_price" in item && (
               <View>
                 <Text className="text-3xl font-semibold text-orange-600">
                   Rs {item?.base_price}
