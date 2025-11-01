@@ -1,6 +1,6 @@
 module.exports = {
   name: "Bazarify",
-  slug: "bazarify",
+  slug: "bazzarify",
   version: "v0.0.2",
   orientation: "portrait",
   icon: "./assets/images/launcher.png",
