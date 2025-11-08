@@ -8,8 +8,8 @@ export const ShowProductPayloadSchema = z
       .object({
         code: z.string(),
       })
-      .strict(),
+      .strip(),
   })
-  .strict();
+  .strip();
 
 export type IProductShowPayload = z.infer<typeof ShowProductPayloadSchema>;

@@ -13,6 +13,6 @@ export const ImageSchema = z
       deleted_at: z.string().nullable(),
     }),
   })
-  .strict();
+  .strip();
 
 export type TImage = z.infer<typeof ImageSchema>;

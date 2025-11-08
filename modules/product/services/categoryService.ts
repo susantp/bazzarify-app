@@ -24,7 +24,7 @@ async function find(slug: string): Promise<TShowCategoryPayloadSchema | null> {
   const response = await fetchDataAndValidate(
     `categories/${slug}`,
     DataSchema(ShowCategoryPayloadSchema),
-    "Unable to fetch home categories",
+    "Unable to single category details",
   );
   return response.payload;
 }

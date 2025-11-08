@@ -9,7 +9,7 @@ export const ProductWithVariantAndImageSchema = ProductSchema.extend({
   .extend({
     variants: z.array(VariantListWithImageSchema).nullable(),
   })
-  .strict();
+  .strip();
 
 export type TProductWithVariantAndImage = z.infer<
   typeof ProductWithVariantAndImageSchema
