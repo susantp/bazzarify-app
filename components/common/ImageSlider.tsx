@@ -51,16 +51,17 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
 const styles = StyleSheet.create({
   pagerView: {
     width,
-    height: 200,
+    height: width / 2.7,
   },
   page: {
     width,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   image: {
     width,
-    height: 200,
+    height: width / 2.9,
   },
 });
 
