@@ -1,4 +1,4 @@
-import { Animated, Platform } from "react-native";
+import { Animated, Platform, Text } from "react-native";
 import TopBar from "@/components/home/TopBar";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -17,7 +17,6 @@ import BottomActionView from "@/modules/core/components/BottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ProductPageBottomView from "@/components/product/ProductPageBottomView";
-import VoucherList from "@/components/cart/checkout/VoucherList";
 import useProductScreen from "@/modules/product/hooks/useProductScreen";
 import ProductCouponDiscountInfo from "@/modules/product/components/ProductCouponDiscountInfo";
 import ProductPriceComponent from "@/modules/product/components/ProductPriceComponent";
@@ -25,6 +24,7 @@ import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import useCartHook from "@/modules/cart/hooks/useCartHook";
 import FetchingErrorComponent from "@/modules/core/components/FetchingErrorComponent";
+import { AppleMaps, GoogleMaps } from "expo-maps";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
@@ -33,6 +33,15 @@ export default function ProductScreen() {
     useProductScreen(uuid as string);
   const { handleAddToCart } = useCartHook();
   const ios = Platform.OS === "ios";
+  const MapView = () => {
+    if (Platform.OS === "ios") {
+      return <AppleMaps.View style={{ flex: 1 }} />;
+    } else if (Platform.OS === "android") {
+      return <GoogleMaps.View style={{ flex: 1 }} />;
+    } else {
+      return <Text>Maps are only available on Android and iOS</Text>;
+    }
+  };
   return (
     <SafeAreaWrapper>
       <TopBar
@@ -42,6 +51,7 @@ export default function ProductScreen() {
         <FetchingErrorComponent message="Sorry, something went wrong fetching the product." />
       ) : product && currency ? (
         <>
+          <MapView />
           <ContentWrapper className={`flex-1 ` + (ios ? " pb-2" : " pt-3")}>
             <ScrollView style={{ width: "100%" }}>
               <ProductScreenContainer>
@@ -62,7 +72,7 @@ export default function ProductScreen() {
                   ) : null}
                   <ProductCouponDiscountInfo />
                 </ProductGenericDetails>
-                <VoucherList className="border-gray-400 px-4" />
+                {/*<VoucherList className="border-gray-400 px-4" />*/}
                 <ProductDeliveryDetails />
                 <ProductReviewBox />
                 <AskQuestionBox />

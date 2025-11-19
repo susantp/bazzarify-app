@@ -24,6 +24,11 @@ module.exports = {
       "android.permission.ACCESS_COARSE_LOCATION",
       "android.permission.ACCESS_FINE_LOCATION",
     ],
+    config: {
+      googleMaps: {
+        apiKey: "AIzaSyDcRYF1k3j0cELBpRA9mbQCe225vY2J9ns",
+      },
+    },
   },
   web: {
     bundler: "metro",
@@ -31,6 +36,13 @@ module.exports = {
     favicon: "./assets/images/favicon.png",
   },
   plugins: [
+    [
+      "expo-maps",
+      {
+        requestLocationPermission: true,
+        locationPermission: "Allow $(PRODUCT_NAME) to use your location",
+      },
+    ],
     [
       "expo-location",
       {
