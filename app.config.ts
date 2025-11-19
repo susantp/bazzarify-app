@@ -26,7 +26,7 @@ module.exports = {
     ],
     config: {
       googleMaps: {
-        apiKey: "AIzaSyDcRYF1k3j0cELBpRA9mbQCe225vY2J9ns",
+        apiKey: "process.env.GOOGLE_MAPS_API_KEY",
       },
     },
   },

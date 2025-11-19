@@ -1,11 +1,16 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { FlatList, Image, RefreshControl } from "react-native";
 import useHomeScreenHook from "@/modules/home/hooks/useHomeScreenHook";
 import TopBar from "@/components/home/TopBar";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { geocodeAddressAtom, locationErrorAtom } from "@/atoms/locationAtom";
+import {
+  geocodeAddressAtom,
+  latitudeAtom,
+  locationErrorAtom,
+  longitudeAtom,
+} from "@/atoms/locationAtom";
 
 import DeliveryBar from "@/components/home/DeliveryBar";
 import { useLocation } from "@/modules/core/hooks/useLocation";
@@ -15,13 +20,13 @@ import { useAtom, useAtomValue } from "jotai";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
+import { Coordinates } from "expo-maps";
 
 export default function HomeScreen() {
   const [showModal, setShowModal] = useAtom(homePopupAtom);
   const address = useAtomValue(geocodeAddressAtom);
   const error = useAtomValue(locationErrorAtom);
   const { refresh } = useLocation();
-
   const { CARDS, refreshing, onRefresh, justForYouProductsQueryResult } =
     useHomeScreenHook();
 
