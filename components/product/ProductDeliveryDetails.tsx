@@ -6,6 +6,7 @@ import {
 } from "react-native-heroicons/solid";
 import React from "react";
 import Svg, { Path } from "react-native-svg";
+import { LocationGeocodedAddress } from "expo-location";
 
 const ParcelIcon = ({ size }: { size: number }) => (
   <Svg width={size} height={size} viewBox="0 0 20 19" fill="none">
@@ -15,7 +16,15 @@ const ParcelIcon = ({ size }: { size: number }) => (
     />
   </Svg>
 );
-const ProductDeliveryDetails = ({ onOpenMap }: { onOpenMap: () => void }) => (
+const ProductDeliveryDetails = ({
+  onOpenMap,
+  currentAddress,
+  chosenAddress,
+}: {
+  onOpenMap: () => void;
+  currentAddress: LocationGeocodedAddress | null;
+  chosenAddress: LocationGeocodedAddress | null;
+}) => (
   <View className="p-4">
     <View
       id="delivery-info"
@@ -25,8 +34,15 @@ const ProductDeliveryDetails = ({ onOpenMap }: { onOpenMap: () => void }) => (
       <View className="flex-row justify-between">
         <View className="flex-row items-center justify-items-center gap-x-2">
           <MapPinIcon size={28} strokeWidth={1} color="black" />
-          <Text className="text-md font-semibold">
-            Bagmati Province, Kathmandu
+          <Text
+            style={{ width: 200 }}
+            lineBreakMode="clip"
+            numberOfLines={2}
+            className="text-sm font-semibold"
+          >
+            {chosenAddress?.formattedAddress ||
+              currentAddress?.formattedAddress ||
+              "Select your address"}
           </Text>
         </View>
         <View>
