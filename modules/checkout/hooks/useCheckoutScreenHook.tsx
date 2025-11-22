@@ -4,18 +4,19 @@ import VoucherList from "@/components/cart/checkout/VoucherList";
 import CheckoutAddressComponent from "@/components/cart/checkout/CheckoutAddressComponent";
 import React, { useState } from "react";
 import { useAtomValue } from "jotai";
-import { cartAtom } from "@/modules/cart/atoms";
+import { cartAtom, selectedDeliveryAddress } from "@/modules/cart/atoms";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
-import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
+import { geocodeAddressAtom } from "@/atoms/locationAtom";
 
 export default function useCheckoutScreenHook() {
   const cartState = useAtomValue(cartAtom);
   const user = useAtomValue(userAtom);
-  const defaultDeliveryAddress = useAtomValue(getDefaultAddressAtom);
-  const [btnLabel, setBtnLabel] = useState("Place Order");
-
+  const [btnLabel] = useState("Place Order");
+  const geoCodeAddress = useAtomValue(geocodeAddressAtom);
+  const selectedAddress = useAtomValue(selectedDeliveryAddress);
+  const displayAddress = selectedAddress || geoCodeAddress;
   const CARDS = [
     {
       title: "address",
@@ -23,7 +24,7 @@ export default function useCheckoutScreenHook() {
       component: (
         <CheckoutAddressComponent
           user={user}
-          defaultDeliveryAddress={defaultDeliveryAddress}
+          defaultDeliveryAddress={displayAddress}
         />
       ),
     },
@@ -47,7 +48,7 @@ export default function useCheckoutScreenHook() {
     },
   ];
   const handleCheckout = () => {
-    if (!defaultDeliveryAddress) {
+    if (!displayAddress) {
       Toast.show({
         position: "bottom",
         text1: "Please fill out the address checkout",
