@@ -24,16 +24,58 @@ import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import useCartHook from "@/modules/cart/hooks/useCartHook";
 import FetchingErrorComponent from "@/modules/core/components/FetchingErrorComponent";
-import { GoogleMaps } from "expo-maps";
+import { MapView } from "@/modules/core/components/MapView";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
   const { uuid } = useLocalSearchParams();
-  const { product, currency, selectedVariant, handleVariantChange, isError } =
-    useProductScreen(uuid as string);
+  const {
+    product,
+    currency,
+    selectedVariant,
+    handleVariantChange,
+    isError,
+    openPortal,
+    closePortal,
+    address,
+    currentLatitude,
+    currentLongitude,
+    chosenCoordinates,
+    handleMapTap,
+  } = useProductScreen(uuid as string);
   const { handleAddToCart } = useCartHook();
   const ios = Platform.OS === "ios";
 
+  console.log("updated chosen: ", address?.formattedAddress, chosenCoordinates);
+
+  const handleOpenMap = () => {
+    openPortal(() => (
+      <MapView
+        selectedAddress={address?.formattedAddress}
+        onConfirm={() => console.log("Location confirmed")}
+        onClose={closePortal}
+        cameraPosition={{
+          coordinates: {
+            latitude: currentLatitude || 0,
+            longitude: currentLongitude || 0,
+          },
+          zoom: 16,
+        }}
+        markers={[
+          {
+            coordinates: {
+              latitude: chosenCoordinates?.latitude,
+              longitude: chosenCoordinates?.longitude,
+            },
+            title: "You are here",
+            draggable: true,
+            snippet: address?.formattedAddress || "Current Location",
+          },
+        ]}
+        onClick={handleMapTap}
+      />
+    ));
+  };
   return (
     <SafeAreaWrapper>
       <TopBar
@@ -64,7 +106,7 @@ export default function ProductScreen() {
                   <ProductCouponDiscountInfo />
                 </ProductGenericDetails>
                 {/*<VoucherList className="border-gray-400 px-4" />*/}
-                <ProductDeliveryDetails />
+                <ProductDeliveryDetails onOpenMap={handleOpenMap} />
                 <ProductReviewBox />
                 <AskQuestionBox />
                 <TopSellingComponent />

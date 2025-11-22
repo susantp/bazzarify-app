@@ -8,6 +8,7 @@ import toastConfig from "@/config/toastConfig";
 import { initSentry } from "@/modules/core/utils";
 import AppLayout from "@/modules/core/components/AppLayout";
 import { useEffect } from "react";
+import { PortalProvider } from "@/modules/portal/PortalProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync().then(() => undefined);
@@ -17,8 +18,10 @@ export default function RootLayout() {
   }, []);
   return (
     <Provider>
-      <AppLayout />
-      <Toast config={toastConfig} />
+      <PortalProvider>
+        <AppLayout />
+        <Toast config={toastConfig} />
+      </PortalProvider>
     </Provider>
   );
 }

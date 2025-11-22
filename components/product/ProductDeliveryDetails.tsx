@@ -15,7 +15,7 @@ const ParcelIcon = ({ size }: { size: number }) => (
     />
   </Svg>
 );
-const ProductDeliveryDetails = () => (
+const ProductDeliveryDetails = ({ onOpenMap }: { onOpenMap: () => void }) => (
   <View className="p-4">
     <View
       id="delivery-info"
@@ -30,7 +30,7 @@ const ProductDeliveryDetails = () => (
           </Text>
         </View>
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onOpenMap}>
             <Text className="rounded-full bg-orange-600 px-2 py-1 text-white">
               Change
             </Text>
