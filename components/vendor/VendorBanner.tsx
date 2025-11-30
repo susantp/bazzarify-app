@@ -11,7 +11,6 @@ import React from "react";
 
 interface VendorHeaderProps {
   vendor: VendorDataType;
-  canGoBack?: boolean;
 }
 
 type VendorDataType = {
@@ -30,7 +29,7 @@ export const vendorData: VendorDataType = {
   bgImgPath:
     "https://lh3.googleusercontent.com/pw/AP1GczPpYF3_nl945SomGeJhAvSQCg4sjrRSAgCjXW4WoAYEsoNnbfB7vdeDYatFPozUgWf3eQ_FLPntC49CN7_f8K9cS7210vTyhNkMA50vXWdjotRFpaxG=w780-h258-no",
 };
-const VendorBanner = ({ vendor, canGoBack }: VendorHeaderProps) => {
+const VendorBanner = ({ vendor }: VendorHeaderProps) => {
   return (
     <>
       <ImageBackground

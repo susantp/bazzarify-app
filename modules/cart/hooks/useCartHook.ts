@@ -128,6 +128,8 @@ export default function useCartHook() {
     }
     decrementCartItem(parsed.data)
       .then((result) => {
+
+        console.log("remove item from state called:", result?.cart);
         if (result?.cart) {
           setCartState(result);
         }

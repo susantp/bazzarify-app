@@ -1,24 +1,17 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import React from "react";
 import VendorHeader, { vendorData } from "@/components/vendor/VendorBanner";
-import useSearchBarHook from "@/hooks/useSearchBarHook";
-import NormalTopBar from "@/components/common/NormalTopBar";
 import { useGlobalSearchParams } from "expo-router";
+import TopBar from "@/components/home/TopBar";
 
 export default function Page() {
   const vendor = vendorData;
-  const { uuid } = useGlobalSearchParams<{ uuid?: string }>();
-  console.log("vendor products :", uuid);
-  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
+  const { vendorUuid } = useGlobalSearchParams<{ vendorUuid?: string }>();
+  console.log("vendor products :", vendorUuid);
   return (
     <SafeAreaWrapper>
-      <NormalTopBar
-        canGoBack={canGoBack}
-        handleSubmitEditing={onSearchSubmit}
-        onChangeText={handleChangeText}
-        searchPlaceHolder={`search on ${vendor.name}`}
-      />
-      <VendorHeader canGoBack={canGoBack} vendor={vendor} />
+      <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
+      <VendorHeader vendor={vendor} />
       {/*<ContentWrapper>*/}
       {/*  <ContentGridSection*/}
       {/*    section={{ title: "All Products" }}*/}

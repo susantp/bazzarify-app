@@ -5,12 +5,11 @@ import React from "react";
 import VendorHeader, { vendorData } from "@/components/vendor/VendorBanner";
 import { randomUUID } from "expo-crypto";
 import { Entypo } from "@expo/vector-icons";
-import useSearchBarHook from "@/hooks/useSearchBarHook";
-import NormalTopBar from "@/components/common/NormalTopBar";
-import { useGlobalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import TopBar from "@/components/home/TopBar";
 
 export default function Page() {
-  const { uuid } = useGlobalSearchParams<{ uuid?: string }>();
+  const { vendorUuid } = useLocalSearchParams<{ vendorUuid?: string }>();
   const vendor = vendorData;
   const categoryItems = [
     { id: randomUUID(), label: "Watch" },
@@ -19,17 +18,11 @@ export default function Page() {
     { id: randomUUID(), label: "Power Bank" },
     { id: randomUUID(), label: "Soundbar" },
   ];
-  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
-  console.log("vendor categories :", uuid);
+  console.log("vendor categories :", vendorUuid);
   return (
     <SafeAreaWrapper>
-      <NormalTopBar
-        canGoBack={canGoBack}
-        handleSubmitEditing={onSearchSubmit}
-        onChangeText={handleChangeText}
-        searchPlaceHolder={`search on ${vendor.name}`}
-      />
-      <VendorHeader canGoBack={canGoBack} vendor={vendor} />
+      <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
+      <VendorHeader vendor={vendor} />
       <ContentWrapper>
         <FlatList
           contentContainerClassName="gap-y-4 p-4 "

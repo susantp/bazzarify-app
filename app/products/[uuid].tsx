@@ -95,8 +95,8 @@ export default function ProductScreen() {
               onStorePress={() =>
                 product?.user_uuid &&
                 router.push({
-                  pathname: "/vendor/[uuid]",
-                  params: { uuid: product?.user_uuid },
+                  pathname: "/vendor/[vendorUuid]",
+                  params: { vendorUuid: product?.user_uuid },
                 })
               }
             />

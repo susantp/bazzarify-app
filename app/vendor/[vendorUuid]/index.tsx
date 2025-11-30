@@ -4,17 +4,14 @@ import React from "react";
 import VendorBanner, { vendorData } from "@/components/vendor/VendorBanner";
 import { FlatList, ImageBackground, useWindowDimensions } from "react-native";
 import { randomUUID } from "expo-crypto";
-import { SliderData } from "@/constants/SliderData";
-import useSearchBarHook from "@/hooks/useSearchBarHook";
-import NormalTopBar from "@/components/common/NormalTopBar";
-import ImageSlider from "@/components/common/ImageSlider";
 import { useLocalSearchParams } from "expo-router";
+import TopBar from "@/components/home/TopBar";
 
 export default function Page() {
   const vendor = vendorData;
   const { height, width } = useWindowDimensions();
-  const { uuid } = useLocalSearchParams();
-  console.log("vendor index :", uuid);
+  const { vendorUuid } = useLocalSearchParams();
+  console.log("vendor", vendorUuid);
   const CARDS = [
     {
       id: randomUUID(),
@@ -32,22 +29,22 @@ export default function Page() {
         />
       ),
     },
-    {
-      id: randomUUID(),
-      title: "saleLiveBanner1",
-      component: (
-        <ImageBackground
-          resizeMode={"stretch"}
-          style={{
-            marginHorizontal: "auto",
-            height: height / 2,
-            width: width * 0.95,
-            marginVertical: 10,
-          }}
-          source={require("@/assets/images/vendor/saleLiveBanner1.png")}
-        />
-      ),
-    },
+    // {
+    //   id: randomUUID(),
+    //   title: "saleLiveBanner1",
+    //   component: (
+    //     <ImageBackground
+    //       resizeMode={"stretch"}
+    //       style={{
+    //         marginHorizontal: "auto",
+    //         height: height / 2,
+    //         width: width * 0.95,
+    //         marginVertical: 10,
+    //       }}
+    //       source={require("@/assets/images/vendor/saleLiveBanner1.png")}
+    //     />
+    //   ),
+    // },
     // {
     //   id: randomUUID(),
     //   title: "popular6Items",
@@ -64,11 +61,7 @@ export default function Page() {
     //     />
     //   ),
     // },
-    {
-      id: randomUUID(),
-      component: <ImageSlider images={SliderData} />,
-      title: "Slider",
-    },
+
     // {
     //   id: randomUUID(),
     //   title: "popular6Items",
@@ -85,11 +78,7 @@ export default function Page() {
     //     />
     //   ),
     // },
-    {
-      id: randomUUID(),
-      component: <ImageSlider images={SliderData} />,
-      title: "Slider",
-    },
+
     // {
     //   id: randomUUID(),
     //   title: "popular6Items",
@@ -107,16 +96,10 @@ export default function Page() {
     //   ),
     // },
   ];
-  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
 
   return (
     <SafeAreaWrapper>
-      <NormalTopBar
-        canGoBack={canGoBack}
-        handleSubmitEditing={onSearchSubmit}
-        onChangeText={handleChangeText}
-        searchPlaceHolder={`search on ${vendor.name}`}
-      />
+      <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
       <VendorBanner vendor={vendor} />
       <ContentWrapper>
         <FlatList

@@ -34,7 +34,7 @@ export default function NormalTopBar({
           autoCorrect={true}
           keyboardType="default"
           returnKeyType="next"
-          className="flex-1 rounded-r-full py-3"
+          className="flex-1 rounded-r-full py-3 text-black"
           placeholder={searchPlaceHolder}
           focusable={true}
           onSubmitEditing={handleSubmitEditing}

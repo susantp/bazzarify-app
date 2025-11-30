@@ -8,7 +8,10 @@ export default function AppLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
-        <Stack.Screen name="vendor/[uuid]" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="vendor/[vendorUuid]"
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
     </CoreProviders>
