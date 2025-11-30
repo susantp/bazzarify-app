@@ -42,6 +42,7 @@ export default function useLoginHook() {
   const handleOAuthLogin = async (provider: LoginProvider) => {
     try {
       const token = await actionOAuthLogin(provider);
+      console.log("OAuth login hook step: success", token);
       await handleAfterLoginFlow(token);
 
       Toast.show({
@@ -52,6 +53,7 @@ export default function useLoginHook() {
 
       router.replace("/account/profile");
     } catch (error) {
+      console.log("OAuth login hook step: google", error);
       Sentry.captureException(error);
       Toast.show({
         position: "bottom",

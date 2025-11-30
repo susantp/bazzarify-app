@@ -15,7 +15,7 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
     <TouchableOpacity
       onPress={() =>
         router.push({
-          pathname: "/(tabs)/products/[uuid]",
+          pathname: "/products/[uuid]",
           params: { uuid: item.uuid },
         })
       }

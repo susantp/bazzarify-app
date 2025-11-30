@@ -36,20 +36,12 @@ export default function Layout() {
         <Tabs.Screen
           name="index"
           options={{
-            href: null,
             title: "Home",
             tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
           }}
         />
         <Tabs.Screen
-          name="[id]/index"
-          options={{
-            title: "Home",
-            tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="[id]/categories"
+          name="categories"
           options={{
             title: "Categories",
             tabBarIcon: ({ color }) => (
@@ -58,7 +50,7 @@ export default function Layout() {
           }}
         />
         <Tabs.Screen
-          name="[id]/products"
+          name="products"
           options={{
             title: "Products",
             tabBarIcon: ({ color }) => (

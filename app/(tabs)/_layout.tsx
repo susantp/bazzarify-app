@@ -88,24 +88,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="products/[uuid]"
-        options={{
-          tabBarStyle: {
-            display: "none",
-          },
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="vendor"
-        options={{
-          tabBarStyle: {
-            display: "none",
-          },
-          href: null,
-        }}
-      />
-      <Tabs.Screen
         name="guest"
         options={{
           href: null,

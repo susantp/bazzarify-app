@@ -44,6 +44,7 @@ const _processGoogleLogin = async (): Promise<string> => {
 
 const actionOAuthLogin = async (provider: LoginProvider) => {
   if (provider === "google") {
+    console.log("OAuth login step: google", provider);
     return await _processGoogleLogin();
   }
   throw new Error("Not implemented");

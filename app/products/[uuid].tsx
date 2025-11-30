@@ -1,6 +1,6 @@
 import { Animated, Platform } from "react-native";
 import TopBar from "@/components/home/TopBar";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
 import ProductScreenContainer from "@/components/product/ProductScreenContainer";
 import ProductGenericDetails from "@/components/product/ProductGenericDetails";
@@ -16,7 +16,7 @@ import ProductSpecification from "@/components/product/ProductSpecification";
 import BottomActionView from "@/modules/core/components/BottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import ProductPageBottomView from "@/components/product/ProductPageBottomView";
+import ProductPageBottomView from "@/modules/core/components/ProductPageBottomView";
 import useProductScreen from "@/modules/product/hooks/useProductScreen";
 import ProductCouponDiscountInfo from "@/modules/product/components/ProductCouponDiscountInfo";
 import ProductPriceComponent from "@/modules/product/components/ProductPriceComponent";
@@ -92,6 +92,13 @@ export default function ProductScreen() {
           <BottomActionView className="gap-y-3 p-3">
             <ProductPageBottomView
               onCartAdd={() => handleAddToCart(product, selectedVariant)}
+              onStorePress={() =>
+                product?.user_uuid &&
+                router.push({
+                  pathname: "/vendor/[uuid]",
+                  params: { uuid: product?.user_uuid },
+                })
+              }
             />
           </BottomActionView>
         </>

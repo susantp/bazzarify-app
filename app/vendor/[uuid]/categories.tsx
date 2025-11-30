@@ -1,15 +1,15 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { router } from "expo-router";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import VendorHeader, { vendorData } from "@/components/vendor/VendorBanner";
 import { randomUUID } from "expo-crypto";
 import { Entypo } from "@expo/vector-icons";
+import useSearchBarHook from "@/hooks/useSearchBarHook";
+import NormalTopBar from "@/components/common/NormalTopBar";
 
 export default function Page() {
   const vendor = vendorData;
-  const canGoBack = router.canGoBack();
   const categoryItems = [
     { id: randomUUID(), label: "Watch" },
     { id: randomUUID(), label: "Earbuds" },
@@ -17,8 +17,15 @@ export default function Page() {
     { id: randomUUID(), label: "Power Bank" },
     { id: randomUUID(), label: "Soundbar" },
   ];
+  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
   return (
     <SafeAreaWrapper>
+      <NormalTopBar
+        canGoBack={canGoBack}
+        handleSubmitEditing={onSearchSubmit}
+        onChangeText={handleChangeText}
+        searchPlaceHolder={`search on ${vendor.name}`}
+      />
       <VendorHeader canGoBack={canGoBack} vendor={vendor} />
       <ContentWrapper>
         <FlatList

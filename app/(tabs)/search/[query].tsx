@@ -4,7 +4,6 @@ import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import {
-  ListRenderItemInfo,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -151,37 +150,6 @@ export default function Page() {
       setShowCustomFilter(!showCustomFilter);
   };
   const handleFilterDone = () => setShowCustomFilter(!showCustomFilter);
-  const renderFilterItem = ({ item }: ListRenderItemInfo<IFilterMenuItem>) => (
-    <TouchableOpacity
-      activeOpacity={0.4}
-      className={`flex-row items-center gap-x-2 rounded-md border border-slate-300 px-4 py-1 ${item.id === filter?.id ? "bg-orange-600 text-white" : undefined}`}
-      onPress={() => handleFilterPress(item)}
-    >
-      {item.component ? (
-        item.component
-      ) : (
-        <Text
-          className={`text-md ${item.id === filter?.id ? "text-white" : undefined}`}
-        >
-          {item.label}
-        </Text>
-      )}
-
-      {item.sortable && (
-        <Ionicons
-          name={
-            filter?.id !== item.id
-              ? "chevron-expand"
-              : priceSortAsc
-                ? "chevron-up"
-                : "chevron-down"
-          }
-          size={16}
-          color={item.id === filter?.id ? "white" : "black"}
-        />
-      )}
-    </TouchableOpacity>
-  );
   return (
     <SafeAreaWrapper>
       <NormalTopBar

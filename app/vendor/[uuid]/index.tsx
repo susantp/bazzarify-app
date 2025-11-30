@@ -8,10 +8,13 @@ import { SliderData } from "@/constants/SliderData";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ImageSlider from "@/components/common/ImageSlider";
+import { useLocalSearchParams } from "expo-router";
 
 export default function Page() {
   const vendor = vendorData;
   const { height, width } = useWindowDimensions();
+  const { uuid } = useLocalSearchParams();
+  console.log("vendor index :", uuid);
   const CARDS = [
     {
       id: randomUUID(),

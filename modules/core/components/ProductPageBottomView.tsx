@@ -9,9 +9,13 @@ import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
 
 interface IProductPageBottomView {
   onCartAdd: () => void;
+  onStorePress?: () => void;
 }
 
-const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
+const ProductPageBottomView = ({
+  onCartAdd,
+  onStorePress,
+}: IProductPageBottomView) => {
   const [leftBtnDimension, setLeftButtonDimensions] = useState({
     width: 0,
     height: 0,
@@ -30,7 +34,7 @@ const ProductPageBottomView = ({ onCartAdd }: IProductPageBottomView) => {
         <View className="w-3/12 flex-row justify-between pl-1">
           <TouchableOpacity
             className="flex-col items-center"
-            onPress={() => router.push("/vendor/demoVendor")}
+            onPress={onStorePress}
           >
             <FontAwesome5 name="apple-alt" color="black" size={24} />
             <Text>Store</Text>
