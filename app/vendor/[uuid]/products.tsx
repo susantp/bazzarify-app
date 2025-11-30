@@ -3,11 +3,11 @@ import React from "react";
 import VendorHeader, { vendorData } from "@/components/vendor/VendorBanner";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 
 export default function Page() {
   const vendor = vendorData;
-  const { uuid } = useLocalSearchParams();
+  const { uuid } = useGlobalSearchParams<{ uuid?: string }>();
   console.log("vendor products :", uuid);
   const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
   return (

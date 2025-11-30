@@ -7,8 +7,10 @@ import { randomUUID } from "expo-crypto";
 import { Entypo } from "@expo/vector-icons";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
+import { useGlobalSearchParams } from "expo-router";
 
 export default function Page() {
+  const { uuid } = useGlobalSearchParams<{ uuid?: string }>();
   const vendor = vendorData;
   const categoryItems = [
     { id: randomUUID(), label: "Watch" },
@@ -18,6 +20,7 @@ export default function Page() {
     { id: randomUUID(), label: "Soundbar" },
   ];
   const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
+  console.log("vendor categories :", uuid);
   return (
     <SafeAreaWrapper>
       <NormalTopBar

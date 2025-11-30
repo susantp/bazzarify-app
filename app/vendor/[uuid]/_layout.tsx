@@ -1,6 +1,6 @@
-import { Tabs } from "expo-router";
+import { Tabs, useLocalSearchParams } from "expo-router";
 import { HomeIcon } from "react-native-heroicons/solid";
-import React from "react";
+import React, { useMemo } from "react";
 import { Colors } from "@/constants/Colors";
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
@@ -9,6 +9,30 @@ import { Fontisto, Ionicons } from "@expo/vector-icons";
 import { AuthGuard } from "@/modules/core/utils/authGuard";
 
 export default function Layout() {
+  // Make uuid required for type safety; we still guard at runtime just in case
+  const { uuid } = useLocalSearchParams<{ uuid: string }>();
+
+  if (__DEV__ && !uuid) {
+    // Helpful warning during development if navigation didn't pass uuid
+    console.warn(
+      "[vendor/[uuid]] Missing uuid param — ensure tab hrefs and pushes include it.",
+    );
+  }
+
+  const hrefs = useMemo(
+    () => ({
+      index: { pathname: "/vendor/[uuid]" as const, params: { uuid } },
+      categories: {
+        pathname: "/vendor/[uuid]/categories" as const,
+        params: { uuid },
+      },
+      products: {
+        pathname: "/vendor/[uuid]/products" as const,
+        params: { uuid },
+      },
+    }),
+    [uuid],
+  );
   return (
     <AuthGuard requireAuth={true}>
       <Tabs
@@ -37,6 +61,7 @@ export default function Layout() {
           name="index"
           options={{
             title: "Home",
+            href: hrefs.index,
             tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
           }}
         />
@@ -44,6 +69,7 @@ export default function Layout() {
           name="categories"
           options={{
             title: "Categories",
+            href: hrefs.categories,
             tabBarIcon: ({ color }) => (
               <Ionicons name="grid" size={28} color={color} />
             ),
@@ -53,6 +79,7 @@ export default function Layout() {
           name="products"
           options={{
             title: "Products",
+            href: hrefs.products,
             tabBarIcon: ({ color }) => (
               <Fontisto name="shopping-package" size={28} color={color} />
             ),
