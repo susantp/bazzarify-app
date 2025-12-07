@@ -21,7 +21,7 @@ const SettingScreen = () => {
           <TouchableOpacity
             onPress={handleLogout}
             activeOpacity={0.8}
-            className="mt-4 flex w-full items-center bg-orange-600"
+            className="bg-primary mt-4 flex w-full items-center"
           >
             <Text className="p-4 text-lg font-bold text-white">Log Out</Text>
           </TouchableOpacity>

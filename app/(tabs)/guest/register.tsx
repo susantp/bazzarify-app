@@ -163,7 +163,7 @@ const Page = () => {
                 <Text>Old User?</Text>
               </View>
               <Link href="/guest/login">
-                <Text className="text-orange-600 underline">Sign In</Text>
+                <Text className="text-primary underline">Sign In</Text>
               </Link>
             </View>
           </View>

@@ -12,7 +12,7 @@ const SpecialSaleBanner = ({ item }: { item: TProductWithVariantAndImage }) => {
     new Date(),
   );
   return (
-    <View className="w-screen flex-row bg-orange-600 p-2">
+    <View className="bg-primary w-screen flex-row p-2">
       <View className="w-6/12 flex-col gap-y-1">
         <StyledText className="text-sm text-white">
           {specialSale?.name}

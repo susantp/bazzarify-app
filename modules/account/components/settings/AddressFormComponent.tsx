@@ -59,7 +59,7 @@ const AddressFormComponent = forwardRef<AddressFormRef, Props>(
               <TouchableOpacity
                 onPress={(e: GestureResponderEvent) => onSubmit(e)}
                 activeOpacity={0.6}
-                className="mt-4 flex flex-1 items-center rounded-lg bg-orange-600 py-3.5"
+                className="bg-primary mt-4 flex flex-1 items-center rounded-lg py-3.5"
               >
                 <Text className="text-lg font-semibold text-white">
                   {item.label}

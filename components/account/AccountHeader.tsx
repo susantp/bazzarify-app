@@ -5,7 +5,7 @@ import { router } from "expo-router";
 
 const AccountHeader = () => {
   return (
-    <View className="flex-row items-center justify-between bg-orange-600">
+    <View className="bg-primary flex-row items-center justify-between">
       <ScreenHeader title="Account" containerClassname="w-6/12" />
       <TouchableOpacity
         className="w-6/12 items-end px-4"

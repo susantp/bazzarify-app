@@ -16,7 +16,7 @@ const ProductDescription = ({
       <Text className="text-xl font-semibold">Description</Text>
       <LexicalContentView value={product.description} />
       <View className="flex items-center justify-items-center">
-        <Text className="text-md text-orange-600">See more</Text>
+        <Text className="text-md text-primary">See more</Text>
       </View>
     </View>
   </View>

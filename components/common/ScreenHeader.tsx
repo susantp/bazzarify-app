@@ -27,7 +27,7 @@ const ScreenHeader = ({
         "items-center",
         "justify-between",
         "px-1",
-        "bg-orange-600",
+        "bg-primary",
         containerClassname,
       )}
     >

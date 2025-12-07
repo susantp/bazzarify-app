@@ -40,7 +40,7 @@ const AddressListComponent = ({
             </View>
             <View className="w-3/12">
               <Link
-                className="rounded-lg bg-orange-600 py-2"
+                className="bg-primary rounded-lg py-2"
                 href={{
                   pathname: "/account/setting/address/edit/[uuid]",
                   params: { uuid: item.uuid },

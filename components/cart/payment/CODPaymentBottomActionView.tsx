@@ -30,12 +30,12 @@ const CODPaymentBottomActionView = ({
         </View>
         <View className="w-full flex-row justify-between">
           <Text className="text-xl">Total Amount</Text>
-          <Text className="text-xl font-semibold text-orange-600">
+          <Text className="text-primary text-xl font-semibold">
             Rs. {totalPrice}
           </Text>
         </View>
         <Pressable
-          className="w-full flex-row items-center justify-center rounded-md bg-orange-600 p-4"
+          className="bg-primary w-full flex-row items-center justify-center rounded-md p-4"
           onPress={action}
         >
           <ThemedText

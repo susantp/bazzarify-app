@@ -47,7 +47,7 @@ const ProductDeliveryDetails = ({
         </View>
         <View>
           <TouchableOpacity onPress={onOpenMap}>
-            <Text className="rounded-full bg-orange-600 px-2 py-1 text-white">
+            <Text className="bg-primary rounded-full px-2 py-1 text-white">
               Change
             </Text>
           </TouchableOpacity>

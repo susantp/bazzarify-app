@@ -47,7 +47,7 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
           <View className="flex flex-row">
             {"base_price" in item && (
               <View>
-                <Text className="text-3xl font-semibold text-orange-600">
+                <Text className="text-primary text-3xl font-semibold">
                   Rs {item?.base_price}
                 </Text>
               </View>
@@ -57,7 +57,7 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
           {/*  {"rating" in item && (*/}
           {/*    <View className="w-5/12 flex-row items-center gap-x-1">*/}
           {/*      <AntDesign name="star" size={16} color={`#f47d58`} />*/}
-          {/*      <Text className="text-md text-orange-600">{item?.rating}</Text>*/}
+          {/*      <Text className="text-md text-primary">{item?.rating}</Text>*/}
           {/*    </View>*/}
           {/*  )}*/}
           {/*  {"location" in item && (*/}

@@ -17,7 +17,7 @@ const ProductPriceComponent = ({
     <View className="border-b-2 border-gray-400 py-2">
       <View className="flex-row items-center justify-between">
         <View id="price" className="flex-row items-end">
-          <Text className="text-md text-2xl font-bold text-orange-600">
+          <Text className="text-md text-primary text-2xl font-bold">
             {currency.code.concat(" ").concat(String(price))}
           </Text>
           {/*<Text className="text-sm text-gray-600 line-through">Rs. 3,499</Text>*/}

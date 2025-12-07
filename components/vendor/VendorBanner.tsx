@@ -55,7 +55,7 @@ const VendorBanner = ({ vendor }: VendorHeaderProps) => {
                 {vendor.name}
               </Text>
               <View className="flex-row items-center gap-x-1">
-                <Text className="text-sm font-semibold text-orange-600">
+                <Text className="text-primary text-sm font-semibold">
                   100% Authentic
                 </Text>
                 <Ionicons
@@ -73,10 +73,10 @@ const VendorBanner = ({ vendor }: VendorHeaderProps) => {
             </View>
           </View>
           <View className="w-3/12 flex-col gap-y-2">
-            <TouchableOpacity className="items-center gap-x-1 rounded-md bg-orange-600 py-1">
+            <TouchableOpacity className="bg-primary items-center gap-x-1 rounded-md py-1">
               <Text className="font-semibold text-white">Follow</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="flex-row items-center justify-center gap-x-1 rounded-md bg-orange-600 py-1">
+            <TouchableOpacity className="bg-primary flex-row items-center justify-center gap-x-1 rounded-md py-1">
               <Entypo name="chat" size={15} color="white" />
               <Text className="font-semibold text-white">Chat</Text>
             </TouchableOpacity>

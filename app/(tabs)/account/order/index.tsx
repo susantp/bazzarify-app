@@ -32,7 +32,7 @@ export default function Page() {
               className="flex-row rounded-lg border border-slate-400 px-2 py-1"
             >
               <Text
-                className={`${status === orderStatus.id ? "text-orange-600" : undefined} text-md`}
+                className={`${status === orderStatus.id ? "text-primary" : undefined} text-md`}
               >
                 {orderStatus.label}
               </Text>

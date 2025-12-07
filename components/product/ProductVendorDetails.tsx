@@ -50,7 +50,7 @@ const ProductVendorDetails = () => (
         onPress={() => router.push("/vendor/demoVendor")}
         className="flex items-center justify-items-center"
       >
-        <Text className="font-semibold text-orange-600">Visit Store</Text>
+        <Text className="text-primary font-semibold">Visit Store</Text>
       </TouchableOpacity>
     </View>
   </View>

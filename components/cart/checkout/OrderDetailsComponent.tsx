@@ -30,7 +30,7 @@ const OrderDetailsComponent = ({ cart }: Props) => {
                 <Text>x{item.qty_ordered}</Text>
               </View>
               <View className="flex w-4/12 items-end">
-                <Text className="text-md text-orange-600">
+                <Text className="text-md text-primary">
                   Rs. {item.row_total}
                 </Text>
               </View>
@@ -70,7 +70,7 @@ const OrderDetailsComponent = ({ cart }: Props) => {
 
         {/*<View className="w-full flex-row">*/}
         {/*  <View className="w-full items-center">*/}
-        {/*    <Text className="text-lg text-orange-600">*/}
+        {/*    <Text className="text-lg text-primary">*/}
         {/*      You're saving Upto Rs.2000 60% off*/}
         {/*    </Text>*/}
         {/*  </View>*/}

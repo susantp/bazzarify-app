@@ -13,7 +13,7 @@ const SingleProductCard = ({ item }: SingleProductCardProps) => {
   return (
     <Link
       href={{
-        pathname: "/(tabs)/products/[uuid]",
+        pathname: "/products/[uuid]",
         params: { uuid: item.uuid },
       }}
       style={{ flexBasis: "48%", margin: 4 }} // Approximate two columns with some margin
@@ -46,7 +46,7 @@ const SingleProductCard = ({ item }: SingleProductCardProps) => {
           </ThemedText>
         </View>
         <View className="flex flex-row">
-          <Text className="text-3xl font-semibold text-orange-600">
+          <Text className="text-primary text-3xl font-semibold">
             Rs {item?.base_price}
           </Text>
         </View>
@@ -54,7 +54,7 @@ const SingleProductCard = ({ item }: SingleProductCardProps) => {
         {/*  {"rating" in item && (*/}
         {/*    <View className="w-5/12 flex-row items-center gap-x-1">*/}
         {/*      <AntDesign name="star" size={16} color={`#f47d58`} />*/}
-        {/*      <Text className="text-md text-orange-600">{item?.rating}</Text>*/}
+        {/*      <Text className="text-md text-primary">{item?.rating}</Text>*/}
         {/*    </View>*/}
         {/*  )}*/}
         {/*  {"location" in item && (*/}

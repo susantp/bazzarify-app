@@ -18,7 +18,7 @@ export default function Page() {
       <ScreenHeader
         title="Flash Deal"
         iconColor={Colors.light.tint}
-        textClassname="text-orange-600"
+        textClassname="text-primary"
       />
       <ContentWrapper>
         <BubbleDesign />
@@ -34,7 +34,7 @@ export default function Page() {
           />
         </View>
         <View className="flex-row justify-between px-2 py-6">
-          <Text className="text-xl font-bold text-orange-600">
+          <Text className="text-xl font-bold text-primary">
             {selectedDiscount === "All" ? "" : `${selectedDiscount} Discount`}
           </Text>
           <TouchableOpacity
@@ -82,7 +82,7 @@ const DiscountSelection = ({
         className={cn(
           "rounded-full px-4 py-3",
           selectedDiscount === discount
-            ? "border-2 border-orange-600"
+            ? "border-2 border-primary"
             : undefined,
         )}
         onPress={() => onSelectDiscount(discount)}

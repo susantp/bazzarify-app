@@ -255,14 +255,14 @@ const CustomFilterComponent = ({
       <View className="flex-row justify-between gap-x-4 py-4">
         <TouchableOpacity
           onPress={() => setSelectedOptions({})} // Reset selections
-          className="flex-1 items-center rounded-full bg-orange-600 py-4"
+          className="bg-primary flex-1 items-center rounded-full py-4"
         >
           <Text className="text-white">Reset</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleDonePress}
           activeOpacity={0.4}
-          className="flex-1 items-center rounded-full bg-orange-600 py-4"
+          className="bg-primary flex-1 items-center rounded-full py-4"
         >
           <Text className="text-white">Done (200)</Text>
         </TouchableOpacity>

@@ -25,7 +25,7 @@ const ProductVariantSelector = ({
             <TouchableOpacity
               key={variant.uuid}
               onPress={() => onPress(variant)}
-              className="h-10 w-10 rounded-full border-2 border-orange-600 p-0.5"
+              className="border-primary h-10 w-10 rounded-full border-2 p-0.5"
             >
               <View className={`h-full w-full rounded-full ${bg}`}>
                 <Image
