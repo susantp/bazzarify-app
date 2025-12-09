@@ -1,11 +1,13 @@
-import {z} from "zod";
-import {StoreSchema} from "@/modules/vendor/domain/schemas/store";
+import { z } from "zod";
+import { StoreSchema } from "@/modules/vendor/domain/schemas/store";
 
-export const VendorStorePayloadSchema = z.object({
+export const VendorStorePayloadSchema = z
+  .object({
     store: StoreSchema,
     currency: z.object({
-        code: z.string(),
+      code: z.string(),
     }),
-}).strip();
+  })
+  .strip();
 
 export type TVendorStorePayload = z.infer<typeof VendorStorePayloadSchema>;

@@ -54,7 +54,7 @@ const AddressSettingScreen = () => {
       ) : null}
       <Link
         href={`/account/setting/address/create`}
-        className="bg-primary rounded-full px-4 py-3"
+        className="rounded-full bg-primary px-4 py-3"
       >
         <ThemedText
           lightColor={Colors.light.background}

@@ -47,7 +47,7 @@ export default function ProductScreen() {
   return (
     <SafeAreaWrapper>
       <TopBar
-        className={`bg-primary flex-row items-center justify-between gap-3 p-4`}
+        className={`flex-row items-center justify-between gap-3 bg-primary p-4`}
       />
       {isError ? (
         <FetchingErrorComponent message="Sorry, something went wrong fetching the product." />

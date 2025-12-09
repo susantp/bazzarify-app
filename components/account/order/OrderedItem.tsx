@@ -40,7 +40,7 @@ const OrderedItem = ({ statusItem, order, item }: OrderedItemProps) => (
                 ? router.push(statusItem?.action.route as Href)
                 : undefined
             }
-            className="border-primary rounded-lg border px-4 py-1"
+            className="rounded-lg border border-primary px-4 py-1"
           >
             <Text className="text-primary">{statusItem.action.label}</Text>
           </TouchableOpacity>

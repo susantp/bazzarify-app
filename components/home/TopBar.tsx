@@ -90,7 +90,7 @@ export const TopBarIcons = ({ className }: HeaderIconsProps) => {
 
 export default function TopBar({ className }: HeaderProps) {
   return (
-    <View className={clsx("bg-primary flex-row items-center", className)}>
+    <View className={clsx("flex-row items-center bg-primary", className)}>
       {/* Give SearchBox the flex so it owns the horizontal space */}
       <SearchBox className="flex-1" />
       <TopBarIcons className="w-3/12 flex-row items-center justify-between px-2 md:w-2/12 md:px-4" />

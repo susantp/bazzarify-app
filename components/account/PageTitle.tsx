@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 
 const PageTitle = ({ title }: { title: string }) => (
-  <Text className="text-primary text-3xl font-bold">{title}</Text>
+  <Text className="text-3xl font-bold text-primary">{title}</Text>
 );
 
 export default PageTitle;

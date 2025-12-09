@@ -79,7 +79,7 @@ export default function Page() {
           <TouchableOpacity
             onPress={handleProfileUpdate}
             activeOpacity={0.6}
-            className="bg-primary flex w-full items-center rounded-xl py-3"
+            className="flex w-full items-center rounded-xl bg-primary py-3"
           >
             <Text className="text-lg text-white">Update</Text>
           </TouchableOpacity>

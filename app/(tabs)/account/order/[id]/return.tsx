@@ -124,7 +124,7 @@ const ReturnForm: React.FC = () => {
           )}
 
           <TouchableOpacity
-            className="bg-primary flex w-full items-center rounded-lg py-2"
+            className="flex w-full items-center rounded-lg bg-primary py-2"
             activeOpacity={0.6}
             onPress={handleSubmit(onSubmit)}
           >

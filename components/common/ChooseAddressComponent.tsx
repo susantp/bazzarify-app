@@ -9,7 +9,7 @@ const ChooseAddressComponent = () => (
       options.
     </Text>
     <TouchableOpacity className="w-full flex-row">
-      <View className="bg-primary rounded-full p-4">
+      <View className="rounded-full bg-primary p-4">
         <Text className="text-white"> Sign in to see your address</Text>
       </View>
     </TouchableOpacity>

@@ -20,7 +20,7 @@ const DeliveryMileStones = () => (
       <Text className={`text-center`}>Processing</Text>
     </View>
     <View className="flex-col items-center justify-center gap-y-2">
-      <View className="bg-primary rounded-full p-4">
+      <View className="rounded-full bg-primary p-4">
         <Feather name="package" size={24} color="white" />
       </View>
       <Text className={`text-center`}>Packed</Text>

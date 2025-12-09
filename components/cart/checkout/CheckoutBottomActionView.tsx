@@ -21,7 +21,7 @@ const CheckoutBottomActionView = ({
       <View className="flex-col gap-y-2">
         <Text className="text-xl font-bold">
           Total:
-          <Text className="text-primary text-xl">{` Rs. ${totalPrice}`}</Text>
+          <Text className="text-xl text-primary">{` Rs. ${totalPrice}`}</Text>
         </Text>
         <Text className="text-sm font-light">
           Delivery fee:

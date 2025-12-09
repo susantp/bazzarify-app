@@ -38,7 +38,7 @@ export default function PaymentScreen() {
           </View>
           <View className="flex-row justify-between">
             <Text className="text-xl">Total Amount</Text>
-            <Text className="text-primary text-xl font-semibold">
+            <Text className="text-xl font-semibold text-primary">
               {`Rs. ${cartState?.cart?.totals.grand_total}`}
             </Text>
           </View>

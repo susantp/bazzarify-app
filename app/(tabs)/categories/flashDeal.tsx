@@ -81,9 +81,7 @@ const DiscountSelection = ({
         key={randomUUID()}
         className={cn(
           "rounded-full px-4 py-3",
-          selectedDiscount === discount
-            ? "border-2 border-primary"
-            : undefined,
+          selectedDiscount === discount ? "border-2 border-primary" : undefined,
         )}
         onPress={() => onSelectDiscount(discount)}
       >

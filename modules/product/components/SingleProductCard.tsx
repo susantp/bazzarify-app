@@ -46,7 +46,7 @@ const SingleProductCard = ({ item }: SingleProductCardProps) => {
           </ThemedText>
         </View>
         <View className="flex flex-row">
-          <Text className="text-primary text-3xl font-semibold">
+          <Text className="text-3xl font-semibold text-primary">
             Rs {item?.base_price}
           </Text>
         </View>

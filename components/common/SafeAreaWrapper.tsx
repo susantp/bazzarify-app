@@ -17,7 +17,7 @@ export const SafeAreaWrapper = ({
       <SafeAreaView
         edges={["top", "left", "right", "bottom"]}
         style={{ flex: 1 }}
-        className={cn("bg-primary flex-col", className)}
+        className={cn("flex-col bg-primary", className)}
       >
         <View style={{ flex: 1, backgroundColor: "#ffff" }}>
           {children ? children : null}

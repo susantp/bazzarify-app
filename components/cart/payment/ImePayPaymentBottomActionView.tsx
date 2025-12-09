@@ -22,7 +22,7 @@ const ImePayPaymentBottomActionView = ({
         </View>
         <View className="w-full flex-row justify-between">
           <Text className="text-xl">Total Amount</Text>
-          <Text className="text-primary text-xl font-semibold">
+          <Text className="text-xl font-semibold text-primary">
             Rs. {totalPrice}
           </Text>
         </View>
