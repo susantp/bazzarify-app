@@ -6,36 +6,25 @@ import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Platform } from "react-native";
 import { Fontisto, Ionicons } from "@expo/vector-icons";
-import { useQuery } from "@tanstack/react-query";
-import {
-  fetchCategories,
-  fetchProducts,
-} from "@/modules/vendor/data/services/vendorService";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import useVendorHook from "@/modules/vendor/domain/hooks/useVendorHook";
 
 export default function Layout() {
-  const { vendorUuid } = useLocalSearchParams();
+  const { vendorUuid } = useLocalSearchParams<{
+    vendorUuid: string | string[];
+  }>();
 
-  // Query: Automatically cached & shared across screens
-  const productsQuery = useQuery({
-    queryKey: ["vendor", vendorUuid, "products"],
-    queryFn: () => fetchProducts(vendorUuid as string),
-  });
-
-  const categoriesQuery = useQuery({
-    queryKey: ["vendor", vendorUuid, "categories"],
-    queryFn: () => fetchCategories(vendorUuid as string),
-  });
-
-  // optional: preloading tabs via suspense
-  const loading = productsQuery.isLoading || categoriesQuery.isLoading;
-  if (loading) {
+  const { vendorStore, vendorTopProducts, vendorCategories, vendorProducts } =
+    useVendorHook(vendorUuid.toString());
+  if (
+    vendorProducts.isLoading ||
+    vendorCategories.isLoading ||
+    vendorStore.isLoading ||
+    vendorTopProducts.isLoading
+  ) {
     return <ThemedLoader />;
   }
-  console.log(
-    productsQuery.data?.currency.code,
-    categoriesQuery.data?.category.slug,
-  );
+
   return (
     <Tabs
       initialRouteName="index"
@@ -61,6 +50,7 @@ export default function Layout() {
     >
       <Tabs.Screen
         name="index"
+        initialParams={{ vendorUuid }}
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
@@ -68,6 +58,7 @@ export default function Layout() {
       />
       <Tabs.Screen
         name="categories"
+        initialParams={{ vendorUuid }}
         options={{
           title: "Categories",
           tabBarIcon: ({ color }) => (
@@ -77,6 +68,7 @@ export default function Layout() {
       />
       <Tabs.Screen
         name="products"
+        initialParams={{ vendorUuid }}
         options={{
           title: "Products",
           tabBarIcon: ({ color }) => (

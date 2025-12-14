@@ -17,7 +17,7 @@ export interface InfiniteProductGridProps<TPage, TItem> {
   numColumns?: number;
   id?: string;
   onEndReachedThreshold?: number;
-  ListEmptyComponent?: React.ReactElement | null;
+  listEmptyComponent?: React.ReactElement | null;
 }
 
 export default function InfiniteProductGrid<TPage, TItem>(
@@ -31,7 +31,7 @@ export default function InfiniteProductGrid<TPage, TItem>(
     numColumns = 2,
     id,
     onEndReachedThreshold = 0.4,
-    ListEmptyComponent,
+    listEmptyComponent,
   } = props;
 
   const {
@@ -89,7 +89,7 @@ export default function InfiniteProductGrid<TPage, TItem>(
           </View>
         ) : null
       }
-      ListEmptyComponent={ListEmptyComponent ?? null}
+      ListEmptyComponent={listEmptyComponent ?? null}
     />
   );
 }
