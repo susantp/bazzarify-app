@@ -28,13 +28,15 @@ export default function DeliveryBar({
       >
         {locationError ? (
           <View className="flex-row items-center justify-between">
-            <Text className="text-white">{locationError}</Text>
+            <Text className="text-white">
+              Location has an error. Please restart the app
+            </Text>
             <TouchableOpacity onPress={refresh}>
               <Text className="font-bold text-white">Refresh Location</Text>
             </TouchableOpacity>
           </View>
         ) : (
-          <Text className="text-sm font-semibold text-white">
+          <Text className="font-semibold text-white" style={{ fontSize: 10 }}>
             {displayCurrentAddress
               ? displayCurrentAddress.formattedAddress
               : "Location loading..."}
