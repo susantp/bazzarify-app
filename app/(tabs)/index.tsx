@@ -46,7 +46,7 @@ export default function HomeScreen() {
           locationError={error}
           refresh={refresh}
           displayCurrentAddress={address}
-          className="flex-row items-center justify-center gap-2 bg-blue-950 py-2"
+          className="flex-row items-center justify-center gap-2 bg-orange-700 py-2"
         />
         <ContentWrapper>
           <FlatList
