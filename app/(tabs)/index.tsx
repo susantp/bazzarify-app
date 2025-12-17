@@ -1,16 +1,18 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense } from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { FlatList, Image, RefreshControl } from "react-native";
+import {
+  FlatList,
+  Image,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import useHomeScreenHook from "@/modules/home/hooks/useHomeScreenHook";
 import TopBar from "@/components/home/TopBar";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import Animated, { FadeIn } from "react-native-reanimated";
-import {
-  geocodeAddressAtom,
-  latitudeAtom,
-  locationErrorAtom,
-  longitudeAtom,
-} from "@/atoms/locationAtom";
+import { geocodeAddressAtom, locationErrorAtom } from "@/atoms/locationAtom";
 
 import DeliveryBar from "@/components/home/DeliveryBar";
 import { useLocation } from "@/modules/core/hooks/useLocation";
@@ -20,7 +22,7 @@ import { useAtom, useAtomValue } from "jotai";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
-import { Coordinates } from "expo-maps";
+import * as Updates from "expo-updates";
 
 export default function HomeScreen() {
   const [showModal, setShowModal] = useAtom(homePopupAtom);
@@ -29,7 +31,13 @@ export default function HomeScreen() {
   const { refresh } = useLocation();
   const { CARDS, refreshing, onRefresh, justForYouProductsQueryResult } =
     useHomeScreenHook();
-
+  const { isUpdateAvailable, isUpdatePending } = Updates.useUpdates();
+  const handleUpdatePending = async () => {
+    if (isUpdateAvailable && !isUpdatePending) {
+      await Updates.fetchUpdateAsync();
+      await Updates.reloadAsync();
+    }
+  };
   return (
     <Suspense fallback={null}>
       <SafeAreaWrapper>
@@ -88,6 +96,20 @@ export default function HomeScreen() {
             </Animated.View>
           </DemoModalComponent>
         ) : null}
+        <DemoModalComponent
+          type="bottom"
+          showModal={isUpdateAvailable}
+          handlePress={() => setShowModal(!showModal)}
+        >
+          <TouchableOpacity
+            onPress={handleUpdatePending}
+            className="w-full flex-row"
+          >
+            <View className="rounded-full bg-primary p-4">
+              <Text className="text-white">Apply new update.</Text>
+            </View>
+          </TouchableOpacity>
+        </DemoModalComponent>
       </SafeAreaWrapper>
     </Suspense>
   );

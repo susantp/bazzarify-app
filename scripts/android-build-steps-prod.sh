@@ -1,6 +1,8 @@
 bunx expo prebuild --clean --bun --platform android && \
 bunx expo export:embed --eager --platform android --production false && \
-cd ./android && \
+pushd ./../android || exit
+#cd ./android && \
 #./gradlew clean && \
 ./gradlew :app:assembleRelease && \
-cd ..
+#cd ..
+popd || exit
