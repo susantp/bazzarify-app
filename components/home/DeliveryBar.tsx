@@ -36,7 +36,7 @@ export default function DeliveryBar({
             </TouchableOpacity>
           </View>
         ) : (
-          <Text className="font-semibold text-white" style={{ fontSize: 10 }}>
+          <Text className="font-semibold text-white" style={{ fontSize: 11 }}>
             {displayCurrentAddress
               ? displayCurrentAddress.formattedAddress
               : "Location loading..."}
