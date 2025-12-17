@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 interface IDemoModalComponent {
   children?: React.ReactNode;
@@ -59,24 +60,28 @@ interface IModalContentContainerProps {
 
 const BottomDrawerContainer = ({
   children,
-  height,
   handlePress,
-}: IModalContentContainerProps) => (
-  <View
-    className={`absolute bottom-0 z-30 w-full flex-col gap-y-2 border-t border-t-gray-400 bg-white p-6`}
-    style={{ height: height ? height : undefined }}
-  >
-    <TouchableOpacity className="w-full items-end" onPress={handlePress}>
-      <AntDesign
-        name="close-circle"
-        color={Colors.light.tint}
-        size={28}
-        strokeWidth={2}
-      />
-    </TouchableOpacity>
-    {children}
-  </View>
-);
+}: IModalContentContainerProps) => {
+  const height = useBottomTabBarHeight();
+  return (
+    <View
+      className={`absolute z-30 w-full flex-col gap-y-2 border-t border-t-gray-400 bg-white p-6`}
+      style={{
+        bottom: height ? height : 0,
+      }}
+    >
+      <TouchableOpacity className="w-full items-end" onPress={handlePress}>
+        <AntDesign
+          name="close-circle"
+          color={Colors.light.tint}
+          size={28}
+          strokeWidth={2}
+        />
+      </TouchableOpacity>
+      {children}
+    </View>
+  );
+};
 
 const CenterContainer = ({
   children,

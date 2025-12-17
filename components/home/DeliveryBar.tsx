@@ -1,4 +1,4 @@
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/outline";
 import React, { useState } from "react";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
