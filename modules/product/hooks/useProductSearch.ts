@@ -1,28 +1,25 @@
-import { useState } from "react";
 import { useAtom } from "jotai";
-import { customFilterModalAtom } from "@/atoms/customFilterModalAtom";
-import {
-  FilterMenuItemEnum,
-  IFilterMenuItem,
-} from "@/modules/product/types/search";
+import { searchFiltersAtom } from "@/atoms/searchFiltersAtom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import getProductByQuery from "@/modules/product/services/product/getProductByQuery";
+import {
+  buildSpatieFilterQuery,
+  serializeSpatieFilters,
+} from "@/modules/product/utils/searchFilters";
 
 export default function useProductSearch(currentQuery: string) {
-  const [filter, setFilter] = useState<IFilterMenuItem | undefined>();
-  const [priceSortAsc, setPriceSortAsc] = useState(true);
-  const [showCustomFilter, setShowCustomFilter] = useAtom(
-    customFilterModalAtom,
-  );
+  const [filters] = useAtom(searchFiltersAtom);
+  const spatieFilters = buildSpatieFilterQuery(filters, currentQuery);
+  const serializedFilters = serializeSpatieFilters(spatieFilters);
 
   const queryResult = useInfiniteQuery({
-    queryKey: ["product", currentQuery],
+    queryKey: ["product", currentQuery, serializedFilters],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
       getProductByQuery({
         perPage: "10",
         page: String(pageParam),
-        "filter[name]": currentQuery,
+        ...spatieFilters,
       }),
     getNextPageParam: (lastPage) => {
       const p = lastPage?.products;
@@ -31,17 +28,7 @@ export default function useProductSearch(currentQuery: string) {
     enabled: Boolean(currentQuery),
   });
   const metadata = queryResult.data?.pages[0]?.metadata;
-
-  const handleFilterPress = (item: IFilterMenuItem) => {
-    setFilter(item);
-    item.id === FilterMenuItemEnum.PRICE && setPriceSortAsc(!priceSortAsc);
-    item.id === FilterMenuItemEnum.CUSTOM_FILTER &&
-      setShowCustomFilter(!showCustomFilter);
-  };
   return {
-    setFilter,
-    showCustomFilter,
-    setShowCustomFilter,
     queryResult,
     metadata,
   };

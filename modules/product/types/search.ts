@@ -15,12 +15,10 @@ export enum FilterMenuItemEnum {
 }
 
 export type SelectedOptions = {
-  single: Record<string, string | null>; // attributeUuid → optionUuid
   multiple: Record<string, string[]>; // filterId → optionUuids[]
+  range: Record<string, { min: string; max: string }>;
 };
-export type SpatieFilterQuery = {
-  filter: Record<string, string>;
-};
+export type SpatieFilterQuery = Record<string, string>;
 export interface ICustomFilterItem extends IFilterMenuItem {
   options: IFilterMenuItem[];
 }

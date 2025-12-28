@@ -3,15 +3,17 @@ import { useLocalSearchParams } from "expo-router";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import React, { useCallback, useMemo, useRef } from "react";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductCard from "@/components/common/ProductCard";
 import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
 import { ThemedText } from "@/components/ThemedText";
 import useProductSearch from "@/modules/product/hooks/useProductSearch";
-import { primaryColor } from "@/constants/Colors";
-import { AntDesign } from "@expo/vector-icons";
+import { useAtom } from "jotai";
+import { searchFiltersAtom } from "@/atoms/searchFiltersAtom";
+import { countAppliedFilters } from "@/modules/product/utils/searchFilters";
+import { FilterTriggerButton } from "@/modules/product/components/FilterTriggerButton";
 
 import BottomSheet, {
   BottomSheetBackdrop,
@@ -26,13 +28,8 @@ export default function Page() {
     : (rawQuery ?? "");
   const { canGoBack, onSearchSubmit, handleChangeText } =
     useSearchBarHook(currentQuery);
-  const {
-    setFilter,
-    showCustomFilter,
-    setShowCustomFilter,
-    queryResult,
-    metadata,
-  } = useProductSearch(currentQuery);
+  const { queryResult, metadata } = useProductSearch(currentQuery);
+  const [filters] = useAtom(searchFiltersAtom);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const renderBackdrop = useCallback(
@@ -53,6 +50,10 @@ export default function Page() {
   }, []);
   const snapPoints = useMemo(() => ["85%"], []);
   const { isSuccess, isLoading, isError } = queryResult;
+  const appliedFilterCount = useMemo(
+    () => countAppliedFilters(filters),
+    [filters],
+  );
 
   const handleFilterDone = () => bottomSheetRef.current?.close();
   return (
@@ -73,35 +74,10 @@ export default function Page() {
         ) : null}
         {metadata ? (
           <View className="p-2">
-            <TouchableOpacity
+            <FilterTriggerButton
               onPress={() => bottomSheetRef.current?.expand()}
-              // className="w-32 flex-row items-center justify-center gap-x-2 rounded-2xl bg-slate-200 p-5"
-              style={{
-                width: 120,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 8,
-                borderRadius: 24,
-                backgroundColor: "#E2E8F0",
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-              }}
-            >
-              <AntDesign name="filter" color={primaryColor} size={20} />
-              <ThemedText
-                type="defaultSemiBold"
-                darkColor={primaryColor}
-                style={{
-                  fontSize: 20,
-                  includeFontPadding: false,
-                  lineHeight: 22,
-                }}
-              >
-                Filter
-              </ThemedText>
-            </TouchableOpacity>
+              appliedCount={appliedFilterCount}
+            />
           </View>
         ) : null}
         {!isSuccess ? null : (
