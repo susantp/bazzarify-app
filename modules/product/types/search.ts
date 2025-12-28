@@ -21,3 +21,6 @@ export type SelectedOptions = {
 export type SpatieFilterQuery = {
   filter: Record<string, string>;
 };
+export interface ICustomFilterItem extends IFilterMenuItem {
+  options: IFilterMenuItem[];
+}

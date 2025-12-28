@@ -3,12 +3,17 @@ import {
   Dimensions,
   GestureResponderEvent,
   Modal,
-  StatusBar,
+  Pressable,
+  StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { primaryColor } from "@/constants/Colors";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 interface IDemoModalComponent {
   children?: React.ReactNode;
@@ -17,6 +22,7 @@ interface IDemoModalComponent {
   type: TModalComponentType;
 }
 
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 type TModalComponentType = "bottom" | "center";
 const DemoModalComponent = ({
   children,
@@ -25,29 +31,34 @@ const DemoModalComponent = ({
   type,
 }: IDemoModalComponent) => {
   return (
-    <Modal animationType="fade" transparent={true} visible={showModal}>
-      <TouchableOpacity
-        activeOpacity={1}
-        className="h-full"
-        id="backdrop"
-        style={{
-          backgroundColor: showModal ? `rgba(0, 0, 0, 0.40)` : "transparent",
-        }}
-      >
+    <Modal animationType="fade" transparent visible={showModal}>
+      <View style={{ flex: 1 }}>
+        {/* Backdrop */}
+        <Pressable
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: showModal ? "rgba(0,0,0,0.4)" : "transparent",
+          }}
+          onPress={handlePress}
+        />
+
+        {/* Modal content (separate layer) */}
         {type === "bottom" && (
           <BottomDrawerContainer handlePress={handlePress}>
             {children}
           </BottomDrawerContainer>
         )}
+
         {type === "center" && (
           <CenterContainer handlePress={handlePress}>
             {children}
           </CenterContainer>
         )}
-      </TouchableOpacity>
+      </View>
     </Modal>
   );
 };
+
 export default DemoModalComponent;
 
 interface IModalContentContainerProps {
@@ -60,27 +71,24 @@ const BottomDrawerContainer = ({
   children,
   handlePress,
 }: IModalContentContainerProps) => {
-  const screenHeight = Dimensions.get("screen").height;
-  const windowHeight = Dimensions.get("window").height;
-  const bottomNavBarHeight =
-    screenHeight - windowHeight - (StatusBar.currentHeight ?? 0);
   return (
-    <View
-      className={`absolute z-30 w-full flex-col gap-y-2 border-t border-t-gray-400 bg-white p-6`}
+    <SafeAreaView
+      edges={["bottom"]} // 🔥 THIS is the fix
+      className="absolute bottom-0 w-full border-t border-t-gray-400 bg-white"
       style={{
-        bottom: bottomNavBarHeight,
+        maxHeight: SCREEN_HEIGHT * 0.85,
       }}
     >
-      <TouchableOpacity className="w-full items-end" onPress={handlePress}>
-        <AntDesign
-          name="close-circle"
-          color={primaryColor}
-          size={28}
-          strokeWidth={2}
-        />
-      </TouchableOpacity>
-      {children}
-    </View>
+      {/* Close button */}
+      <View className="p-6 pb-2">
+        <TouchableOpacity className="items-end" onPress={handlePress}>
+          <AntDesign name="close-circle" size={28} color={primaryColor} />
+        </TouchableOpacity>
+      </View>
+
+      {/* Scrollable content */}
+      <View style={{ flex: 1, paddingHorizontal: 24 }}>{children}</View>
+    </SafeAreaView>
   );
 };
 
