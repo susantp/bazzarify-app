@@ -3,18 +3,17 @@ import {
   Dimensions,
   GestureResponderEvent,
   Modal,
+  StatusBar,
   TouchableOpacity,
   View,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { Colors } from "@/constants/Colors";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { primaryColor } from "@/constants/Colors";
 
 interface IDemoModalComponent {
   children?: React.ReactNode;
   showModal: boolean;
   handlePress: (event: GestureResponderEvent) => void;
-  height?: number;
   type: TModalComponentType;
 }
 
@@ -23,7 +22,6 @@ const DemoModalComponent = ({
   children,
   showModal,
   handlePress,
-  height,
   type,
 }: IDemoModalComponent) => {
   return (
@@ -37,12 +35,12 @@ const DemoModalComponent = ({
         }}
       >
         {type === "bottom" && (
-          <BottomDrawerContainer height={height} handlePress={handlePress}>
+          <BottomDrawerContainer handlePress={handlePress}>
             {children}
           </BottomDrawerContainer>
         )}
         {type === "center" && (
-          <CenterContainer height={height} handlePress={handlePress}>
+          <CenterContainer handlePress={handlePress}>
             {children}
           </CenterContainer>
         )}
@@ -62,18 +60,21 @@ const BottomDrawerContainer = ({
   children,
   handlePress,
 }: IModalContentContainerProps) => {
-  const height = useBottomTabBarHeight();
+  const screenHeight = Dimensions.get("screen").height;
+  const windowHeight = Dimensions.get("window").height;
+  const bottomNavBarHeight =
+    screenHeight - windowHeight - (StatusBar.currentHeight ?? 0);
   return (
     <View
       className={`absolute z-30 w-full flex-col gap-y-2 border-t border-t-gray-400 bg-white p-6`}
       style={{
-        bottom: height ? height : 0,
+        bottom: bottomNavBarHeight,
       }}
     >
       <TouchableOpacity className="w-full items-end" onPress={handlePress}>
         <AntDesign
           name="close-circle"
-          color={Colors.light.tint}
+          color={primaryColor}
           size={28}
           strokeWidth={2}
         />
@@ -88,13 +89,7 @@ const CenterContainer = ({
   height,
   handlePress,
 }: IModalContentContainerProps) => (
-  <View
-    className={`absolute w-full flex-col gap-y-2 bg-transparent p-6`}
-    style={{
-      height: height ? height : undefined,
-      top: height ? height * 0.2 : Dimensions.get("window").height * 0.2,
-    }}
-  >
+  <View className={`absolute w-full flex-col gap-y-2 bg-transparent p-6`}>
     {children}
     <TouchableOpacity className="w-full items-center" onPress={handlePress}>
       <AntDesign name="close-circle" color="white" size={35} strokeWidth={4} />

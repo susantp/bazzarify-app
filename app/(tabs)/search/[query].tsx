@@ -3,61 +3,24 @@ import { useLocalSearchParams } from "expo-router";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { useMemo, useState } from "react";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import { useAtom } from "jotai";
-import { customFilterModalAtom } from "@/atoms/customFilterModalAtom";
 import cn from "@/utils/tailwindHelper";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import getProductByQuery from "@/modules/product/services/product/getProductByQuery";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductCard from "@/components/common/ProductCard";
 import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
-
-enum FilterMenuItemEnum {
-  BEST_Selling = "bestSelling",
-  PRICE = "price",
-  FREE_DELIVERY = "freeDelivery",
-  CUSTOM_FILTER = "customFilter",
-}
-
-interface IFilterMenuItem {
-  id: string;
-  label: string;
-  sortable?: boolean;
-  component?: React.ReactNode;
-}
-
-const filterMenuItems: IFilterMenuItem[] = [
-  {
-    id: FilterMenuItemEnum.BEST_Selling,
-    label: "Best Selling",
-  },
-  {
-    id: FilterMenuItemEnum.PRICE,
-    label: "price",
-    sortable: true,
-  },
-  {
-    id: FilterMenuItemEnum.FREE_DELIVERY,
-    label: "free delivery",
-  },
-  {
-    id: FilterMenuItemEnum.CUSTOM_FILTER,
-    label: "customFilter",
-    component: (
-      <Ionicons name="options" size={20} color="black" className="rotate-90" />
-    ),
-  },
-];
+import { ThemedText } from "@/components/ThemedText";
+import {
+  IFilterMenuItem,
+  SelectedOptions,
+  SpatieFilterQuery,
+} from "@/modules/product/types/search";
+import useProductSearch from "@/modules/product/hooks/useProductSearch";
+import { primaryColor } from "@/constants/Colors";
+import { AntDesign } from "@expo/vector-icons";
+import { TSearchMetadataPayloadSchema } from "@/modules/product/schemas/responsePayloads/SearchMetadataPayloadSchema";
+import { toTitleCase } from "@/modules/core/utils";
 
 interface ICustomFilterItem extends IFilterMenuItem {
   options: IFilterMenuItem[];
@@ -119,36 +82,16 @@ export default function Page() {
     : (rawQuery ?? "");
   const { canGoBack, onSearchSubmit, handleChangeText } =
     useSearchBarHook(currentQuery);
-  const [filter, setFilter] = useState<IFilterMenuItem | undefined>();
-  const [priceSortAsc, setPriceSortAsc] = useState(true);
-  const [showCustomFilter, setShowCustomFilter] = useAtom(
-    customFilterModalAtom,
-  );
-  const { height } = useWindowDimensions();
-  const queryResult = useInfiniteQuery({
-    queryKey: ["product", currentQuery],
-    initialPageParam: 1,
-    queryFn: ({ pageParam }) =>
-      getProductByQuery({
-        perPage: "10",
-        page: String(pageParam),
-        "filter[name]": currentQuery,
-      }),
-    getNextPageParam: (lastPage) => {
-      const p = lastPage?.products;
-      return p?.next_page_url ? Number(p.current_page) + 1 : undefined;
-    },
-    enabled: Boolean(currentQuery),
-  });
-  const { data, isSuccess, isLoading, isError, error } = queryResult;
-  console.log("query page: ", data);
+  const {
+    setFilter,
+    showCustomFilter,
+    setShowCustomFilter,
+    queryResult,
+    metadata,
+  } = useProductSearch(currentQuery);
 
-  const handleFilterPress = (item: IFilterMenuItem) => {
-    setFilter(item);
-    item.id === FilterMenuItemEnum.PRICE && setPriceSortAsc(!priceSortAsc);
-    item.id === FilterMenuItemEnum.CUSTOM_FILTER &&
-      setShowCustomFilter(!showCustomFilter);
-  };
+  const { isSuccess, isLoading, isError } = queryResult;
+
   const handleFilterDone = () => setShowCustomFilter(!showCustomFilter);
   return (
     <SafeAreaWrapper>
@@ -160,19 +103,30 @@ export default function Page() {
         handleSubmitEditing={onSearchSubmit}
       />
       <ContentWrapper>
-        {isLoading ? (
-          <ThemedLoader />
-        ) : // <View>
-        //   <FlatList
-        //     showsHorizontalScrollIndicator={false}
-        //     horizontal={true}
-        //     contentContainerClassName="p-1 flex gap-x-2 items-center"
-        //     data={filterMenuItems}
-        //     renderItem={renderFilterItem}
-        //     keyExtractor={(item: IFilterMenuItem) => item.id}
-        //   />
-        // </View>
-        null}
+        {isLoading ? <ThemedLoader /> : null}
+        {isError ? (
+          <ThemedText>
+            An error occurred while fetching search results.
+          </ThemedText>
+        ) : null}
+        {metadata ? (
+          <View className="p-2">
+            <TouchableOpacity
+              onPress={() => setShowCustomFilter(true)}
+              className="w-32 flex-row items-center justify-center gap-x-2 rounded-2xl bg-slate-200"
+            >
+              <AntDesign name="filter" color={primaryColor} size={20} />
+              <ThemedText
+                type="defaultSemiBold"
+                className="py-2"
+                darkColor={primaryColor}
+                style={{ fontSize: 20 }}
+              >
+                Filter
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+        ) : null}
         {!isSuccess ? null : (
           <InfiniteProductGrid
             id="SearchResults"
@@ -188,7 +142,6 @@ export default function Page() {
       </ContentWrapper>
       <DemoModalComponent
         type="bottom"
-        height={height * 0.4}
         showModal={showCustomFilter}
         handlePress={() => {
           setShowCustomFilter(!showCustomFilter);
@@ -196,6 +149,7 @@ export default function Page() {
         }}
       >
         <CustomFilterComponent
+          metadata={metadata}
           filterItems={customFilterItems}
           handleDonePress={handleFilterDone}
         />
@@ -207,44 +161,121 @@ export default function Page() {
 interface ICustomFilterComponentProps {
   filterItems: ICustomFilterItem[];
   handleDonePress: () => void;
+  metadata?: TSearchMetadataPayloadSchema | null;
 }
 
 const CustomFilterComponent = ({
   filterItems,
   handleDonePress,
+  metadata,
 }: ICustomFilterComponentProps) => {
-  const [selectedOptions, setSelectedOptions] = useState<
-    Record<string, string | null>
-  >({});
+  const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({
+    single: {},
+    multiple: {
+      categories: [],
+    },
+  });
 
-  const handleSelect = (filterId: string, optionId: string) => {
-    setSelectedOptions((prev) => ({
-      ...prev,
-      [filterId]: prev[filterId] === optionId ? null : optionId, // Toggle selection
-    }));
+  const handleSelect = (
+    filterId: string,
+    optionId: string,
+    mode: "single" | "multiple",
+  ) => {
+    setSelectedOptions((prev) => {
+      if (mode === "single") {
+        return {
+          ...prev,
+          single: {
+            ...prev.single,
+            [filterId]: prev.single[filterId] === optionId ? null : optionId,
+          },
+        };
+      }
+
+      const current = prev.multiple[filterId] ?? [];
+      const exists = current.includes(optionId);
+
+      return {
+        ...prev,
+        multiple: {
+          ...prev.multiple,
+          [filterId]: exists
+            ? current.filter((id) => id !== optionId)
+            : [...current, optionId],
+        },
+      };
+    });
   };
-  return (
+  const resetFilters = () => {
+    setSelectedOptions({
+      single: {},
+      multiple: {
+        categories: [],
+      },
+    });
+  };
+  const buildSpatieFilterQuery = (
+    selectedOptions: SelectedOptions,
+  ): SpatieFilterQuery => {
+    const filter: Record<string, string> = {};
+
+    // Single-select filters
+    Object.entries(selectedOptions.single).forEach(([filterKey, value]) => {
+      if (value) {
+        filter[filterKey] = value;
+      }
+    });
+
+    // Multi-select filters
+    Object.entries(selectedOptions.multiple).forEach(([filterKey, values]) => {
+      if (values.length > 0) {
+        filter[filterKey] = values.join(",");
+      }
+    });
+
+    return { filter };
+  };
+  const selectedCount = useMemo(() => {
+    const singleCount = Object.values(selectedOptions.single).filter(
+      Boolean,
+    ).length;
+
+    const multiCount = Object.values(selectedOptions.multiple).reduce(
+      (acc, arr) => acc + arr.length,
+      0,
+    );
+
+    return singleCount + multiCount;
+  }, [selectedOptions]);
+
+  if (!metadata) return null;
+
+  const FilterView = () => (
     <ScrollView className="flex-col" showsVerticalScrollIndicator={false}>
-      {filterItems.map((item) => (
-        <View className="flex-col gap-y-2 py-2" key={item.id}>
-          <Text>{item.label}</Text>
+      {metadata.attributes?.map((attribute) => (
+        <View className="flex-col gap-y-2 py-2" key={attribute.uuid}>
+          <Text>{toTitleCase(attribute.name)}</Text>
+
           <View className="flex-row flex-wrap items-center gap-2">
-            {item.options.map((option) => {
-              const isSelected = selectedOptions[item.id] === option.id;
+            {attribute.values.map((option) => {
+              const isSelected =
+                selectedOptions.single[attribute.name] === option.uuid;
+
               return (
                 <TouchableOpacity
-                  onPress={() => handleSelect(item.id, option.id)}
+                  key={option.uuid}
+                  onPress={() =>
+                    handleSelect(attribute.name, option.uuid, "single")
+                  }
                   className={cn(
-                    "rounded-full",
-                    "border",
-                    "px-3",
-                    "py-2",
-                    isSelected ? "bg-orange-500" : "border-slate-400",
+                    "rounded-full border px-3 py-2",
+                    isSelected
+                      ? "border-orange-500 bg-orange-500"
+                      : "border-slate-400",
                   )}
-                  key={option.id}
                 >
-                  <Text className={cn(isSelected ? "text-white" : undefined)}>
-                    {option.label}
+                  <Text className={isSelected ? "text-white" : undefined}>
+                    {option.value}
                   </Text>
                 </TouchableOpacity>
               );
@@ -252,21 +283,67 @@ const CustomFilterComponent = ({
           </View>
         </View>
       ))}
+
+      {/* Categories (MULTI SELECT) */}
+      <View className="flex-col gap-y-2 py-2">
+        <Text>Categories</Text>
+
+        <View className="flex-row flex-wrap items-center gap-2">
+          {metadata.categories?.map((category) => {
+            const isSelected = selectedOptions.multiple.categories?.includes(
+              category.uuid,
+            );
+
+            return (
+              <TouchableOpacity
+                key={category.uuid}
+                onPress={() =>
+                  handleSelect("categories", category.uuid, "multiple")
+                }
+                className={cn(
+                  "rounded-full border px-3 py-2",
+                  isSelected
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-slate-400",
+                )}
+              >
+                <Text className={isSelected ? "text-white" : undefined}>
+                  {category.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
       <View className="flex-row justify-between gap-x-4 py-4">
         <TouchableOpacity
-          onPress={() => setSelectedOptions({})} // Reset selections
-          className="flex-1 items-center rounded-full bg-primary py-4"
+          onPress={resetFilters}
+          disabled={selectedCount === 0}
+          className={cn(
+            "flex-1 items-center rounded-full py-4",
+            selectedCount === 0 ? "bg-slate-300" : "bg-primary",
+          )}
         >
           <Text className="text-white">Reset</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={handleDonePress}
           activeOpacity={0.4}
-          className="flex-1 items-center rounded-full bg-primary py-4"
+          disabled={selectedCount === 0}
+          className={cn(
+            "flex-1 items-center rounded-full py-4",
+            selectedCount === 0 ? "bg-slate-300" : "bg-primary",
+          )}
         >
-          <Text className="text-white">Done (200)</Text>
+          <Text className="text-white">
+            Done{selectedCount > 0 ? ` (${selectedCount})` : ""}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
+
+  console.log("selected Options: ", buildSpatieFilterQuery(selectedOptions));
+  return <FilterView />;
 };
