@@ -7,6 +7,7 @@ import {
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 import { LocationGeocodedAddress } from "expo-location";
+import { addDays, format, isSameMonth } from "date-fns";
 
 const ParcelIcon = ({ size }: { size: number }) => (
   <Svg width={size} height={size} viewBox="0 0 20 19" fill="none">
@@ -24,63 +25,74 @@ const ProductDeliveryDetails = ({
   onOpenMap: () => void;
   currentAddress: LocationGeocodedAddress | null;
   chosenAddress: LocationGeocodedAddress | null;
-}) => (
-  <View className="p-4">
-    <View
-      id="delivery-info"
-      className="flex-col gap-y-3 rounded-xl border border-gray-400 p-4"
-    >
-      <Text className="text-xl font-semibold">Delivery</Text>
-      <View className="flex-row justify-between">
-        <View className="flex-row items-center justify-items-center gap-x-2">
-          <MapPinIcon size={28} strokeWidth={1} color="black" />
-          <Text
-            style={{ width: 200 }}
-            lineBreakMode="clip"
-            numberOfLines={2}
-            className="text-sm font-semibold"
-          >
-            {chosenAddress?.formattedAddress ||
-              currentAddress?.formattedAddress ||
-              "Select your address"}
-          </Text>
-        </View>
-        <View>
-          <TouchableOpacity onPress={onOpenMap}>
-            <Text className="rounded-full bg-primary px-2 py-1 text-white">
-              Change
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View className="flex-row justify-between">
-        <View className="flex-row items-center justify-items-center gap-x-2">
-          <BackwardIcon size={28} strokeWidth={1} color="black" />
-          <Text className="text-md font-semibold">14 days free returns</Text>
-        </View>
-      </View>
-      <View className="flex-row justify-between">
-        <View className="flex-row items-center justify-items-center gap-x-2">
-          <ShieldCheckIcon size={28} strokeWidth={1} color="black" />
-          <Text className="text-md font-semibold">
-            1 year brand seller warranty
-          </Text>
-        </View>
-      </View>
-      <View className="flex-row justify-between">
-        <View className="flex-col items-center justify-items-center gap-y-2">
-          <View className="flex-row items-center justify-items-center gap-x-2">
-            <ParcelIcon size={28} />
-            <Text className="text-md font-semibold">Get by 23-24 Nov</Text>
-          </View>
-          <Text className="text-sm text-gray-500">Standard Delivery</Text>
-        </View>
+}) => {
+  const today = new Date();
+  const start = addDays(today, 7);
+  const end = addDays(today, 8);
+  const deliveryDate = isSameMonth(start, end)
+    ? `${format(start, "d")} - ${format(end, "d MMM")}`
+    : `${format(start, "d MMM")} - ${format(end, "d MMM")}`;
 
-        <View>
-          <Text className="text-md">Rs. 100</Text>
+  return (
+    <View className="p-4">
+      <View
+        id="delivery-info"
+        className="flex-col gap-y-3 rounded-xl border border-gray-400 p-4"
+      >
+        <Text className="text-xl font-semibold">Delivery</Text>
+        <View className="flex-row justify-between">
+          <View className="flex-row items-center justify-items-center gap-x-2">
+            <MapPinIcon size={28} strokeWidth={1} color="black" />
+            <Text
+              style={{ width: 200 }}
+              lineBreakMode="clip"
+              numberOfLines={2}
+              className="text-sm font-semibold"
+            >
+              {chosenAddress?.formattedAddress ||
+                currentAddress?.formattedAddress ||
+                "Select your address"}
+            </Text>
+          </View>
+          <View>
+            <TouchableOpacity onPress={onOpenMap}>
+              <Text className="rounded-full bg-primary px-2 py-1 text-white">
+                Change
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View className="flex-row justify-between">
+          <View className="flex-row items-center justify-items-center gap-x-2">
+            <BackwardIcon size={28} strokeWidth={1} color="black" />
+            <Text className="text-md font-semibold">14 days free returns</Text>
+          </View>
+        </View>
+        <View className="flex-row justify-between">
+          <View className="flex-row items-center justify-items-center gap-x-2">
+            <ShieldCheckIcon size={28} strokeWidth={1} color="black" />
+            <Text className="text-md font-semibold">
+              1 year brand seller warranty
+            </Text>
+          </View>
+        </View>
+        <View className="flex-row justify-between">
+          <View className="flex-col items-center justify-items-center gap-y-2">
+            <View className="flex-row items-center justify-items-center gap-x-2">
+              <ParcelIcon size={28} />
+              <Text className="text-md font-semibold">
+                Get by {deliveryDate}
+              </Text>
+            </View>
+            <Text className="text-sm text-gray-500">Standard Delivery</Text>
+          </View>
+
+          <View>
+            <Text className="text-md">Rs. 100</Text>
+          </View>
         </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 export default ProductDeliveryDetails;

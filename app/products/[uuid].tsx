@@ -79,13 +79,13 @@ export default function ProductScreen() {
                   currentAddress={currentAddress}
                   onOpenMap={handleOpenMap}
                 />
-                <ProductReviewBox />
-                <AskQuestionBox />
-                <TopSellingComponent />
-                <ProductVendorDetails />
+                {/*<ProductReviewBox />*/}
+                {/*<AskQuestionBox />*/}
+                {/*<TopSellingComponent />*/}
+                {/*<ProductVendorDetails />*/}
                 <ProductDescription product={product} />
                 <ProductSpecification product={product} />
-                <RelatedProducts />
+                {/*<RelatedProducts />*/}
               </ProductScreenContainer>
             </ScrollView>
           </ContentWrapper>

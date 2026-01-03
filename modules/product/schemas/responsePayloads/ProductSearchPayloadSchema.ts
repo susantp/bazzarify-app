@@ -10,7 +10,7 @@ export const ProductSearchPayloadSchema = z
     currency: z.object({
       code: z.string(),
     }),
-    metadata: SearchMetadataPayloadSchema.nullable(),
+    metadata: SearchMetadataPayloadSchema.nullable().optional(),
   })
   .strip();
 
