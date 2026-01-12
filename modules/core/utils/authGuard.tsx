@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useState } from "react";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { retrieveStorage } from "@/modules/core/utils/secureStore";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
@@ -15,6 +15,8 @@ interface AuthGuardProps {
 
 export function AuthGuard({ requireAuth, children }: AuthGuardProps) {
   const router = useRouter();
+  const nav = useNavigation();
+  console.log("authGuard nav:", nav.getState()?.routes.at(-1)?.name);
   const [checked, setChecked] = useState(false);
   useFocusEffect(
     useCallback(() => {

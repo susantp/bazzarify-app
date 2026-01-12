@@ -20,7 +20,7 @@ const actionLogin = async (data: TLoginFormField): Promise<string> => {
     if (error instanceof AxiosError) {
       return handleError(error);
     }
-    Sentry.captureException(error);
+    // Sentry.captureException(error);
     throw new Error("Unknown error.");
   }
 };
