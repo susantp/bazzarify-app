@@ -79,6 +79,7 @@ export default function useLoginHook() {
       Toast.show({
         position: "bottom",
         text1: "Sorry process failed",
+        text2: error instanceof Error ? error.message : undefined,
         type: "error",
       });
     }

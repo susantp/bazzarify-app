@@ -18,9 +18,9 @@ const actionLogin = async (data: TLoginFormField): Promise<string> => {
     return response.data.data.payload.token as string;
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      return handleError(error);
+      throw new Error(handleError(error));
     }
-    // Sentry.captureException(error);
+    Sentry.captureException(error);
     throw new Error("Unknown error.");
   }
 };
