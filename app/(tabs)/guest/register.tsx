@@ -3,7 +3,7 @@ import UserPasswordInput from "@/components/account/UserPasswordInput";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
-import { Link, router } from "expo-router";
+import { Href, Link, router } from "expo-router";
 import UsernameInput from "@/components/account/UsernameInput";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import { useForm } from "react-hook-form";
@@ -17,9 +17,9 @@ import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import actionRegister from "@/modules/auth/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
-import { retrieveStorage } from "@/modules/core/utils/secureStore";
 import { IApiResponse } from "@/modules/core/types";
-import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
+import { consumeAuthRedirect } from "@/modules/core/utils/authRedirect";
+import { getAuthToken } from "@/modules/auth/utils/token";
 
 const Page = () => {
   const [formValues] = useState({
@@ -50,9 +50,11 @@ const Page = () => {
         });
         return;
       }
-      const token = await retrieveStorage(AUTH_TOKEN_KEY);
+      const token = await getAuthToken();
       if (token) {
-        router.replace("/account/profile");
+        const target = await consumeAuthRedirect();
+        const destination = (target || "/account/profile") as Href;
+        router.replace(destination);
       }
     } catch (error) {
       setError("password_confirmation", {

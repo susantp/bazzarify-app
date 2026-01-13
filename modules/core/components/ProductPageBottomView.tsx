@@ -4,8 +4,7 @@ import { FontAwesome5, Octicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 import PolygonButton from "@/components/common/PolygonButton";
-import { retrieveStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
+import { getAuthToken } from "@/modules/auth/utils/token";
 
 interface IProductPageBottomView {
   onCartAdd: () => void;
@@ -44,7 +43,7 @@ const ProductPageBottomView = ({
             <Text>Chat</Text>
           </TouchableOpacity>
         </View>
-        {retrieveStorage(AUTH_TOKEN_KEY).then((token) => {
+        {getAuthToken().then((token) => {
           if (token) {
             return (
               <View className="w-9/12 flex-row justify-end">

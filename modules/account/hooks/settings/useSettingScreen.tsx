@@ -1,5 +1,3 @@
-import { deleteStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
 import { router } from "expo-router";
 import {
   Image,
@@ -17,6 +15,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
+import { clearAuthToken } from "@/modules/auth/utils/token";
 
 export default function useSettingScreen() {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);
@@ -24,8 +23,7 @@ export default function useSettingScreen() {
   const setToken = useSetAtom(tokenAtom);
   const handleLogout = async () => {
     //TODO request to logout api
-    await deleteStorage(USER_KEY);
-    await deleteStorage(AUTH_TOKEN_KEY);
+    await clearAuthToken();
     setUser(null);
     setToken(null);
     router.replace("/guest/guestAccountIndex");

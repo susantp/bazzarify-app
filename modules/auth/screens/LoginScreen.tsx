@@ -38,6 +38,7 @@ const LoginScreen = () => {
 
   const {
     showPassword,
+    isAuthenticating,
     handleOAuthLogin,
     handleCredentialsLogin,
     handleShowPassword,
@@ -93,17 +94,19 @@ const LoginScreen = () => {
             <View className="h-4" />
             <FullWidthActionBtn
               handleOnPress={handleSubmit(handleCredentialsLogin)}
-              label="Login"
+              label={isAuthenticating ? "Logging in..." : "Login"}
+              loading={isAuthenticating}
+              disabled={isAuthenticating}
             />
             <Text className="text-gray-400">or</Text>
-            <TouchableOpacity>
+            <TouchableOpacity disabled={isAuthenticating}>
               <SocialLoginButton
                 label="sign in with"
                 provider="google"
                 onPress={() => handleOAuthLogin(LoginProvider.GOOGLE)}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity disabled={isAuthenticating}>
               <SocialLoginButton
                 label="sign in with"
                 provider="facebook"

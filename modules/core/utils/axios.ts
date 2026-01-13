@@ -1,13 +1,19 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { app } from "@/modules/core/configs/app";
-import { deleteStorage } from "@/modules/core/utils/secureStore";
 import { router } from "expo-router";
-import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
+import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
+import { clearAuthToken } from "@/modules/auth/utils/token";
 
 interface IAuthAxiosInstanceParams {
   token: string | undefined;
   modulePath: string;
 }
+type RouteState = {
+  routes?: RouteState[];
+  index?: number;
+  path?: string;
+  state?: RouteState;
+};
 const defaultConfig: CreateAxiosDefaults = {
   baseURL: app.publicConsumerUrl,
   headers: {
@@ -33,29 +39,68 @@ const defaultConfigWithToken = ({
 
 export const axiosInstance: AxiosInstance = axios.create(defaultConfig);
 
+const getActivePath = () => {
+  const state = (
+    router as unknown as {
+      getState?: () => { routes?: RouteState[]; index?: number };
+    }
+  ).getState?.();
+  if (!state?.routes?.length) {
+    return null;
+  }
+  let route: RouteState | undefined =
+    state.routes[state.index ?? state.routes.length - 1];
+  while (route?.state?.routes?.length) {
+    const nested = route.state as RouteState;
+    const nestedRoutes = nested.routes;
+    if (!nestedRoutes?.length) {
+      break;
+    }
+    route = nestedRoutes[nested.index ?? nestedRoutes.length - 1];
+  }
+  const path = route?.path;
+  if (typeof path === "string" && path.includes("/")) {
+    return path.startsWith("/") ? path : `/${path}`;
+  }
+  return null;
+};
+
 export const authAxiosInstance = async ({
   token,
   modulePath,
 }: IAuthAxiosInstanceParams) => {
   if (!token) {
+    const path = getActivePath();
+    if (path && !path.startsWith("/guest")) {
+      await setAuthRedirect(path);
+    }
+    await clearAuthToken();
     router.replace("/(tabs)/guest/guestAccountIndex");
     return;
   }
   const config = defaultConfigWithToken({ token, modulePath });
   const instance = axios.create(config);
   instance.interceptors.response.use(
-    (response) => {
+    async (response) => {
       // Handle successful responses that contain error codes in metadata
       if (response.data?.metaData?.errorCode === 401) {
-        deleteStorage(AUTH_TOKEN_KEY);
+        await clearAuthToken();
+        const path = getActivePath();
+        if (path && !path.startsWith("/guest")) {
+          await setAuthRedirect(path);
+        }
         router.replace("/(tabs)/guest/guestAccountIndex");
       }
       return response;
     },
-    (error) => {
+    async (error) => {
       // Handle HTTP error responses (401, 403, 500, etc.)
       if (error.response?.status === 401) {
-        deleteStorage(AUTH_TOKEN_KEY);
+        await clearAuthToken();
+        const path = getActivePath();
+        if (path && !path.startsWith("/guest")) {
+          await setAuthRedirect(path);
+        }
         router.replace("/(tabs)/guest/guestAccountIndex");
       }
       // Re-throw the error so it can be handled by the calling code

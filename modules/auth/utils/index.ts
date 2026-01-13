@@ -1,14 +1,15 @@
 import * as Sentry from "@sentry/react-native";
 import { Setter } from "@/modules/core/types";
 import { retrieveStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
+import { USER_KEY } from "@/modules/auth/config";
 import { TUser } from "@/modules/auth/schemas/UserSchema";
+import { getAuthToken } from "@/modules/auth/utils/token";
 
 export async function hydrateToken(
   setToken: Setter<string | null>,
 ): Promise<void> {
   try {
-    const value = await retrieveStorage(AUTH_TOKEN_KEY);
+    const value = await getAuthToken();
     setToken(value);
     Sentry.captureMessage("Auth token hydrated: " + !!value);
   } catch (err) {

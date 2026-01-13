@@ -1,8 +1,11 @@
 import { ReactNode, useCallback, useState } from "react";
-import { useFocusEffect, useNavigation, useRouter } from "expo-router";
-import { retrieveStorage } from "@/modules/core/utils/secureStore";
+import { Href, useFocusEffect, usePathname, useRouter } from "expo-router";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
-import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
+import {
+  consumeAuthRedirect,
+  setAuthRedirect,
+} from "@/modules/core/utils/authRedirect";
+import { getAuthToken } from "@/modules/auth/utils/token";
 
 interface AuthGuardProps {
   /**
@@ -15,19 +18,23 @@ interface AuthGuardProps {
 
 export function AuthGuard({ requireAuth, children }: AuthGuardProps) {
   const router = useRouter();
-  const nav = useNavigation();
-  console.log("authGuard nav:", nav.getState()?.routes.at(-1)?.name);
+  const pathname = usePathname();
   const [checked, setChecked] = useState(false);
   useFocusEffect(
     useCallback(() => {
       let active = true;
       setChecked(false);
       (async () => {
-        const token = await retrieveStorage(AUTH_TOKEN_KEY);
+        const token = await getAuthToken();
         if (requireAuth && !token) {
+          if (pathname && !pathname.startsWith("/guest")) {
+            await setAuthRedirect(pathname);
+          }
           router.replace("/guest/guestAccountIndex");
         } else if (!requireAuth && token) {
-          router.replace("/account/profile");
+          const target = await consumeAuthRedirect();
+          const destination = (target || "/account/profile") as Href;
+          router.replace(destination);
         }
         if (active) {
           setChecked(true);
@@ -36,7 +43,7 @@ export function AuthGuard({ requireAuth, children }: AuthGuardProps) {
       return () => {
         active = false;
       };
-    }, [requireAuth, router]),
+    }, [requireAuth, router, pathname]),
   );
 
   if (!checked) {

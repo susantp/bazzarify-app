@@ -1,12 +1,27 @@
 import { router } from "expo-router";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { ordersState } from "@/modules/order/atoms/ordersState";
 import { ProfileMenuBoxType } from "@/modules/order/types";
+import hydrateOrders from "@/modules/order/utils/hydrateOrders";
 
 export default function useOrder() {
   const user = useAtomValue(userAtom);
   const ordersPayload = useAtomValue(ordersState);
+  const setOrders = useSetAtom(ordersState);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (ordersPayload || isLoading) {
+      return;
+    }
+    setIsLoading(true);
+    hydrateOrders(setOrders).finally(() => {
+      setIsLoading(false);
+    });
+  }, [isLoading, ordersPayload, setOrders]);
+
   const orderStatusAggregated: Record<string, { count: number }> | undefined =
     ordersPayload?.orders?.data?.reduce<Record<string, { count: number }>>(
       (acc, order) => {
@@ -32,6 +47,7 @@ export default function useOrder() {
     user,
     orderStatusAggregated,
     ordersPayload,
+    isLoading,
     handleStatusPress,
     getItemsByStatus,
     getFilteredOrder,

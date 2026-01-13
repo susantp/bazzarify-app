@@ -5,21 +5,27 @@ import Toast from "react-native-toast-message";
 import * as Sentry from "@sentry/react-native";
 import actionLogin from "@/modules/auth/services/credentialLogin";
 import { useState } from "react";
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import { useSetAtom } from "jotai";
-import { ordersState } from "@/modules/order/atoms/ordersState";
-import actionGetOrders from "@/modules/order/actions/actionGetOrders";
 import { TUserPayload } from "@/modules/auth/schemas/responsePayloads/UserPayloadSchema";
 import actionGetUser from "@/modules/auth/services/actionGetUser";
-import { deleteStorage, setStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
+import { setStorage } from "@/modules/core/utils/secureStore";
+import { USER_KEY } from "@/modules/auth/config";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
+import { consumeAuthRedirect } from "@/modules/core/utils/authRedirect";
+import { clearAuthToken, setAuthToken } from "@/modules/auth/utils/token";
 
 export default function useLoginHook() {
   const [showPassword, setShowPassword] = useState(true);
-  const setOrders = useSetAtom(ordersState);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const setUser = useSetAtom(userAtom);
   const handleShowPassword = () => setShowPassword(!showPassword);
+
+  const navigateAfterAuth = async () => {
+    const target = await consumeAuthRedirect();
+    const destination = (target || "/account/profile") as Href;
+    router.replace(destination);
+  };
 
   const handleAfterLoginFlow = async (token: string) => {
     const userResponse: TUserPayload | null = await actionGetUser(token);
@@ -28,18 +34,16 @@ export default function useLoginHook() {
         "Process fetching user with token - failed" +
           JSON.stringify(userResponse),
       );
-      await deleteStorage(AUTH_TOKEN_KEY);
-      await deleteStorage(USER_KEY);
+      await clearAuthToken();
       return;
     }
     setUser(userResponse.user);
-    const orders = await actionGetOrders(token);
-    setOrders(orders);
-    await setStorage(AUTH_TOKEN_KEY, token);
+    await setAuthToken(token);
     await setStorage(USER_KEY, JSON.stringify(userResponse.user));
   };
 
   const handleOAuthLogin = async (provider: LoginProvider) => {
+    setIsAuthenticating(true);
     try {
       const token = await actionOAuthLogin(provider);
       await handleAfterLoginFlow(token);
@@ -50,7 +54,7 @@ export default function useLoginHook() {
         type: "success",
       });
 
-      router.replace("/account/profile");
+      await navigateAfterAuth();
     } catch (error) {
       console.log("OAuth login hook step: google", error);
       Sentry.captureException(error);
@@ -61,19 +65,23 @@ export default function useLoginHook() {
           error instanceof Error ? error.message : "Sorry cannot login now !",
         type: "error",
       });
+    } finally {
+      setIsAuthenticating(false);
     }
   };
 
   const handleCredentialsLogin = async (data: TLoginFormField) => {
+    setIsAuthenticating(true);
     try {
       const token = await actionLogin(data);
       await handleAfterLoginFlow(token);
 
       Toast.show({
         position: "bottom",
-        text1: token as string,
+        text1: "Login successful.",
         type: "success",
       });
+      await navigateAfterAuth();
     } catch (error) {
       Sentry.captureException(error);
       Toast.show({
@@ -82,11 +90,14 @@ export default function useLoginHook() {
         text2: error instanceof Error ? error.message : undefined,
         type: "error",
       });
+    } finally {
+      setIsAuthenticating(false);
     }
   };
 
   return {
     showPassword,
+    isAuthenticating,
     handleOAuthLogin,
     handleCredentialsLogin,
     handleShowPassword,

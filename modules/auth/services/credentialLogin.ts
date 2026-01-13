@@ -6,6 +6,7 @@ import { handleError } from "@/modules/core/utils/handleError";
 import * as Sentry from "@sentry/react-native";
 
 const actionLogin = async (data: TLoginFormField): Promise<string> => {
+  debugger;
   try {
     const response = await axiosInstance.post(
       authRemotePaths.loginCredentials.path,

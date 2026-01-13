@@ -1,5 +1,4 @@
-import { retrieveStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
+import { getAuthToken } from "@/modules/auth/utils/token";
 import postDataAndValidate from "@/modules/core/utils/postDataAndValidate";
 import {
   TCartItem,
@@ -23,7 +22,7 @@ export async function getCart(token: string) {
 }
 
 export async function addCartItem(validatedPayload: TCartItem) {
-  const token = await retrieveStorage(AUTH_TOKEN_KEY);
+  const token = await getAuthToken();
   if (!token) {
     const err = new Error("No auth token found");
     Sentry.captureException(err);
@@ -43,7 +42,7 @@ export async function addCartItem(validatedPayload: TCartItem) {
 export async function incrementCartItem(
   validatedPayload: TCartItemToUpdateQuantity,
 ) {
-  const token = await retrieveStorage(AUTH_TOKEN_KEY);
+  const token = await getAuthToken();
   if (!token) {
     const err = new Error("No auth token found");
     Sentry.captureException(err);
@@ -63,7 +62,7 @@ export async function incrementCartItem(
 export async function decrementCartItem(
   validatedPayload: TCartItemToUpdateQuantity,
 ) {
-  const token = await retrieveStorage(AUTH_TOKEN_KEY);
+  const token = await getAuthToken();
   if (!token) {
     const err = new Error("No auth token found");
     Sentry.captureException(err);
@@ -83,7 +82,7 @@ export async function decrementCartItem(
 export async function removeCartItem(
   validatedPayload: TCartItemToUpdateQuantity,
 ) {
-  const token = await retrieveStorage(AUTH_TOKEN_KEY);
+  const token = await getAuthToken();
   if (!token) {
     const err = new Error("No auth token found");
     Sentry.captureException(err);
