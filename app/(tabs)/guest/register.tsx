@@ -66,111 +66,127 @@ const Page = () => {
   };
   return (
     <SafeAreaWrapper>
-      <ContentWrapper>
-        <ScrollView>
-          <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4">
-            <PageTitle title="Register" />
-            <View className="h-5" />
-            <ControlledInput
-              className="w-full gap-y-2 px-6"
-              errors={errors}
-              control={control}
-              name="name"
-              formField={({ field }: IControlledFormFieldProps) => (
-                <NameInput
-                  className="border-2 border-slate-200 py-5"
-                  hasError={errors.name}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  defaultValue="Om Prakash Shah"
-                  value={field.value}
-                />
-              )}
-            />
-            <ControlledInput
-              className="w-full gap-y-2 px-6"
-              errors={errors}
-              control={control}
-              name="email"
-              formField={({ field }: IControlledFormFieldProps) => (
-                <UsernameInput
-                  className="border-2 border-slate-200 py-5"
-                  hasError={errors.email}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  defaultValue="om@prakash.com"
-                  value={field.value}
-                  placeholder="Your email/phone"
-                />
-              )}
-            />
-            <ControlledInput
-              className="w-full gap-y-2 px-6"
-              errors={errors}
-              name={`password`}
-              control={control}
-              rules={{
-                required: true,
-              }}
-              formField={({ field }: IControlledFormFieldProps) => (
-                <UserPasswordInput
-                  className="border-2 border-slate-200 py-5"
-                  hasError={errors.password}
-                  setShowPassword={setShowPassword}
-                  showPassword={showPassword}
-                  placeholder="Password"
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  defaultValue={`password123`}
-                />
-              )}
-            />
-
-            <ControlledInput
-              className="w-full gap-y-2 px-6"
-              errors={errors}
-              control={control}
-              name="password_confirmation"
-              rules={{
-                required: true,
-              }}
-              formField={({ field }: IControlledFormFieldProps) => (
-                <UserPasswordInput
-                  className="border-2 border-slate-200 py-5"
-                  hasError={errors.password_confirmation}
-                  setShowPassword={setShowRepeatPassword}
-                  showPassword={showRepeatPassword}
-                  placeholder="Password"
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  defaultValue={`password123`}
-                />
-              )}
-            />
-            <FullWidthActionBtn
-              handleOnPress={handleSubmit(handleRegister)}
-              label={isSubmitting ? "Please wait..." : "Register"}
-            />
-            <Text className="text-gray-400">or</Text>
-            <TouchableOpacity>
-              <SocialLoginButton label="register with" provider="google" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <SocialLoginButton label="register with" provider="facebook" />
-            </TouchableOpacity>
-            <View className="flex-row items-center gap-x-2">
-              <View>
-                <Text>Old User?</Text>
+      <View className="flex-1 bg-slate-50">
+        <View className="pointer-events-none absolute -top-24 -right-10 h-44 w-44 rounded-full bg-primary opacity-10" />
+        <View className="pointer-events-none absolute -bottom-28 -left-16 h-52 w-52 rounded-full bg-primary opacity-10" />
+        <ContentWrapper>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View className="flex-1 items-center justify-center py-6">
+              <View className="mb-6 items-center">
+                <PageTitle title="Register" />
+                <Text className="mt-2 text-base text-slate-500">
+                  Create your account to get started
+                </Text>
               </View>
-              <Link href="/guest/login">
-                <Text className="text-primary underline">Sign In</Text>
-              </Link>
+              <View className="w-full gap-y-4 rounded-3xl bg-white px-6 py-8 shadow-sm">
+                <ControlledInput
+                  className="w-full gap-y-2"
+                  errors={errors}
+                  control={control}
+                  name="name"
+                  formField={({ field }: IControlledFormFieldProps) => (
+                    <NameInput
+                      className="border-2 border-slate-200 py-5"
+                      hasError={errors.name}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      defaultValue="Om Prakash Shah"
+                      value={field.value}
+                    />
+                  )}
+                />
+                <ControlledInput
+                  className="w-full gap-y-2"
+                  errors={errors}
+                  control={control}
+                  name="email"
+                  formField={({ field }: IControlledFormFieldProps) => (
+                    <UsernameInput
+                      className="border-2 border-slate-200 py-5"
+                      hasError={errors.email}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      defaultValue="om@prakash.com"
+                      value={field.value}
+                      placeholder="Your email/phone"
+                    />
+                  )}
+                />
+                <ControlledInput
+                  className="w-full gap-y-2"
+                  errors={errors}
+                  name="password"
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  formField={({ field }: IControlledFormFieldProps) => (
+                    <UserPasswordInput
+                      className="border-2 border-slate-200 py-5"
+                      hasError={errors.password}
+                      setShowPassword={setShowPassword}
+                      showPassword={showPassword}
+                      placeholder="Password"
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      defaultValue="password123"
+                    />
+                  )}
+                />
+
+                <ControlledInput
+                  className="w-full gap-y-2"
+                  errors={errors}
+                  control={control}
+                  name="password_confirmation"
+                  rules={{
+                    required: true,
+                  }}
+                  formField={({ field }: IControlledFormFieldProps) => (
+                    <UserPasswordInput
+                      className="border-2 border-slate-200 py-5"
+                      hasError={errors.password_confirmation}
+                      setShowPassword={setShowRepeatPassword}
+                      showPassword={showRepeatPassword}
+                      placeholder="Password"
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      defaultValue="password123"
+                    />
+                  )}
+                />
+                <FullWidthActionBtn
+                  handleOnPress={handleSubmit(handleRegister)}
+                  label={isSubmitting ? "Creating account..." : "Register"}
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                />
+                <View className="flex-row items-center justify-center gap-x-3">
+                  <View className="h-px flex-1 bg-slate-200" />
+                  <Text className="text-gray-400">or</Text>
+                  <View className="h-px flex-1 bg-slate-200" />
+                </View>
+                <TouchableOpacity disabled={isSubmitting}>
+                  <SocialLoginButton label="register with" provider="google" />
+                </TouchableOpacity>
+                <TouchableOpacity disabled={isSubmitting}>
+                  <SocialLoginButton label="register with" provider="facebook" />
+                </TouchableOpacity>
+              </View>
+              <View className="mt-6 flex-row items-center gap-x-2">
+                <View>
+                  <Text>Old User?</Text>
+                </View>
+                <Link href="/guest/login">
+                  <Text className="text-primary underline">Sign In</Text>
+                </Link>
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </ContentWrapper>
+          </ScrollView>
+        </ContentWrapper>
+      </View>
     </SafeAreaWrapper>
   );
 };
