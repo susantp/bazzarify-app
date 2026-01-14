@@ -19,10 +19,10 @@ const UsernameInput = ({
       defaultValue={rest.defaultValue}
       onChangeText={onChange}
       placeholder={rest.placeholder}
-      className={cn("rounded-xl", "bg-white", "pl-14", className)}
+      className={cn("rounded-xl", "bg-white", "pl-16", className)}
     />
-    <View className="absolute inset-x-9 inset-y-4">
-      <EnvelopeIcon size={28} strokeWidth={1} color="gray" />
+    <View className="absolute left-4 top-1/2 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-slate-100">
+      <EnvelopeIcon size={20} strokeWidth={1.5} color="#64748B" />
     </View>
     {hasError && <Text className="text-red-600">{hasError.message}</Text>}
   </>
