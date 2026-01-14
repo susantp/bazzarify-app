@@ -29,6 +29,7 @@ export async function consumeAuthRedirect(): Promise<string | null> {
   }
   try {
     const payload = JSON.parse(raw) as AuthRedirectPayload;
+
     if (!payload?.target || !payload?.expiresAt) {
       await deleteStorage(AUTH_REDIRECT_KEY);
       return null;

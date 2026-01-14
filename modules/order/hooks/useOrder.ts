@@ -1,26 +1,46 @@
 import { router } from "expo-router";
 import { useAtomValue, useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { ordersState } from "@/modules/order/atoms/ordersState";
 import { ProfileMenuBoxType } from "@/modules/order/types";
 import hydrateOrders from "@/modules/order/utils/hydrateOrders";
+import { getAuthToken } from "@/modules/auth/utils/token";
 
 export default function useOrder() {
   const user = useAtomValue(userAtom);
   const ordersPayload = useAtomValue(ordersState);
   const setOrders = useSetAtom(ordersState);
   const [isLoading, setIsLoading] = useState(false);
+  const inFlightRef = useRef(false);
 
   useEffect(() => {
-    if (ordersPayload || isLoading) {
+    if (ordersPayload || inFlightRef.current) {
       return;
     }
-    setIsLoading(true);
-    hydrateOrders(setOrders).finally(() => {
-      setIsLoading(false);
-    });
-  }, [isLoading, ordersPayload, setOrders]);
+    let active = true;
+    (async () => {
+      const token = await getAuthToken();
+      if (!token) {
+        return;
+      }
+      inFlightRef.current = true;
+      if (active) {
+        setIsLoading(true);
+      }
+      try {
+        await hydrateOrders(setOrders);
+      } finally {
+        inFlightRef.current = false;
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [ordersPayload, setOrders]);
 
   const orderStatusAggregated: Record<string, { count: number }> | undefined =
     ordersPayload?.orders?.data?.reduce<Record<string, { count: number }>>(

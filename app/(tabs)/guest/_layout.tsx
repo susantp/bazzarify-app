@@ -3,7 +3,7 @@ import { AuthGuard } from "@/modules/core/utils/authGuard";
 
 const Layout = () => {
   return (
-    <AuthGuard requireAuth={false}>
+    <AuthGuard requireAuth={false} basePath="/guest">
       <Stack>
         <Stack.Screen
           name="guestAccountIndex"

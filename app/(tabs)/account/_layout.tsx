@@ -3,7 +3,7 @@ import { AuthGuard } from "@/modules/core/utils/authGuard";
 
 const Layout = () => {
   return (
-    <AuthGuard requireAuth={true}>
+    <AuthGuard requireAuth={true} basePath="/account">
       <Stack>
         <Stack.Screen name="profile" options={{ headerShown: false }} />
         <Stack.Screen name="editProfile" options={{ headerShown: false }} />
