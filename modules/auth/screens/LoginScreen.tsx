@@ -37,93 +37,106 @@ const LoginScreen = () => {
   });
 
   const {
-    showPassword,
     isAuthenticating,
+    showPassword,
     handleOAuthLogin,
     handleCredentialsLogin,
     handleShowPassword,
   } = useLoginHook();
   return (
     <SafeAreaWrapper>
-      <ContentWrapper>
-        <ScrollView>
-          <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4">
-            <PageTitle title="Login" />
-            <View className="h-5" />
-            <ControlledInput
-              className="w-full gap-y-2 px-6"
-              errors={errors}
-              control={control}
-              rules={{
-                required: "Email/Phone is required",
-              }}
-              name="email"
-              formField={({ field }: IControlledFormFieldProps) => (
-                <UsernameInput
-                  className="border-2 border-slate-200 py-5"
-                  hasError={errors.email}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  value={field.value}
-                  placeholder="Enter email/phone"
-                />
-              )}
-            />
-            <ControlledInput
-              className="w-full gap-y-2 px-6"
-              errors={errors}
-              control={control}
-              rules={{
-                required: "Password is required",
-              }}
-              name="password"
-              formField={({ field }: IControlledFormFieldProps) => (
-                <UserPasswordInput
-                  className="border-2 border-slate-200 py-5 text-black"
-                  hasError={errors.password}
-                  setShowPassword={handleShowPassword}
-                  showPassword={showPassword}
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-
-            <LoginFormHelperText />
-            <View className="h-4" />
-            <FullWidthActionBtn
-              handleOnPress={handleSubmit(handleCredentialsLogin)}
-              label={isAuthenticating ? "Logging in..." : "Login"}
-              loading={isAuthenticating}
-              disabled={isAuthenticating}
-            />
-            <Text className="text-gray-400">or</Text>
-            <TouchableOpacity disabled={isAuthenticating}>
-              <SocialLoginButton
-                label="sign in with"
-                provider="google"
-                onPress={() => handleOAuthLogin(LoginProvider.GOOGLE)}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity disabled={isAuthenticating}>
-              <SocialLoginButton
-                label="sign in with"
-                provider="facebook"
-                onPress={() => handleOAuthLogin(LoginProvider.FACEBOOK)}
-              />
-            </TouchableOpacity>
-            <View className="flex-row items-center gap-x-2">
-              <View>
-                <Text>New User?</Text>
+      <View className="flex-1 bg-slate-50">
+        <View className="pointer-events-none absolute -right-10 -top-24 h-44 w-44 rounded-full bg-primary opacity-10" />
+        <View className="pointer-events-none absolute -bottom-28 -left-16 h-52 w-52 rounded-full bg-primary opacity-10" />
+        <ContentWrapper>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View className="flex-1 items-center justify-center py-6">
+              <View className="mb-6 items-center">
+                <PageTitle title="Login" />
+                <Text className="mt-2 text-base text-slate-500">
+                  Welcome back, sign in to continue
+                </Text>
               </View>
-              <Pressable onPress={() => router.push("/guest/register")}>
-                <Text className="text-primary underline">Sign Up</Text>
-              </Pressable>
+              <View className="w-full gap-y-4 rounded-3xl bg-white px-6 py-8 shadow-sm">
+                <ControlledInput
+                  className="w-full gap-y-2"
+                  errors={errors}
+                  control={control}
+                  rules={{
+                    required: "Email/Phone is required",
+                  }}
+                  name="email"
+                  formField={({ field }: IControlledFormFieldProps) => (
+                    <UsernameInput
+                      className="border-2 border-slate-200 py-5"
+                      hasError={errors.email}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      value={field.value}
+                      placeholder="Enter email/phone"
+                    />
+                  )}
+                />
+                <ControlledInput
+                  className="w-full gap-y-2"
+                  errors={errors}
+                  control={control}
+                  rules={{
+                    required: "Password is required",
+                  }}
+                  name="password"
+                  formField={({ field }: IControlledFormFieldProps) => (
+                    <UserPasswordInput
+                      className="border-2 border-slate-200 py-5 text-black"
+                      hasError={errors.password}
+                      setShowPassword={handleShowPassword}
+                      showPassword={showPassword}
+                      value={field.value}
+                      onBlur={field.onBlur}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+
+                <LoginFormHelperText />
+                <View className="h-2" />
+                <FullWidthActionBtn
+                  handleOnPress={handleSubmit(handleCredentialsLogin)}
+                  label={isAuthenticating ? "Logging in..." : "Login"}
+                  disabled={isAuthenticating}
+                />
+                <View className="flex-row items-center justify-center gap-x-3">
+                  <View className="h-px flex-1 bg-slate-200" />
+                  <Text className="text-gray-400">or</Text>
+                  <View className="h-px flex-1 bg-slate-200" />
+                </View>
+                <TouchableOpacity disabled={isAuthenticating}>
+                  <SocialLoginButton
+                    label="sign in with"
+                    provider="google"
+                    onPress={() => handleOAuthLogin(LoginProvider.GOOGLE)}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity disabled={isAuthenticating}>
+                  <SocialLoginButton
+                    label="sign in with"
+                    provider="facebook"
+                    onPress={() => handleOAuthLogin(LoginProvider.FACEBOOK)}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View className="mt-6 flex-row items-center gap-x-2">
+                <View>
+                  <Text>New User?</Text>
+                </View>
+                <Pressable onPress={() => router.push("/guest/register")}>
+                  <Text className="text-primary underline">Sign Up</Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </ContentWrapper>
+          </ScrollView>
+        </ContentWrapper>
+      </View>
     </SafeAreaWrapper>
   );
 };
