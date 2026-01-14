@@ -71,9 +71,11 @@ export default function useLoginHook() {
 
       Toast.show({
         position: "bottom",
-        text1: token as string,
+        text1: "Login Success.",
         type: "success",
       });
+
+      router.replace("/account/profile");
     } catch (error) {
       Sentry.captureException(error);
       Toast.show({

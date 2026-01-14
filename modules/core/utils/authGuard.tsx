@@ -15,8 +15,6 @@ interface AuthGuardProps {
 
 export function AuthGuard({ requireAuth, children }: AuthGuardProps) {
   const router = useRouter();
-  const nav = useNavigation();
-  console.log("authGuard nav:", nav.getState()?.routes.at(-1)?.name);
   const [checked, setChecked] = useState(false);
   useFocusEffect(
     useCallback(() => {
