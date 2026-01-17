@@ -3,7 +3,7 @@ import UserPasswordInput from "@/components/account/UserPasswordInput";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
-import { Href, Link, router } from "expo-router";
+import { Link, router } from "expo-router";
 import UsernameInput from "@/components/account/UsernameInput";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import { useForm } from "react-hook-form";
@@ -17,9 +17,13 @@ import ContentWrapper from "@/components/common/ContentWrapper";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import actionRegister from "@/modules/auth/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
-import { IApiResponse } from "@/modules/core/types";
-import { consumeAuthRedirect } from "@/modules/core/utils/authRedirect";
-import { getAuthToken } from "@/modules/auth/utils/token";
+import Toast from "react-native-toast-message";
+import { TUserPayload } from "@/modules/auth/schemas/responsePayloads/UserPayloadSchema";
+import actionGetUser from "@/modules/auth/services/actionGetUser";
+import { deleteStorage, setStorage } from "@/modules/core/utils/secureStore";
+import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
+import { useSetAtom } from "jotai";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
 
 const Page = () => {
   const [formValues] = useState({
@@ -38,36 +42,48 @@ const Page = () => {
   });
   const [showPassword, setShowPassword] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
+  const setUser = useSetAtom(userAtom);
+  const handleAfterRegistrationFlow = async (token: string) => {
+    const userResponse: TUserPayload | null = await actionGetUser(token);
+    if (!userResponse || !userResponse.user) {
+      Sentry.captureMessage(
+        "Process fetching user with token - failed" +
+          JSON.stringify(userResponse),
+      );
+      await deleteStorage(AUTH_TOKEN_KEY);
+      await deleteStorage(USER_KEY);
+      return;
+    }
+    setUser(userResponse.user);
+    await setStorage(AUTH_TOKEN_KEY, token);
+    await setStorage(USER_KEY, JSON.stringify(userResponse.user));
+  };
+
   const handleRegister = async (data: TRegisterFormField) => {
     try {
-      const response: IApiResponse<string | object> =
-        await actionRegister(data);
+      const token = await actionRegister(data);
+      await handleAfterRegistrationFlow(token);
 
-      if (response.metaData.error) {
-        setError("password_confirmation", {
-          type: "manual",
-          message: "Oops",
-        });
-        return;
-      }
-      const token = await getAuthToken();
-      if (token) {
-        const target = await consumeAuthRedirect();
-        const destination = (target || "/account/profile") as Href;
-        router.replace(destination);
-      }
-    } catch (error) {
-      setError("password_confirmation", {
-        type: "manual",
-        message: `Oops! Please contact bazzarify support.`,
+      Toast.show({
+        position: "bottom",
+        text1: "Registration Success.",
+        type: "success",
       });
+      router.replace("/account/profile");
+    } catch (error) {
       Sentry.captureException(error);
+      Toast.show({
+        position: "bottom",
+        text1: "Sorry process failed",
+        text2: error instanceof Error ? error.message : undefined,
+        type: "error",
+      });
     }
   };
   return (
     <SafeAreaWrapper>
       <View className="flex-1 bg-slate-50">
-        <View className="pointer-events-none absolute -top-24 -right-10 h-44 w-44 rounded-full bg-primary opacity-10" />
+        <View className="pointer-events-none absolute -right-10 -top-24 h-44 w-44 rounded-full bg-primary opacity-10" />
         <View className="pointer-events-none absolute -bottom-28 -left-16 h-52 w-52 rounded-full bg-primary opacity-10" />
         <ContentWrapper>
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -160,7 +176,6 @@ const Page = () => {
                 <FullWidthActionBtn
                   handleOnPress={handleSubmit(handleRegister)}
                   label={isSubmitting ? "Creating account..." : "Register"}
-                  loading={isSubmitting}
                   disabled={isSubmitting}
                 />
                 <View className="flex-row items-center justify-center gap-x-3">
@@ -172,7 +187,10 @@ const Page = () => {
                   <SocialLoginButton label="register with" provider="google" />
                 </TouchableOpacity>
                 <TouchableOpacity disabled={isSubmitting}>
-                  <SocialLoginButton label="register with" provider="facebook" />
+                  <SocialLoginButton
+                    label="register with"
+                    provider="facebook"
+                  />
                 </TouchableOpacity>
               </View>
               <View className="mt-6 flex-row items-center gap-x-2">

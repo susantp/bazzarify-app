@@ -2,17 +2,10 @@ import { axiosInstance } from "@/modules/core/utils/axios";
 import authRemotePaths from "@/staticData/remote.paths";
 import { TRegisterFormField } from "@/components/common";
 import { AxiosError, AxiosResponse } from "axios";
-import { setAuthToken } from "@/modules/auth/utils/token";
 import * as Sentry from "@sentry/react-native";
-import { IApiResponse } from "@/modules/core/types";
-import {
-  setDataResponse,
-  setMetaDataResponse,
-} from "@/modules/core/data/apiResponse";
+import { handleError } from "@/modules/core/utils/handleError";
 
-export default async function actionRegister(
-  data: TRegisterFormField,
-): Promise<IApiResponse<object | string>> {
+const actionRegister = async (data: TRegisterFormField): Promise<string> => {
   try {
     const response: AxiosResponse = await axiosInstance.post(
       authRemotePaths.registerCredentials.path,
@@ -20,22 +13,16 @@ export default async function actionRegister(
     );
 
     if (response.data?.metaData?.error) {
-      return setMetaDataResponse({
-        error: response.data?.metaData?.error,
-        errorCode: response.data?.metaData?.errorCode,
-      });
+      throw new Error(response.data.metaData.error);
     }
-    const token = response.data.data.payload.token as string;
-    await setAuthToken(token);
-    return setDataResponse({ message: "success", payload: { token } });
+    return response.data.data.payload.token as string;
   } catch (error) {
     if (error instanceof AxiosError) {
-      return setMetaDataResponse({
-        error: error.response?.data?.metaData?.error,
-        errorCode: error.response?.status || 400,
-      });
+      throw new Error(handleError(error));
     }
     Sentry.captureException(error);
-    return setMetaDataResponse({ error: "FATAL ERROR", errorCode: 500 });
+    throw new Error("Unknown error.");
   }
-}
+};
+
+export default actionRegister;

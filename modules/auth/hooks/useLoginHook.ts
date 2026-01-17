@@ -17,7 +17,6 @@ import { userAtom } from "@/modules/auth/atoms/userAtom";
 
 export default function useLoginHook() {
   const [showPassword, setShowPassword] = useState(true);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const setOrders = useSetAtom(ordersState);
   const setUser = useSetAtom(userAtom);
   const handleShowPassword = () => setShowPassword(!showPassword);
@@ -66,7 +65,6 @@ export default function useLoginHook() {
   };
 
   const handleCredentialsLogin = async (data: TLoginFormField) => {
-    setIsAuthenticating(true);
     try {
       const token = await actionLogin(data);
       await handleAfterLoginFlow(token);
@@ -76,10 +74,8 @@ export default function useLoginHook() {
         text1: "Login Success.",
         type: "success",
       });
-      setIsAuthenticating(false);
       router.replace("/account/profile");
     } catch (error) {
-      setIsAuthenticating(false);
       Sentry.captureException(error);
       Toast.show({
         position: "bottom",
@@ -91,7 +87,6 @@ export default function useLoginHook() {
   };
 
   return {
-    isAuthenticating,
     showPassword,
     handleOAuthLogin,
     handleCredentialsLogin,

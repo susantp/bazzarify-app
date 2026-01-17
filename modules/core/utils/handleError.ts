@@ -3,9 +3,9 @@ import * as Sentry from "@sentry/react-native";
 
 export const handleError = (error: AxiosError) => {
   // @ts-ignore
-  if (error.response?.data?.metaData?.error) {
+  if (error.response?.data?.error) {
     // @ts-ignore
-    return error.response?.data?.metaData?.error;
+    return error.response?.data?.error;
   }
   let msg;
   if (error.response) {
@@ -18,7 +18,5 @@ export const handleError = (error: AxiosError) => {
     msg = "Unknown Error.";
     Sentry.captureException(error);
   }
-
-  console.log("auth error: ", error.response?.data);
   return `${msg} Please contact bazzarify support`;
 };

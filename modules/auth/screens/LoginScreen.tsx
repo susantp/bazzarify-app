@@ -28,7 +28,7 @@ const LoginScreen = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<TLoginFormField>({
     defaultValues: {
       email: "",
@@ -37,7 +37,6 @@ const LoginScreen = () => {
   });
 
   const {
-    isAuthenticating,
     showPassword,
     handleOAuthLogin,
     handleCredentialsLogin,
@@ -102,22 +101,22 @@ const LoginScreen = () => {
                 <View className="h-2" />
                 <FullWidthActionBtn
                   handleOnPress={handleSubmit(handleCredentialsLogin)}
-                  label={isAuthenticating ? "Logging in..." : "Login"}
-                  disabled={isAuthenticating}
+                  label={isSubmitting ? "Logging in..." : "Login"}
+                  disabled={isSubmitting}
                 />
                 <View className="flex-row items-center justify-center gap-x-3">
                   <View className="h-px flex-1 bg-slate-200" />
                   <Text className="text-gray-400">or</Text>
                   <View className="h-px flex-1 bg-slate-200" />
                 </View>
-                <TouchableOpacity disabled={isAuthenticating}>
+                <TouchableOpacity>
                   <SocialLoginButton
                     label="sign in with"
                     provider="google"
                     onPress={() => handleOAuthLogin(LoginProvider.GOOGLE)}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity disabled={isAuthenticating}>
+                <TouchableOpacity>
                   <SocialLoginButton
                     label="sign in with"
                     provider="facebook"
