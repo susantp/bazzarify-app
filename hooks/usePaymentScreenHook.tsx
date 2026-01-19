@@ -16,6 +16,7 @@ import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
 import actionPlaceOrder from "@/modules/order/actions/actionPlaceOrder";
 import { Text } from "react-native";
 import Toast from "react-native-toast-message";
+import { AntDesign } from "@expo/vector-icons";
 
 export type PaymentMethodSection = {
   sectionTitle: string;
@@ -37,7 +38,16 @@ export default function usePaymentScreenHook(id?: string) {
   const [isPending, startTransition] = useTransition();
 
   const handleCODPayment = () => {
-    if (!defaultDeliveryAddress) return null;
+    if (!defaultDeliveryAddress) {
+      Toast.show({
+        type: "error",
+        text1: "Delivery address missing !",
+        text2: "Please add a delivery address before placing the order.",
+        position: "bottom",
+      });
+      // router.replace("/user/addresses");
+      return;
+    }
     startTransition(async () => {
       const response = await actionPlaceOrder({
         shippingInformation: {
