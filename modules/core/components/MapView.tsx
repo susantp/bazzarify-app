@@ -30,6 +30,7 @@ interface Props {
   }>;
   onSearchResultPress?: (id: string) => void;
   searchLoading?: boolean;
+  searchError?: string | null;
 }
 export const MapView = ({
   onClick,
@@ -44,6 +45,7 @@ export const MapView = ({
   searchResults,
   onSearchResultPress,
   searchLoading,
+  searchError,
 }: Props) => {
   console.log("mapView", selectedAddress);
   return (
@@ -88,6 +90,12 @@ export const MapView = ({
                   ) : null}
                 </TouchableOpacity>
               ))}
+            </View>
+          ) : searchError ? (
+            <View style={styles.searchResults}>
+              <View style={styles.searchResultItem}>
+                <Text style={styles.searchResultSubtitle}>{searchError}</Text>
+              </View>
             </View>
           ) : null}
         </View>

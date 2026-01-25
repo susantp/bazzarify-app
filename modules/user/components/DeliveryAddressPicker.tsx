@@ -193,6 +193,7 @@ const LocationPickerPortal = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<PlaceSuggestion[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -203,18 +204,29 @@ const LocationPickerPortal = ({
 
   useEffect(() => {
     if (searchTimer.current) clearTimeout(searchTimer.current);
-    if (!searchQuery.trim()) {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) {
       setSearchResults([]);
       setSearchLoading(false);
+      setSearchError(null);
+      return;
+    }
+    if (trimmed.length < 2) {
+      setSearchResults([]);
+      setSearchLoading(false);
+      setSearchError(null);
       return;
     }
     setSearchLoading(true);
     searchTimer.current = setTimeout(() => {
-      fetchPlaceSuggestions(searchQuery.trim(), coords)
+      fetchPlaceSuggestions(trimmed, coords)
         .then((results) => {
           setSearchResults(results);
+          setSearchError(null);
         })
         .catch((error) => {
+          setSearchResults([]);
+          setSearchError(error?.message || "Search failed");
           Toast.show({
             position: "bottom",
             type: "error",
@@ -282,6 +294,7 @@ const LocationPickerPortal = ({
       searchResults={searchResults}
       onSearchResultPress={handleSearchSelect}
       searchLoading={searchLoading}
+      searchError={searchError}
     />
   );
 };

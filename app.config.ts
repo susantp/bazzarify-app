@@ -93,6 +93,7 @@ module.exports = {
     router: {
       origin: false,
     },
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
     eas: {
       projectId: "32e3cd11-e03a-424c-8a11-110085048593",
     },

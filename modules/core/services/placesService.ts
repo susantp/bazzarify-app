@@ -9,8 +9,12 @@ export type PlaceSuggestion = {
 
 const getGoogleMapsApiKey = () => {
   const config = Constants.expoConfig;
+  const manifest = (Constants as any).manifest;
+  const manifest2 = (Constants as any).manifest2;
   return (
     config?.extra?.googleMapsApiKey ||
+    manifest?.extra?.googleMapsApiKey ||
+    manifest2?.extra?.googleMapsApiKey ||
     config?.android?.config?.googleMaps?.apiKey ||
     config?.ios?.config?.googleMaps?.apiKey ||
     ""
