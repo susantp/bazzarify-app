@@ -6,7 +6,8 @@ import {
 } from "react-native-heroicons/solid";
 import React from "react";
 import Svg, { Path } from "react-native-svg";
-import { LocationGeocodedAddress } from "expo-location";
+import { TUserAddress } from "@/modules/user/schemas/UserAddress";
+import { formatUserAddress } from "@/modules/user/utils/address";
 import { addDays, format, isSameMonth } from "date-fns";
 
 const ParcelIcon = ({ size }: { size: number }) => (
@@ -18,13 +19,11 @@ const ParcelIcon = ({ size }: { size: number }) => (
   </Svg>
 );
 const ProductDeliveryDetails = ({
-  onOpenMap,
-  currentAddress,
-  chosenAddress,
+  onChangeAddress,
+  selectedAddress,
 }: {
-  onOpenMap: () => void;
-  currentAddress: LocationGeocodedAddress | null;
-  chosenAddress: LocationGeocodedAddress | null;
+  onChangeAddress: () => void;
+  selectedAddress: TUserAddress | null;
 }) => {
   const today = new Date();
   const start = addDays(today, 7);
@@ -49,13 +48,13 @@ const ProductDeliveryDetails = ({
               numberOfLines={2}
               className="text-sm font-semibold"
             >
-              {chosenAddress?.formattedAddress ||
-                currentAddress?.formattedAddress ||
-                "Select your address"}
+              {selectedAddress
+                ? formatUserAddress(selectedAddress)
+                : "Select your address"}
             </Text>
           </View>
           <View>
-            <TouchableOpacity onPress={onOpenMap}>
+            <TouchableOpacity onPress={onChangeAddress}>
               <Text className="rounded-full bg-primary px-2 py-1 text-white">
                 Change
               </Text>

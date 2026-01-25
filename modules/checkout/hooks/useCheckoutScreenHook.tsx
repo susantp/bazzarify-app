@@ -8,15 +8,15 @@ import { cartAtom, selectedDeliveryAddress } from "@/modules/cart/atoms";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
-import { geocodeAddressAtom } from "@/atoms/locationAtom";
+import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
 
 export default function useCheckoutScreenHook() {
   const cartState = useAtomValue(cartAtom);
   const user = useAtomValue(userAtom);
   const [btnLabel] = useState("Place Order");
-  const geoCodeAddress = useAtomValue(geocodeAddressAtom);
   const selectedAddress = useAtomValue(selectedDeliveryAddress);
-  const displayAddress = selectedAddress || geoCodeAddress;
+  const defaultAddress = useAtomValue(getDefaultAddressAtom);
+  const displayAddress = selectedAddress || defaultAddress;
   const CARDS = [
     {
       title: "address",
@@ -51,7 +51,8 @@ export default function useCheckoutScreenHook() {
     if (!displayAddress) {
       Toast.show({
         position: "bottom",
-        text1: "Please fill out the address checkout",
+        text1: "Select a delivery address",
+        text2: "Please choose a delivery address before checkout.",
         type: "error",
       });
       return;

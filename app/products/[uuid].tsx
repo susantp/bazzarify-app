@@ -24,6 +24,12 @@ import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductVariantSelector from "@/modules/product/components/ProductVariantSelector";
 import useCartHook from "@/modules/cart/hooks/useCartHook";
 import FetchingErrorComponent from "@/modules/core/components/FetchingErrorComponent";
+import { useAtom, useAtomValue } from "jotai";
+import { selectedDeliveryAddress } from "@/modules/cart/atoms";
+import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
+import { addressModalAtom } from "@/atoms/addressModalAtom";
+import DemoModalComponent from "@/components/common/DemoModalComponent";
+import DeliveryAddressPicker from "@/modules/user/components/DeliveryAddressPicker";
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
@@ -34,16 +40,14 @@ export default function ProductScreen() {
     selectedVariant,
     handleVariantChange,
     isError,
-    renderMapPortal,
-    currentAddress,
-    chosenAddress,
   } = useProductScreen(uuid as string);
   const { handleAddToCart } = useCartHook();
   const ios = Platform.OS === "ios";
-
-  const handleOpenMap = () => {
-    renderMapPortal();
-  };
+  const [showAddressModal, setShowAddressModal] = useAtom(addressModalAtom);
+  const selectedAddress = useAtomValue(selectedDeliveryAddress);
+  const defaultAddress = useAtomValue(getDefaultAddressAtom);
+  const displayAddress = selectedAddress || defaultAddress;
+  const handleOpenAddress = () => setShowAddressModal(true);
   return (
     <SafeAreaWrapper>
       <TopBar
@@ -75,9 +79,8 @@ export default function ProductScreen() {
                 </ProductGenericDetails>
                 {/*<VoucherList className="border-gray-400 px-4" />*/}
                 <ProductDeliveryDetails
-                  chosenAddress={chosenAddress}
-                  currentAddress={currentAddress}
-                  onOpenMap={handleOpenMap}
+                  selectedAddress={displayAddress}
+                  onChangeAddress={handleOpenAddress}
                 />
                 {/*<ProductReviewBox />*/}
                 {/*<AskQuestionBox />*/}
@@ -101,6 +104,13 @@ export default function ProductScreen() {
               }
             />
           </BottomActionView>
+          <DemoModalComponent
+            type="bottom"
+            showModal={showAddressModal}
+            handlePress={() => setShowAddressModal(false)}
+          >
+            <DeliveryAddressPicker onClose={() => setShowAddressModal(false)} />
+          </DemoModalComponent>
         </>
       ) : (
         <ThemedLoader />

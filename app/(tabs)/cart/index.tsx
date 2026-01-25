@@ -6,7 +6,7 @@ import BottomActionView from "@/modules/core/components/BottomActionView";
 import CheckoutBottomActionView from "@/components/cart/checkout/CheckoutBottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import AddressSettingScreen from "@/modules/account/components/settings/addressSettingScreen";
+import DeliveryAddressPicker from "@/modules/user/components/DeliveryAddressPicker";
 import useCartHook from "@/modules/cart/hooks/useCartHook";
 import useCartCardsHook from "@/modules/cart/hooks/useCartCardsHook";
 
@@ -48,7 +48,7 @@ export default function CartScreen() {
         showModal={showAddressModal}
         handlePress={handleAddressModal}
       >
-        <AddressSettingScreen />
+        <DeliveryAddressPicker onClose={handleAddressModal} />
       </DemoModalComponent>
     </SafeAreaWrapper>
   );
