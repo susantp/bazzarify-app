@@ -14,25 +14,40 @@ const OrderStatus = ({
   aggregates,
   onStatusPress,
 }: OrderStatusProps) => {
+  const getStatusCount = (status: string | string[] | undefined) => {
+    if (!aggregates || !status) {
+      return 0;
+    }
+    if (Array.isArray(status)) {
+      return status.reduce(
+        (sum, item) => sum + (aggregates[item]?.count || 0),
+        0,
+      );
+    }
+    return aggregates[status]?.count || 0;
+  };
+
   return (
     <View className="flex-col gap-y-4 py-2">
       <Text className="text-md px-2 text-lg font-semibold">My Order</Text>
-      <View className="flex-row flex-wrap gap-y-6">
-        {orderStatuses.map(({ id, icon, label, status }) => (
+      <View className="flex-row flex-wrap gap-2 px-2">
+        {orderStatuses.map(({ id, label, status, icon }) => (
           <TouchableOpacity
-            className="w-1/5 flex-col items-center gap-y-1"
+            className="w-[31%] rounded-lg border border-slate-300 bg-white px-3 py-3"
             key={id}
             onPress={() => onStatusPress(id)}
           >
-            <>
-              {icon}
-              {aggregates && status && aggregates[status]?.count ? (
-                <Badge className="absolute -top-2 right-0 text-xl text-white">
-                  {aggregates ? aggregates[status]?.count : 0}
+            <View className="flex-row items-start justify-between">
+              <View className="flex-1 items-center gap-y-1">
+                {icon}
+                <Text className="text-center text-sm font-medium">{label}</Text>
+              </View>
+              {getStatusCount(status) ? (
+                <Badge className="bg-primary text-white">
+                  {getStatusCount(status)}
                 </Badge>
               ) : null}
-            </>
-            <Text className="text-sm">{label}</Text>
+            </View>
           </TouchableOpacity>
         ))}
       </View>

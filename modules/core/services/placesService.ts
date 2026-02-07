@@ -16,7 +16,7 @@ const getGoogleMapsApiKey = () => {
     manifest?.extra?.googleMapsApiKey ||
     manifest2?.extra?.googleMapsApiKey ||
     config?.android?.config?.googleMaps?.apiKey ||
-    config?.ios?.config?.googleMaps?.apiKey ||
+    config?.ios?.config?.googleMapsApiKey ||
     ""
   );
 };

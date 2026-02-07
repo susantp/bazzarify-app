@@ -1,4 +1,3 @@
-import { OrderStatus } from "@/modules/order/enums/OrderStatus";
 import { WalletIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import {
@@ -9,67 +8,67 @@ import {
 } from "@/components/common/icons";
 import React from "react";
 import { ProfileMenuBoxType } from "@/modules/order/types";
+import { toTitleCase } from "@/modules/core/utils";
 
-export default function useOrderStatusBox() {
-  const orderStatusBoxes: ProfileMenuBoxType[] = [
-    {
-      id: "toPay",
-      status: OrderStatus.DRAFT,
-      label: "To Pay",
-      icon: <WalletIcon size={44} color={Colors.light.tint} />,
-      action: {
-        label: "Cancel",
-        route: "/account/order/[id]/return",
-      },
-    },
-    {
-      id: "toShip",
-      status: OrderStatus.CONFIRMED,
-      label: "To Ship",
-      icon: <ToShipIcon />,
-      action: {
-        label: "Cancel",
-        route: "/account/order/[id]/return",
-      },
-    },
-    {
-      id: "toReceive",
-      label: "To Receive",
-      status: OrderStatus.DELIVERED,
-      icon: <ToReceiveIcon />,
-    },
-    {
-      id: "toReview",
-      label: "To Review",
-      status: OrderStatus.COMPLETED,
-      icon: <ToReviewIcon />,
-      action: {
-        label: "Review",
-      },
-    },
-    {
-      id: "toReturn",
-      label: "To Return",
-      status: OrderStatus.CANCELED,
-      icon: <ToReturnIcon />,
-    },
-  ];
-  // const otherMenus: ProfileMenuBoxType[] = [
-  //   {
-  //     id: "toMessage",
-  //     label: "Message",
-  //     routeTo: "/account/message",
-  //     icon: <FontAwesome6 name="inbox" size={44} color={Colors.light.tint} />,
-  //   },
-  //   {
-  //     id: "vouchers",
-  //     label: "Collect Vouchers",
-  //     routeTo: "/account/voucherCenter",
-  //     icon: (
-  //       <MaterialIcons name="discount" size={44} color={Colors.light.tint} />
-  //     ),
-  //   },
-  // ];
+const normalize = (value: string) => value.toLowerCase();
+
+const getAction = (status: string): ProfileMenuBoxType["action"] => {
+  const value = normalize(status);
+  if (
+    value.includes("shipped") ||
+    value.includes("delivery") ||
+    value === "delivered"
+  ) {
+    return {
+      label: "Track",
+      route: "/account/order/[id]/tracking",
+    };
+  }
+  if (value === "draft" || value === "confirmed" || value === "allocated") {
+    return {
+      label: "Cancel",
+      route: "/account/order/[id]/return",
+    };
+  }
+  if (value === "completed") {
+    return {
+      label: "Review",
+    };
+  }
+  return undefined;
+};
+
+const getIcon = (status: string) => {
+  const value = normalize(status);
+  if (value.includes("cancel") || value.includes("return")) {
+    return <ToReturnIcon />;
+  }
+  if (
+    value.includes("shipped") ||
+    value.includes("delivery") ||
+    value === "delivered"
+  ) {
+    return <ToReceiveIcon />;
+  }
+  if (value === "completed") {
+    return <ToReviewIcon />;
+  }
+  if (value === "confirmed" || value === "allocated") {
+    return <ToShipIcon />;
+  }
+  return <WalletIcon size={44} color={Colors.light.tint} />;
+};
+
+export default function useOrderStatusBox(availableStatuses?: string[]) {
+  const statuses = (availableStatuses || []).filter(Boolean);
+  const orderStatusBoxes: ProfileMenuBoxType[] = statuses.map((status) => ({
+    id: status,
+    status,
+    label: toTitleCase(status.replace(/_/g, " ")),
+    icon: getIcon(status),
+    action: getAction(status),
+  }));
+
   return {
     orderStatusBoxes,
   };

@@ -1,46 +1,12 @@
 import { router } from "expo-router";
-import { useAtomValue, useSetAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
+import { useAtomValue } from "jotai";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { ordersState } from "@/modules/order/atoms/ordersState";
 import { ProfileMenuBoxType } from "@/modules/order/types";
-import hydrateOrders from "@/modules/order/utils/hydrateOrders";
-import { getAuthToken } from "@/modules/auth/utils/token";
 
 export default function useOrder() {
   const user = useAtomValue(userAtom);
   const ordersPayload = useAtomValue(ordersState);
-  const setOrders = useSetAtom(ordersState);
-  const [isLoading, setIsLoading] = useState(false);
-  const inFlightRef = useRef(false);
-
-  useEffect(() => {
-    if (ordersPayload || inFlightRef.current) {
-      return;
-    }
-    let active = true;
-    (async () => {
-      const token = await getAuthToken();
-      if (!token) {
-        return;
-      }
-      inFlightRef.current = true;
-      if (active) {
-        setIsLoading(true);
-      }
-      try {
-        await hydrateOrders(setOrders);
-      } finally {
-        inFlightRef.current = false;
-        if (active) {
-          setIsLoading(false);
-        }
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [ordersPayload, setOrders]);
 
   const orderStatusAggregated: Record<string, { count: number }> | undefined =
     ordersPayload?.orders?.data?.reduce<Record<string, { count: number }>>(
@@ -56,18 +22,31 @@ export default function useOrder() {
   const handleStatusPress = (id: string) =>
     router.push(`/account/order?statusId=${id}`);
 
+  const isStatusMatch = (
+    statusFilter: string | string[] | undefined,
+    orderStatus: string,
+  ) => {
+    if (!statusFilter) {
+      return false;
+    }
+    if (Array.isArray(statusFilter)) {
+      return statusFilter.includes(orderStatus);
+    }
+    return statusFilter === orderStatus;
+  };
+
   const getItemsByStatus = (type: ProfileMenuBoxType) => {
     console.log("type: ", type);
   };
   const getFilteredOrder = (statusItem: ProfileMenuBoxType | undefined) =>
     ordersPayload?.orders?.data
-      ?.filter((order) => order.status === statusItem?.status)
+      ?.filter((order) => isStatusMatch(statusItem?.status, order.status))
       .flatMap((order) => order);
   return {
     user,
     orderStatusAggregated,
     ordersPayload,
-    isLoading,
+    isLoading: false,
     handleStatusPress,
     getItemsByStatus,
     getFilteredOrder,
