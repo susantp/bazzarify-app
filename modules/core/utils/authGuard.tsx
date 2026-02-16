@@ -1,5 +1,5 @@
-import { ReactNode, useCallback, useState } from "react";
-import { useFocusEffect, useNavigation, useRouter } from "expo-router";
+import { ReactNode, useCallback, useRef, useState } from "react";
+import { useFocusEffect, usePathname, useRouter } from "expo-router";
 import { retrieveStorage } from "@/modules/core/utils/secureStore";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
@@ -11,30 +11,60 @@ interface AuthGuardProps {
    */
   requireAuth: boolean;
   children: ReactNode;
+  /**
+   * Optional route scope. Redirect checks only run when active pathname
+   * is inside this base path.
+   */
+  basePath?: string;
 }
 
-export function AuthGuard({ requireAuth, children }: AuthGuardProps) {
+function isPathWithinBase(pathname: string, basePath?: string) {
+  if (!basePath) {
+    return true;
+  }
+
+  return pathname === basePath || pathname.startsWith(`${basePath}/`);
+}
+
+export function AuthGuard({ requireAuth, children, basePath }: AuthGuardProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const redirectedRef = useRef(false);
   const [checked, setChecked] = useState(false);
+
   useFocusEffect(
     useCallback(() => {
       let active = true;
+      redirectedRef.current = false;
       setChecked(false);
+
       (async () => {
         const token = await retrieveStorage(AUTH_TOKEN_KEY);
-        if (requireAuth && !token) {
-          router.replace("/guest/guestAccountIndex");
-        } else if (!requireAuth && token) {
-          router.replace("/account/profile");
+        const inScope = isPathWithinBase(pathname, basePath);
+        const shouldRedirectToGuest = requireAuth && !token;
+        const shouldRedirectToAccount = !requireAuth && !!token && inScope;
+
+        if (
+          !redirectedRef.current &&
+          (shouldRedirectToGuest || shouldRedirectToAccount)
+        ) {
+          redirectedRef.current = true;
+          router.replace(
+            shouldRedirectToGuest
+              ? "/guest/guestAccountIndex"
+              : "/account/profile",
+          );
         }
+
         if (active) {
           setChecked(true);
         }
       })();
+
       return () => {
         active = false;
       };
-    }, [requireAuth, router]),
+    }, [basePath, pathname, requireAuth, router]),
   );
 
   if (!checked) {
