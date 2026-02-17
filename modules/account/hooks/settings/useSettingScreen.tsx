@@ -15,17 +15,20 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 import { clearAuthToken } from "@/modules/auth/utils/token";
 
 export default function useSettingScreen() {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);
   const setUser = useSetAtom(userAtom);
   const setToken = useSetAtom(tokenAtom);
+  const setAuthStatus = useSetAtom(authStatusAtom);
   const handleLogout = async () => {
     //TODO request to logout api
     await clearAuthToken();
-    setUser(null);
     setToken(null);
+    setAuthStatus("guest");
+    setUser(null);
     router.replace("/guest/guestAccountIndex");
   };
 

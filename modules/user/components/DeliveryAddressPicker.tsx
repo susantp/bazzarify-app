@@ -31,12 +31,15 @@ import {
   fetchPlaceSuggestions,
   PlaceSuggestion,
 } from "@/modules/core/services/placesService";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 
 interface Props {
   onClose?: () => void;
 }
 
 const DeliveryAddressPicker = ({ onClose }: Props) => {
+  const authStatus = useAtomValue(authStatusAtom);
+  const isAuthenticated = authStatus === "authenticated";
   const addresses = useAtomValue(addressListAtom) || [];
   const defaultAddress = useAtomValue(getDefaultAddressAtom);
   const [selectedAddress, setSelectedAddress] = useAtom(
@@ -52,9 +55,15 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
     onClose?.();
   };
 
+  const navigateToAddressCreate = () => {
+    router.push(
+      isAuthenticated ? "/account/setting/address/create" : "/guest/login",
+    );
+  };
+
   const openCreateAddress = () => {
     onClose?.();
-    router.push("/account/setting/address/create");
+    navigateToAddressCreate();
   };
 
   const renderMapPortal = (coords?: Coordinates) => {
@@ -95,7 +104,7 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
     setAddressDraft(mapGeocodeToAddressDraft(addr));
     closePortal();
     onClose?.();
-    router.push("/account/setting/address/create");
+    navigateToAddressCreate();
   };
 
   const activeAddress = selectedAddress || defaultAddress;

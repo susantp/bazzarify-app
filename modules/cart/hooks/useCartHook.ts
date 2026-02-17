@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 import Toast from "react-native-toast-message";
 import {
@@ -21,9 +21,12 @@ import { addressModalAtom } from "@/atoms/addressModalAtom";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 import getCartItemToUpdate from "@/modules/cart/utils/getCartItemToUpdate";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 
 export default function useCartHook() {
   const [cartState, setCartState] = useAtom(cartAtom);
+  const authStatus = useAtomValue(authStatusAtom);
+  const isAuthenticated = authStatus === "authenticated";
   const [showAddressModal, setShowAddressModal] = useAtom(addressModalAtom);
   const handleAddressModal = () => {
     setShowAddressModal(!showAddressModal);
@@ -68,9 +71,11 @@ export default function useCartHook() {
   };
 
   const handleCheckoutPress = () =>
-    cartState?.cart?.totals.items_count
-      ? router.push("/cart/checkout")
-      : Alert.alert("Please select item to checkout.");
+    !isAuthenticated
+      ? router.push("/guest/login")
+      : cartState?.cart?.totals.items_count
+        ? router.push("/cart/checkout")
+        : Alert.alert("Please select item to checkout.");
 
   const handleLineItemIncrement = (item: TCartItem) => {
     if (!item) return;

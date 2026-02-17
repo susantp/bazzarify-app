@@ -4,7 +4,8 @@ import { FontAwesome5, Octicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
 import PolygonButton from "@/components/common/PolygonButton";
-import { getAuthToken } from "@/modules/auth/utils/token";
+import { useAtomValue } from "jotai";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 
 interface IProductPageBottomView {
   onCartAdd: () => void;
@@ -15,6 +16,8 @@ const ProductPageBottomView = ({
   onCartAdd,
   onStorePress,
 }: IProductPageBottomView) => {
+  const authStatus = useAtomValue(authStatusAtom);
+  const isAuthenticated = authStatus === "authenticated";
   const [leftBtnDimension, setLeftButtonDimensions] = useState({
     width: 0,
     height: 0,
@@ -43,30 +46,37 @@ const ProductPageBottomView = ({
             <Text>Chat</Text>
           </TouchableOpacity>
         </View>
-        {getAuthToken().then((token) => {
-          if (token) {
-            return (
-              <View className="w-9/12 flex-row justify-end">
-                <PolygonButton
-                  dimensions={leftBtnDimension}
-                  setDimensions={setLeftButtonDimensions}
-                  onPress={onCartAdd}
-                  color="#1A202C"
-                  isLeft={true}
-                  label="Add To Cart"
-                />
-                <PolygonButton
-                  isLeft={false}
-                  dimensions={rightBtnDimension}
-                  setDimensions={setRightButtonDimensions}
-                  onPress={() => router.push("/cart/checkout")}
-                  color={Colors.light.tint}
-                  label="Buy Now"
-                />
-              </View>
-            );
-          }
-        })}
+        {isAuthenticated ? (
+          <View className="w-9/12 flex-row justify-end">
+            <PolygonButton
+              dimensions={leftBtnDimension}
+              setDimensions={setLeftButtonDimensions}
+              onPress={onCartAdd}
+              color="#1A202C"
+              isLeft={true}
+              label="Add To Cart"
+            />
+            <PolygonButton
+              isLeft={false}
+              dimensions={rightBtnDimension}
+              setDimensions={setRightButtonDimensions}
+              onPress={() => router.push("/cart/checkout")}
+              color={Colors.light.tint}
+              label="Buy Now"
+            />
+          </View>
+        ) : (
+          <View className="w-9/12 flex-row justify-end">
+            <PolygonButton
+              dimensions={leftBtnDimension}
+              setDimensions={setLeftButtonDimensions}
+              onPress={() => router.push("/guest/login")}
+              color="#1A202C"
+              isLeft={true}
+              label="Login To Buy"
+            />
+          </View>
+        )}
       </View>
     </Suspense>
   );

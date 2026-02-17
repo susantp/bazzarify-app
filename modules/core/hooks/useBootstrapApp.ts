@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSetAtom } from "jotai";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 import { bootstrapApp } from "@/modules/core/utils/bootstrap";
 import { subscribeOnResume } from "@/modules/core/utils";
 import { createTokenTask } from "@/modules/auth/boot/tokenTask";
@@ -18,6 +19,7 @@ export function useBootstrapApp() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
   const setToken = useSetAtom(tokenAtom);
+  const setAuthStatus = useSetAtom(authStatusAtom);
   const setCart = useSetAtom(cartAtom);
   const setAddresses = useSetAtom(addressListAtom);
   const setUser = useSetAtom(userAtom);
@@ -28,7 +30,8 @@ export function useBootstrapApp() {
 
     const run = async () => {
       await bootstrapApp([
-        createTokenTask(setToken),
+        // auth status must resolve before guarded stacks mount
+        createTokenTask(setToken, setAuthStatus),
         createUserTask(setUser),
         createCartTask(setCart),
         createAddressesTask(setAddresses),
@@ -44,7 +47,7 @@ export function useBootstrapApp() {
       active = false;
       unsubscribe();
     };
-  }, [setAddresses, setCart, setToken]);
+  }, [setAddresses, setAuthStatus, setCart, setToken, setUser]);
 
   return {
     ready,

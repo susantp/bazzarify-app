@@ -3,7 +3,7 @@ import UserPasswordInput from "@/components/account/UserPasswordInput";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import UsernameInput from "@/components/account/UsernameInput";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,8 @@ import { deleteStorage, setStorage } from "@/modules/core/utils/secureStore";
 import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
 import { useSetAtom } from "jotai";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
+import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 
 const Page = () => {
   const [formValues] = useState({
@@ -43,7 +45,9 @@ const Page = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
   const setUser = useSetAtom(userAtom);
-  const handleAfterRegistrationFlow = async (token: string) => {
+  const setToken = useSetAtom(tokenAtom);
+  const setAuthStatus = useSetAtom(authStatusAtom);
+  const handleAfterRegistrationFlow = async (token: string): Promise<boolean> => {
     const userResponse: TUserPayload | null = await actionGetUser(token);
     if (!userResponse || !userResponse.user) {
       Sentry.captureMessage(
@@ -52,24 +56,31 @@ const Page = () => {
       );
       await deleteStorage(AUTH_TOKEN_KEY);
       await deleteStorage(USER_KEY);
-      return;
+      setToken(null);
+      setAuthStatus("guest");
+      return false;
     }
     setUser(userResponse.user);
     await setStorage(AUTH_TOKEN_KEY, token);
     await setStorage(USER_KEY, JSON.stringify(userResponse.user));
+    setToken(token);
+    setAuthStatus("authenticated");
+    return true;
   };
 
   const handleRegister = async (data: TRegisterFormField) => {
     try {
       const token = await actionRegister(data);
-      await handleAfterRegistrationFlow(token);
+      const isResolved = await handleAfterRegistrationFlow(token);
+      if (!isResolved) {
+        return;
+      }
 
       Toast.show({
         position: "bottom",
         text1: "Registration Success.",
         type: "success",
       });
-      router.replace("/account/profile");
     } catch (error) {
       Sentry.captureException(error);
       Toast.show({

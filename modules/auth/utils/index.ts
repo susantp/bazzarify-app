@@ -6,6 +6,7 @@ import {
 } from "@/modules/core/utils/secureStore";
 import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
 import { TUser } from "@/modules/auth/schemas/UserSchema";
+import { AuthStatus } from "@/modules/auth/atoms/authStatusAtom";
 import { getAuthToken } from "@/modules/auth/utils/token";
 import LoginProvider from "@/modules/auth/enums/loginProvider";
 import actionOAuthLogin from "@/modules/auth/services/oAuthLogin";
@@ -16,12 +17,16 @@ import actionGetUser from "@/modules/auth/services/actionGetUser";
 
 export async function hydrateToken(
   setToken: Setter<string | null>,
+  setAuthStatus: Setter<AuthStatus>,
 ): Promise<void> {
   try {
     const value = await getAuthToken();
     setToken(value);
+    setAuthStatus(value ? "authenticated" : "guest");
     Sentry.captureMessage("Auth token hydrated: " + !!value);
   } catch (err) {
+    setToken(null);
+    setAuthStatus("guest");
     Sentry.captureException(err);
   }
 }

@@ -1,8 +1,7 @@
-import { ReactNode, useCallback, useRef, useState } from "react";
-import { useFocusEffect, usePathname, useRouter } from "expo-router";
-import { retrieveStorage } from "@/modules/core/utils/secureStore";
-import ThemedLoader from "@/modules/core/components/ThemedLoader";
-import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
+import { ReactNode, useEffect, useRef } from "react";
+import { usePathname, useRouter } from "expo-router";
+import { useAtomValue } from "jotai";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 
 interface AuthGuardProps {
   /**
@@ -29,46 +28,40 @@ function isPathWithinBase(pathname: string, basePath?: string) {
 export function AuthGuard({ requireAuth, children, basePath }: AuthGuardProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const redirectedRef = useRef(false);
-  const [checked, setChecked] = useState(false);
+  const authStatus = useAtomValue(authStatusAtom);
+  const redirectedToRef = useRef<string | null>(null);
 
-  useFocusEffect(
-    useCallback(() => {
-      let active = true;
-      redirectedRef.current = false;
-      setChecked(false);
+  useEffect(() => {
+    if (authStatus === "unknown") {
+      return;
+    }
 
-      (async () => {
-        const token = await retrieveStorage(AUTH_TOKEN_KEY);
-        const inScope = isPathWithinBase(pathname, basePath);
-        const shouldRedirectToGuest = requireAuth && !token;
-        const shouldRedirectToAccount = !requireAuth && !!token && inScope;
+    const inScope = isPathWithinBase(pathname, basePath);
+    const shouldRedirectToGuest =
+      requireAuth && authStatus !== "authenticated";
+    const shouldRedirectToAccount =
+      !requireAuth && authStatus === "authenticated" && inScope;
+    const target = shouldRedirectToGuest
+      ? "/guest/guestAccountIndex"
+      : shouldRedirectToAccount
+        ? "/account/profile"
+        : null;
 
-        if (
-          !redirectedRef.current &&
-          (shouldRedirectToGuest || shouldRedirectToAccount)
-        ) {
-          redirectedRef.current = true;
-          router.replace(
-            shouldRedirectToGuest
-              ? "/guest/guestAccountIndex"
-              : "/account/profile",
-          );
-        }
+    if (!target) {
+      redirectedToRef.current = null;
+      return;
+    }
 
-        if (active) {
-          setChecked(true);
-        }
-      })();
+    if (redirectedToRef.current === target) {
+      return;
+    }
 
-      return () => {
-        active = false;
-      };
-    }, [basePath, pathname, requireAuth, router]),
-  );
+    redirectedToRef.current = target;
+    router.replace(target);
+  }, [authStatus, basePath, pathname, requireAuth, router]);
 
-  if (!checked) {
-    return <ThemedLoader />;
+  if (authStatus === "unknown") {
+    return null;
   }
 
   return <>{children}</>;
