@@ -65,9 +65,12 @@ const getActivePath = () => {
   return null;
 };
 
+const isGuestPath = (path: string) =>
+  path === "/(guest)" || path.startsWith("/(guest)/");
+
 const stashRedirectIntent = async () => {
   const path = getActivePath();
-  if (path && !path.startsWith("/guest")) {
+  if (path && !isGuestPath(path)) {
     await setAuthRedirect(path);
   }
 };

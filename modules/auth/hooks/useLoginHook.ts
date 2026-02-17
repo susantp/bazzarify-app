@@ -15,6 +15,7 @@ import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
 
 export default function useLoginHook() {
   const [showPassword, setShowPassword] = useState(true);
@@ -22,6 +23,7 @@ export default function useLoginHook() {
   const setUser = useSetAtom(userAtom);
   const setToken = useSetAtom(tokenAtom);
   const setAuthStatus = useSetAtom(authStatusAtom);
+  const setAuthRouteHold = useSetAtom(authRouteHoldAtom);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const handleAfterLoginFlow = async (token: string): Promise<boolean> => {
@@ -36,6 +38,7 @@ export default function useLoginHook() {
       setToken(null);
       console.log("AUTH_STATUS_SET(guest)");
       setAuthStatus("guest");
+      setAuthRouteHold(false);
       return false;
     }
     setUser(userResponse.user);
@@ -50,6 +53,7 @@ export default function useLoginHook() {
   };
 
   const handleOAuthLogin = async (provider: LoginProvider) => {
+    setAuthRouteHold(true);
     try {
       const token = await actionOAuthLogin(provider);
       const isResolved = await handleAfterLoginFlow(token);
@@ -64,6 +68,7 @@ export default function useLoginHook() {
       });
 
     } catch (error) {
+      setAuthRouteHold(false);
       console.log("OAuth login hook step: google", error);
       Sentry.captureException(error);
       Toast.show({
@@ -77,6 +82,7 @@ export default function useLoginHook() {
   };
 
   const handleCredentialsLogin = async (data: TLoginFormField) => {
+    setAuthRouteHold(true);
     try {
       const token = await actionLogin(data);
       const isResolved = await handleAfterLoginFlow(token);
@@ -90,6 +96,7 @@ export default function useLoginHook() {
         type: "success",
       });
     } catch (error) {
+      setAuthRouteHold(false);
       Sentry.captureException(error);
       Toast.show({
         position: "bottom",

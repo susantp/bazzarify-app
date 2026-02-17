@@ -1,4 +1,5 @@
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import {
@@ -28,6 +29,10 @@ export async function clearAuthToken() {
 
 export function clearAuthState() {
   const store = getDefaultStore();
+  const currentStatus = store.get(authStatusAtom);
+  if (currentStatus === "authenticated") {
+    store.set(authRouteHoldAtom, true);
+  }
   store.set(tokenAtom, null);
   store.set(userAtom, null);
   console.log("AUTH_STATUS_SET(guest)");

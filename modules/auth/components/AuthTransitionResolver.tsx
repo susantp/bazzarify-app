@@ -21,11 +21,12 @@ type PendingTransition = {
 };
 
 function isValidAuthRedirect(target: string | null): target is string {
+  const isGuestTarget =
+    target === "/(guest)" || target?.startsWith("/(guest)/");
   return Boolean(
     target &&
-      target.startsWith("/") &&
-      !target.startsWith("/guest") &&
-      !target.startsWith("/(guest)"),
+    target.startsWith("/") &&
+    !isGuestTarget,
   );
 }
 
@@ -79,6 +80,12 @@ export default function AuthTransitionResolver() {
     // Ignore initial hydration transition (unknown -> guest/authenticated).
     if (previous === null) {
       previousAuthStatusRef.current = authStatus;
+      if (pathname === "/" || pathname === "/index") {
+        pendingTransitionRef.current =
+          authStatus === "authenticated"
+            ? { from: "guest", to: "authenticated" }
+            : { from: "authenticated", to: "guest" };
+      }
       return;
     }
 
@@ -99,7 +106,7 @@ export default function AuthTransitionResolver() {
     }
 
     pendingTransitionRef.current = null;
-  }, [authStatus]);
+  }, [authStatus, pathname]);
 
   useEffect(() => {
     if (!isNavReady || transitionInFlightRef.current) {
@@ -145,7 +152,7 @@ export default function AuthTransitionResolver() {
     };
 
     resolveTransition().then(() => undefined);
-  }, [isNavReady, pathname, router]);
+  }, [authStatus, isNavReady, pathname, router]);
 
   return null;
 }

@@ -5,14 +5,15 @@ import {
 } from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import AuthTransitionResolver from "@/modules/auth/components/AuthTransitionResolver";
 import { Stack } from "expo-router";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { QueryClient } from "@tanstack/query-core";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 function AuthenticatedRoot() {
   return (
@@ -40,7 +41,24 @@ export default function CoreProviders() {
   const colorScheme = useColorScheme();
   const queryClient = useMemo(() => new QueryClient(), []);
   const authStatus = useAtomValue(authStatusAtom);
-  console.log("CORE_PROVIDERS_RENDER", { authStatus });
+  const routeHold = useAtomValue(authRouteHoldAtom);
+  const setRouteHold = useSetAtom(authRouteHoldAtom);
+  const previousAuthStatusRef = useRef(authStatus);
+  console.log("CORE_PROVIDERS_RENDER", { authStatus, routeHold });
+
+  useEffect(() => {
+    const previous = previousAuthStatusRef.current;
+    previousAuthStatusRef.current = authStatus;
+
+    if (!routeHold || previous === authStatus) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setRouteHold(false);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [authStatus, routeHold, setRouteHold]);
 
   if (authStatus === "unknown") return <ThemedLoader />;
 
@@ -48,7 +66,13 @@ export default function CoreProviders() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
         <AuthTransitionResolver />
-        {authStatus === "authenticated" ? <AuthenticatedRoot /> : <GuestRoot />}
+        {routeHold ? (
+          <ThemedLoader />
+        ) : authStatus === "authenticated" ? (
+          <AuthenticatedRoot />
+        ) : (
+          <GuestRoot />
+        )}
       </QueryClientProvider>
       <StatusBar style="auto" />
     </ThemeProvider>

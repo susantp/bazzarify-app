@@ -16,6 +16,7 @@ import { filteredDefaultLanguage } from "@/atoms/languageAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
 import { clearAuthToken } from "@/modules/auth/utils/token";
 
 export default function useSettingScreen() {
@@ -23,8 +24,10 @@ export default function useSettingScreen() {
   const setUser = useSetAtom(userAtom);
   const setToken = useSetAtom(tokenAtom);
   const setAuthStatus = useSetAtom(authStatusAtom);
+  const setAuthRouteHold = useSetAtom(authRouteHoldAtom);
   const handleLogout = async () => {
     //TODO request to logout api
+    setAuthRouteHold(true);
     await clearAuthToken();
     setToken(null);
     console.log("AUTH_STATUS_SET(guest)");
