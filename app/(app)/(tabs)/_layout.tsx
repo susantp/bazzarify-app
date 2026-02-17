@@ -88,12 +88,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="guest"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
         name="account"
         options={{
           title: "Account",

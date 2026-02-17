@@ -1,5 +1,4 @@
 import { Stack } from "expo-router";
-import { AuthGuard } from "@/modules/core/utils/authGuard";
 
 export default function Layout() {
   return (

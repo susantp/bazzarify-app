@@ -75,7 +75,7 @@ export const authAxiosInstance = async ({
       await setAuthRedirect(path);
     }
     await clearAuthToken();
-    router.replace("/(tabs)/guest/guestAccountIndex");
+    router.replace("/guest/guestAccountIndex");
     return;
   }
   const config = defaultConfigWithToken({ token, modulePath });
@@ -89,7 +89,7 @@ export const authAxiosInstance = async ({
         if (path && !path.startsWith("/guest")) {
           await setAuthRedirect(path);
         }
-        router.replace("/(tabs)/guest/guestAccountIndex");
+        router.replace("/guest/guestAccountIndex");
       }
       return response;
     },
@@ -101,7 +101,7 @@ export const authAxiosInstance = async ({
         if (path && !path.startsWith("/guest")) {
           await setAuthRedirect(path);
         }
-        router.replace("/(tabs)/guest/guestAccountIndex");
+        router.replace("/guest/guestAccountIndex");
       }
       // Re-throw the error so it can be handled by the calling code
       return Promise.reject(error);

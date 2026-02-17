@@ -1,5 +1,4 @@
 import { Stack } from "expo-router";
-import { AuthGuard } from "@/modules/core/utils/authGuard";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -47,38 +46,30 @@ const Layout = () => {
   }, [setOrderStatuses, statuses]);
 
   return (
-    <AuthGuard requireAuth={true}>
-      <Stack>
-        <Stack.Screen name="profile" options={{ headerShown: false }} />
-        <Stack.Screen name="editProfile" options={{ headerShown: false }} />
-        <Stack.Screen name="setting" options={{ headerShown: false }} />
-        <Stack.Screen name="order/index" options={{ headerShown: false }} />
-        <Stack.Screen name="order/[status]" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="order/[id]/index"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="order/[id]/tracking"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="order/[id]/return"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="voucherCenter" options={{ headerShown: false }} />
-        <Stack.Screen name="message/index" options={{ headerShown: false }} />
-        <Stack.Screen name="message/inbox" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="message/activities"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="message/promotions"
-          options={{ headerShown: false }}
-        />
-      </Stack>
-    </AuthGuard>
+    <Stack>
+      <Stack.Screen name="profile" options={{ headerShown: false }} />
+      <Stack.Screen name="editProfile" options={{ headerShown: false }} />
+      <Stack.Screen name="setting" options={{ headerShown: false }} />
+      <Stack.Screen name="order/index" options={{ headerShown: false }} />
+      <Stack.Screen name="order/[status]" options={{ headerShown: false }} />
+      <Stack.Screen name="order/[id]/index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="order/[id]/tracking"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="order/[id]/return" options={{ headerShown: false }} />
+      <Stack.Screen name="voucherCenter" options={{ headerShown: false }} />
+      <Stack.Screen name="message/index" options={{ headerShown: false }} />
+      <Stack.Screen name="message/inbox" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="message/activities"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="message/promotions"
+        options={{ headerShown: false }}
+      />
+    </Stack>
   );
 };
 
