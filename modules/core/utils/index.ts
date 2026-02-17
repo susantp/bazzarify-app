@@ -7,9 +7,18 @@ export async function hideSplash() {
 }
 
 export function subscribeOnResume(callback: () => void): () => void {
+  let previousState = AppState.currentState;
   const sub = AppState.addEventListener(
     "change",
-    (state) => state === "active" && callback(),
+    (state) => {
+      const hasResumed =
+        (previousState === "inactive" || previousState === "background") &&
+        state === "active";
+      previousState = state;
+      if (hasResumed) {
+        callback();
+      }
+    },
   );
   return () => sub.remove();
 }

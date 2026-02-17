@@ -32,6 +32,7 @@ import {
   PlaceSuggestion,
 } from "@/modules/core/services/placesService";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
 
 interface Props {
   onClose?: () => void;
@@ -55,17 +56,18 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
     onClose?.();
   };
 
-  const navigateToAddressCreate = () => {
-    router.push(
-      isAuthenticated
-        ? "/(app)/(tabs)/account/setting/address/create"
-        : "/(guest)/login",
-    );
+  const navigateToAddressCreate = async () => {
+    if (isAuthenticated) {
+      router.push("/account/setting/address/create");
+      return;
+    }
+    await setAuthRedirect("/account/setting/address/create");
+    router.push("/(guest)/login");
   };
 
   const openCreateAddress = () => {
     onClose?.();
-    navigateToAddressCreate();
+    navigateToAddressCreate().then(() => undefined);
   };
 
   const renderMapPortal = (coords?: Coordinates) => {
@@ -106,7 +108,7 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
     setAddressDraft(mapGeocodeToAddressDraft(addr));
     closePortal();
     onClose?.();
-    navigateToAddressCreate();
+    navigateToAddressCreate().then(() => undefined);
   };
 
   const activeAddress = selectedAddress || defaultAddress;

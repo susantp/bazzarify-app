@@ -1,6 +1,7 @@
 import { TLoginFormField } from "@/components/common";
 import actionOAuthLogin from "@/modules/auth/services/oAuthLogin";
 import LoginProvider from "@/modules/auth/enums/loginProvider";
+import { AuthCompletionEvent } from "@/modules/auth/domain/AuthCompletionEvent";
 import Toast from "react-native-toast-message";
 import * as Sentry from "@sentry/react-native";
 import actionLogin from "@/modules/auth/services/credentialLogin";
@@ -26,7 +27,10 @@ export default function useLoginHook() {
   const setAuthRouteHold = useSetAtom(authRouteHoldAtom);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
-  const handleAfterLoginFlow = async (token: string): Promise<boolean> => {
+  const handleAfterLoginFlow = async (
+    event: AuthCompletionEvent,
+  ): Promise<boolean> => {
+    const { token } = event;
     const userResponse: TUserPayload | null = await actionGetUser(token);
     if (!userResponse || !userResponse.user) {
       Sentry.captureMessage(
@@ -55,8 +59,8 @@ export default function useLoginHook() {
   const handleOAuthLogin = async (provider: LoginProvider) => {
     setAuthRouteHold(true);
     try {
-      const token = await actionOAuthLogin(provider);
-      const isResolved = await handleAfterLoginFlow(token);
+      const completionEvent = await actionOAuthLogin(provider);
+      const isResolved = await handleAfterLoginFlow(completionEvent);
       if (!isResolved) {
         return;
       }
@@ -85,7 +89,7 @@ export default function useLoginHook() {
     setAuthRouteHold(true);
     try {
       const token = await actionLogin(data);
-      const isResolved = await handleAfterLoginFlow(token);
+      const isResolved = await handleAfterLoginFlow({ token });
       if (!isResolved) {
         return;
       }

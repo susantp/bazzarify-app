@@ -22,6 +22,7 @@ import { router } from "expo-router";
 import { Alert } from "react-native";
 import getCartItemToUpdate from "@/modules/cart/utils/getCartItemToUpdate";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
 
 export default function useCartHook() {
   const [cartState, setCartState] = useAtom(cartAtom);
@@ -70,12 +71,25 @@ export default function useCartHook() {
       });
   };
 
-  const handleCheckoutPress = () =>
-    !isAuthenticated
-      ? router.push("/(guest)/login")
-      : cartState?.cart?.totals.items_count
-        ? router.push("/cart/checkout")
-        : Alert.alert("Please select item to checkout.");
+  const handleCheckoutPress = () => {
+    if (!isAuthenticated) {
+      setAuthRedirect("/cart/checkout")
+        .then(() => {
+          router.push("/(guest)/login");
+        })
+        .catch(() => {
+          router.push("/(guest)/login");
+        });
+      return;
+    }
+
+    if (cartState?.cart?.totals.items_count) {
+      router.push("/cart/checkout");
+      return;
+    }
+
+    Alert.alert("Please select item to checkout.");
+  };
 
   const handleLineItemIncrement = (item: TCartItem) => {
     if (!item) return;

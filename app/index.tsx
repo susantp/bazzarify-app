@@ -1,5 +1,5 @@
-import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import { Redirect } from "expo-router";
 
 export default function RootIndex() {
-  return <ThemedLoader />;
+  return <Redirect href="/(public)/(tabs)" />;
 }

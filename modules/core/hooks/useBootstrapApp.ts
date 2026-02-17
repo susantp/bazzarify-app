@@ -64,7 +64,7 @@ export function useBootstrapApp({
       active = false;
       unsubscribe();
     };
-  }, [setAddresses, setAuthStatus, setCart, setToken, setUser]);
+  }, [hasBootstrappedRef]);
 
   return {
     ready,

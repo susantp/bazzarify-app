@@ -12,8 +12,8 @@ import {
 } from "@/modules/auth/atoms/authStatusAtom";
 import { consumeAuthRedirect } from "@/modules/core/utils/authRedirect";
 
-const GUEST_HOME_PATH: Href = "/(guest)/guestAccountIndex";
-const AUTH_HOME_PATH: Href = "/(app)/(tabs)/account/profile";
+const GUEST_HOME_PATH = "/(public)/(tabs)" as Href;
+const AUTH_HOME_PATH = "/(public)/(tabs)" as Href;
 
 type PendingTransition = {
   from: Exclude<AuthStatus, "unknown">;
@@ -31,30 +31,6 @@ function isValidAuthRedirect(target: string | null): target is string {
 }
 
 function normalizeAuthenticatedIntent(target: string): Href {
-  if (target.startsWith("/(app)/")) {
-    return target as Href;
-  }
-
-  if (
-    target.startsWith("/products") ||
-    target.startsWith("/vendor") ||
-    target.startsWith("/+not-found")
-  ) {
-    return target as Href;
-  }
-
-  if (
-    target === "/" ||
-    target === "/index" ||
-    target.startsWith("/account") ||
-    target.startsWith("/cart") ||
-    target.startsWith("/categories") ||
-    target.startsWith("/search")
-  ) {
-    const suffix = target === "/" ? "/index" : target;
-    return (`/(app)/(tabs)${suffix}` as Href);
-  }
-
   return target as Href;
 }
 
@@ -78,14 +54,9 @@ export default function AuthTransitionResolver() {
     const previous = previousAuthStatusRef.current;
 
     // Ignore initial hydration transition (unknown -> guest/authenticated).
+    // Initial landing is now structurally owned by root route and mounted trees.
     if (previous === null) {
       previousAuthStatusRef.current = authStatus;
-      if (pathname === "/" || pathname === "/index") {
-        pendingTransitionRef.current =
-          authStatus === "authenticated"
-            ? { from: "guest", to: "authenticated" }
-            : { from: "authenticated", to: "guest" };
-      }
       return;
     }
 
