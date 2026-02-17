@@ -44,7 +44,7 @@ export default function Page() {
           return;
         }
         router.replace(
-          `/guest/verify-password-reset?email=${data.email}&phone=${data.phone}`,
+          `/(guest)/verify-password-reset?email=${data.email}&phone=${data.phone}`,
         );
       })
       .catch((error: AxiosError) => {

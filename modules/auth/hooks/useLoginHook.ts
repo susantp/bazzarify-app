@@ -34,6 +34,7 @@ export default function useLoginHook() {
       await deleteStorage(AUTH_TOKEN_KEY);
       await deleteStorage(USER_KEY);
       setToken(null);
+      console.log("AUTH_STATUS_SET(guest)");
       setAuthStatus("guest");
       return false;
     }
@@ -43,6 +44,7 @@ export default function useLoginHook() {
     await setStorage(AUTH_TOKEN_KEY, token);
     await setStorage(USER_KEY, JSON.stringify(userResponse.user));
     setToken(token);
+    console.log("AUTH_STATUS_SET(authenticated)");
     setAuthStatus("authenticated");
     return true;
   };

@@ -7,6 +7,7 @@ export function createTokenTask(
   setAuthStatus: Setter<AuthStatus>,
 ) {
   return async () => {
+    console.log("TOKEN_TASK_START");
     await hydrateToken(setToken, setAuthStatus);
   };
 }

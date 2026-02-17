@@ -21,11 +21,15 @@ export async function hydrateToken(
 ): Promise<void> {
   try {
     const value = await getAuthToken();
+    console.log("TOKEN_READ_RESULT", value ? "present" : "null");
     setToken(value);
-    setAuthStatus(value ? "authenticated" : "guest");
+    const nextStatus: AuthStatus = value ? "authenticated" : "guest";
+    console.log("AUTH_STATUS_SET(" + nextStatus + ")");
+    setAuthStatus(nextStatus);
     Sentry.captureMessage("Auth token hydrated: " + !!value);
   } catch (err) {
     setToken(null);
+    console.log("AUTH_STATUS_SET(guest)");
     setAuthStatus("guest");
     Sentry.captureException(err);
   }

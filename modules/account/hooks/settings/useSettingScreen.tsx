@@ -27,9 +27,9 @@ export default function useSettingScreen() {
     //TODO request to logout api
     await clearAuthToken();
     setToken(null);
+    console.log("AUTH_STATUS_SET(guest)");
     setAuthStatus("guest");
     setUser(null);
-    router.replace("/guest/guestAccountIndex");
   };
 
   const renderSettingItem = ({ item }: ListRenderItemInfo<IProfileMenu>) => {

@@ -57,6 +57,7 @@ const Page = () => {
       await deleteStorage(AUTH_TOKEN_KEY);
       await deleteStorage(USER_KEY);
       setToken(null);
+      console.log("AUTH_STATUS_SET(guest)");
       setAuthStatus("guest");
       return false;
     }
@@ -64,6 +65,7 @@ const Page = () => {
     await setStorage(AUTH_TOKEN_KEY, token);
     await setStorage(USER_KEY, JSON.stringify(userResponse.user));
     setToken(token);
+    console.log("AUTH_STATUS_SET(authenticated)");
     setAuthStatus("authenticated");
     return true;
   };
@@ -208,7 +210,7 @@ const Page = () => {
                 <View>
                   <Text>Old User?</Text>
                 </View>
-                <Link href="/guest/login">
+                <Link href="/(guest)/login">
                   <Text className="text-primary underline">Sign In</Text>
                 </Link>
               </View>

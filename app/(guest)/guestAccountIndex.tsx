@@ -26,8 +26,8 @@ export default function Page() {
     width: 0,
     height: 0,
   });
-  const handleLoginPress = () => router.replace("/guest/login");
-  const handleRegisterPress = () => router.replace("/guest/register");
+  const handleLoginPress = () => router.replace("/(guest)/login");
+  const handleRegisterPress = () => router.replace("/(guest)/register");
   return (
     <SafeAreaWrapper>
       <ContentWrapper className="flex-col gap-y-9 py-5">

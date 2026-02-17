@@ -57,7 +57,7 @@ export default function Page() {
           });
           return;
         }
-        router.replace("/guest/login");
+        router.replace("/(guest)/login");
       })
       .catch((error: AxiosError) => {
         console.log("password reset: ", error);

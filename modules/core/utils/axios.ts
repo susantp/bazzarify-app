@@ -2,7 +2,7 @@ import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { app } from "@/modules/core/configs/app";
 import { router } from "expo-router";
 import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
-import { clearAuthToken } from "@/modules/auth/utils/token";
+import { clearAuthSession } from "@/modules/auth/utils/token";
 
 interface IAuthAxiosInstanceParams {
   token: string | undefined;
@@ -65,45 +65,37 @@ const getActivePath = () => {
   return null;
 };
 
+const stashRedirectIntent = async () => {
+  const path = getActivePath();
+  if (path && !path.startsWith("/guest")) {
+    await setAuthRedirect(path);
+  }
+};
+
 export const authAxiosInstance = async ({
   token,
   modulePath,
 }: IAuthAxiosInstanceParams) => {
   if (!token) {
-    const path = getActivePath();
-    if (path && !path.startsWith("/guest")) {
-      await setAuthRedirect(path);
-    }
-    await clearAuthToken();
-    router.replace("/guest/guestAccountIndex");
+    await stashRedirectIntent();
+    await clearAuthSession();
     return;
   }
   const config = defaultConfigWithToken({ token, modulePath });
   const instance = axios.create(config);
   instance.interceptors.response.use(
     async (response) => {
-      // Handle successful responses that contain error codes in metadata
       if (response.data?.metaData?.errorCode === 401) {
-        await clearAuthToken();
-        const path = getActivePath();
-        if (path && !path.startsWith("/guest")) {
-          await setAuthRedirect(path);
-        }
-        router.replace("/guest/guestAccountIndex");
+        await stashRedirectIntent();
+        await clearAuthSession();
       }
       return response;
     },
     async (error) => {
-      // Handle HTTP error responses (401, 403, 500, etc.)
       if (error.response?.status === 401) {
-        await clearAuthToken();
-        const path = getActivePath();
-        if (path && !path.startsWith("/guest")) {
-          await setAuthRedirect(path);
-        }
-        router.replace("/guest/guestAccountIndex");
+        await stashRedirectIntent();
+        await clearAuthSession();
       }
-      // Re-throw the error so it can be handled by the calling code
       return Promise.reject(error);
     },
   );

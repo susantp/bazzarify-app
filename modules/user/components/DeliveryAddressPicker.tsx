@@ -57,7 +57,9 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
 
   const navigateToAddressCreate = () => {
     router.push(
-      isAuthenticated ? "/account/setting/address/create" : "/guest/login",
+      isAuthenticated
+        ? "/(app)/(tabs)/account/setting/address/create"
+        : "/(guest)/login",
     );
   };
 

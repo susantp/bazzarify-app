@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { MutableRefObject, useEffect, useMemo, useState } from "react";
 import { useSetAtom } from "jotai";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
@@ -15,9 +15,13 @@ import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { createUserTask } from "@/modules/auth/boot/userTask";
 
-export function useBootstrapApp() {
+export function useBootstrapApp({
+  hasBootstrappedRef,
+}: {
+  hasBootstrappedRef?: MutableRefObject<boolean>;
+} = {}) {
   const colorScheme = useColorScheme();
-  const queryClient = new QueryClient();
+  const queryClient = useMemo(() => new QueryClient(), []);
   const setToken = useSetAtom(tokenAtom);
   const setAuthStatus = useSetAtom(authStatusAtom);
   const setCart = useSetAtom(cartAtom);
@@ -28,7 +32,17 @@ export function useBootstrapApp() {
   useEffect(() => {
     let active = true;
 
+    if (hasBootstrappedRef?.current) {
+      setReady(true);
+      return () => {
+        active = false;
+      };
+    }
+
+    hasBootstrappedRef && (hasBootstrappedRef.current = true);
+
     const run = async () => {
+      console.log("BOOTSTRAP_START");
       await bootstrapApp([
         // auth status must resolve before guarded stacks mount
         createTokenTask(setToken, setAuthStatus),
@@ -38,7 +52,10 @@ export function useBootstrapApp() {
         splashTask,
         // plug more tasks later
       ]);
-      if (active) setReady(true);
+      if (active) {
+        console.log("BOOTSTRAP_READY");
+        setReady(true);
+      }
     };
 
     run().then(() => undefined);

@@ -1,3 +1,6 @@
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
+import { userAtom } from "@/modules/auth/atoms/userAtom";
 import {
   AUTH_TOKEN_EXPIRES_AT_KEY,
   AUTH_TOKEN_KEY,
@@ -9,6 +12,7 @@ import {
   retrieveStorage,
   setStorage,
 } from "@/modules/core/utils/secureStore";
+import { getDefaultStore } from "jotai";
 
 export async function setAuthToken(token: string, ttlMs = AUTH_TOKEN_TTL_MS) {
   const expiresAt = Date.now() + ttlMs;
@@ -22,6 +26,19 @@ export async function clearAuthToken() {
   await deleteStorage(USER_KEY);
 }
 
+export function clearAuthState() {
+  const store = getDefaultStore();
+  store.set(tokenAtom, null);
+  store.set(userAtom, null);
+  console.log("AUTH_STATUS_SET(guest)");
+  store.set(authStatusAtom, "guest");
+}
+
+export async function clearAuthSession() {
+  await clearAuthToken();
+  clearAuthState();
+}
+
 export async function getAuthToken(): Promise<string | null> {
   const token = await retrieveStorage(AUTH_TOKEN_KEY);
   if (!token) {
@@ -33,11 +50,11 @@ export async function getAuthToken(): Promise<string | null> {
   }
   const expiresAt = Number(expiresAtRaw);
   if (Number.isNaN(expiresAt)) {
-    await clearAuthToken();
+    await clearAuthSession();
     return null;
   }
   if (Date.now() > expiresAt) {
-    await clearAuthToken();
+    await clearAuthSession();
     return null;
   }
   return token;

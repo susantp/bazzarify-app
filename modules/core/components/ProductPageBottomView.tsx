@@ -70,7 +70,7 @@ const ProductPageBottomView = ({
             <PolygonButton
               dimensions={leftBtnDimension}
               setDimensions={setLeftButtonDimensions}
-              onPress={() => router.push("/guest/login")}
+              onPress={() => router.push("/(guest)/login")}
               color="#1A202C"
               isLeft={true}
               label="Login To Buy"

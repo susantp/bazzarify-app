@@ -72,7 +72,7 @@ export default function useCartHook() {
 
   const handleCheckoutPress = () =>
     !isAuthenticated
-      ? router.push("/guest/login")
+      ? router.push("/(guest)/login")
       : cartState?.cart?.totals.items_count
         ? router.push("/cart/checkout")
         : Alert.alert("Please select item to checkout.");
