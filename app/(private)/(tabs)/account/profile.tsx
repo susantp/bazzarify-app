@@ -1,5 +1,4 @@
 import {
-  BackHandler,
   RefreshControl,
   ScrollView,
   Text,
@@ -8,7 +7,7 @@ import {
 } from "react-native";
 import ProfileInfo from "@/components/account/profile/ProfileInfo";
 import AccountHeader from "@/components/account/AccountHeader";
-import React, { useCallback } from "react";
+import React from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import OrderStatus from "@/components/account/profile/OrderStatus";
 import useOrder from "@/modules/order/hooks/useOrder";
@@ -18,7 +17,6 @@ import { toTitleCase } from "@/modules/core/utils";
 import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
 import formatOrderDate from "@/modules/order/utils/formatOrderDate";
-import { useFocusEffect } from "@react-navigation/native";
 
 export default function Page() {
   const {
@@ -34,20 +32,6 @@ export default function Page() {
   const statusSource = orderStatuses.length ? orderStatuses : fallbackStatuses;
   const { orderStatusBoxes } = useOrderStatusBox(statusSource);
   const recentOrders = ordersPayload?.orders?.data?.slice(0, 4) || [];
-
-  useFocusEffect(
-    useCallback(() => {
-      const subscription = BackHandler.addEventListener(
-        "hardwareBackPress",
-        () => {
-          router.replace("/(public)/(tabs)");
-          return true;
-        },
-      );
-
-      return () => subscription.remove();
-    }, []),
-  );
 
   return (
     <SafeAreaWrapper>

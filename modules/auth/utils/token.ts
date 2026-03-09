@@ -2,6 +2,7 @@ import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
+import { cartAtom, selectedDeliveryAddress } from "@/modules/cart/atoms";
 import {
   AUTH_TOKEN_EXPIRES_AT_KEY,
   AUTH_TOKEN_KEY,
@@ -14,6 +15,7 @@ import {
   setStorage,
 } from "@/modules/core/utils/secureStore";
 import { getDefaultStore } from "jotai";
+import { addressListAtom, addressDraftAtom } from "@/modules/user/atoms/addresessAtom";
 
 export async function setAuthToken(token: string, ttlMs = AUTH_TOKEN_TTL_MS) {
   const expiresAt = Date.now() + ttlMs;
@@ -35,6 +37,10 @@ export function clearAuthState() {
   }
   store.set(tokenAtom, null);
   store.set(userAtom, null);
+  store.set(cartAtom, null);
+  store.set(selectedDeliveryAddress, null);
+  store.set(addressListAtom, null);
+  store.set(addressDraftAtom, null);
   console.log("AUTH_STATUS_SET(guest)");
   store.set(authStatusAtom, "guest");
 }

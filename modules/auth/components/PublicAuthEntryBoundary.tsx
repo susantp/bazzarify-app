@@ -1,14 +1,16 @@
-import { useAtomValue } from "jotai";
+import { PropsWithChildren } from "react";
 import { Redirect } from "expo-router";
+import { useAtomValue } from "jotai";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
-import GuestAccountLandingScreen from "@/modules/auth/screens/GuestAccountLandingScreen";
 
-export default function AccountEntry() {
+export default function PublicAuthEntryBoundary({
+  children,
+}: PropsWithChildren) {
   const authStatus = useAtomValue(authStatusAtom);
 
   if (authStatus === "authenticated") {
     return <Redirect href="/account/profile" />;
   }
 
-  return <GuestAccountLandingScreen />;
+  return children;
 }

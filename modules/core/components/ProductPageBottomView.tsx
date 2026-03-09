@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import PolygonButton from "@/components/common/PolygonButton";
 import { useAtomValue } from "jotai";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
-import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
+import { routeGuestToLoginForProtectedTarget } from "@/modules/core/utils/protectedNavigation";
 
 interface IProductPageBottomView {
   onCartAdd: () => void;
@@ -71,15 +71,11 @@ const ProductPageBottomView = ({
             <PolygonButton
               dimensions={leftBtnDimension}
               setDimensions={setLeftButtonDimensions}
-              onPress={() =>
-                setAuthRedirect("/cart/checkout")
-                  .then(() => {
-                    router.push("/(guest)/login");
-                  })
-                  .catch(() => {
-                    router.push("/(guest)/login");
-                  })
-              }
+              onPress={() => {
+                routeGuestToLoginForProtectedTarget("/cart/checkout").then(
+                  () => undefined,
+                );
+              }}
               color="#1A202C"
               isLeft={true}
               label="Login To Buy"

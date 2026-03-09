@@ -10,7 +10,10 @@ import {
   authStatusAtom,
   AuthStatus,
 } from "@/modules/auth/atoms/authStatusAtom";
-import { consumeAuthRedirect } from "@/modules/core/utils/authRedirect";
+import {
+  consumeAuthRedirect,
+  isProtectedAuthRedirectTarget,
+} from "@/modules/core/utils/authRedirect";
 
 const GUEST_HOME_PATH = "/(public)/(tabs)" as Href;
 const AUTH_HOME_PATH = "/(public)/(tabs)" as Href;
@@ -19,16 +22,6 @@ type PendingTransition = {
   from: Exclude<AuthStatus, "unknown">;
   to: Exclude<AuthStatus, "unknown">;
 };
-
-function isValidAuthRedirect(target: string | null): target is string {
-  const isGuestTarget =
-    target === "/(guest)" || target?.startsWith("/(guest)/");
-  return Boolean(
-    target &&
-    target.startsWith("/") &&
-    !isGuestTarget,
-  );
-}
 
 function normalizeAuthenticatedIntent(target: string): Href {
   return target as Href;
@@ -100,7 +93,7 @@ export default function AuthTransitionResolver() {
           pendingTransition.to === "authenticated"
         ) {
           const redirectTarget = await consumeAuthRedirect();
-          target = isValidAuthRedirect(redirectTarget)
+          target = isProtectedAuthRedirectTarget(redirectTarget)
             ? normalizeAuthenticatedIntent(redirectTarget)
             : AUTH_HOME_PATH;
         } else if (

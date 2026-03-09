@@ -13,7 +13,7 @@ const LoginFormHelperText = () => {
         <Text>Remember me</Text>
       </View>
       <TouchableOpacity
-        onPress={() => router.push("/(tabs)/guest/request-password-reset")}
+        onPress={() => router.push("/auth/request-password-reset")}
       >
         <Text>Forget password</Text>
       </TouchableOpacity>

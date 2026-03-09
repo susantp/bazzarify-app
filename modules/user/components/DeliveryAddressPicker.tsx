@@ -11,7 +11,10 @@ import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 import { usePortal } from "@/modules/portal/usePortal";
 import { MapView } from "@/modules/core/components/MapView";
-import { reverseGeocode } from "@/modules/core/services/locationService";
+import {
+  Coordinates as GeoCoordinates,
+  reverseGeocode,
+} from "@/modules/core/services/locationService";
 import {
   addressDraftAtom,
   addressListAtom,
@@ -24,7 +27,7 @@ import {
   formatUserAddress,
   mapGeocodeToAddressDraft,
 } from "@/modules/user/utils/address";
-import { Coordinates } from "expo-maps";
+import { Coordinates as MapCoordinates } from "expo-maps";
 import { LocationGeocodedAddress } from "expo-location";
 import {
   fetchPlaceDetails,
@@ -32,7 +35,7 @@ import {
   PlaceSuggestion,
 } from "@/modules/core/services/placesService";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
-import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
+import { routeGuestToLoginForProtectedTarget } from "@/modules/core/utils/protectedNavigation";
 
 interface Props {
   onClose?: () => void;
@@ -61,8 +64,7 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
       router.push("/account/setting/address/create");
       return;
     }
-    await setAuthRedirect("/account/setting/address/create");
-    router.push("/(guest)/login");
+    await routeGuestToLoginForProtectedTarget("/account/setting/address/create");
   };
 
   const openCreateAddress = () => {
@@ -70,7 +72,7 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
     navigateToAddressCreate().then(() => undefined);
   };
 
-  const renderMapPortal = (coords?: Coordinates) => {
+  const renderMapPortal = (coords?: MapCoordinates) => {
     const fallbackCoords =
       coords ||
       (currentLatitude && currentLongitude
@@ -196,11 +198,11 @@ const LocationPickerPortal = ({
   onClose,
   onConfirm,
 }: {
-  initialCoords: Coordinates;
+  initialCoords: MapCoordinates;
   onClose: () => void;
   onConfirm: (addr?: LocationGeocodedAddress | null) => void;
 }) => {
-  const [coords, setCoords] = useState<Coordinates>(initialCoords);
+  const [coords, setCoords] = useState<MapCoordinates>(initialCoords);
   const [currentAddress, setCurrentAddress] =
     useState<LocationGeocodedAddress | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -208,12 +210,24 @@ const LocationPickerPortal = ({
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const normalizedCoords =
+    coords.latitude != null && coords.longitude != null
+      ? ({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        } satisfies GeoCoordinates)
+      : null;
 
   useEffect(() => {
-    reverseGeocode(coords)
+    if (!normalizedCoords) {
+      setCurrentAddress(null);
+      return;
+    }
+
+    reverseGeocode(normalizedCoords)
       .then((result) => setCurrentAddress(result))
       .catch(() => setCurrentAddress(null));
-  }, [coords]);
+  }, [normalizedCoords]);
 
   useEffect(() => {
     if (searchTimer.current) clearTimeout(searchTimer.current);
@@ -232,7 +246,7 @@ const LocationPickerPortal = ({
     }
     setSearchLoading(true);
     searchTimer.current = setTimeout(() => {
-      fetchPlaceSuggestions(trimmed, coords)
+      fetchPlaceSuggestions(trimmed, normalizedCoords ?? undefined)
         .then((results) => {
           setSearchResults(results);
           setSearchError(null);
@@ -252,9 +266,9 @@ const LocationPickerPortal = ({
     return () => {
       if (searchTimer.current) clearTimeout(searchTimer.current);
     };
-  }, [searchQuery, coords]);
+  }, [searchQuery, normalizedCoords]);
 
-  const handleMapTap = (event: { coordinates: Coordinates }) => {
+  const handleMapTap = (event: { coordinates: MapCoordinates }) => {
     const { coordinates } = event;
     if (!coordinates.latitude || !coordinates.longitude) return;
     setCoords(coordinates);

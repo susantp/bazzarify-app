@@ -18,7 +18,7 @@ import { useEffect, useMemo, useRef } from "react";
 function AuthenticatedRoot() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(public)/(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(public)" options={{ headerShown: false }} />
       <Stack.Screen name="(private)/(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen name="vendor/[vendorUuid]" options={{ headerShown: false }} />
@@ -30,8 +30,7 @@ function AuthenticatedRoot() {
 function GuestRoot() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(public)/(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(guest)" options={{ headerShown: false }} />
+      <Stack.Screen name="(public)" options={{ headerShown: false }} />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen name="vendor/[vendorUuid]" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" options={{ headerShown: false }} />

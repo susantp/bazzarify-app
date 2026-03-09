@@ -128,7 +128,7 @@ const LoginScreen = () => {
                 <View>
                   <Text>New User?</Text>
                 </View>
-                <Pressable onPress={() => router.push("/(guest)/register")}>
+                <Pressable onPress={() => router.push("/auth/register")}>
                   <Text className="text-primary underline">Sign Up</Text>
                 </Pressable>
               </View>

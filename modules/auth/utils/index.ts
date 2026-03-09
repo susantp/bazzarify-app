@@ -18,7 +18,7 @@ import actionGetUser from "@/modules/auth/services/actionGetUser";
 export async function hydrateToken(
   setToken: Setter<string | null>,
   setAuthStatus: Setter<AuthStatus>,
-): Promise<void> {
+): Promise<string | null> {
   try {
     const value = await getAuthToken();
     console.log("TOKEN_READ_RESULT", value ? "present" : "null");
@@ -27,11 +27,13 @@ export async function hydrateToken(
     console.log("AUTH_STATUS_SET(" + nextStatus + ")");
     setAuthStatus(nextStatus);
     Sentry.captureMessage("Auth token hydrated: " + !!value);
+    return value;
   } catch (err) {
     setToken(null);
     console.log("AUTH_STATUS_SET(guest)");
     setAuthStatus("guest");
     Sentry.captureException(err);
+    return null;
   }
 }
 

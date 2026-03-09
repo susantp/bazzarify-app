@@ -22,7 +22,7 @@ import { router } from "expo-router";
 import { Alert } from "react-native";
 import getCartItemToUpdate from "@/modules/cart/utils/getCartItemToUpdate";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
-import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
+import { routeGuestToLoginForProtectedTarget } from "@/modules/core/utils/protectedNavigation";
 
 export default function useCartHook() {
   const [cartState, setCartState] = useAtom(cartAtom);
@@ -73,13 +73,9 @@ export default function useCartHook() {
 
   const handleCheckoutPress = () => {
     if (!isAuthenticated) {
-      setAuthRedirect("/cart/checkout")
-        .then(() => {
-          router.push("/(guest)/login");
-        })
-        .catch(() => {
-          router.push("/(guest)/login");
-        });
+      routeGuestToLoginForProtectedTarget("/cart/checkout").then(
+        () => undefined,
+      );
       return;
     }
 

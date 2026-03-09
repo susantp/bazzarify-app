@@ -23,7 +23,7 @@ export default function TabLayout() {
   const cart = useAtomValue(cartAtom);
   const authStatus = useAtomValue(authStatusAtom);
   const accountHref =
-    authStatus === "authenticated" ? "/account/profile" : "/guestAccountIndex";
+    authStatus === "authenticated" ? "/account/profile" : "/account";
   return (
     <Tabs
       initialRouteName="index"

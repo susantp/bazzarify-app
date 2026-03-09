@@ -4,7 +4,6 @@ import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 import { bootstrapApp } from "@/modules/core/utils/bootstrap";
 import { subscribeOnResume } from "@/modules/core/utils";
-import { createTokenTask } from "@/modules/auth/boot/tokenTask";
 import { splashTask } from "@/modules/core/boot/splashTask";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { QueryClient } from "@tanstack/query-core";
@@ -14,6 +13,7 @@ import createAddressesTask from "@/modules/auth/boot/createAddressesTask";
 import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { createUserTask } from "@/modules/auth/boot/userTask";
+import { hydrateToken } from "@/modules/auth/utils";
 
 export function useBootstrapApp({
   hasBootstrappedRef,
@@ -43,15 +43,21 @@ export function useBootstrapApp({
 
     const run = async () => {
       console.log("BOOTSTRAP_START");
-      await bootstrapApp([
-        // auth status must resolve before guarded stacks mount
-        createTokenTask(setToken, setAuthStatus),
-        createUserTask(setUser),
-        createCartTask(setCart),
-        createAddressesTask(setAddresses),
-        splashTask,
-        // plug more tasks later
-      ]);
+      const token = await hydrateToken(setToken, setAuthStatus);
+      if (!token) {
+        setUser(null);
+        setCart(null);
+        setAddresses(null);
+        await bootstrapApp([splashTask]);
+      } else {
+        await bootstrapApp([
+          createUserTask(setUser),
+          createCartTask(setCart, token),
+          createAddressesTask(setAddresses, token),
+          splashTask,
+          // plug more tasks later
+        ]);
+      }
       if (active) {
         console.log("BOOTSTRAP_READY");
         setReady(true);
