@@ -19,6 +19,11 @@ import UserPasswordInput from "@/components/account/UserPasswordInput";
 import * as Sentry from "@sentry/react-native";
 import NumberInput from "@/components/account/NumberInput";
 import { FontAwesome } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
+import {
+  applyValidationFeedback,
+  getValidationFeedback,
+} from "@/modules/core/utils/validationFeedback";
 
 export default function Page() {
   const { email, phone } = useLocalSearchParams<{
@@ -29,7 +34,7 @@ export default function Page() {
     control,
     handleSubmit,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<TForgetPasswordVerificationFormField>({
     defaultValues: {
       email: email,
@@ -51,6 +56,16 @@ export default function Page() {
       })
       .then((response: AxiosResponse) => {
         if (response.data.metaData.error) {
+          const feedback = getValidationFeedback(response.data.metaData.error);
+          if (feedback) {
+            applyValidationFeedback(setError, feedback);
+            Toast.show({
+              position: "bottom",
+              text1: feedback.summary,
+              type: "error",
+            });
+            return;
+          }
           setError("phone", {
             type: "manual",
             message: response.data.metaData.error,
@@ -62,6 +77,16 @@ export default function Page() {
       .catch((error: AxiosError) => {
         console.log("password reset: ", error);
         Sentry.captureException(error);
+        const feedback = getValidationFeedback(error);
+        if (feedback) {
+          applyValidationFeedback(setError, feedback);
+          Toast.show({
+            position: "bottom",
+            text1: feedback.summary,
+            type: "error",
+          });
+          return;
+        }
         setError("phone", {
           type: "manual",
           message: `Oops something went wrong. Please contact bazzarify support.. Please contact bazzarify support.`,
@@ -156,6 +181,7 @@ export default function Page() {
             <FullWidthActionBtn
               handleOnPress={handleSubmit(handleForgetPassword)}
               label="Update password"
+              disabled={isSubmitting}
             />
           </View>
         </ScrollView>

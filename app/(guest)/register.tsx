@@ -26,6 +26,10 @@ import { useSetAtom } from "jotai";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import {
+  applyValidationFeedback,
+  getValidationFeedback,
+} from "@/modules/core/utils/validationFeedback";
 
 const Page = () => {
   const [formValues] = useState({
@@ -85,6 +89,16 @@ const Page = () => {
       });
     } catch (error) {
       Sentry.captureException(error);
+      const feedback = getValidationFeedback(error);
+      if (feedback) {
+        applyValidationFeedback(setError, feedback);
+        Toast.show({
+          position: "bottom",
+          text1: feedback.summary,
+          type: "error",
+        });
+        return;
+      }
       Toast.show({
         position: "bottom",
         text1: "Sorry process failed",

@@ -3,6 +3,10 @@ import { AxiosResponse } from "axios";
 import { authAxiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
+import {
+  hasEnvelopeError,
+  toActionFeedbackError,
+} from "@/modules/core/utils/actionFeedback";
 
 export async function fetchAuthDataAndValidate<TResponse extends z.ZodType>(
   endpoint: { module: string; path: string },
@@ -21,9 +25,12 @@ export async function fetchAuthDataAndValidate<TResponse extends z.ZodType>(
   try {
     upstream = await instance.get(endpoint.path);
   } catch (error: unknown) {
-    const err = new Error(errorMessage, { cause: error });
+    const err = toActionFeedbackError(error, errorMessage);
     Sentry.captureException(err);
     throw err;
+  }
+  if (hasEnvelopeError(upstream.data)) {
+    throw toActionFeedbackError(upstream.data, errorMessage);
   }
   const parsed = responsePayloadSchema.safeParse(upstream.data);
 
@@ -31,7 +38,10 @@ export async function fetchAuthDataAndValidate<TResponse extends z.ZodType>(
     const issues = formattedIssues(parsed.error.issues);
     console.log("fetchAndValidate", issues);
     Sentry.captureException(issues);
-    throw new Error("API response schema validation failed", { cause: issues });
+    throw toActionFeedbackError(
+      new Error("API response schema validation failed"),
+      "API response schema validation failed",
+    );
   }
 
   return parsed.data;

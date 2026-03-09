@@ -33,19 +33,28 @@ export default function useCreateAddressHook() {
         console.log("Validation errors:", formattedIssues(parsed.error.issues));
         return;
       }
-      const addresses = await actionCreateAddress(parsed.data);
-      if (addresses?.addresses) {
-        const selected =
-          findMatchingAddress(addresses.addresses, parsed.data) || null;
+      try {
+        const addresses = await actionCreateAddress(parsed.data);
+        if (addresses?.addresses) {
+          const selected =
+            findMatchingAddress(addresses.addresses, parsed.data) || null;
+          Toast.show({
+            position: "bottom",
+            text1: "Address created successfully!",
+            type: "success",
+          });
+          setAddress(addresses.addresses);
+          setSelectedAddress(selected);
+          if (draftAddress) setDraftAddress(null);
+          router.back();
+        }
+      } catch (error) {
         Toast.show({
           position: "bottom",
-          text1: "Address created successfully!",
-          type: "success",
+          text1: "Could not create address",
+          text2: error instanceof Error ? error.message : undefined,
+          type: "error",
         });
-        setAddress(addresses.addresses);
-        setSelectedAddress(selected);
-        if (draftAddress) setDraftAddress(null);
-        router.back();
       }
     }
   };

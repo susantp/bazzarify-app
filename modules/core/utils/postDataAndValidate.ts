@@ -3,6 +3,10 @@ import { AxiosResponse } from "axios";
 import { authAxiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
+import {
+  hasEnvelopeError,
+  toActionFeedbackError,
+} from "@/modules/core/utils/actionFeedback";
 
 export default async function postDataAndValidate<
   TData,
@@ -25,10 +29,12 @@ export default async function postDataAndValidate<
   try {
     upstream = await instance.post(endpoint.path, data);
   } catch (error) {
-    console.error("postDataAndValidate error", error);
-    const err = new Error(errorMessage);
+    const err = toActionFeedbackError(error, errorMessage);
     Sentry.captureException(error);
     throw err;
+  }
+  if (hasEnvelopeError(upstream.data)) {
+    throw toActionFeedbackError(upstream.data, errorMessage);
   }
   const parsed = responseSchema.safeParse(upstream.data);
 
@@ -36,7 +42,10 @@ export default async function postDataAndValidate<
     const issues = formattedIssues(parsed.error.issues);
     console.log("postDataAndValidate", issues);
     Sentry.captureException(issues);
-    throw new Error("API response schema validation failed");
+    throw toActionFeedbackError(
+      new Error("API response schema validation failed"),
+      "API response schema validation failed",
+    );
   }
 
   return parsed.data;

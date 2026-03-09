@@ -19,13 +19,18 @@ import { AxiosError, AxiosResponse } from "axios";
 import { router } from "expo-router";
 import * as Sentry from "@sentry/react-native";
 import { Feather } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
+import {
+  applyValidationFeedback,
+  getValidationFeedback,
+} from "@/modules/core/utils/validationFeedback";
 
 export default function Page() {
   const {
     control,
     handleSubmit,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<TForgetPasswordFormField>({
     defaultValues: {
       email: "gracysusant@gmail.com",
@@ -37,6 +42,16 @@ export default function Page() {
       .post(remotePaths.passwordResetRequest.path, data)
       .then((response: AxiosResponse) => {
         if (response.data.metaData.error) {
+          const feedback = getValidationFeedback(response.data.metaData.error);
+          if (feedback) {
+            applyValidationFeedback(setError, feedback);
+            Toast.show({
+              position: "bottom",
+              text1: feedback.summary,
+              type: "error",
+            });
+            return;
+          }
           setError("phone", {
             type: "manual",
             message: response.data.metaData.error,
@@ -49,6 +64,16 @@ export default function Page() {
       })
       .catch((error: AxiosError) => {
         Sentry.captureException(error);
+        const feedback = getValidationFeedback(error);
+        if (feedback) {
+          applyValidationFeedback(setError, feedback);
+          Toast.show({
+            position: "bottom",
+            text1: feedback.summary,
+            type: "error",
+          });
+          return;
+        }
         setError("phone", {
           type: "manual",
           message: `Oops something went wrong. Please contact bazzarify support.`,
@@ -112,6 +137,7 @@ export default function Page() {
             <FullWidthActionBtn
               handleOnPress={handleSubmit(handleForgetPassword)}
               label="Send OTP Code"
+              disabled={isSubmitting}
             />
           </View>
         </ScrollView>

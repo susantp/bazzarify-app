@@ -4,6 +4,7 @@ import { TRegisterFormField } from "@/components/common";
 import { AxiosError, AxiosResponse } from "axios";
 import * as Sentry from "@sentry/react-native";
 import { handleError } from "@/modules/core/utils/handleError";
+import { toActionFeedbackError } from "@/modules/core/utils/actionFeedback";
 
 const actionRegister = async (data: TRegisterFormField): Promise<string> => {
   try {
@@ -18,7 +19,7 @@ const actionRegister = async (data: TRegisterFormField): Promise<string> => {
     return response.data.data.payload.token as string;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw new Error(handleError(error));
+      throw toActionFeedbackError(error, handleError(error));
     }
     Sentry.captureException(error);
     throw new Error("Unknown error.");

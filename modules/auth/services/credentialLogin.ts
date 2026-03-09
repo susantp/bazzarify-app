@@ -4,9 +4,9 @@ import { AxiosError } from "axios";
 import authRemotePaths from "@/staticData/remote.paths";
 import { handleError } from "@/modules/core/utils/handleError";
 import * as Sentry from "@sentry/react-native";
+import { toActionFeedbackError } from "@/modules/core/utils/actionFeedback";
 
 const actionLogin = async (data: TLoginFormField): Promise<string> => {
-  debugger;
   try {
     const response = await axiosInstance.post(
       authRemotePaths.loginCredentials.path,
@@ -19,7 +19,7 @@ const actionLogin = async (data: TLoginFormField): Promise<string> => {
     return response.data.data.payload.token as string;
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
-      throw new Error(handleError(error));
+      throw toActionFeedbackError(error, handleError(error));
     }
     Sentry.captureException(error);
     throw new Error("Unknown error.");
