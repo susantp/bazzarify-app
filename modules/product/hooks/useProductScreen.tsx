@@ -25,6 +25,13 @@ export default function useProductScreen(uuid: string) {
     setSelectedVariant(data?.product?.variants?.at(0) || undefined);
   }, [data?.product, isSuccess]);
 
+  const selectedVariantAvailableToSell = selectedVariant?.available_to_sell ?? 0;
+  const selectedVariantCanSell = Boolean(
+    selectedVariant &&
+      selectedVariant.available &&
+      selectedVariantAvailableToSell > 0,
+  );
+
   return {
     isSuccess,
     isLoading,
@@ -34,5 +41,7 @@ export default function useProductScreen(uuid: string) {
     currency: data?.currency,
     handleVariantChange,
     selectedVariant,
+    selectedVariantAvailableToSell,
+    selectedVariantCanSell,
   };
 }

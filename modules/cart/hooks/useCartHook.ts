@@ -122,7 +122,7 @@ export default function useCartHook() {
         Toast.show({
           position: "bottom",
           text1: "Failed to add item to cart",
-          text2: "please try again later",
+          text2: error.message,
           type: "error",
         });
       });

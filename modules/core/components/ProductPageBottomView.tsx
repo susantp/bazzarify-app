@@ -10,11 +10,15 @@ import { routeGuestToLoginForProtectedTarget } from "@/modules/core/utils/protec
 
 interface IProductPageBottomView {
   onCartAdd: () => void;
+  canPurchase?: boolean;
+  inventoryMessage?: string;
   onStorePress?: () => void;
 }
 
 const ProductPageBottomView = ({
   onCartAdd,
+  canPurchase = true,
+  inventoryMessage,
   onStorePress,
 }: IProductPageBottomView) => {
   const authStatus = useAtomValue(authStatusAtom);
@@ -31,7 +35,7 @@ const ProductPageBottomView = ({
   return (
     <Suspense fallback={<Text>Item is adding to cart</Text>}>
       <View className="w-full flex-row justify-center">
-        <Text>512+ sold in last month</Text>
+        <Text>{inventoryMessage || "512+ sold in last month"}</Text>
       </View>
       <View className="flex-row">
         <View className="w-3/12 flex-row justify-between pl-1">
@@ -52,18 +56,22 @@ const ProductPageBottomView = ({
             <PolygonButton
               dimensions={leftBtnDimension}
               setDimensions={setLeftButtonDimensions}
-              onPress={onCartAdd}
+              onPress={canPurchase ? onCartAdd : () => undefined}
+              disabled={!canPurchase}
               color="#1A202C"
               isLeft={true}
-              label="Add To Cart"
+              label={canPurchase ? "Add To Cart" : "Unavailable"}
             />
             <PolygonButton
               isLeft={false}
               dimensions={rightBtnDimension}
               setDimensions={setRightButtonDimensions}
-              onPress={() => router.push("/cart/checkout")}
+              onPress={
+                canPurchase ? () => router.push("/cart/checkout") : () => undefined
+              }
+              disabled={!canPurchase}
               color={Colors.light.tint}
-              label="Buy Now"
+              label={canPurchase ? "Buy Now" : "Out of Stock"}
             />
           </View>
         ) : (

@@ -21,11 +21,17 @@ const ProductVariantSelector = ({
       <View className="flex-row items-center justify-items-center gap-x-3">
         {variants.map((variant) => {
           const bg = "bg-".concat(variant.name.split("|")[0]).concat("-200");
+          const isDisabled =
+            !variant.available || (variant.available_to_sell ?? 0) <= 0;
+          const isSelected = selectedVariant?.uuid === variant.uuid;
           return (
             <TouchableOpacity
               key={variant.uuid}
-              onPress={() => onPress(variant)}
-              className="h-10 w-10 rounded-full border-2 border-primary p-0.5"
+              onPress={() => !isDisabled && onPress(variant)}
+              disabled={isDisabled}
+              className={`h-10 w-10 rounded-full border-2 p-0.5 ${
+                isSelected ? "border-primary" : "border-gray-300"
+              } ${isDisabled ? "opacity-40" : ""}`}
             >
               <View className={`h-full w-full rounded-full ${bg}`}>
                 <Image

@@ -10,6 +10,7 @@ interface PolygonButtonProps {
   color: string;
   label: string;
   isLeft: boolean;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -20,12 +21,15 @@ const PolygonButton = ({
   dimensions,
   setDimensions,
   isLeft,
+  disabled = false,
   className,
 }: PolygonButtonProps) => (
   <TouchableOpacity
-    onPress={onPress}
+    onPress={disabled ? undefined : onPress}
+    disabled={disabled}
     className={cn("flex", "items-center", "justify-center", "px-8", className)}
     onLayout={(e) => setDimensions(e.nativeEvent.layout)}
+    style={{ opacity: disabled ? 0.55 : 1 }}
   >
     <Svg
       width={dimensions.width}
@@ -49,7 +53,7 @@ const PolygonButton = ({
               0,${dimensions.height}
             `
         }
-        fill={color}
+        fill={disabled ? "#9CA3AF" : color}
       />
     </Svg>
     <Text className="font-bold text-white">{label}</Text>

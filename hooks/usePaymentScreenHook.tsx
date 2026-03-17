@@ -50,24 +50,35 @@ export default function usePaymentScreenHook(id?: string) {
       return;
     }
     startTransition(async () => {
-      const response = await actionPlaceOrder({
-        shippingInformation: {
-          ...deliveryAddress,
-          phone: user?.phone || "0000000000",
-          name: user?.name || "No Name",
-        },
-      });
-      if (response?.cart === null) {
-        setCartState(response?.cart);
+      try {
+        const response = await actionPlaceOrder({
+          shippingInformation: {
+            ...deliveryAddress,
+            phone: user?.phone || "0000000000",
+            name: user?.name || "No Name",
+          },
+        });
+        if (response?.cart === null) {
+          setCartState(response?.cart);
+        }
+        setOrderTotals(response?.orderTotals || null);
+        Toast.show({
+          type: "success",
+          text1: "Your order is processing.",
+          position: "bottom",
+        });
+        router.replace("/");
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unable to place order.";
+        Toast.show({
+          type: "error",
+          text1: "Order could not be placed",
+          text2: message,
+          position: "bottom",
+        });
       }
-      setOrderTotals(response?.orderTotals || null);
     });
-    Toast.show({
-      type: "success",
-      text1: "Your order is processing.",
-      position: "bottom",
-    });
-    router.replace("/");
   };
 
   const componentMap: Record<PaymentMethodType["id"], React.ReactNode> = {

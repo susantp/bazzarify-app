@@ -13,6 +13,19 @@ const ProductPriceComponent = ({
   currency: { code: string };
 }) => {
   const price = selectedVariant ? selectedVariant.price : item.base_price;
+  const availabilityLabel = selectedVariant
+    ? !selectedVariant.available
+      ? "Unavailable"
+      : selectedVariant.available_to_sell > 0
+        ? `${selectedVariant.available_to_sell} left`
+        : "Out of stock"
+    : item.variants?.length
+      ? "Select a variant"
+      : "Unavailable";
+
+  const availabilityTone = selectedVariant?.available_to_sell
+    ? "text-green-700"
+    : "text-red-600";
   return (
     <View className="border-b-2 border-gray-400 py-2">
       <View className="flex-row items-center justify-between">
@@ -29,11 +42,11 @@ const ProductPriceComponent = ({
         {/*  </Text>*/}
         {/*</View>*/}
       </View>
-      {/*<View>*/}
-      {/*  <Text className="text-gray-500">*/}
-      {/*    you're saving upto rs. 2,000 don't miss it*/}
-      {/*  </Text>*/}
-      {/*</View>*/}
+      <View>
+        <Text className={`text-sm font-medium ${availabilityTone}`}>
+          {availabilityLabel}
+        </Text>
+      </View>
     </View>
   );
 };

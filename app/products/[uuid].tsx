@@ -39,6 +39,8 @@ export default function ProductScreen() {
     currency,
     selectedVariant,
     handleVariantChange,
+    selectedVariantAvailableToSell,
+    selectedVariantCanSell,
     isError,
   } = useProductScreen(uuid as string);
   const { handleAddToCart } = useCartHook();
@@ -95,6 +97,14 @@ export default function ProductScreen() {
           <BottomActionView className="gap-y-3 p-3">
             <ProductPageBottomView
               onCartAdd={() => handleAddToCart(product, selectedVariant)}
+              canPurchase={selectedVariantCanSell}
+              inventoryMessage={
+                selectedVariant
+                  ? selectedVariantCanSell
+                    ? `${selectedVariantAvailableToSell} available for this option`
+                    : "This option is currently unavailable"
+                  : "Select an option before purchasing"
+              }
               onStorePress={() =>
                 product?.user_uuid &&
                 router.push({
