@@ -9,6 +9,7 @@ import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
+import { getCartInventoryState } from "@/modules/cart/utils/getCartInventoryState";
 
 export default function useCheckoutScreenHook() {
   const cartState = useAtomValue(cartAtom);
@@ -17,6 +18,7 @@ export default function useCheckoutScreenHook() {
   const selectedAddress = useAtomValue(selectedDeliveryAddress);
   const defaultAddress = useAtomValue(getDefaultAddressAtom);
   const displayAddress = selectedAddress || defaultAddress;
+  const inventoryState = getCartInventoryState(cartState?.cart ?? null);
   const CARDS = [
     {
       title: "address",
@@ -48,6 +50,16 @@ export default function useCheckoutScreenHook() {
     },
   ];
   const handleCheckout = () => {
+    if (inventoryState.hasBlockingIssue) {
+      Toast.show({
+        position: "bottom",
+        text1: "Unavailable items in cart",
+        text2: "Remove out-of-stock items before continuing to payment.",
+        type: "error",
+      });
+      return;
+    }
+
     if (!displayAddress) {
       Toast.show({
         position: "bottom",
@@ -59,5 +71,5 @@ export default function useCheckoutScreenHook() {
     }
     router.push("/cart/payment");
   };
-  return { btnLabel, CARDS, cartState, handleCheckout };
+  return { btnLabel, CARDS, cartState, handleCheckout, inventoryState };
 }

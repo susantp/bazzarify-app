@@ -9,12 +9,23 @@ import PaymentMethodView from "@/components/cart/payment/PaymentMethodView";
 import BottomActionView from "@/modules/core/components/BottomActionView";
 
 export default function PaymentScreen() {
-  const { paymentMethodSections, cartState } = usePaymentScreenHook();
+  const { paymentMethodSections, cartState, inventoryState } =
+    usePaymentScreenHook();
 
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Payment" />
       <ContentWrapper className="bg-white">
+        {inventoryState.hasBlockingIssue ? (
+          <View className="mx-4 mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+            <Text className="font-semibold text-red-700">
+              Some items became unavailable.
+            </Text>
+            <Text className="mt-1 text-sm text-red-700">
+              Go back to checkout and update your cart before payment.
+            </Text>
+          </View>
+        ) : null}
         {paymentMethodSections.map((methodSection, index) => (
           <View key={randomUUID()} className="flex-col">
             <View className="bg-gray-300 px-2 py-1.5">

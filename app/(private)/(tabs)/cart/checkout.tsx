@@ -8,7 +8,7 @@ import BottomActionView from "@/modules/core/components/BottomActionView";
 import useCheckoutScreenHook from "@/modules/checkout/hooks/useCheckoutScreenHook";
 
 export default function CheckoutScreen() {
-  const { btnLabel, CARDS, handleCheckout, cartState } =
+  const { btnLabel, CARDS, handleCheckout, cartState, inventoryState } =
     useCheckoutScreenHook();
   return (
     <SafeAreaWrapper>
@@ -31,6 +31,12 @@ export default function CheckoutScreen() {
             btnLabel={btnLabel}
             deliveryPrice={cartState?.cart?.totals.shipping_total}
             handlePress={handleCheckout}
+            disabled={inventoryState.hasBlockingIssue}
+            helperText={
+              inventoryState.hasBlockingIssue
+                ? "Remove unavailable items before continuing to payment."
+                : null
+            }
           />
         </BottomActionView>
       ) : null}

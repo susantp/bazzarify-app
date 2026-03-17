@@ -2,18 +2,40 @@ import { Text, View } from "react-native";
 import React from "react";
 import { TCart } from "@/modules/order/schemas/orderSchema";
 import { ThemedText } from "@/components/ThemedText";
+import { Colors } from "@/constants/Colors";
+import { getCartInventoryState } from "@/modules/cart/utils/getCartInventoryState";
 
 interface Props {
   cart: TCart;
 }
 const OrderDetailsComponent = ({ cart }: Props) => {
   if (!cart) return null;
+  const inventory = getCartInventoryState(cart);
   return (
     <View className="flex-row">
       <View className="flex-col gap-y-2 rounded-2xl border border-gray-300 p-4">
         <View className="border-b border-b-gray-300 py-2">
           <Text className="text-xl font-bold">Order Details</Text>
         </View>
+        {inventory.hasBlockingIssue ? (
+          <View className="rounded-xl border border-red-200 bg-red-50 px-3 py-3">
+            <Text className="font-semibold text-red-700">
+              Some items are no longer available.
+            </Text>
+            <Text className="mt-1 text-sm text-red-700">
+              Remove or update unavailable items before placing the order.
+            </Text>
+          </View>
+        ) : inventory.lowStockItems.length > 0 ? (
+          <View className="rounded-xl border border-orange-200 bg-orange-50 px-3 py-3">
+            <Text className="font-semibold text-orange-700">
+              Some items are low in stock.
+            </Text>
+            <Text className="mt-1 text-sm text-orange-700">
+              Inventory may change before payment is completed.
+            </Text>
+          </View>
+        ) : null}
         {cart.items.map((item) => (
           <View
             key={item.uuid}
@@ -25,6 +47,20 @@ const OrderDetailsComponent = ({ cart }: Props) => {
                 <ThemedText style={{ fontStyle: "italic" }}>
                   {item.variant_attrs?.name.replace("|", "-")}
                 </ThemedText>
+                {item.inventory?.available_to_sell === 0 ? (
+                  <Text className="mt-1 text-xs font-medium text-red-700">
+                    Out of stock
+                  </Text>
+                ) : item.inventory &&
+                  item.inventory.available_to_sell > 0 &&
+                  item.inventory.available_to_sell <= 3 ? (
+                  <Text
+                    className="mt-1 text-xs font-medium"
+                    style={{ color: Colors.light.tint }}
+                  >
+                    {item.inventory.available_to_sell} item(s) left
+                  </Text>
+                ) : null}
               </View>
               <View className="w-1/12 items-end">
                 <Text>x{item.qty_ordered}</Text>

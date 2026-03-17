@@ -16,6 +16,7 @@ import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
 import actionPlaceOrder from "@/modules/order/actions/actionPlaceOrder";
 import { Text } from "react-native";
 import Toast from "react-native-toast-message";
+import { getCartInventoryState } from "@/modules/cart/utils/getCartInventoryState";
 
 export type PaymentMethodSection = {
   sectionTitle: string;
@@ -37,8 +38,20 @@ export default function usePaymentScreenHook(id?: string) {
   const deliveryAddress = selectedAddress || defaultDeliveryAddress;
   const [codPaymentFee] = useState(10);
   const [isPending, startTransition] = useTransition();
+  const inventoryState = getCartInventoryState(cartState?.cart ?? null);
 
   const handleCODPayment = () => {
+    if (inventoryState.hasBlockingIssue) {
+      Toast.show({
+        type: "error",
+        text1: "Unavailable items in cart",
+        text2: "Remove out-of-stock items before placing the order.",
+        position: "bottom",
+      });
+      router.replace("/cart/checkout");
+      return;
+    }
+
     if (!deliveryAddress) {
       Toast.show({
         type: "error",
@@ -183,5 +196,6 @@ export default function usePaymentScreenHook(id?: string) {
     paymentMethodById,
     componentMap,
     cartState,
+    inventoryState,
   };
 }
