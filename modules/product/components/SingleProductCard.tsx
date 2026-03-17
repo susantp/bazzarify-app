@@ -4,19 +4,26 @@ import PolygonFreeDelivery from "@/modules/product/components/PolygonFreeDeliver
 import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
+import { getProductInventorySummary } from "@/modules/product/utils/getProductInventorySummary";
+import { Colors } from "@/constants/Colors";
 
 export interface SingleProductCardProps {
   item: TOmittedProductWithImages | null;
 }
 const SingleProductCard = ({ item }: SingleProductCardProps) => {
   if (!item) return null;
+  const inventory = getProductInventorySummary(item);
   return (
     <Link
       href={{
         pathname: "/products/[uuid]",
         params: { uuid: item.uuid },
       }}
-      style={{ flexBasis: "48%", margin: 4 }} // Approximate two columns with some margin
+      style={{
+        flexBasis: "48%",
+        margin: 4,
+        opacity: inventory.canPurchase === false ? 0.7 : 1,
+      }}
       className="flex-col justify-items-center rounded-lg border border-gray-300"
     >
       <View id="image-box">
@@ -50,6 +57,17 @@ const SingleProductCard = ({ item }: SingleProductCardProps) => {
             Rs {item?.base_price}
           </Text>
         </View>
+        {inventory.message ? (
+          <Text
+            className="text-xs font-medium"
+            style={{
+              color:
+                inventory.canPurchase === false ? "#B91C1C" : Colors.light.tint,
+            }}
+          >
+            {inventory.message}
+          </Text>
+        ) : null}
         {/*<View className="flex-row px-1">*/}
         {/*  {"rating" in item && (*/}
         {/*    <View className="w-5/12 flex-row items-center gap-x-1">*/}

@@ -4,6 +4,8 @@ import React from "react";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
 import PolygonFreeDelivery from "@/modules/product/components/PolygonFreeDelivery";
+import { getProductInventorySummary } from "@/modules/product/utils/getProductInventorySummary";
+import { Colors } from "@/constants/Colors";
 
 export type ProductCardProps = {
   item: TOmittedProductWithImages | null;
@@ -11,6 +13,7 @@ export type ProductCardProps = {
 };
 const ProductCard = ({ item, cols }: ProductCardProps) => {
   if (!item) return null;
+  const inventory = getProductInventorySummary(item);
   return (
     <TouchableOpacity
       onPress={() =>
@@ -21,7 +24,10 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
       }
       className={`flex w-${(12 / cols).toString()}/12 p-2`}
     >
-      <View className="flex-col justify-items-center rounded-lg border border-gray-200">
+      <View
+        className="flex-col justify-items-center rounded-lg border border-gray-200"
+        style={{ opacity: inventory.canPurchase === false ? 0.7 : 1 }}
+      >
         <View id="image-box">
           <View
             id="image-container"
@@ -53,6 +59,19 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
               </View>
             )}
           </View>
+          {inventory.message ? (
+            <Text
+              className="text-xs font-medium"
+              style={{
+                color:
+                  inventory.canPurchase === false
+                    ? "#B91C1C"
+                    : Colors.light.tint,
+              }}
+            >
+              {inventory.message}
+            </Text>
+          ) : null}
           {/*<View className="flex-row px-1">*/}
           {/*  {"rating" in item && (*/}
           {/*    <View className="w-5/12 flex-row items-center gap-x-1">*/}
