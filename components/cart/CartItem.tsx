@@ -13,6 +13,7 @@ export type CartItemProps = {
   onIncrement: () => void;
   onDecrement: () => void;
   onRemove: () => void;
+  incrementDisabled?: boolean;
 };
 
 const CartItem = ({
@@ -20,7 +21,17 @@ const CartItem = ({
   onIncrement,
   onDecrement,
   onRemove,
+  incrementDisabled = false,
 }: CartItemProps) => {
+  const inventoryMessage =
+    item.inventory?.available_to_sell === 0
+      ? "Out of stock"
+      : item.inventory && !item.inventory.can_increment
+        ? `Maximum ${item.inventory.max_quantity} in cart`
+        : item.inventory && item.inventory.available_to_sell <= 3
+          ? `${item.inventory.available_to_sell} item(s) available`
+          : null;
+
   return (
     <View className="flex flex-row items-center py-2">
       <View id="select-action" className="w-1/12">
@@ -57,11 +68,28 @@ const CartItem = ({
             <Text className="text-sm text-gray-600 line-through">
               {item.row_discount ? `Rs ${item.row_discount}` : null}
             </Text>
+            {inventoryMessage ? (
+              <Text
+                className="mt-1 text-xs"
+                style={{
+                  color:
+                    item.inventory?.available_to_sell === 0
+                      ? "#B91C1C"
+                      : Colors.light.tint,
+                }}
+              >
+                {inventoryMessage}
+              </Text>
+            ) : null}
           </View>
 
           <View className="w-6/12 flex-row gap-x-2">
-            <TouchableOpacity onPress={onIncrement}>
-              <PlusCircleIcon size={30} color="#f47d58" strokeWidth={2} />
+            <TouchableOpacity disabled={incrementDisabled} onPress={onIncrement}>
+              <PlusCircleIcon
+                size={30}
+                color={incrementDisabled ? "gray" : Colors.light.tint}
+                strokeWidth={2}
+              />
             </TouchableOpacity>
             <View className="px-2 py-2">
               <Text>{item.qty_ordered}</Text>

@@ -11,6 +11,7 @@ export default function useCartCardsHook() {
     handleLineItemRemove,
     handleLineItemDecrement,
     handleLineItemIncrement,
+    getLineItemIncrementDisabled,
   } = useCartHook();
   const CARDS = [
     {
@@ -28,6 +29,7 @@ export default function useCartCardsHook() {
               onIncrement={() => handleLineItemIncrement(item)}
               onDecrement={() => handleLineItemDecrement(item)}
               onRemove={() => handleLineItemRemove(item)}
+              incrementDisabled={getLineItemIncrementDisabled(item)}
             />
           ))}
         </Card>

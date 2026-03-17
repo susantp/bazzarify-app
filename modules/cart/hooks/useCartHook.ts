@@ -89,6 +89,19 @@ export default function useCartHook() {
 
   const handleLineItemIncrement = (item: TCartItem) => {
     if (!item) return;
+    if (item.inventory && !item.inventory.can_increment) {
+      Toast.show({
+        position: "bottom",
+        text1: "Maximum quantity reached",
+        text2:
+          item.inventory.available_to_sell > 0
+            ? `Only ${item.inventory.available_to_sell} item(s) are currently available.`
+            : "This variant is currently out of stock.",
+        type: "error",
+      });
+      return;
+    }
+
     const data: TCartItemToUpdateQuantity = {
       line_id: item.line_id,
       uuid: item.uuid,
@@ -194,6 +207,9 @@ export default function useCartHook() {
       });
   };
 
+  const getLineItemIncrementDisabled = (item: TCartItem) =>
+    Boolean(item.inventory && !item.inventory.can_increment);
+
   return {
     handleAddToCart,
     handleAddressModal,
@@ -203,5 +219,6 @@ export default function useCartHook() {
     handleLineItemRemove,
     handleLineItemDecrement,
     handleCheckoutPress,
+    getLineItemIncrementDisabled,
   };
 }
