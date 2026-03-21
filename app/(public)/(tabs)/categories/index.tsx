@@ -75,7 +75,7 @@ export default function CategoriesScreen() {
               hasImages={item?.images?.length! > 0}
               onPress={() =>
                 router.push({
-                  pathname: "/(tabs)/categories/[child]",
+                  pathname: "/categories/[child]",
                   params: { child: encodeURIComponent(item.slug) },
                 })
               }
