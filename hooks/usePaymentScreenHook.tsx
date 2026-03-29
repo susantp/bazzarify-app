@@ -1,6 +1,6 @@
 import { Href, router } from "expo-router";
 import _ from "underscore";
-import React, { useState, useTransition } from "react";
+import React, { useTransition } from "react";
 import CardPaymentComponent from "@/components/cart/payment/CardPaymentComponent";
 import BottomActionView from "@/modules/core/components/BottomActionView";
 import CardPaymentBottomActionView from "@/components/cart/payment/CardPaymentBottomActionView";
@@ -36,9 +36,9 @@ export default function usePaymentScreenHook(id?: string) {
   const selectedAddress = useAtomValue(selectedDeliveryAddress);
   const defaultDeliveryAddress = useAtomValue(getDefaultAddressAtom);
   const deliveryAddress = selectedAddress || defaultDeliveryAddress;
-  const [codPaymentFee] = useState(10);
   const [isPending, startTransition] = useTransition();
   const inventoryState = getCartInventoryState(cartState?.cart ?? null);
+  const codPaymentFee = cartState?.cart?.totals.payment_fee || 0;
 
   const handleCODPayment = () => {
     if (inventoryState.hasBlockingIssue) {

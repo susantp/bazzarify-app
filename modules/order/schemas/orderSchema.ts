@@ -90,6 +90,7 @@ export const CartMeta = OrderSchema.pick({
   tax_total: true,
   shipping_total: true,
   grand_total: true,
+  payment_fee: true,
   items_count: true,
   items_quantity: true,
 }).strip();
