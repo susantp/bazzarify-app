@@ -3,6 +3,21 @@ import { AxiosError, AxiosResponse } from "axios";
 import { axiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
+import {
+  hasEnvelopeError,
+  toActionFeedbackError,
+} from "@/modules/core/utils/actionFeedback";
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null;
+
+const unwrapConsumerData = (value: unknown): unknown => {
+  if (isRecord(value) && "data" in value && "metaData" in value) {
+    return value.data;
+  }
+
+  return value;
+};
 
 export default async function fetchDataAndValidate<T extends z.ZodType>(
   endpoint: string,
@@ -21,7 +36,14 @@ export default async function fetchDataAndValidate<T extends z.ZodType>(
     Sentry.captureException(err);
     throw err;
   }
-  const parsed = responsePayloadSchema.safeParse(upstream.data);
+
+  if (hasEnvelopeError(upstream.data)) {
+    const err = toActionFeedbackError(upstream.data, errorMessage);
+    Sentry.captureException(err);
+    throw err;
+  }
+
+  const parsed = responsePayloadSchema.safeParse(unwrapConsumerData(upstream.data));
 
   if (!parsed.success) {
     const issues = formattedIssues(parsed.error.issues);
