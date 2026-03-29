@@ -1,21 +1,15 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { Text, TouchableOpacity, View } from "react-native";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { TrashIcon } from "react-native-heroicons/outline";
-import { randomUUID } from "expo-crypto";
-import { useState } from "react";
+import { TrashIcon, XMarkIcon } from "react-native-heroicons/outline";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import NormalTopBar from "@/components/common/NormalTopBar";
+import useSearchHistory from "@/modules/search/hooks/useSearchHistory";
+import { Colors } from "@/constants/Colors";
 
 export default function Page() {
-  const [searchHistory, setSearchHistory] = useState([
-    "women dress",
-    "ramen noodels",
-    "tennis bat",
-    "shoes",
-    "tteobokki",
-  ]);
+  const { history, clearAll, removeEntry, addEntry, actor } = useSearchHistory();
   const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
   return (
     <SafeAreaWrapper>
@@ -32,25 +26,46 @@ export default function Page() {
           </View>
           <TouchableOpacity
             className="flex-row items-center gap-x-2 rounded-full bg-gray-100 px-2 py-1"
-            onPress={() => setSearchHistory([])}
+            onPress={() => void clearAll()}
           >
             <Text className="text-sm font-extralight">Clear all</Text>
             <TrashIcon size={18} color="black" />
           </TouchableOpacity>
         </View>
         <View className="flex-row flex-wrap gap-4">
-          {searchHistory.map((item) => (
-            <TouchableOpacity
-              key={randomUUID()}
-              className="rounded-md bg-gray-200 px-2 py-1"
-            >
-              <Link
-                href={{ pathname: "/search/[query]", params: { query: item } }}
+          {history.length === 0 ? (
+            <View className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3">
+              <Text className="text-sm text-gray-500">
+                {actor?.type === "user"
+                  ? "Your synced searches will appear here."
+                  : "Your recent searches will appear here once you start browsing."}
+              </Text>
+            </View>
+          ) : (
+            history.map((item) => (
+              <View
+                key={item}
+                className="flex-row items-center gap-x-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-2"
               >
-                <Text>{item}</Text>
-              </Link>
-            </TouchableOpacity>
-          ))}
+                <TouchableOpacity
+                  onPress={() => {
+                    void addEntry(item);
+                    router.push({
+                      pathname: "/search/[query]",
+                      params: { query: item },
+                    });
+                  }}
+                >
+                  <Text className="text-sm font-medium text-gray-700">
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => void removeEntry(item)}>
+                  <XMarkIcon size={16} color={Colors.light.icon} />
+                </TouchableOpacity>
+              </View>
+            ))
+          )}
         </View>
       </ContentWrapper>
     </SafeAreaWrapper>
