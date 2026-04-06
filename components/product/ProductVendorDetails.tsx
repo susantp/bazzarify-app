@@ -1,11 +1,8 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import {
-  ChatBubbleLeftRightIcon,
-  ShieldCheckIcon,
-} from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import React from "react";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProductVendorDetails = () => (
   <View className="p-4">
@@ -17,12 +14,20 @@ const ProductVendorDetails = () => (
         <View>
           <Text className="text-lg font-semibold">Ultima</Text>
           <View className="flex-row gap-x-1">
-            <ShieldCheckIcon size={18} color={Colors.light.tint} />
+            <Ionicons
+              name="shield-checkmark"
+              size={18}
+              color={Colors.light.tint}
+            />
             <Text className="text-orange-950">100% Authentic</Text>
           </View>
         </View>
         <View className="flex-row items-center justify-items-center gap-x-2">
-          <ChatBubbleLeftRightIcon size={18} color="black" />
+          <Ionicons
+            name="chatbubble-ellipses-outline"
+            size={18}
+            color="black"
+          />
           <Text className="text-lg">Chat</Text>
         </View>
       </View>

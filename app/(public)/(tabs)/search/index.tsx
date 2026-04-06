@@ -1,12 +1,12 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { Text, TouchableOpacity, View } from "react-native";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { TrashIcon, XMarkIcon } from "react-native-heroicons/outline";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import { router } from "expo-router";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import useSearchHistory from "@/modules/search/hooks/useSearchHistory";
 import { Colors } from "@/constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Page() {
   const { history, clearAll, removeEntry, addEntry, actor } =
@@ -32,7 +32,7 @@ export default function Page() {
             onPress={() => void clearAll()}
           >
             <Text className="text-sm font-extralight">Clear all</Text>
-            <TrashIcon size={18} color="black" />
+            <Ionicons name="trash-outline" size={18} color="black" />
           </TouchableOpacity>
         </View>
         <View className="flex-row flex-wrap gap-4">
@@ -64,7 +64,7 @@ export default function Page() {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => void removeEntry(item)}>
-                  <XMarkIcon size={16} color={Colors.light.icon} />
+                  <Ionicons name="close" size={16} color={Colors.light.icon} />
                 </TouchableOpacity>
               </View>
             ))

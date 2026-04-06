@@ -1,7 +1,6 @@
 import { GestureResponderEvent, Text, TouchableOpacity } from "react-native";
 import { useAtom } from "jotai";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
-import { TrashIcon } from "react-native-heroicons/outline";
 import React from "react";
 
 export const CartHeaderActions = () => {

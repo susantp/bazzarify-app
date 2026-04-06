@@ -1,9 +1,9 @@
 import { Animated, Image, Text, View } from "react-native";
 import { randomUUID } from "expo-crypto";
 import React from "react";
-import { StarIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import ScrollView = Animated.ScrollView;
+import { Ionicons } from "@expo/vector-icons";
 
 const ProductReviewBox = () => (
   <View className="px-4">
@@ -48,10 +48,10 @@ const ProductReviewDetails = () => (
         className="flex items-center justify-items-center"
       >
         <View className="flex-row items-center justify-items-center gap-x-2">
-          <StarIcon size="20" color={Colors.light.tint} />
-          <StarIcon size="20" color={Colors.light.tint} />
-          <StarIcon size="20" color={Colors.light.tint} />
-          <StarIcon size="20" color={Colors.light.tint} />
+          <Ionicons name="star" size={20} color={Colors.light.tint} />
+          <Ionicons name="star" size={20} color={Colors.light.tint} />
+          <Ionicons name="star" size={20} color={Colors.light.tint} />
+          <Ionicons name="star" size={20} color={Colors.light.tint} />
         </View>
       </View>
       <View

@@ -1,9 +1,9 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { MapPinIcon } from "react-native-heroicons/outline";
 import React, { useState } from "react";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
 import { LocationGeocodedAddress } from "expo-location";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
+import { Ionicons } from "@expo/vector-icons";
 
 type DeliveryBarProps = {
   className: string;
@@ -21,7 +21,7 @@ export default function DeliveryBar({
   const [showModal, setShowModal] = useState(false);
   return (
     <View className={className}>
-      <MapPinIcon size={14} strokeWidth={2} color="white" />
+      <Ionicons name="location-outline" size={14} color="white" />
       <TouchableOpacity
         onPress={() => setShowModal(!showModal)}
         className="w-80"

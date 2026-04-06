@@ -5,16 +5,11 @@ import { Platform, StyleSheet } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import {
-  HomeIcon,
-  ShoppingCartIcon,
-  Squares2X2Icon,
-  UserIcon,
-} from "react-native-heroicons/solid";
 import { useLocation } from "@/modules/core/hooks/useLocation";
 import { BlurView } from "expo-blur";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -53,7 +48,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home" size={28} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -70,7 +67,7 @@ export default function TabLayout() {
         options={{
           title: "Categories",
           tabBarIcon: ({ color }) => (
-            <Squares2X2Icon size={28} color={color} focusable={true} />
+            <Ionicons name="grid" size={28} color={color} />
           ),
         }}
       />
@@ -83,7 +80,7 @@ export default function TabLayout() {
           },
           title: "Cart",
           tabBarIcon: ({ color }) => (
-            <ShoppingCartIcon size={28} color={color} />
+            <Ionicons name="cart" size={28} color={color} />
           ),
         }}
       />
@@ -92,7 +89,9 @@ export default function TabLayout() {
         options={{
           title: "Account",
           href: "/account",
-          tabBarIcon: ({ color }) => <UserIcon size={28} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person" size={28} color={color} />
+          ),
         }}
       />
     </Tabs>

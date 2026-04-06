@@ -1,11 +1,11 @@
 import { Text, View } from "react-native";
-import { InformationCircleIcon } from "react-native-heroicons/solid";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { useLocalSearchParams } from "expo-router";
 import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
 import React from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function PaymentConfirmationScreen() {
   const { id } = useLocalSearchParams();
@@ -20,7 +20,7 @@ export default function PaymentConfirmationScreen() {
         {paymentMethodById?.voucherMsg && (
           <View className="flex-row gap-x-2 bg-blue-200 p-2">
             <View className="w-1/12 items-end">
-              <InformationCircleIcon color={"blue"} size={15} />
+              <Ionicons name="information-circle" color="blue" size={15} />
             </View>
             <View className="w-10/12">
               <Text className="text-justify">

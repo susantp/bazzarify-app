@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { FaqList } from "@/modules/account/data/settings/faqList";
 import { Pressable, Text, View } from "react-native";
-import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-} from "react-native-heroicons/outline";
 import ContentWrapper from "@/components/common/ContentWrapper";
+import { Ionicons } from "@expo/vector-icons";
 
 const FaqScreen = () => {
   const [list, setList] = useState(FaqList);
@@ -29,9 +26,9 @@ const FaqScreen = () => {
           >
             <Text className="text-md">{item.question}</Text>
             {item.active ? (
-              <ChevronDownIcon size={20} strokeWidth={1} color="black" />
+              <Ionicons name="chevron-down" size={20} color="black" />
             ) : (
-              <ChevronLeftIcon size={20} strokeWidth={1} color="black" />
+              <Ionicons name="chevron-back" size={20} color="black" />
             )}
           </Pressable>
           <View className={item.active ? undefined : "h-0"}>

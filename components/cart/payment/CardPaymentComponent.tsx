@@ -1,14 +1,18 @@
 import { TextInput, View } from "react-native";
-import { CreditCardIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import React from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const CardPaymentComponent = () => {
   return (
     <View className="flex-1 flex-col gap-y-6 p-2">
       <View className="relative flex-row items-center gap-x-2 rounded-md border border-gray-300 px-2">
         <View className="border border-white py-2">
-          <CreditCardIcon color={Colors.light.tint} size={20} />
+          <MaterialCommunityIcons
+            name="credit-card-outline"
+            color={Colors.light.tint}
+            size={20}
+          />
         </View>
         <View>
           <TextInput

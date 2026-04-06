@@ -1,12 +1,8 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import {
-  MinusCircleIcon,
-  PlusCircleIcon,
-} from "react-native-heroicons/outline";
 import { TCartItem } from "@/modules/order/schemas/orderSchema";
-import { XCircleIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export type CartItemProps = {
   item: TCartItem;
@@ -36,7 +32,7 @@ const CartItem = ({
     <View className="flex flex-row items-center py-2">
       <View id="select-action" className="w-1/12">
         <TouchableOpacity onPress={onRemove}>
-          <XCircleIcon size={30} color={Colors.light.tint} />
+          <Ionicons name="close-circle" size={30} color={Colors.light.tint} />
         </TouchableOpacity>
       </View>
 
@@ -84,11 +80,14 @@ const CartItem = ({
           </View>
 
           <View className="w-6/12 flex-row gap-x-2">
-            <TouchableOpacity disabled={incrementDisabled} onPress={onIncrement}>
-              <PlusCircleIcon
+            <TouchableOpacity
+              disabled={incrementDisabled}
+              onPress={onIncrement}
+            >
+              <Ionicons
+                name="add-circle-outline"
                 size={30}
                 color={incrementDisabled ? "gray" : Colors.light.tint}
-                strokeWidth={2}
               />
             </TouchableOpacity>
             <View className="px-2 py-2">
@@ -98,10 +97,10 @@ const CartItem = ({
               disabled={item.qty_ordered <= 0}
               onPress={onDecrement}
             >
-              <MinusCircleIcon
+              <Ionicons
+                name="remove-circle-outline"
                 size={30}
                 color={item.qty_ordered > 0 ? "#f47d58" : "gray"}
-                strokeWidth={2}
               />
             </TouchableOpacity>
           </View>

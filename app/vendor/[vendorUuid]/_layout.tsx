@@ -1,5 +1,4 @@
 import { Tabs, useLocalSearchParams } from "expo-router";
-import { HomeIcon } from "react-native-heroicons/solid";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { HapticTab } from "@/components/HapticTab";
@@ -53,7 +52,9 @@ export default function Layout() {
         initialParams={{ vendorUuid }}
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <HomeIcon size={28} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home" size={28} color={color} />
+          ),
         }}
       />
       <Tabs.Screen

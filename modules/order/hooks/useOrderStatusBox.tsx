@@ -1,4 +1,3 @@
-import { WalletIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
 import {
   ToReceiveIcon,
@@ -9,6 +8,7 @@ import {
 import React from "react";
 import { ProfileMenuBoxType } from "@/modules/order/types";
 import { toTitleCase } from "@/modules/core/utils";
+import { Ionicons } from "@expo/vector-icons";
 
 const normalize = (value: string) => value.toLowerCase();
 
@@ -56,7 +56,7 @@ const getIcon = (status: string) => {
   if (value === "confirmed" || value === "allocated") {
     return <ToShipIcon />;
   }
-  return <WalletIcon size={44} color={Colors.light.tint} />;
+  return <Ionicons name="wallet-outline" size={44} color={Colors.light.tint} />;
 };
 
 export default function useOrderStatusBox(availableStatuses?: string[]) {

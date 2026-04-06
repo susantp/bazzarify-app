@@ -1,14 +1,10 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import {
-  BackwardIcon,
-  MapPinIcon,
-  ShieldCheckIcon,
-} from "react-native-heroicons/solid";
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 import { formatUserAddress } from "@/modules/user/utils/address";
 import { addDays, format, isSameMonth } from "date-fns";
+import { Ionicons } from "@expo/vector-icons";
 
 const ParcelIcon = ({ size }: { size: number }) => (
   <Svg width={size} height={size} viewBox="0 0 20 19" fill="none">
@@ -41,7 +37,7 @@ const ProductDeliveryDetails = ({
         <Text className="text-xl font-semibold">Delivery</Text>
         <View className="flex-row justify-between">
           <View className="flex-row items-center justify-items-center gap-x-2">
-            <MapPinIcon size={28} strokeWidth={1} color="black" />
+            <Ionicons name="location-outline" size={28} color="black" />
             <Text
               style={{ width: 200 }}
               lineBreakMode="clip"
@@ -63,13 +59,13 @@ const ProductDeliveryDetails = ({
         </View>
         <View className="flex-row justify-between">
           <View className="flex-row items-center justify-items-center gap-x-2">
-            <BackwardIcon size={28} strokeWidth={1} color="black" />
+            <Ionicons name="arrow-undo-outline" size={28} color="black" />
             <Text className="text-md font-semibold">14 days free returns</Text>
           </View>
         </View>
         <View className="flex-row justify-between">
           <View className="flex-row items-center justify-items-center gap-x-2">
-            <ShieldCheckIcon size={28} strokeWidth={1} color="black" />
+            <Ionicons name="shield-checkmark-outline" size={28} color="black" />
             <Text className="text-md font-semibold">
               1 year brand seller warranty
             </Text>

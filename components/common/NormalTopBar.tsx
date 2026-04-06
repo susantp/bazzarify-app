@@ -1,7 +1,7 @@
 import { TextInput, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
-import { ArrowLeftIcon } from "react-native-heroicons/micro";
 import { TopBarIcons } from "@/components/home/TopBar";
+import { Ionicons } from "@expo/vector-icons";
 
 export interface NormalHeaderProps {
   canGoBack: boolean;
@@ -26,7 +26,7 @@ export default function NormalTopBar({
         <TouchableOpacity
           onPress={() => (canGoBack ? router.back() : router.replace("/"))}
         >
-          <ArrowLeftIcon size={24} strokeWidth={9} color="black" />
+          <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <TextInput
           value={searchValue}
