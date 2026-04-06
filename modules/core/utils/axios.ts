@@ -2,7 +2,11 @@ import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { app } from "@/modules/core/configs/app";
 import { router } from "expo-router";
 import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
-import { clearAuthSession } from "@/modules/auth/utils/token";
+import {
+  clearAuthSession,
+  requireReauthSession,
+} from "@/modules/auth/session/sessionController";
+import { isAuthEntryPath } from "@/modules/auth/utils/routePolicy";
 
 interface IAuthAxiosInstanceParams {
   token: string | undefined;
@@ -65,15 +69,9 @@ const getActivePath = () => {
   return null;
 };
 
-const isPublicAuthPath = (path: string) =>
-  path === "/auth" ||
-  path.startsWith("/auth/") ||
-  path === "/(public)/auth" ||
-  path.startsWith("/(public)/auth/");
-
 const stashRedirectIntent = async () => {
   const path = getActivePath();
-  if (path && !isPublicAuthPath(path)) {
+  if (path && !isAuthEntryPath(path)) {
     await setAuthRedirect(path);
   }
 };
@@ -93,14 +91,14 @@ export const authAxiosInstance = async ({
     async (response) => {
       if (response.data?.metaData?.errorCode === 401) {
         await stashRedirectIntent();
-        await clearAuthSession();
+        await requireReauthSession();
       }
       return response;
     },
     async (error) => {
       if (error.response?.status === 401) {
         await stashRedirectIntent();
-        await clearAuthSession();
+        await requireReauthSession();
       }
       return Promise.reject(error);
     },

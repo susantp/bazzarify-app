@@ -29,12 +29,12 @@ describe("authRedirect", () => {
   });
 
   it("stores and consumes the redirect target once", async () => {
-    await setAuthRedirect("/cart");
+    await setAuthRedirect("/cart/checkout");
 
     const first = await consumeAuthRedirect();
     const second = await consumeAuthRedirect();
 
-    expect(first).toBe("/cart");
+    expect(first).toBe("/cart/checkout");
     expect(second).toBeNull();
   });
 
@@ -54,5 +54,12 @@ describe("authRedirect", () => {
 
     expect(result).toBeNull();
     expect(stillStored).toBeNull();
+  });
+
+  it("ignores public routes that are not protected redirect targets", async () => {
+    const stored = await setAuthRedirect("/cart");
+
+    expect(stored).toBe(false);
+    expect(await retrieveStorage("auth_redirect_target")).toBeNull();
   });
 });

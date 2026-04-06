@@ -1,7 +1,6 @@
 import { Href, router } from "expo-router";
 import { setAuthRedirect } from "@/modules/core/utils/authRedirect";
-
-const LOGIN_ROUTE = "/auth/login" as Href;
+import { LOGIN_ROUTE } from "@/modules/auth/utils/routePolicy";
 
 type NavigationMode = "push" | "replace";
 

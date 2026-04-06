@@ -7,30 +7,23 @@ import {
 } from "@/components/common/icons";
 import React from "react";
 import { ProfileMenuBoxType } from "@/modules/order/types";
-import { toTitleCase } from "@/modules/core/utils";
 import { Ionicons } from "@expo/vector-icons";
+import { TCustomerOrderStatusGroup } from "@/modules/order/schemas/CustomerOrderStatusGroupSchema";
 
-const normalize = (value: string) => value.toLowerCase();
-
-const getAction = (status: string): ProfileMenuBoxType["action"] => {
-  const value = normalize(status);
-  if (
-    value.includes("shipped") ||
-    value.includes("delivery") ||
-    value === "delivered"
-  ) {
+const getAction = (id: string): ProfileMenuBoxType["action"] => {
+  if (id === "to_receive") {
     return {
       label: "Track",
       route: "/account/order/[id]/tracking",
     };
   }
-  if (value === "draft" || value === "confirmed" || value === "allocated") {
+  if (id === "to_ship") {
     return {
       label: "Cancel",
       route: "/account/order/[id]/return",
     };
   }
-  if (value === "completed") {
+  if (id === "completed") {
     return {
       label: "Review",
     };
@@ -38,36 +31,42 @@ const getAction = (status: string): ProfileMenuBoxType["action"] => {
   return undefined;
 };
 
-const getIcon = (status: string) => {
-  const value = normalize(status);
-  if (value.includes("cancel") || value.includes("return")) {
+const getIcon = (id: string) => {
+  if (id === "returns") {
     return <ToReturnIcon />;
   }
-  if (
-    value.includes("shipped") ||
-    value.includes("delivery") ||
-    value === "delivered"
-  ) {
+  if (id === "to_receive") {
     return <ToReceiveIcon />;
   }
-  if (value === "completed") {
+  if (id === "completed") {
     return <ToReviewIcon />;
   }
-  if (value === "confirmed" || value === "allocated") {
+  if (id === "to_ship") {
     return <ToShipIcon />;
   }
-  return <Ionicons name="wallet-outline" size={44} color={Colors.light.tint} />;
+  return (
+    <Ionicons name="receipt-outline" size={44} color={Colors.light.tint} />
+  );
 };
 
-export default function useOrderStatusBox(availableStatuses?: string[]) {
-  const statuses = (availableStatuses || []).filter(Boolean);
-  const orderStatusBoxes: ProfileMenuBoxType[] = statuses.map((status) => ({
-    id: status,
-    status,
-    label: toTitleCase(status.replace(/_/g, " ")),
-    icon: getIcon(status),
-    action: getAction(status),
+export default function useOrderStatusBox(
+  groups?: TCustomerOrderStatusGroup[],
+) {
+  const sourceGroups = (groups ?? []).map(({ code, label, statuses }) => ({
+    id: code,
+    label,
+    statuses,
   }));
+
+  const orderStatusBoxes: ProfileMenuBoxType[] = sourceGroups.map(
+    ({ id, label, statuses }) => ({
+      id,
+      status: statuses,
+      label,
+      icon: getIcon(id),
+      action: getAction(id),
+    }),
+  );
 
   return {
     orderStatusBoxes,

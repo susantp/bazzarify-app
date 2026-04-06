@@ -6,20 +6,21 @@ import {
 import { QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 import { useAtomValue } from "jotai";
-import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
-import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
+import { authSessionAtom } from "@/modules/auth/atoms/authSessionAtom";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import AuthTransitionResolver from "@/modules/auth/components/AuthTransitionResolver";
 import { Stack } from "expo-router";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { QueryClient } from "@tanstack/query-core";
 import { useMemo } from "react";
+import useAuthSessionEffects from "@/modules/auth/hooks/useAuthSessionEffects";
 
 function AuthenticatedRoot() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(public)" options={{ headerShown: false }} />
       <Stack.Screen name="(private)/(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="oauth-native-callback" options={{ headerShown: false }} />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen
         name="vendor/[vendorUuid]"
@@ -34,6 +35,7 @@ function GuestRoot() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(public)" options={{ headerShown: false }} />
+      <Stack.Screen name="oauth-native-callback" options={{ headerShown: false }} />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen
         name="vendor/[vendorUuid]"
@@ -47,18 +49,22 @@ function GuestRoot() {
 export default function CoreProviders() {
   const colorScheme = useColorScheme();
   const queryClient = useMemo(() => new QueryClient(), []);
-  const authStatus = useAtomValue(authStatusAtom);
-  const routeHold = useAtomValue(authRouteHoldAtom);
+  const session = useAtomValue(authSessionAtom);
+  const isPending =
+    session.phase === "bootstrapping" ||
+    session.phase === "authenticating" ||
+    session.phase === "logging_out";
+  const isAuthenticated = session.phase === "authenticated";
 
-  if (authStatus === "unknown") return <ThemedLoader />;
+  useAuthSessionEffects();
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
         <AuthTransitionResolver />
-        {routeHold ? (
+        {isPending ? (
           <ThemedLoader />
-        ) : authStatus === "authenticated" ? (
+        ) : isAuthenticated ? (
           <AuthenticatedRoot />
         ) : (
           <GuestRoot />

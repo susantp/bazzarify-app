@@ -13,7 +13,7 @@ import {
 import React, { useState } from "react";
 import { useAtomValue } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
-import { logoutAuthSession } from "@/modules/auth/utils/token";
+import { logoutAuthSession } from "@/modules/auth/session/sessionController";
 
 export default function useSettingScreen() {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);

@@ -8,38 +8,34 @@ import {
   View,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import useOrderStatusBox from "@/modules/order/hooks/useOrderStatusBox";
 import useOrder from "@/modules/order/hooks/useOrder";
 import { toTitleCase } from "@/modules/core/utils";
+import formatOrderDate from "@/modules/order/utils/formatOrderDate";
+import resolveOrderStatusSelection from "@/modules/order/utils/resolveOrderStatusSelection";
 import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
-import formatOrderDate from "@/modules/order/utils/formatOrderDate";
 
 export default function Page() {
   const { statusId } = useLocalSearchParams();
   const {
     getFilteredOrder,
-    orderStatusAggregated,
     isRefreshing,
     refreshOrders,
   } = useOrder();
-  const orderStatuses = useAtomValue(orderStatusesState);
-  const fallbackStatuses = Object.keys(orderStatusAggregated || {});
-  const statusSource = orderStatuses.length ? orderStatuses : fallbackStatuses;
-  const { orderStatusBoxes } = useOrderStatusBox(statusSource);
-  const [status, setStatus] = useState(orderStatusBoxes[0]?.id || "toPay");
-  useEffect(() => {
-    if (typeof statusId === "string") {
-      setStatus(statusId);
-    }
-    if (!statusId && orderStatusBoxes[0]?.id) {
-      setStatus(orderStatusBoxes[0].id);
-    }
-  }, [statusId, orderStatusBoxes]);
+  const orderStatusGroups = useAtomValue(orderStatusesState);
+  const { orderStatusBoxes } = useOrderStatusBox(orderStatusGroups);
+  const availableStatusIds = orderStatusBoxes.map((orderStatus) => orderStatus.id);
+  const selectedStatusId = resolveOrderStatusSelection({
+    routeStatusId: statusId,
+    currentStatus: null,
+    availableStatuses: availableStatusIds,
+  });
+
   const statusItem = orderStatusBoxes.find(
-    (orderStatus) => orderStatus.id === status,
+    (orderStatus) => orderStatus.id === selectedStatusId,
   );
   const filteredOrders = getFilteredOrder(statusItem) || [];
   return (
@@ -59,11 +55,16 @@ export default function Page() {
             {orderStatusBoxes.map((orderStatus) => (
               <TouchableOpacity
                 key={orderStatus.id}
-                onPress={() => setStatus(orderStatus.id)}
+                onPress={() =>
+                  router.replace({
+                    pathname: "/account/order",
+                    params: { statusId: orderStatus.id },
+                  })
+                }
                 className="flex-row rounded-lg border border-slate-400 px-2 py-1"
               >
                 <Text
-                  className={`${status === orderStatus.id ? "text-primary" : undefined} text-md`}
+                  className={`${selectedStatusId === orderStatus.id ? "text-primary" : undefined} text-md`}
                 >
                   {orderStatus.label}
                 </Text>

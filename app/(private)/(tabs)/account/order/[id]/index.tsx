@@ -7,19 +7,17 @@ import ContentWrapper from "@/components/common/ContentWrapper";
 import useOrder from "@/modules/order/hooks/useOrder";
 import useOrderStatusBox from "@/modules/order/hooks/useOrderStatusBox";
 import OrderedItem from "@/components/account/order/OrderedItem";
+import resolveTrackingOrderRef from "@/modules/order/utils/resolveTrackingOrderRef";
 import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
-import resolveTrackingOrderRef from "@/modules/order/utils/resolveTrackingOrderRef";
 
 export default function OrderDetailsPage() {
   const { id } = useLocalSearchParams<{ id?: string | string[] }>();
   const orderId = Array.isArray(id) ? id[0] : id;
   const normalizedOrderId = orderId ? decodeURIComponent(orderId) : undefined;
-  const { ordersPayload, orderStatusAggregated } = useOrder();
-  const orderStatuses = useAtomValue(orderStatusesState);
-  const fallbackStatuses = Object.keys(orderStatusAggregated || {});
-  const statusSource = orderStatuses.length ? orderStatuses : fallbackStatuses;
-  const { orderStatusBoxes } = useOrderStatusBox(statusSource);
+  const { ordersPayload } = useOrder();
+  const orderStatusGroups = useAtomValue(orderStatusesState);
+  const { orderStatusBoxes } = useOrderStatusBox(orderStatusGroups);
   const order = ordersPayload?.orders?.data?.find(
     (item) =>
       item.uuid === normalizedOrderId ||

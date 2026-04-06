@@ -16,7 +16,14 @@ mock.module("@/modules/core/utils/secureStore", () => ({
   },
 }));
 
-const { clearAuthToken, getAuthToken, setAuthToken } = await import(
+const {
+  clearAuthToken,
+  getAuthToken,
+  getStoredSession,
+  getStoredUser,
+  setAuthToken,
+  setStoredSession,
+} = await import(
   "@/modules/auth/utils/token"
 );
 const { retrieveStorage, setStorage } = await import(
@@ -63,6 +70,42 @@ describe("token utils", () => {
 
     expect(await retrieveStorage(AUTH_TOKEN_KEY)).toBeNull();
     expect(await retrieveStorage(AUTH_TOKEN_EXPIRES_AT_KEY)).toBeNull();
+    expect(await retrieveStorage(USER_KEY)).toBeNull();
+  });
+
+  it("stores and restores the persisted session payload", async () => {
+    const user = {
+      uuid: "11111111-1111-4111-8111-111111111111",
+      authType: "email",
+      name: "Bazarify User",
+      email: "user@example.com",
+      phone: null,
+      phone_verified_at: null,
+      email_verified_at: null,
+    };
+
+    await setStoredSession({
+      token: "token-123",
+      user,
+      ttlMs: 1000,
+    });
+
+    expect(await getStoredUser()).toEqual(user);
+    expect(await getStoredSession()).toEqual({
+      token: "token-123",
+      user,
+    });
+  });
+
+  it("drops malformed stored users without invalidating the token", async () => {
+    await setAuthToken("token-123", 1000);
+    await setStorage(USER_KEY, "not-json");
+
+    expect(await getStoredUser()).toBeNull();
+    expect(await getStoredSession()).toEqual({
+      token: "token-123",
+      user: null,
+    });
     expect(await retrieveStorage(USER_KEY)).toBeNull();
   });
 });

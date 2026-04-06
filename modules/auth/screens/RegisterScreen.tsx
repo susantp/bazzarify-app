@@ -20,16 +20,15 @@ import * as Sentry from "@sentry/react-native";
 import Toast from "react-native-toast-message";
 import { TUserPayload } from "@/modules/auth/schemas/responsePayloads/UserPayloadSchema";
 import actionGetUser from "@/modules/auth/services/actionGetUser";
-import { useSetAtom } from "jotai";
 import {
   applyValidationFeedback,
   getValidationFeedback,
 } from "@/modules/core/utils/validationFeedback";
-import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
 import {
+  beginAuthenticatingSession,
   clearAuthSession,
   setAuthenticatedSession,
-} from "@/modules/auth/utils/token";
+} from "@/modules/auth/session/sessionController";
 
 export default function RegisterScreen() {
   const [formValues] = useState({
@@ -48,7 +47,6 @@ export default function RegisterScreen() {
   });
   const [showPassword, setShowPassword] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
-  const setAuthRouteHold = useSetAtom(authRouteHoldAtom);
 
   const handleAfterRegistrationFlow = async (
     token: string,
@@ -60,7 +58,6 @@ export default function RegisterScreen() {
           JSON.stringify(userResponse),
       );
       await clearAuthSession();
-      setAuthRouteHold(false);
       return false;
     }
 
@@ -73,21 +70,15 @@ export default function RegisterScreen() {
   };
 
   const handleRegister = async (data: TRegisterFormField) => {
-    setAuthRouteHold(true);
+    beginAuthenticatingSession();
     try {
       const token = await actionRegister(data);
       const isResolved = await handleAfterRegistrationFlow(token);
       if (!isResolved) {
         return;
       }
-
-      Toast.show({
-        position: "bottom",
-        text1: "Registration Success.",
-        type: "success",
-      });
     } catch (error) {
-      setAuthRouteHold(false);
+      await clearAuthSession();
       Sentry.captureException(error);
       const feedback = getValidationFeedback(error);
       if (feedback) {

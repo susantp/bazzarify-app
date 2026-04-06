@@ -3,21 +3,10 @@ import {
   retrieveStorage,
   setStorage,
 } from "@/modules/core/utils/secureStore";
+import { isPrivatePath } from "@/modules/auth/utils/routePolicy";
 
 const AUTH_REDIRECT_KEY = "auth_redirect_target";
 const DEFAULT_TTL_MS = 5 * 60 * 1000;
-const PROTECTED_ROUTE_PREFIXES = [
-  "/(private)/",
-  "/account/editProfile",
-  "/account/message",
-  "/account/order",
-  "/account/profile",
-  "/account/setting",
-  "/account/voucherCenter",
-  "/cart/checkout",
-  "/cart/payment",
-  "/cart/paymentScreen/",
-] as const;
 
 type AuthRedirectPayload = {
   target: string;
@@ -31,9 +20,7 @@ export function isProtectedAuthRedirectTarget(
     return false;
   }
 
-  return PROTECTED_ROUTE_PREFIXES.some(
-    (prefix) => target === prefix || target.startsWith(prefix),
-  );
+  return isPrivatePath(target);
 }
 
 export async function setAuthRedirect(

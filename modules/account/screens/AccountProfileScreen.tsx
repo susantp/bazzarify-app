@@ -14,9 +14,9 @@ import useOrder from "@/modules/order/hooks/useOrder";
 import useOrderStatusBox from "@/modules/order/hooks/useOrderStatusBox";
 import { router } from "expo-router";
 import { toTitleCase } from "@/modules/core/utils";
+import formatOrderDate from "@/modules/order/utils/formatOrderDate";
 import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
-import formatOrderDate from "@/modules/order/utils/formatOrderDate";
 
 export default function AccountProfileScreen() {
   const {
@@ -27,10 +27,8 @@ export default function AccountProfileScreen() {
     isRefreshing,
     refreshOrders,
   } = useOrder();
-  const orderStatuses = useAtomValue(orderStatusesState);
-  const fallbackStatuses = Object.keys(orderStatusAggregated || {});
-  const statusSource = orderStatuses.length ? orderStatuses : fallbackStatuses;
-  const { orderStatusBoxes } = useOrderStatusBox(statusSource);
+  const orderStatusGroups = useAtomValue(orderStatusesState);
+  const { orderStatusBoxes } = useOrderStatusBox(orderStatusGroups);
   const recentOrders = ordersPayload?.orders?.data?.slice(0, 4) || [];
 
   return (
@@ -48,6 +46,7 @@ export default function AccountProfileScreen() {
             orderStatuses={orderStatusBoxes}
             aggregates={orderStatusAggregated}
             onStatusPress={handleStatusPress}
+            onViewAllPress={() => router.push("/account/order")}
           />
           <View className="mt-4 gap-y-2 px-2">
             <Text className="text-lg font-semibold">Recent Orders</Text>

@@ -6,21 +6,16 @@ import Toast from "react-native-toast-message";
 import * as Sentry from "@sentry/react-native";
 import actionLogin from "@/modules/auth/services/credentialLogin";
 import { useState } from "react";
-import { useSetAtom } from "jotai";
-import { ordersState } from "@/modules/order/atoms/ordersState";
-import actionGetOrders from "@/modules/order/actions/actionGetOrders";
 import { TUserPayload } from "@/modules/auth/schemas/responsePayloads/UserPayloadSchema";
 import actionGetUser from "@/modules/auth/services/actionGetUser";
-import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
 import {
+  beginAuthenticatingSession,
   clearAuthSession,
   setAuthenticatedSession,
-} from "@/modules/auth/utils/token";
+} from "@/modules/auth/session/sessionController";
 
 export default function useLoginHook() {
   const [showPassword, setShowPassword] = useState(true);
-  const setOrders = useSetAtom(ordersState);
-  const setAuthRouteHold = useSetAtom(authRouteHoldAtom);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const handleAfterLoginFlow = async (
@@ -34,7 +29,6 @@ export default function useLoginHook() {
           JSON.stringify(userResponse),
       );
       await clearAuthSession();
-      setAuthRouteHold(false);
       return false;
     }
 
@@ -43,37 +37,19 @@ export default function useLoginHook() {
       user: userResponse.user,
     });
 
-    try {
-      const orders = await actionGetOrders(token);
-      setOrders(orders);
-    } catch (error) {
-      setOrders(null);
-      Sentry.captureException(
-        new Error("Failed to hydrate orders after login", {
-          cause: error,
-        }),
-      );
-    }
-
     return true;
   };
 
   const handleOAuthLogin = async (provider: LoginProvider) => {
-    setAuthRouteHold(true);
+    beginAuthenticatingSession();
     try {
       const completionEvent = await actionOAuthLogin(provider);
       const isResolved = await handleAfterLoginFlow(completionEvent);
       if (!isResolved) {
         return;
       }
-
-      Toast.show({
-        position: "bottom",
-        text1: "Login Success.",
-        type: "success",
-      });
     } catch (error) {
-      setAuthRouteHold(false);
+      await clearAuthSession();
       Sentry.captureException(error);
       Toast.show({
         position: "bottom",
@@ -86,21 +62,15 @@ export default function useLoginHook() {
   };
 
   const handleCredentialsLogin = async (data: TLoginFormField) => {
-    setAuthRouteHold(true);
+    beginAuthenticatingSession();
     try {
       const token = await actionLogin(data);
       const isResolved = await handleAfterLoginFlow({ token });
       if (!isResolved) {
         return;
       }
-
-      Toast.show({
-        position: "bottom",
-        text1: "Login Success.",
-        type: "success",
-      });
     } catch (error) {
-      setAuthRouteHold(false);
+      await clearAuthSession();
       Sentry.captureException(error);
       Toast.show({
         position: "bottom",

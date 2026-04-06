@@ -1,19 +1,9 @@
 import { MutableRefObject, useEffect, useMemo, useState } from "react";
-import { useSetAtom } from "jotai";
-import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
-import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
-import { bootstrapApp } from "@/modules/core/utils/bootstrap";
-import { subscribeOnResume } from "@/modules/core/utils";
-import { splashTask } from "@/modules/core/boot/splashTask";
+import { useAtomValue } from "jotai";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { QueryClient } from "@tanstack/query-core";
-import { createCartTask } from "@/modules/auth/boot/cartTask";
-import { cartAtom } from "@/modules/cart/atoms";
-import createAddressesTask from "@/modules/auth/boot/createAddressesTask";
-import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
-import { userAtom } from "@/modules/auth/atoms/userAtom";
-import { createUserTask } from "@/modules/auth/boot/userTask";
-import { hydrateToken } from "@/modules/auth/utils";
+import { authSessionAtom } from "@/modules/auth/atoms/authSessionAtom";
+import useAuthSessionBootstrap from "@/modules/auth/hooks/useAuthSessionBootstrap";
 
 export function useBootstrapApp({
   hasBootstrappedRef,
@@ -22,53 +12,23 @@ export function useBootstrapApp({
 } = {}) {
   const colorScheme = useColorScheme();
   const queryClient = useMemo(() => new QueryClient(), []);
-  const setToken = useSetAtom(tokenAtom);
-  const setAuthStatus = useSetAtom(authStatusAtom);
-  const setCart = useSetAtom(cartAtom);
-  const setAddresses = useSetAtom(addressListAtom);
-  const setUser = useSetAtom(userAtom);
-  const [ready, setReady] = useState(false);
+  const session = useAtomValue(authSessionAtom);
+  const [ready, setReady] = useState(session.phase !== "bootstrapping");
+
+  useAuthSessionBootstrap();
 
   useEffect(() => {
-    let active = true;
-
     if (hasBootstrappedRef?.current) {
       setReady(true);
-      return () => {
-        active = false;
-      };
+      return;
     }
 
     hasBootstrappedRef && (hasBootstrappedRef.current = true);
-
-    const run = async () => {
-      const token = await hydrateToken(setToken, setAuthStatus);
-      if (!token) {
-        setUser(null);
-        setCart(null);
-        setAddresses(null);
-        await bootstrapApp([splashTask]);
-      } else {
-        await bootstrapApp([
-          createUserTask(setUser),
-          createCartTask(setCart, token),
-          createAddressesTask(setAddresses, token),
-          splashTask,
-          // plug more tasks later
-        ]);
-      }
-      if (active) {
-        setReady(true);
-      }
-    };
-
-    run().then(() => undefined);
-    const unsubscribe = subscribeOnResume(run);
-    return () => {
-      active = false;
-      unsubscribe();
-    };
   }, [hasBootstrappedRef]);
+
+  useEffect(() => {
+    setReady(session.phase !== "bootstrapping");
+  }, [session.phase]);
 
   return {
     ready,
