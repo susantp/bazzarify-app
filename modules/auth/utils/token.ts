@@ -15,7 +15,14 @@ import {
   setStorage,
 } from "@/modules/core/utils/secureStore";
 import { getDefaultStore } from "jotai";
-import { addressListAtom, addressDraftAtom } from "@/modules/user/atoms/addresessAtom";
+import {
+  addressListAtom,
+  addressDraftAtom,
+} from "@/modules/user/atoms/addresessAtom";
+import { ordersState } from "@/modules/order/atoms/ordersState";
+import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
+import { TUser } from "@/modules/auth/schemas/UserSchema";
+import { clearAuthRedirect } from "@/modules/core/utils/authRedirect";
 
 export async function setAuthToken(token: string, ttlMs = AUTH_TOKEN_TTL_MS) {
   const expiresAt = Date.now() + ttlMs;
@@ -27,6 +34,24 @@ export async function clearAuthToken() {
   await deleteStorage(AUTH_TOKEN_KEY);
   await deleteStorage(AUTH_TOKEN_EXPIRES_AT_KEY);
   await deleteStorage(USER_KEY);
+}
+
+export async function setAuthenticatedSession({
+  token,
+  user,
+  ttlMs = AUTH_TOKEN_TTL_MS,
+}: {
+  token: string;
+  user: TUser;
+  ttlMs?: number;
+}) {
+  await setAuthToken(token, ttlMs);
+  await setStorage(USER_KEY, JSON.stringify(user));
+
+  const store = getDefaultStore();
+  store.set(tokenAtom, token);
+  store.set(userAtom, user);
+  store.set(authStatusAtom, "authenticated");
 }
 
 export function clearAuthState() {
@@ -41,12 +66,19 @@ export function clearAuthState() {
   store.set(selectedDeliveryAddress, null);
   store.set(addressListAtom, null);
   store.set(addressDraftAtom, null);
+  store.set(ordersState, null);
+  store.set(orderStatusesState, []);
   store.set(authStatusAtom, "guest");
 }
 
 export async function clearAuthSession() {
   await clearAuthToken();
   clearAuthState();
+}
+
+export async function logoutAuthSession() {
+  await clearAuthRedirect();
+  await clearAuthSession();
 }
 
 export async function getAuthToken(): Promise<string | null> {

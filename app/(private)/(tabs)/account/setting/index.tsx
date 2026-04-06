@@ -6,7 +6,7 @@ import { settingList } from "@/modules/account/data/settings/settingList";
 import useSettingScreen from "@/modules/account/hooks/settings/useSettingScreen";
 
 const SettingScreen = () => {
-  const { handleLogout, renderSettingItem } = useSettingScreen();
+  const { handleLogout, isLoggingOut, renderSettingItem } = useSettingScreen();
   return (
     <SafeAreaWrapper>
       <ScreenHeader title={"Settings"} />
@@ -20,10 +20,13 @@ const SettingScreen = () => {
           />
           <TouchableOpacity
             onPress={handleLogout}
+            disabled={isLoggingOut}
             activeOpacity={0.8}
             className="mt-4 flex w-full items-center bg-primary"
           >
-            <Text className="p-4 text-lg font-bold text-white">Log Out</Text>
+            <Text className="p-4 text-lg font-bold text-white">
+              {isLoggingOut ? "Logging out..." : "Log Out"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

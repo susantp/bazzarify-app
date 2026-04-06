@@ -20,16 +20,16 @@ import * as Sentry from "@sentry/react-native";
 import Toast from "react-native-toast-message";
 import { TUserPayload } from "@/modules/auth/schemas/responsePayloads/UserPayloadSchema";
 import actionGetUser from "@/modules/auth/services/actionGetUser";
-import { deleteStorage, setStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
 import { useSetAtom } from "jotai";
-import { userAtom } from "@/modules/auth/atoms/userAtom";
-import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
-import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 import {
   applyValidationFeedback,
   getValidationFeedback,
 } from "@/modules/core/utils/validationFeedback";
+import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
+import {
+  clearAuthSession,
+  setAuthenticatedSession,
+} from "@/modules/auth/utils/token";
 
 export default function RegisterScreen() {
   const [formValues] = useState({
@@ -48,9 +48,7 @@ export default function RegisterScreen() {
   });
   const [showPassword, setShowPassword] = useState(true);
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
-  const setUser = useSetAtom(userAtom);
-  const setToken = useSetAtom(tokenAtom);
-  const setAuthStatus = useSetAtom(authStatusAtom);
+  const setAuthRouteHold = useSetAtom(authRouteHoldAtom);
 
   const handleAfterRegistrationFlow = async (
     token: string,
@@ -61,21 +59,21 @@ export default function RegisterScreen() {
         "Process fetching user with token - failed" +
           JSON.stringify(userResponse),
       );
-      await deleteStorage(AUTH_TOKEN_KEY);
-      await deleteStorage(USER_KEY);
-      setToken(null);
-      setAuthStatus("guest");
+      await clearAuthSession();
+      setAuthRouteHold(false);
       return false;
     }
-    setUser(userResponse.user);
-    await setStorage(AUTH_TOKEN_KEY, token);
-    await setStorage(USER_KEY, JSON.stringify(userResponse.user));
-    setToken(token);
-    setAuthStatus("authenticated");
+
+    await setAuthenticatedSession({
+      token,
+      user: userResponse.user,
+    });
+
     return true;
   };
 
   const handleRegister = async (data: TRegisterFormField) => {
+    setAuthRouteHold(true);
     try {
       const token = await actionRegister(data);
       const isResolved = await handleAfterRegistrationFlow(token);
@@ -89,6 +87,7 @@ export default function RegisterScreen() {
         type: "success",
       });
     } catch (error) {
+      setAuthRouteHold(false);
       Sentry.captureException(error);
       const feedback = getValidationFeedback(error);
       if (feedback) {
@@ -211,7 +210,10 @@ export default function RegisterScreen() {
                   <SocialLoginButton label="register with" provider="google" />
                 </TouchableOpacity>
                 <TouchableOpacity disabled={isSubmitting}>
-                  <SocialLoginButton label="register with" provider="facebook" />
+                  <SocialLoginButton
+                    label="register with"
+                    provider="facebook"
+                  />
                 </TouchableOpacity>
               </View>
               <View className="mt-6 flex-row items-center gap-x-2">

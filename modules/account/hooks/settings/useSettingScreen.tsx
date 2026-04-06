@@ -10,16 +10,26 @@ import {
   IProfileMenu,
   SettingEnum,
 } from "@/modules/account/data/settings/settingList";
-import React from "react";
+import React, { useState } from "react";
 import { useAtomValue } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
-import { clearAuthSession } from "@/modules/auth/utils/token";
+import { logoutAuthSession } from "@/modules/auth/utils/token";
 
 export default function useSettingScreen() {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   const handleLogout = async () => {
-    //TODO request to logout api
-    await clearAuthSession();
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+    try {
+      await logoutAuthSession();
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   const renderSettingItem = ({ item }: ListRenderItemInfo<IProfileMenu>) => {
@@ -48,6 +58,7 @@ export default function useSettingScreen() {
   };
   return {
     handleLogout,
+    isLoggingOut,
     renderSettingItem,
   };
 }

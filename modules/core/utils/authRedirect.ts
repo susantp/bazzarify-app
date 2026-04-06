@@ -1,11 +1,19 @@
-import { deleteStorage, retrieveStorage, setStorage } from "@/modules/core/utils/secureStore";
+import {
+  deleteStorage,
+  retrieveStorage,
+  setStorage,
+} from "@/modules/core/utils/secureStore";
 
 const AUTH_REDIRECT_KEY = "auth_redirect_target";
 const DEFAULT_TTL_MS = 5 * 60 * 1000;
 const PROTECTED_ROUTE_PREFIXES = [
   "/(private)/",
-  "/account/",
-  "/account",
+  "/account/editProfile",
+  "/account/message",
+  "/account/order",
+  "/account/profile",
+  "/account/setting",
+  "/account/voucherCenter",
   "/cart/checkout",
   "/cart/payment",
   "/cart/paymentScreen/",
@@ -69,4 +77,8 @@ export async function consumeAuthRedirect(): Promise<string | null> {
     await deleteStorage(AUTH_REDIRECT_KEY);
     return null;
   }
+}
+
+export async function clearAuthRedirect(): Promise<void> {
+  await deleteStorage(AUTH_REDIRECT_KEY);
 }

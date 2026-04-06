@@ -11,19 +11,15 @@ import { ordersState } from "@/modules/order/atoms/ordersState";
 import actionGetOrders from "@/modules/order/actions/actionGetOrders";
 import { TUserPayload } from "@/modules/auth/schemas/responsePayloads/UserPayloadSchema";
 import actionGetUser from "@/modules/auth/services/actionGetUser";
-import { deleteStorage, setStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
-import { userAtom } from "@/modules/auth/atoms/userAtom";
-import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
-import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 import { authRouteHoldAtom } from "@/modules/auth/atoms/authRouteHoldAtom";
+import {
+  clearAuthSession,
+  setAuthenticatedSession,
+} from "@/modules/auth/utils/token";
 
 export default function useLoginHook() {
   const [showPassword, setShowPassword] = useState(true);
   const setOrders = useSetAtom(ordersState);
-  const setUser = useSetAtom(userAtom);
-  const setToken = useSetAtom(tokenAtom);
-  const setAuthStatus = useSetAtom(authStatusAtom);
   const setAuthRouteHold = useSetAtom(authRouteHoldAtom);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
@@ -37,20 +33,28 @@ export default function useLoginHook() {
         "Process fetching user with token - failed" +
           JSON.stringify(userResponse),
       );
-      await deleteStorage(AUTH_TOKEN_KEY);
-      await deleteStorage(USER_KEY);
-      setToken(null);
-      setAuthStatus("guest");
+      await clearAuthSession();
       setAuthRouteHold(false);
       return false;
     }
-    setUser(userResponse.user);
-    const orders = await actionGetOrders(token);
-    setOrders(orders);
-    await setStorage(AUTH_TOKEN_KEY, token);
-    await setStorage(USER_KEY, JSON.stringify(userResponse.user));
-    setToken(token);
-    setAuthStatus("authenticated");
+
+    await setAuthenticatedSession({
+      token,
+      user: userResponse.user,
+    });
+
+    try {
+      const orders = await actionGetOrders(token);
+      setOrders(orders);
+    } catch (error) {
+      setOrders(null);
+      Sentry.captureException(
+        new Error("Failed to hydrate orders after login", {
+          cause: error,
+        }),
+      );
+    }
+
     return true;
   };
 
@@ -68,7 +72,6 @@ export default function useLoginHook() {
         text1: "Login Success.",
         type: "success",
       });
-
     } catch (error) {
       setAuthRouteHold(false);
       Sentry.captureException(error);

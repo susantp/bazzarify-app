@@ -16,7 +16,7 @@ const Layout = () => {
   const setOrders = useSetAtom(ordersState);
   const setOrderStatuses = useSetAtom(orderStatusesState);
   const { data } = useQuery({
-    queryKey: ["account", "orders"],
+    queryKey: ["account", "orders", token],
     queryFn: async () => {
       if (!token) {
         return null;
@@ -27,7 +27,7 @@ const Layout = () => {
     staleTime: 1000 * 60 * 5,
   });
   const { data: statuses } = useQuery({
-    queryKey: ["account", "order-statuses"],
+    queryKey: ["account", "order-statuses", token],
     queryFn: async () => {
       if (!token) {
         return [];
