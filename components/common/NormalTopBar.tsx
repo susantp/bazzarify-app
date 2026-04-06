@@ -8,7 +8,7 @@ export interface NormalHeaderProps {
   searchPlaceHolder: string;
   handleSubmitEditing: () => void;
   onChangeText: ((text: string) => void) | undefined;
-  textInputDefaultValue?: string;
+  searchValue?: string;
 }
 
 export default function NormalTopBar({
@@ -16,7 +16,7 @@ export default function NormalTopBar({
   searchPlaceHolder,
   handleSubmitEditing,
   onChangeText,
-  textInputDefaultValue,
+  searchValue,
 }: NormalHeaderProps) {
   return (
     <View className="flex-row items-center justify-between bg-primary px-2 py-5">
@@ -29,7 +29,7 @@ export default function NormalTopBar({
           <ArrowLeftIcon size={24} strokeWidth={9} color="black" />
         </TouchableOpacity>
         <TextInput
-          defaultValue={textInputDefaultValue}
+          value={searchValue}
           onChangeText={onChangeText}
           autoCorrect={true}
           keyboardType="default"

@@ -41,7 +41,6 @@ export function clearAuthState() {
   store.set(selectedDeliveryAddress, null);
   store.set(addressListAtom, null);
   store.set(addressDraftAtom, null);
-  console.log("AUTH_STATUS_SET(guest)");
   store.set(authStatusAtom, "guest");
 }
 

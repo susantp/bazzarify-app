@@ -45,7 +45,6 @@ export default function CoreProviders() {
   const routeHold = useAtomValue(authRouteHoldAtom);
   const setRouteHold = useSetAtom(authRouteHoldAtom);
   const previousAuthStatusRef = useRef(authStatus);
-  console.log("CORE_PROVIDERS_RENDER", { authStatus, routeHold });
 
   useEffect(() => {
     const previous = previousAuthStatusRef.current;

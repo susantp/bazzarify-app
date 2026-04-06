@@ -1,6 +1,6 @@
 import { TSearchMetadataPayloadSchema } from "@/modules/product/schemas/responsePayloads/SearchMetadataPayloadSchema";
 import { toTitleCase } from "@/modules/core/utils";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import cn from "@/utils/tailwindHelper";
@@ -21,6 +21,10 @@ export const CustomFilterComponent = ({
 }: ICustomFilterComponentProps) => {
   const [storedOptions, setStoredOptions] = useAtom(searchFiltersAtom);
   const [selectedOptions, setSelectedOptions] = useState(storedOptions);
+
+  useEffect(() => {
+    setSelectedOptions(storedOptions);
+  }, [storedOptions]);
 
   const handleSelect = (filterId: string, optionId: string) => {
     setSelectedOptions((prev) => {
@@ -154,8 +158,8 @@ export const CustomFilterComponent = ({
       values.forEach((value) => {
         const labelValue =
           filterKey === "categories"
-            ? categoryLabelMap[value] ?? value
-            : attributeLabelMap[filterKey]?.[value] ?? value;
+            ? (categoryLabelMap[value] ?? value)
+            : (attributeLabelMap[filterKey]?.[value] ?? value);
         chips.push({
           key: `${filterKey}:${value}`,
           label: `${toTitleCase(filterKey)}: ${labelValue}`,

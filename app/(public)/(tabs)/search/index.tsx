@@ -9,11 +9,14 @@ import useSearchHistory from "@/modules/search/hooks/useSearchHistory";
 import { Colors } from "@/constants/Colors";
 
 export default function Page() {
-  const { history, clearAll, removeEntry, addEntry, actor } = useSearchHistory();
-  const { canGoBack, onSearchSubmit, handleChangeText } = useSearchBarHook();
+  const { history, clearAll, removeEntry, addEntry, actor } =
+    useSearchHistory();
+  const { canGoBack, onSearchSubmit, handleChangeText, searchQuery } =
+    useSearchBarHook();
   return (
     <SafeAreaWrapper>
       <NormalTopBar
+        searchValue={searchQuery}
         onChangeText={handleChangeText}
         canGoBack={canGoBack}
         searchPlaceHolder="Hoodie for men"
@@ -50,7 +53,7 @@ export default function Page() {
                 <TouchableOpacity
                   onPress={() => {
                     void addEntry(item);
-                    router.push({
+                    router.replace({
                       pathname: "/search/[query]",
                       params: { query: item },
                     });

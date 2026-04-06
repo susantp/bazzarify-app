@@ -42,7 +42,6 @@ export function useBootstrapApp({
     hasBootstrappedRef && (hasBootstrappedRef.current = true);
 
     const run = async () => {
-      console.log("BOOTSTRAP_START");
       const token = await hydrateToken(setToken, setAuthStatus);
       if (!token) {
         setUser(null);
@@ -59,7 +58,6 @@ export function useBootstrapApp({
         ]);
       }
       if (active) {
-        console.log("BOOTSTRAP_READY");
         setReady(true);
       }
     };

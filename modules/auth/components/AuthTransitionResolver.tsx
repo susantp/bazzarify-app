@@ -33,7 +33,6 @@ export default function AuthTransitionResolver() {
   const pathname = usePathname();
   const navState = useRootNavigationState();
   const isNavReady = navState?.key != null;
-  console.log("RESOLVER_RENDER", { authStatus, pathname, isNavReady });
 
   const previousAuthStatusRef = useRef<AuthStatus | null>(null);
   const pendingTransitionRef = useRef<PendingTransition | null>(null);

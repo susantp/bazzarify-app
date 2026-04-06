@@ -4,15 +4,21 @@ import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { View } from "react-native";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductCard from "@/components/common/ProductCard";
 import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
 import { ThemedText } from "@/components/ThemedText";
 import useProductSearch from "@/modules/product/hooks/useProductSearch";
-import { useAtom } from "jotai";
-import { searchFiltersAtom } from "@/atoms/searchFiltersAtom";
-import { countAppliedFilters } from "@/modules/product/utils/searchFilters";
+import { useAtom, useSetAtom } from "jotai";
+import {
+  activeSearchQueryAtom,
+  searchFiltersAtom,
+} from "@/atoms/searchFiltersAtom";
+import {
+  countAppliedFilters,
+  createInitialSelectedOptions,
+} from "@/modules/product/utils/searchFilters";
 import { FilterTriggerButton } from "@/modules/product/components/FilterTriggerButton";
 
 import BottomSheet, {
@@ -26,28 +32,24 @@ export default function Page() {
   const currentQuery = Array.isArray(rawQuery)
     ? (rawQuery[0] ?? "")
     : (rawQuery ?? "");
-  const { canGoBack, onSearchSubmit, handleChangeText } =
+  const { canGoBack, onSearchSubmit, handleChangeText, searchQuery } =
     useSearchBarHook(currentQuery);
   const { queryResult, metadata } = useProductSearch(currentQuery);
   const [filters] = useAtom(searchFiltersAtom);
+  const [activeSearchQuery, setActiveSearchQuery] = useAtom(
+    activeSearchQueryAtom,
+  );
+  const setFilters = useSetAtom(searchFiltersAtom);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const renderBackdrop = useCallback(
-    // @ts-ignore
-    (props) => (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        pressBehavior="close" // 🔥 THIS enables outside tap close
-      />
-    ),
-    [],
-  );
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
+  useEffect(() => {
+    if (activeSearchQuery !== currentQuery) {
+      setFilters(createInitialSelectedOptions());
+      bottomSheetRef.current?.close();
+      setActiveSearchQuery(currentQuery);
+    }
+  }, [activeSearchQuery, currentQuery, setActiveSearchQuery, setFilters]);
+
   const snapPoints = useMemo(() => ["85%"], []);
   const { isSuccess, isLoading, isError } = queryResult;
   const appliedFilterCount = useMemo(
@@ -59,7 +61,7 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <NormalTopBar
-        textInputDefaultValue={currentQuery}
+        searchValue={searchQuery}
         onChangeText={handleChangeText}
         canGoBack={canGoBack}
         searchPlaceHolder="Hoodie for men"
@@ -97,9 +99,18 @@ export default function Page() {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
-        backdropComponent={renderBackdrop}
+        backdropComponent={
+          // @ts-ignore
+          (props) => (
+            <BottomSheetBackdrop
+              {...props}
+              appearsOnIndex={0}
+              disappearsOnIndex={-1}
+              pressBehavior="close"
+            />
+          )
+        }
         enablePanDownToClose
-        onChange={handleSheetChanges}
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
       >

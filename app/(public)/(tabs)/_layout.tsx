@@ -15,15 +15,11 @@ import { useLocation } from "@/modules/core/hooks/useLocation";
 import { BlurView } from "expo-blur";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
-import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   useLocation();
   const cart = useAtomValue(cartAtom);
-  const authStatus = useAtomValue(authStatusAtom);
-  const accountHref =
-    authStatus === "authenticated" ? "/account/profile" : "/account";
   return (
     <Tabs
       initialRouteName="index"
@@ -95,7 +91,7 @@ export default function TabLayout() {
         name="account"
         options={{
           title: "Account",
-          href: accountHref,
+          href: "/account",
           tabBarIcon: ({ color }) => <UserIcon size={28} color={color} />,
         }}
       />
