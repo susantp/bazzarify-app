@@ -21,8 +21,7 @@ const ProductVariantSelector = ({
       <View className="flex-row items-center justify-items-center gap-x-3">
         {variants.map((variant) => {
           const bg = "bg-".concat(variant.name.split("|")[0]).concat("-200");
-          const isDisabled =
-            !variant.available || (variant.available_to_sell ?? 0) <= 0;
+          const isDisabled = !variant.available || variant.available_to_sell <= 0;
           const isSelected = selectedVariant?.uuid === variant.uuid;
           return (
             <TouchableOpacity

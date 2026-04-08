@@ -23,8 +23,10 @@ const ProductPriceComponent = ({
       ? "Select a variant"
       : "Unavailable";
 
-  const availabilityTone = selectedVariant?.available_to_sell
-    ? "text-green-700"
+  const availabilityTone = selectedVariant
+    ? selectedVariant.available && selectedVariant.available_to_sell > 0
+      ? "text-green-700"
+      : "text-red-600"
     : "text-red-600";
   return (
     <View className="border-b-2 border-gray-400 py-2">

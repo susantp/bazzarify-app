@@ -25,7 +25,9 @@ export default function useProductScreen(uuid: string) {
     setSelectedVariant(data?.product?.variants?.at(0) || undefined);
   }, [data?.product, isSuccess]);
 
-  const selectedVariantAvailableToSell = selectedVariant?.available_to_sell ?? 0;
+  const selectedVariantAvailableToSell = selectedVariant
+    ? selectedVariant.available_to_sell
+    : 0;
   const selectedVariantCanSell = Boolean(
     selectedVariant &&
       selectedVariant.available &&
