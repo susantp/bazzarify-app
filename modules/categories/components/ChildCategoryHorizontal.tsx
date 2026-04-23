@@ -1,8 +1,8 @@
-import { Image, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import React from "react";
 import { TCategoryWithImage } from "@/modules/product/schemas/CategorySchema";
-import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { ThemedText } from "@/components/ThemedText";
+import CategoryAvatar from "@/modules/categories/components/CategoryAvatar";
 
 const ChildCategoryHorizontal = (props: {
   onPress: () => void;
@@ -11,16 +11,7 @@ const ChildCategoryHorizontal = (props: {
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View className="w-full flex-col items-center py-5">
-        <Image
-          source={getFirstImageSource({
-            images: props.item.images,
-            baseUrl: props.item.image_base_url,
-          })}
-          style={{
-            width: 100,
-            height: 100,
-          }}
-        />
+        <CategoryAvatar item={props.item} size={100} />
         <ThemedText
           darkColor="#0000"
           ellipsizeMode={"tail"}

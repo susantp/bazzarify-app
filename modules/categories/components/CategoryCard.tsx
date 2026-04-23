@@ -1,8 +1,8 @@
-import { Image, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import React from "react";
-import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { TCategoryWithImage } from "@/modules/product/schemas/CategorySchema";
 import { ThemedText } from "@/components/ThemedText";
+import CategoryAvatar from "@/modules/categories/components/CategoryAvatar";
 
 export type CategoryCardProps = {
   item: TCategoryWithImage;
@@ -24,16 +24,7 @@ const CategoryCard = ({
         className={`flex w-${(12 / cols).toString()}/12 flex-col items-center gap-y-2 p-2`}
         onPress={onPress}
       >
-        <Image
-          source={getFirstImageSource({
-            images: item.images,
-            baseUrl: item.icon_base_url,
-          })}
-          style={{
-            height: 100,
-            width: 100,
-          }}
-        />
+        <CategoryAvatar item={item} size={100} />
         <ThemedText
           darkColor="#0000"
           ellipsizeMode={"tail"}
