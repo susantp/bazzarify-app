@@ -3,6 +3,7 @@ import { Image, View } from "react-native";
 import { Colors, primaryColor } from "@/constants/Colors";
 import { ThemedText } from "@/components/ThemedText";
 import { TCategoryWithImage } from "@/modules/product/schemas/CategorySchema";
+import { TImage } from "@/modules/product/schemas/ImageSchema";
 
 function getInitials(name: string): string {
   return name
@@ -13,6 +14,19 @@ function getInitials(name: string): string {
     .join("");
 }
 
+function resolveCategoryImageUrl(item: TCategoryWithImage): string | null {
+  const firstImage = item.images?.[0] as TImage | undefined;
+  const baseUrl = item.image_base_url ?? item.icon_base_url;
+
+  if (!firstImage || !baseUrl) {
+    return null;
+  }
+
+  return [baseUrl.replace(/\/+$/, ""), firstImage.file.replace(/^\/+/, "")]
+    .filter(Boolean)
+    .join("/");
+}
+
 export default function CategoryAvatar({
   item,
   size = 100,
@@ -20,7 +34,7 @@ export default function CategoryAvatar({
   item: TCategoryWithImage;
   size?: number;
 }) {
-  const imageUrl = item.image_base_url ?? item.icon_base_url ?? null;
+  const imageUrl = resolveCategoryImageUrl(item);
   const initials = getInitials(item.name);
 
   if (imageUrl) {

@@ -9,7 +9,7 @@ import { router } from "expo-router";
 
 const className = "flex-col bg-white px-1 py-3";
 const title = "Categories";
-const seeMorePath = "/(tabs)/categories";
+const seeMorePath = "/(public)/(tabs)/categories";
 const id = "categories";
 const numCols = 3;
 export default function HomeCategories({
@@ -34,7 +34,7 @@ export default function HomeCategories({
               hasImages={item?.images?.length! > 0}
               onPress={() =>
                 router.push({
-                  pathname: "/(tabs)/categories/[child]",
+                  pathname: "/(public)/(tabs)/categories/[child]",
                   params: { child: encodeURIComponent(item.slug) },
                 })
               }

@@ -3,14 +3,17 @@
   "main": "expo-router/entry",
   "version": "0.0.2",
   "scripts": {
-    "start": "expo start --port 8082",
-    "android": "expo start -a --port 8082",
-    "ios": "expo start -i --port 8082",
-    "web": "expo start -w --port 8082",
+    "start": "bun --env-file=.env expo start --port 8082",
+    "start:clear": "bun --env-file=.env expo start --port 8082 --clear",
+    "build:android": "bunx --env-file=.env run:android --port 8082",
+    "android": "bun --env-file=.env expo start -a --port 8082",
+    "ios": "bun --env-file=.env expo start -i --port 8082",
+    "web": "bun --env-file=.env expo start -w --port 8082",
     "test": "jest --watchAll",
     "lint": "expo lint",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
-    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
+    "deploy:prod": "eas update --environment production --platform android --branch production"
   },
   "jest": {
     "preset": "jest-expo"
