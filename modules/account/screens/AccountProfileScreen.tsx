@@ -1,4 +1,5 @@
 import {
+  Linking,
   RefreshControl,
   ScrollView,
   Text,
@@ -17,6 +18,7 @@ import { toTitleCase } from "@/modules/core/utils";
 import formatOrderDate from "@/modules/order/utils/formatOrderDate";
 import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function AccountProfileScreen() {
   const {
@@ -29,7 +31,12 @@ export default function AccountProfileScreen() {
   } = useOrder();
   const orderStatusGroups = useAtomValue(orderStatusesState);
   const { orderStatusBoxes } = useOrderStatusBox(orderStatusGroups);
-  const recentOrders = ordersPayload?.orders?.data?.slice(0, 4) || [];
+  const recentOrders = ordersPayload?.orders?.data?.slice(0, 5) || [];
+  const earnWithBazzarifyUrl = "https://vendor.bazarify.com.np/register";
+
+  const handleEarnWithBazzarifyPress = async () => {
+    await Linking.openURL(earnWithBazzarifyUrl);
+  };
 
   return (
     <SafeAreaWrapper>
@@ -77,6 +84,22 @@ export default function AccountProfileScreen() {
                 </Text>
               </TouchableOpacity>
             ))}
+          </View>
+          <View className="mt-4 border-t border-slate-200 px-2 pt-4">
+            <Text className="text-[28px] font-semibold text-slate-900">
+              Earn with Bazzarify
+            </Text>
+            <TouchableOpacity
+              className="mt-4 flex-row items-center gap-x-3 rounded-xl border border-slate-300 px-4 py-4"
+              onPress={handleEarnWithBazzarifyPress}
+            >
+              <View className="h-7 w-7 items-center justify-center rounded-full">
+                <FontAwesome5 name="rupee-sign" size={20} color="#EA580C" />
+              </View>
+              <Text className="text-2xl font-medium text-slate-900">
+                Earn With Bazzarify
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
