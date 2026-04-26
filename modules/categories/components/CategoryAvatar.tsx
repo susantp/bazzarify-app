@@ -16,7 +16,7 @@ function getInitials(name: string): string {
 
 function resolveCategoryImageUrl(item: TCategoryWithImage): string | null {
   const firstImage = item.images?.[0] as TImage | undefined;
-  const baseUrl = item.image_base_url ?? item.icon_base_url;
+  const baseUrl = item.icon_base_url;
 
   if (!firstImage || !baseUrl) {
     return null;
