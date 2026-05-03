@@ -4,6 +4,7 @@ import { TCart } from "@/modules/order/schemas/orderSchema";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { getCartInventoryState } from "@/modules/cart/utils/getCartInventoryState";
+import { shouldDisplayVariantLabel } from "@/modules/product/utils/selection";
 
 interface Props {
   cart: TCart;
@@ -44,9 +45,11 @@ const OrderDetailsComponent = ({ cart }: Props) => {
             <View className="w-full flex-row items-center justify-between">
               <View className="w-7/12">
                 <ThemedText type="subtitle">{item.name}</ThemedText>
-                <ThemedText style={{ fontStyle: "italic" }}>
-                  {item.variant_attrs?.name.replace("|", "-")}
-                </ThemedText>
+                {shouldDisplayVariantLabel(item.name, item.variant_attrs?.name) ? (
+                  <ThemedText style={{ fontStyle: "italic" }}>
+                    {item.variant_attrs?.name.replace("|", "-")}
+                  </ThemedText>
+                ) : null}
                 {item.inventory?.available_to_sell === 0 ? (
                   <Text className="mt-1 text-xs font-medium text-red-700">
                     Out of stock

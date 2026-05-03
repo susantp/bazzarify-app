@@ -14,7 +14,7 @@ const ProductVariantSelector = ({
         <Text className="text-xl font-semibold">
           Option:{" "}
           {selectedVariant?.name.replace("|", " ") || (
-            <Text className="text-red-600">Select the option</Text>
+            <Text className="text-red-600">Select an option</Text>
           )}
         </Text>
       </View>

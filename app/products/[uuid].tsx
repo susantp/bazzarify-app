@@ -5,13 +5,8 @@ import React from "react";
 import ProductScreenContainer from "@/components/product/ProductScreenContainer";
 import ProductGenericDetails from "@/components/product/ProductGenericDetails";
 import ProductDeliveryDetails from "@/components/product/ProductDeliveryDetails";
-import ProductReviewBox from "@/components/product/ProductReviewBox";
-import AskQuestionBox from "@/components/product/AskQuestionBox";
-import TopSellingComponent from "@/components/product/TopSellingComponent";
-import ProductVendorDetails from "@/components/product/ProductVendorDetails";
 import ProductDescription from "@/components/product/ProductDescription";
 import ProductSlider from "@/modules/product/components/ProductSlider";
-import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductSpecification from "@/components/product/ProductSpecification";
 import BottomActionView from "@/modules/core/components/BottomActionView";
 import ContentWrapper from "@/components/common/ContentWrapper";
@@ -41,6 +36,8 @@ export default function ProductScreen() {
     handleVariantChange,
     selectedVariantAvailableToSell,
     selectedVariantCanSell,
+    requiresCustomerSelection,
+    hasConcreteSku,
     isError,
   } = useProductScreen(uuid as string);
   const { handleAddToCart } = useCartHook();
@@ -70,7 +67,9 @@ export default function ProductScreen() {
                     currency={currency}
                     selectedVariant={selectedVariant}
                   />
-                  {product?.variants && product.variants.length > 0 ? (
+                  {requiresCustomerSelection &&
+                  product?.variants &&
+                  product.variants.length > 1 ? (
                     <ProductVariantSelector
                       selectedVariant={selectedVariant}
                       variants={product.variants}
@@ -99,11 +98,15 @@ export default function ProductScreen() {
               onCartAdd={() => handleAddToCart(product, selectedVariant)}
               canPurchase={selectedVariantCanSell}
               inventoryMessage={
-                selectedVariant
+                !hasConcreteSku
+                  ? "Unavailable"
+                  : selectedVariant
                   ? selectedVariantCanSell
                     ? `${selectedVariantAvailableToSell} available for this option`
                     : "This option is currently unavailable"
-                  : "Select an option before purchasing"
+                  : requiresCustomerSelection
+                    ? "Select an option before purchasing"
+                    : "Unavailable"
               }
               onStorePress={() =>
                 product?.user_uuid &&

@@ -10,7 +10,7 @@ export function getProductInventorySummary(item: TOmittedProductWithImages) {
       availableToSell,
       canPurchase,
       lowStock,
-      message: null as string | null,
+      message: "Unavailable" as string | null,
     };
   }
 

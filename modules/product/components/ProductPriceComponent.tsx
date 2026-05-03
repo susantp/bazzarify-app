@@ -12,6 +12,8 @@ const ProductPriceComponent = ({
   selectedVariant?: TVariantListWithImage;
   currency: { code: string };
 }) => {
+  const requiresCustomerSelection =
+    item.selection?.requires_customer_selection ?? (item.variants?.length || 0) > 1;
   const price = selectedVariant ? selectedVariant.price : item.base_price;
   const availabilityLabel = selectedVariant
     ? !selectedVariant.available
@@ -19,7 +21,7 @@ const ProductPriceComponent = ({
       : selectedVariant.available_to_sell > 0
         ? `${selectedVariant.available_to_sell} left`
         : "Out of stock"
-    : item.variants?.length
+    : requiresCustomerSelection
       ? "Select a variant"
       : "Unavailable";
 

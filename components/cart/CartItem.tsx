@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { TCartItem } from "@/modules/order/schemas/orderSchema";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { shouldDisplayVariantLabel } from "@/modules/product/utils/selection";
 
 export type CartItemProps = {
   item: TCartItem;
@@ -47,11 +48,11 @@ const CartItem = ({
         <View id="cart-item-title">
           <Text className="text-md">{item.name}</Text>
         </View>
-        {item.variant_attrs && (
+        {shouldDisplayVariantLabel(item.name, item.variant_attrs?.name) ? (
           <View>
-            <Text>{item.variant_attrs.name.replace("|", "-")}</Text>
+            <Text>{item.variant_attrs?.name.replace("|", "-")}</Text>
           </View>
-        )}
+        ) : null}
         <View id="vendor">
           <Text className="text-sm">item.vendor</Text>
         </View>
