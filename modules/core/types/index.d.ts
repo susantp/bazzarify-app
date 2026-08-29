@@ -22,8 +22,13 @@ export interface IApiData<T> {
   message: string;
   payload: Record<string, T>;
 }
+export interface IApiSchemaIssue {
+  path: string;
+  message: string;
+  code: string;
+}
 export interface IApiMetaData {
-  error: string | null | object[] | Record<string, string>;
+  error: string | null | Record<string, unknown> | IApiSchemaIssue[];
   executionTime?: number | null;
   errorCode: number | null;
 }
