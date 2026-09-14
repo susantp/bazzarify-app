@@ -3,6 +3,10 @@ import { AxiosResponse } from "axios";
 import { authAxiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
+import {
+  ConsumerProxyRequestError,
+  getConsumerProxyFailure,
+} from "@/modules/core/utils/handleError";
 
 export default async function postDataAndValidate<
   TData,
@@ -25,9 +29,11 @@ export default async function postDataAndValidate<
   try {
     upstream = await instance.post(endpoint.path, data);
   } catch (error) {
-    console.error("postDataAndValidate error", error);
-    const err = new Error(errorMessage);
-    Sentry.captureException(error);
+    const failure = getConsumerProxyFailure(error);
+    const err = failure
+      ? new ConsumerProxyRequestError(failure)
+      : new Error(errorMessage, { cause: error });
+    Sentry.captureException(err);
     throw err;
   }
   const parsed = responseSchema.safeParse(upstream.data);

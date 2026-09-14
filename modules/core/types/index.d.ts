@@ -18,6 +18,22 @@ export interface IApiResponse<T> {
   metaData: IApiMetaData;
 }
 
+export type ConsumerProxyError = IApiMetaData["error"];
+
+export interface ConsumerProxySuccess<T> {
+  message: string;
+  payload: T | null;
+}
+
+export interface ConsumerProxyFailure {
+  error: ConsumerProxyError;
+  errorCode: number;
+}
+
+export type ConsumerProxyResponse<T> =
+  | ConsumerProxySuccess<T>
+  | ConsumerProxyFailure;
+
 export interface IApiData<T> {
   message: string;
   payload: Record<string, T>;

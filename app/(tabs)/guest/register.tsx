@@ -18,7 +18,6 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import actionRegister from "@/modules/auth/services/actionRegister";
 import * as Sentry from "@sentry/react-native";
 import { retrieveStorage } from "@/modules/core/utils/secureStore";
-import { IApiResponse } from "@/modules/core/types";
 import { AUTH_TOKEN_KEY } from "@/modules/auth/config";
 
 const Page = () => {
@@ -40,13 +39,12 @@ const Page = () => {
   const [showRepeatPassword, setShowRepeatPassword] = useState(true);
   const handleRegister = async (data: TRegisterFormField) => {
     try {
-      const response: IApiResponse<string | object> =
-        await actionRegister(data);
+      const response = await actionRegister(data);
 
-      if (response.metaData.error) {
+      if ("errorCode" in response) {
         setError("password_confirmation", {
           type: "manual",
-          message: "Oops",
+          message: typeof response.error === "string" ? response.error : "Oops",
         });
         return;
       }
