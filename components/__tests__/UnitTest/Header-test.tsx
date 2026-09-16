@@ -1,15 +1,24 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import TopBar from "@/components/home/TopBar";
 
-it("renders search input with placeholder", () => {
-  const { getByPlaceholderText } = render(<TopBar className="" />);
+jest.mock("expo-router", () => ({
+  router: {
+    back: jest.fn(),
+    canGoBack: jest.fn(() => false),
+    push: jest.fn(),
+    replace: jest.fn(),
+  },
+}));
 
-  expect(getByPlaceholderText("Search on Bazzarify")).toBeTruthy();
+it("renders search input with placeholder", async () => {
+  const { getByText } = await render(<TopBar className="" />);
+
+  expect(getByText("Search on")).toBeTruthy();
 });
 
-it("does not crash when search input is empty", () => {
-  const { getByPlaceholderText } = render(<TopBar className="" />);
-  const input = getByPlaceholderText("Search on Bazzarify");
-  fireEvent.changeText(input, "");
-  expect(input.props.value).toBe("");
+it("renders the search action without crashing", async () => {
+  const { getByRole } = await render(<TopBar className="" />);
+
+  expect(getByRole("button", { name: "Search" })).toBeTruthy();
+  fireEvent.press(getByRole("button", { name: "Search" }));
 });

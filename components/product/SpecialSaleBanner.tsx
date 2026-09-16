@@ -4,23 +4,31 @@ import StyledText from "@/components/common/StyledText";
 import React from "react";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 
-const SpecialSaleBanner = ({ item }: { item: TProductWithVariantAndImage }) => {
-  if (!item.specialSale) return <></>;
-  const { specialSale, price } = item;
-  const timeDistance = formatDistance(
-    new Date(specialSale.endDate),
-    new Date(),
-  );
+type SpecialSale = {
+  discount: number;
+  discountType: "flat" | "percent";
+  endDate: string;
+  name: string;
+};
+
+type SpecialSaleProduct = TProductWithVariantAndImage & {
+  specialSale?: SpecialSale;
+  price?: number;
+};
+
+const SpecialSaleBanner = ({ item }: { item: SpecialSaleProduct }) => {
+  if (!item.specialSale) return null;
+  const sale = item.specialSale;
+  const price = item.price ?? item.base_price;
+  const timeDistance = formatDistance(new Date(sale.endDate), new Date());
   return (
     <View className="w-screen flex-row bg-orange-600 p-2">
       <View className="w-6/12 flex-col gap-y-1">
-        <StyledText className="text-sm text-white">
-          {specialSale?.name}
-        </StyledText>
+        <StyledText className="text-sm text-white">{sale.name}</StyledText>
         <StyledText className="text-2xl font-bold text-white">
-          {specialSale?.discountType === "flat" && price - specialSale.discount}
-          {specialSale?.discountType === "percent" &&
-            `Rs. ${(price - price * (specialSale?.discount / 100)).toFixed()}`}
+          {sale.discountType === "flat" && price - sale.discount}
+          {sale.discountType === "percent" &&
+            `Rs. ${(price - price * (sale.discount / 100)).toFixed()}`}
         </StyledText>
         <View className="flex-row gap-x-2">
           <StyledText className="text-white line-through">
@@ -28,9 +36,9 @@ const SpecialSaleBanner = ({ item }: { item: TProductWithVariantAndImage }) => {
           </StyledText>
           <StyledText className="font-bold text-white">
             -
-            {specialSale?.discountType === "flat"
-              ? `Rs. ${specialSale.discount}`
-              : `${specialSale?.discount}%`}
+            {sale.discountType === "flat"
+              ? `Rs. ${sale.discount}`
+              : `${sale.discount}%`}
           </StyledText>
         </View>
       </View>
