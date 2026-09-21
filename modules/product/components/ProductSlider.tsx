@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import constructProductImagesUrl from "@/modules/product/utils/constructImageUrl";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
-import { Card } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
 import ImageSlider from "@/components/common/ImageSlider";
 
@@ -23,20 +22,21 @@ const ProductSlider = ({ item }: IProductSliderProps) => {
       },
     ];
   return (
-    <Card>
+    <View className="relative overflow-visible">
       <View
         id="product-slider"
         className="flex items-center justify-items-center"
       >
-        <ImageSlider images={images} autoplayInterval={5000} />
+        <ImageSlider type="product" images={images} autoplayInterval={5000} />
       </View>
 
       <View
         id="actions"
-        className="flex-row justify-between justify-items-center px-4"
+        className="w-full flex-row justify-between rounded-lg px-4 py-2 opacity-90"
+        style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
       >
         <Pressable
-          className="rounded-full bg-orange-100 p-2 shadow-sm"
+          className="rounded-full p-2 shadow-sm"
           onPress={() => setIsFav(!isFav)}
         >
           <Entypo
@@ -45,11 +45,12 @@ const ProductSlider = ({ item }: IProductSliderProps) => {
             size={40}
           />
         </Pressable>
-        <TouchableOpacity className="rounded-full bg-orange-100 p-2 shadow-sm">
+
+        <TouchableOpacity className="rounded-full p-2 shadow-sm">
           <AntDesign name="share-alt" size={40} color={Colors.light.tint} />
         </TouchableOpacity>
       </View>
-    </Card>
+    </View>
   );
 };
 

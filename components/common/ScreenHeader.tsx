@@ -10,6 +10,7 @@ interface ScreenHeaderProps {
   iconColor?: string;
   textClassname?: string;
   containerClassname?: string;
+  interactive?: boolean;
 }
 
 const ScreenHeader = ({
@@ -17,6 +18,7 @@ const ScreenHeader = ({
   iconColor,
   textClassname,
   containerClassname,
+  interactive = true,
 }: ScreenHeaderProps) => {
   const canGoBack = router.canGoBack();
   return (
@@ -27,16 +29,17 @@ const ScreenHeader = ({
         "items-center",
         "justify-between",
         "px-1",
-        "bg-orange-600",
+        "bg-primary",
         containerClassname,
       )}
     >
       <TouchableOpacity
         activeOpacity={0.4}
         className="flex-row items-center gap-x-2 py-4"
+        disabled={!interactive}
         onPress={() => (canGoBack ? router.back() : router.dismissTo("/"))}
       >
-        {canGoBack ? (
+        {interactive && canGoBack ? (
           <AntDesign size={18} name="left" color={iconColor ?? "white"} />
         ) : undefined}
         <View style={{ flex: 1 }}>

@@ -31,7 +31,7 @@ const OrderItem = ({ items }: OrderItemProps) => (
           className="w-full flex-row items-center justify-between"
         >
           <View className="flex-col">
-            <Text className="text-md text-orange-600">{item.unit_price}</Text>
+            <Text className="text-md text-primary">{item.unit_price}</Text>
             {/*<Text className="text-sm text-gray-600 line-through">Rs 1999</Text>*/}
           </View>
 

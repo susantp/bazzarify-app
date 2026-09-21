@@ -21,7 +21,7 @@ const TopSellingComponent = () => (
           </View>
         </View>
         <View>
-          <Text className="font-semibold text-orange-600">Rs. 3,499</Text>
+          <Text className="font-semibold text-primary">Rs. 3,499</Text>
         </View>
       </View>
       <View className="flex-row items-center justify-between justify-items-center">
@@ -37,7 +37,7 @@ const TopSellingComponent = () => (
           </View>
         </View>
         <View>
-          <Text className="font-semibold text-orange-600">Rs. 3,499</Text>
+          <Text className="font-semibold text-primary">Rs. 3,499</Text>
         </View>
       </View>
       <View className="flex-row items-center justify-between justify-items-center">
@@ -53,7 +53,7 @@ const TopSellingComponent = () => (
           </View>
         </View>
         <View>
-          <Text className="font-semibold text-orange-600">Rs. 3,499</Text>
+          <Text className="font-semibold text-primary">Rs. 3,499</Text>
         </View>
       </View>
     </View>

@@ -1,5 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
+import { View } from "react-native";
 import React from "react";
+import { Colors } from "@/constants/Colors";
 
 export default function FetchingErrorComponent({
   message,
@@ -7,8 +9,13 @@ export default function FetchingErrorComponent({
   message: string;
 }) {
   return (
-    <ThemedText type="title" style={{ color: "#fff" }} className="p-4">
-      {message || "Sorry, something went wrong fetching the data."}
-    </ThemedText>
+    <View className="flex-1 items-center justify-center bg-white px-6">
+      <ThemedText
+        type="title"
+        style={{ color: Colors.light.text, textAlign: "center" }}
+      >
+        {message || "Sorry, something went wrong fetching the data."}
+      </ThemedText>
+    </View>
   );
 }

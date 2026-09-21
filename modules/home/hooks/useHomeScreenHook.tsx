@@ -1,6 +1,6 @@
 import React from "react";
 import ImageSlider from "@/components/common/ImageSlider";
-import { SliderData } from "@/constants/SliderData";
+import { ImageSliderType, SliderData } from "@/constants/SliderData";
 import {
   useInfiniteQuery,
   useQueries,
@@ -12,15 +12,23 @@ import JustForYou from "@/components/home/cards/JustForYou";
 import HomeCategories from "@/components/home/cards/HomeCategories";
 import { IHomeCard } from "@/modules/home/types";
 import homeService from "@/modules/product/services/homeService";
+import marketingService from "@/modules/marketing/sliders/domain/services/marketingService";
+import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
+import { ThemedText } from "@/components/ThemedText";
 
 export default function useHomeScreenHook() {
   const queryClient = useQueryClient();
   const [
+    homeSlidersQueryResult,
     flashDealsQueryResult,
     popularProductsQueryResult,
     homeCategoriesQueryResult,
   ] = useQueries({
     queries: [
+      {
+        queryKey: ["homeSliders"],
+        queryFn: marketingService.getHomeSliders,
+      },
       {
         queryKey: ["flashDealProducts"],
         queryFn: homeService.getFlashDealProducts,
@@ -50,6 +58,7 @@ export default function useHomeScreenHook() {
   });
 
   const refreshing =
+    homeSlidersQueryResult.isRefetching ||
     flashDealsQueryResult.isRefetching ||
     popularProductsQueryResult.isRefetching ||
     homeCategoriesQueryResult.isRefetching ||
@@ -64,6 +73,7 @@ export default function useHomeScreenHook() {
     });
 
     await Promise.all([
+      homeSlidersQueryResult.refetch(),
       flashDealsQueryResult.refetch(),
       popularProductsQueryResult.refetch(),
       homeCategoriesQueryResult.refetch(),
@@ -71,11 +81,37 @@ export default function useHomeScreenHook() {
       justForYouProductsQueryResult.refetch(),
     ]);
   };
-
+  const getSliderData = (): ImageSliderType[] => {
+    let sliderData: ImageSliderType[] = SliderData;
+    if (
+      homeSlidersQueryResult.data &&
+      homeSlidersQueryResult.data.sliders.data
+    ) {
+      sliderData = [];
+      const { sliders } = homeSlidersQueryResult.data;
+      sliders.data?.forEach((slider) =>
+        sliderData.push({
+          title: slider.title,
+          image: getFirstImageSource({
+            images: slider.images,
+            baseUrl: slider.image_base_url,
+          }),
+          description: slider.title,
+        }),
+      );
+    }
+    return sliderData;
+  };
   const CARDS: IHomeCard[] = [
     {
       id: "slider",
-      component: <ImageSlider images={SliderData} autoplayInterval={4000} />,
+      component: homeCategoriesQueryResult.isLoading ? (
+        <ThemedText>Loading</ThemedText>
+      ) : homeCategoriesQueryResult.isError ? (
+        <></>
+      ) : (
+        <ImageSlider images={getSliderData()} autoplayInterval={4000} />
+      ),
       title: "Slider",
     },
     {

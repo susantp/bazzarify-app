@@ -1,63 +1,90 @@
 import { router } from "expo-router";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
 import PolygonFreeDelivery from "@/modules/product/components/PolygonFreeDelivery";
+import { getProductInventorySummary } from "@/modules/product/utils/getProductInventorySummary";
+import { Colors } from "@/constants/Colors";
 
 export type ProductCardProps = {
   item: TOmittedProductWithImages | null;
   cols: 2 | 3 | 4;
 };
+
+function getCardWidth(cols: ProductCardProps["cols"]) {
+  return `${100 / cols}%` as const;
+}
+
 const ProductCard = ({ item, cols }: ProductCardProps) => {
   if (!item) return null;
+  const inventory = getProductInventorySummary(item);
+  const inventoryTone =
+    inventory.canPurchase === false
+      ? styles.inventoryDanger
+      : styles.inventoryInfo;
+
   return (
     <TouchableOpacity
+      activeOpacity={0.9}
       onPress={() =>
         router.push({
-          pathname: "/(tabs)/products/[uuid]",
+          pathname: "/products/[uuid]",
           params: { uuid: item.uuid },
         })
       }
-      className={`flex w-${(12 / cols).toString()}/12 p-2`}
+      style={[styles.cardSlot, { width: getCardWidth(cols) }]}
     >
-      <View className="flex-col justify-items-center rounded-lg border border-gray-200">
-        <View id="image-box">
+      <View
+        className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
+        style={{ opacity: inventory.canPurchase === false ? 0.7 : 1 }}
+      >
+        <View className="bg-slate-50 p-3">
           <View
             id="image-container"
-            className="flex-row items-center justify-center"
+            className="items-center justify-center overflow-hidden rounded-2xl bg-white"
+            style={styles.imageFrame}
           >
             <Image
               source={getFirstImageSource({
                 images: item.images,
                 baseUrl: item.image_base_url,
               })}
-              className="h-48 w-48 rounded-lg md:h-64 md:w-64"
+              resizeMode="cover"
+              style={styles.image}
             />
           </View>
           {"freeDelivery" in item && <PolygonFreeDelivery />}
         </View>
 
-        <View id="content" className="flex-col items-start gap-y-2 p-2">
-          <View>
-            <Text className="text-md">
-              {item.name.substring(0, 20).concat("...")}
+        <View id="content" className="gap-y-2 px-3 pb-3 pt-1">
+          <View style={styles.nameBlock}>
+            <Text numberOfLines={2} className="text-sm font-medium text-slate-900">
+              {item.name}
             </Text>
           </View>
-          <View className="flex flex-row">
+          <View className="flex-row items-end">
             {"base_price" in item && (
               <View>
-                <Text className="text-3xl font-semibold text-orange-600">
+                <Text className="text-xl font-semibold text-primary">
                   Rs {item?.base_price}
                 </Text>
               </View>
             )}
           </View>
+          {inventory.message ? (
+            <Text
+              className="self-start rounded-full px-2.5 py-1 text-xs font-medium"
+              style={inventoryTone}
+            >
+              {inventory.message}
+            </Text>
+          ) : null}
           {/*<View className="flex-row px-1">*/}
           {/*  {"rating" in item && (*/}
           {/*    <View className="w-5/12 flex-row items-center gap-x-1">*/}
           {/*      <AntDesign name="star" size={16} color={`#f47d58`} />*/}
-          {/*      <Text className="text-md text-orange-600">{item?.rating}</Text>*/}
+          {/*      <Text className="text-md text-primary">{item?.rating}</Text>*/}
           {/*    </View>*/}
           {/*  )}*/}
           {/*  {"location" in item && (*/}
@@ -78,4 +105,31 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  cardSlot: {
+    paddingHorizontal: 6,
+    paddingVertical: 8,
+  },
+  imageFrame: {
+    aspectRatio: 1,
+    width: "100%",
+  },
+  image: {
+    height: "100%",
+    width: "100%",
+  },
+  nameBlock: {
+    minHeight: 40,
+  },
+  inventoryInfo: {
+    backgroundColor: "#FFF1EB",
+    color: Colors.light.tint,
+  },
+  inventoryDanger: {
+    backgroundColor: "#FEE2E2",
+    color: "#B91C1C",
+  },
+});
+
 export default React.memo(ProductCard);

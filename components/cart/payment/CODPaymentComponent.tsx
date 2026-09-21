@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
-import { BanknotesIcon } from "react-native-heroicons/solid";
 import React from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 const CODPaymentComponent = () => {
   return (
@@ -8,7 +8,7 @@ const CODPaymentComponent = () => {
       <View className="h-4 bg-gray-200"></View>
       <View className="flex-row gap-x-2 p-2">
         <View className="w-1/12 items-end">
-          <BanknotesIcon color={`#3dafc8`} size={20} />
+          <Ionicons name="cash-outline" color="#3dafc8" size={20} />
         </View>
         <View className="w-10/12 flex-col gap-y-2">
           <Text className="text-justify">

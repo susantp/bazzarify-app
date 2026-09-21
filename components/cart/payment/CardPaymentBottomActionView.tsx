@@ -21,7 +21,7 @@ const CardPaymentBottomActionView = ({
       </View>
       <View className="flex-row justify-between">
         <Text className="text-xl">Total Amount</Text>
-        <Text className="text-xl font-semibold text-orange-600">
+        <Text className="text-xl font-semibold text-primary">
           Rs. {totalPrice}
         </Text>
       </View>

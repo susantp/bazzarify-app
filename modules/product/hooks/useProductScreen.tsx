@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import getProductByUUID from "@/modules/product/services/product/getProductByUUID";
 import { useEffect, useState } from "react";
 import { TVariantListWithImage } from "@/modules/product/schemas/VariantSchema";
+import {
+  getAutoResolvedVariant,
+  productRequiresCustomerSelection,
+} from "@/modules/product/utils/selection";
 
 export interface IProductVariantSelectorProps {
   variants: TVariantListWithImage[];
@@ -20,9 +24,25 @@ export default function useProductScreen(uuid: string) {
   const handleVariantChange = (variant: TVariantListWithImage) => {
     setSelectedVariant(variant);
   };
+
+  const variants = data?.product?.variants || [];
+  const autoResolvedVariant = getAutoResolvedVariant(data?.product);
+  const requiresCustomerSelection = productRequiresCustomerSelection(
+    data?.product,
+  );
+
   useEffect(() => {
-    setSelectedVariant(data?.product?.variants?.at(0) || undefined);
-  }, [data?.product, isSuccess]);
+    setSelectedVariant(autoResolvedVariant);
+  }, [autoResolvedVariant, isSuccess, variants]);
+
+  const selectedVariantAvailableToSell = selectedVariant
+    ? selectedVariant.available_to_sell
+    : 0;
+  const selectedVariantCanSell = Boolean(
+    selectedVariant &&
+      selectedVariant.available &&
+      selectedVariantAvailableToSell > 0,
+  );
 
   return {
     isSuccess,
@@ -33,5 +53,9 @@ export default function useProductScreen(uuid: string) {
     currency: data?.currency,
     handleVariantChange,
     selectedVariant,
+    selectedVariantAvailableToSell,
+    selectedVariantCanSell,
+    requiresCustomerSelection,
+    hasConcreteSku: Boolean(variants[0]),
   };
 }

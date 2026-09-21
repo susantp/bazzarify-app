@@ -4,8 +4,9 @@ import hydrateAddresses from "@/modules/auth/utils/hydrateAddresses";
 
 export default function createAddressesTask(
   setAddresses: Setter<TUserAddress[] | null>,
+  token: string,
 ) {
   return async () => {
-    await hydrateAddresses(setAddresses);
+    await hydrateAddresses(setAddresses, token);
   };
 }

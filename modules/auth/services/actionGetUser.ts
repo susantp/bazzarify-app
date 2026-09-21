@@ -19,6 +19,7 @@ export default async function actionGetUser(
   try {
     upstream = await instance.get("/user");
   } catch (error) {
+    console.error(error);
     const err = new Error("Unable to fetch user", {
       cause: error,
     });

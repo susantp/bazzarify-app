@@ -22,7 +22,7 @@ const SpecialSaleBanner = ({ item }: { item: SpecialSaleProduct }) => {
   const price = item.price ?? item.base_price;
   const timeDistance = formatDistance(new Date(sale.endDate), new Date());
   return (
-    <View className="w-screen flex-row bg-orange-600 p-2">
+    <View className="w-screen flex-row bg-primary p-2">
       <View className="w-6/12 flex-col gap-y-1">
         <StyledText className="text-sm text-white">{sale.name}</StyledText>
         <StyledText className="text-2xl font-bold text-white">

@@ -24,7 +24,7 @@ export default function JustForYou({
         renderItem={({ item, index }) =>
           item ? <ProductCard item={item} key={index} cols={numCols} /> : null
         }
-        keyExtractor={(item) => item?.uuid ?? randomUUID()}
+        keyExtractor={(item) => item?.uuid || randomUUID()}
       />
     </GridWrapper>
   );

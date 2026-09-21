@@ -1,14 +1,14 @@
 import { TextInput, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
-import { ArrowLeftIcon } from "react-native-heroicons/micro";
 import { TopBarIcons } from "@/components/home/TopBar";
+import { Ionicons } from "@expo/vector-icons";
 
 export interface NormalHeaderProps {
   canGoBack: boolean;
   searchPlaceHolder: string;
   handleSubmitEditing: () => void;
   onChangeText: ((text: string) => void) | undefined;
-  textInputDefaultValue?: string;
+  searchValue?: string;
 }
 
 export default function NormalTopBar({
@@ -16,25 +16,25 @@ export default function NormalTopBar({
   searchPlaceHolder,
   handleSubmitEditing,
   onChangeText,
-  textInputDefaultValue,
+  searchValue,
 }: NormalHeaderProps) {
   return (
-    <View className="flex-row items-center justify-between bg-orange-600 px-2 py-5">
+    <View className="flex-row items-center justify-between bg-primary px-2 py-5">
       <View
         className={`flex-1 flex-row items-center gap-x-2 rounded-full bg-white pl-4`}
       >
         <TouchableOpacity
           onPress={() => (canGoBack ? router.back() : router.replace("/"))}
         >
-          <ArrowLeftIcon size={24} strokeWidth={9} color="black" />
+          <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <TextInput
-          defaultValue={textInputDefaultValue}
+          value={searchValue}
           onChangeText={onChangeText}
           autoCorrect={true}
           keyboardType="default"
           returnKeyType="next"
-          className="flex-1 rounded-r-full py-3"
+          className="flex-1 rounded-r-full py-3 text-black"
           placeholder={searchPlaceHolder}
           focusable={true}
           onSubmitEditing={handleSubmitEditing}

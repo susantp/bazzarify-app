@@ -38,6 +38,12 @@ export const ProductSchema = z
     can_purchase: z.boolean().nullable().optional(),
     low_stock: z.boolean().nullable().optional(),
     commerce: ProductCommerceSchema.optional(),
+    selection: z
+      .object({
+        requires_customer_selection: z.boolean(),
+        auto_resolvable_variant_uuid: z.uuid().nullable(),
+      })
+      .optional(),
     brand_uuid: z.uuid().nullable(),
     status: z.number().nonnegative(),
     brand: z.object().nullable().optional(),

@@ -1,6 +1,6 @@
 import { Href, router } from "expo-router";
 import _ from "underscore";
-import React, { useState, useTransition } from "react";
+import React, { useTransition } from "react";
 import CardPaymentComponent from "@/components/cart/payment/CardPaymentComponent";
 import BottomActionView from "@/modules/core/components/BottomActionView";
 import CardPaymentBottomActionView from "@/components/cart/payment/CardPaymentBottomActionView";
@@ -10,12 +10,13 @@ import ImePayPaymentComponent from "@/components/cart/payment/ImePayPaymentCompo
 import ImePayPaymentBottomActionView from "@/components/cart/payment/ImePayPaymentBottomActionView";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { orderTotalsAfterOrderCreation } from "@/modules/order/atoms/orderTotalsAfterOrderCreation";
-import { cartAtom } from "@/modules/cart/atoms";
+import { cartAtom, selectedDeliveryAddress } from "@/modules/cart/atoms";
 import { userAtom } from "@/modules/auth/atoms/userAtom";
 import { getDefaultAddressAtom } from "@/modules/user/atoms/addresessAtom";
 import actionPlaceOrder from "@/modules/order/actions/actionPlaceOrder";
 import { Text } from "react-native";
 import Toast from "react-native-toast-message";
+import { getCartInventoryState } from "@/modules/cart/utils/getCartInventoryState";
 
 export type PaymentMethodSection = {
   sectionTitle: string;
@@ -32,31 +33,65 @@ export default function usePaymentScreenHook(id?: string) {
   const [cartState, setCartState] = useAtom(cartAtom);
   const setOrderTotals = useSetAtom(orderTotalsAfterOrderCreation);
   const user = useAtomValue(userAtom);
+  const selectedAddress = useAtomValue(selectedDeliveryAddress);
   const defaultDeliveryAddress = useAtomValue(getDefaultAddressAtom);
-  const [codPaymentFee] = useState(10);
+  const deliveryAddress = selectedAddress || defaultDeliveryAddress;
   const [isPending, startTransition] = useTransition();
+  const inventoryState = getCartInventoryState(cartState?.cart ?? null);
+  const codPaymentFee = cartState?.cart?.totals.payment_fee || 0;
 
   const handleCODPayment = () => {
-    if (!defaultDeliveryAddress) return null;
-    startTransition(async () => {
-      const response = await actionPlaceOrder({
-        shippingInformation: {
-          ...defaultDeliveryAddress,
-          phone: user?.phone || "0000000000",
-          name: user?.name || "No Name",
-        },
+    if (inventoryState.hasBlockingIssue) {
+      Toast.show({
+        type: "error",
+        text1: "Unavailable items in cart",
+        text2: "Remove out-of-stock items before placing the order.",
+        position: "bottom",
       });
-      if (response?.cart === null) {
-        setCartState(response?.cart);
+      router.replace("/cart/checkout");
+      return;
+    }
+
+    if (!deliveryAddress) {
+      Toast.show({
+        type: "error",
+        text1: "Delivery address missing !",
+        text2: "Please add a delivery address before placing the order.",
+        position: "bottom",
+      });
+      router.replace("/cart/checkout");
+      return;
+    }
+    startTransition(async () => {
+      try {
+        const response = await actionPlaceOrder({
+          shippingInformation: {
+            ...deliveryAddress,
+            phone: user?.phone || "0000000000",
+            name: user?.name || "No Name",
+          },
+        });
+        if (response?.cart === null) {
+          setCartState(response?.cart);
+        }
+        setOrderTotals(response?.orderTotals || null);
+        Toast.show({
+          type: "success",
+          text1: "Your order is processing.",
+          position: "bottom",
+        });
+        router.replace("/");
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unable to place order.";
+        Toast.show({
+          type: "error",
+          text1: "Order could not be placed",
+          text2: message,
+          position: "bottom",
+        });
       }
-      setOrderTotals(response?.orderTotals || null);
     });
-    Toast.show({
-      type: "success",
-      text1: "Your order is processing.",
-      position: "bottom",
-    });
-    router.replace("/");
   };
 
   const componentMap: Record<PaymentMethodType["id"], React.ReactNode> = {
@@ -161,5 +196,6 @@ export default function usePaymentScreenHook(id?: string) {
     paymentMethodById,
     componentMap,
     cartState,
+    inventoryState,
   };
 }

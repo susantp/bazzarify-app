@@ -1,10 +1,9 @@
 import { Text, View } from "react-native";
-import { ShieldCheckIcon, StarIcon } from "react-native-heroicons/solid";
 import { Colors } from "@/constants/Colors";
-import { StarIcon as StartIconOutline } from "react-native-heroicons/outline";
 import React, { ReactNode } from "react";
 import Svg, { Path } from "react-native-svg";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { Ionicons } from "@expo/vector-icons";
 
 export const DiscountBannerIcon = () => (
   <Svg width="51" height="32" viewBox="0 0 51 32" fill="none">
@@ -32,15 +31,11 @@ const ProductGenericDetails = ({
 
     <View id="rating-info" className="flex-row justify-between">
       <View id="reviews" className="flex-row gap-x-1">
-        <StarIcon size={20} strokeWidth={1} color={Colors["light"].tint} />
-        <StarIcon size={20} strokeWidth={1} color={Colors["light"].tint} />
-        <StarIcon size={20} strokeWidth={1} color={Colors["light"].tint} />
-        <StarIcon size={20} strokeWidth={1} color={Colors["light"].tint} />
-        <StartIconOutline
-          size={20}
-          strokeWidth={1}
-          color={Colors["light"].tint}
-        />
+        <Ionicons name="star" size={20} color={Colors["light"].tint} />
+        <Ionicons name="star" size={20} color={Colors["light"].tint} />
+        <Ionicons name="star" size={20} color={Colors["light"].tint} />
+        <Ionicons name="star" size={20} color={Colors["light"].tint} />
+        <Ionicons name="star-outline" size={20} color={Colors["light"].tint} />
         <Text>512</Text>
       </View>
 
@@ -51,9 +46,9 @@ const ProductGenericDetails = ({
         <Text className="text-md font-semibold text-orange-900">
           100% Authentic
         </Text>
-        <ShieldCheckIcon
+        <Ionicons
+          name="shield-checkmark"
           color={Colors["light"].tint}
-          strokeWidth={1}
           size={23}
         />
       </View>

@@ -5,6 +5,7 @@ import { useAtomValue } from "jotai";
 import { screenDimensionAtom } from "@/atoms/screenDimensionAtom";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
+import { getProductInventorySummary } from "@/modules/product/utils/getProductInventorySummary";
 
 export interface FlashDealsProductCardProps {
   item: TOmittedProductWithImages;
@@ -12,6 +13,7 @@ export interface FlashDealsProductCardProps {
 
 function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
   const { width, height } = useAtomValue(screenDimensionAtom);
+  const inventory = getProductInventorySummary(item);
 
   return (
     <TouchableOpacity
@@ -26,6 +28,7 @@ function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
         justifyContent: "center",
         width: width * 0.33,
         height: height * 0.16,
+        opacity: inventory.canPurchase === false ? 0.7 : 1,
       }}
     >
       <View className={`relative flex items-center`}>
@@ -46,6 +49,11 @@ function FlashDealsProductCard({ item }: FlashDealsProductCardProps) {
           })}
           className="rounded-lg border border-gray-400 p-2"
         />
+        {inventory.message ? (
+          <Text className="absolute bottom-1 rounded-md bg-black/70 px-2 py-1 text-xs text-white">
+            {inventory.message}
+          </Text>
+        ) : null}
       </View>
     </TouchableOpacity>
   );

@@ -1,5 +1,3 @@
-import { deleteStorage } from "@/modules/core/utils/secureStore";
-import { AUTH_TOKEN_KEY, USER_KEY } from "@/modules/auth/config";
 import { router } from "expo-router";
 import {
   Image,
@@ -12,23 +10,26 @@ import {
   IProfileMenu,
   SettingEnum,
 } from "@/modules/account/data/settings/settingList";
-import React from "react";
-import { useAtomValue, useSetAtom } from "jotai";
+import React, { useState } from "react";
+import { useAtomValue } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
-import { userAtom } from "@/modules/auth/atoms/userAtom";
-import { tokenAtom } from "@/modules/auth/atoms/tokenAtom";
+import { logoutAuthSession } from "@/modules/auth/session/sessionController";
 
 export default function useSettingScreen() {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);
-  const setUser = useSetAtom(userAtom);
-  const setToken = useSetAtom(tokenAtom);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   const handleLogout = async () => {
-    //TODO request to logout api
-    await deleteStorage(USER_KEY);
-    await deleteStorage(AUTH_TOKEN_KEY);
-    setUser(null);
-    setToken(null);
-    router.replace("/guest/guestAccountIndex");
+    if (isLoggingOut) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+    try {
+      await logoutAuthSession();
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   const renderSettingItem = ({ item }: ListRenderItemInfo<IProfileMenu>) => {
@@ -57,6 +58,7 @@ export default function useSettingScreen() {
   };
   return {
     handleLogout,
+    isLoggingOut,
     renderSettingItem,
   };
 }

@@ -8,7 +8,6 @@ import {
 export default async function getProductByQuery(
   params?: Record<string, string>,
 ): Promise<TProductSearchPayload | null> {
-  // const endpoint = ["/search/product/", query].join("?filter[name]=");
   const response = await fetchDataAndValidate(
     "/search/product",
     DataSchema(ProductSearchPayloadSchema),

@@ -1,13 +1,12 @@
 import { Image, Pressable, Text, TouchableOpacity, View } from "react-native";
-import { HeartIcon, ShoppingCartIcon } from "react-native-heroicons/outline";
 import { HeaderIconsProps, HeaderProps, SearchBoxProps } from "@/components";
-import { ArrowLeftIcon } from "react-native-heroicons/micro";
 import { router } from "expo-router";
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 import { Badge } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export const SearchBox = ({ className }: SearchBoxProps) => {
   const canGoBack = router.canGoBack();
@@ -53,7 +52,7 @@ export const SearchBox = ({ className }: SearchBoxProps) => {
             className="h-full w-full items-center justify-center"
             style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
           >
-            <ArrowLeftIcon size={20} strokeWidth={2} color="black" />
+            <Ionicons name="arrow-back" size={20} color="black" />
           </Pressable>
         </View>
       )}
@@ -66,10 +65,10 @@ export const TopBarIcons = ({ className }: HeaderIconsProps) => {
   return (
     <View className={className}>
       <TouchableOpacity>
-        <HeartIcon size={36} strokeWidth={2} color="white" />
+        <Ionicons name="heart-outline" size={32} color="white" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push("/cart")}>
-        <ShoppingCartIcon size={36} strokeWidth={2} color="white" />
+        <Ionicons name="cart-outline" size={32} color="white" />
         {cart?.cart?.totals.items_count ? (
           <Badge
             style={{
@@ -90,7 +89,7 @@ export const TopBarIcons = ({ className }: HeaderIconsProps) => {
 
 export default function TopBar({ className }: HeaderProps) {
   return (
-    <View className={clsx("flex-row items-center bg-orange-600", className)}>
+    <View className={clsx("flex-row items-center bg-primary", className)}>
       {/* Give SearchBox the flex so it owns the horizontal space */}
       <SearchBox className="flex-1" />
       <TopBarIcons className="w-3/12 flex-row items-center justify-between px-2 md:w-2/12 md:px-4" />

@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
+import { router } from "expo-router";
 import TopBar from "@/components/home/TopBar";
 
 jest.mock("expo-router", () => ({
@@ -10,15 +11,16 @@ jest.mock("expo-router", () => ({
   },
 }));
 
-it("renders search input with placeholder", async () => {
-  const { getByText } = await render(<TopBar className="" />);
-
-  expect(getByText("Search on")).toBeTruthy();
-});
-
-it("renders the search action without crashing", async () => {
+it("renders the search control", async () => {
   const { getByRole } = await render(<TopBar className="" />);
 
   expect(getByRole("button", { name: "Search" })).toBeTruthy();
+});
+
+it("opens search when the search control is pressed", async () => {
+  const { getByRole } = await render(<TopBar className="" />);
+
   fireEvent.press(getByRole("button", { name: "Search" }));
+
+  expect(router.push).toHaveBeenCalledWith("/search");
 });

@@ -1,9 +1,9 @@
-import { Platform, Text, TouchableOpacity, View } from "react-native";
-import { MapPinIcon } from "react-native-heroicons/outline";
+import { Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
 import { LocationGeocodedAddress } from "expo-location";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
+import { Ionicons } from "@expo/vector-icons";
 
 type DeliveryBarProps = {
   className: string;
@@ -21,20 +21,22 @@ export default function DeliveryBar({
   const [showModal, setShowModal] = useState(false);
   return (
     <View className={className}>
-      <MapPinIcon size={14} strokeWidth={2} color="white" />
+      <Ionicons name="location-outline" size={14} color="white" />
       <TouchableOpacity
         onPress={() => setShowModal(!showModal)}
         className="w-80"
       >
         {locationError ? (
           <View className="flex-row items-center justify-between">
-            <Text className="text-white">{locationError}</Text>
+            <Text className="text-white">
+              Location has an error. Please restart the app
+            </Text>
             <TouchableOpacity onPress={refresh}>
               <Text className="font-bold text-white">Refresh Location</Text>
             </TouchableOpacity>
           </View>
         ) : (
-          <Text className="text-sm font-semibold text-white">
+          <Text className="font-semibold text-white" style={{ fontSize: 11 }}>
             {displayCurrentAddress
               ? displayCurrentAddress.formattedAddress
               : "Location loading..."}

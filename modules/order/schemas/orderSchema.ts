@@ -27,11 +27,19 @@ export const OrderItemSchema = z
     row_tax: z.float64().nonnegative().default(0),
     row_shipping: z.float64().nonnegative().default(0),
     row_total: z.float64().nonnegative().nonoptional(),
+    inventory: z
+      .object({
+        available_to_sell: z.number().int().nonnegative(),
+        max_quantity: z.number().int().nonnegative(),
+        can_increment: z.boolean(),
+      })
+      .nullable()
+      .optional(),
 
     meta: z.record(z.any(), z.string()).nullable(), // JSON column
-    created_at: z.iso.datetime().optional(),
-    updated_at: z.iso.datetime().optional(),
-    deleted_at: z.iso.datetime().nullable().optional(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional(),
+    deleted_at: z.string().nullable().optional(),
   })
   .strip();
 export const OrderSchema = z
@@ -50,12 +58,12 @@ export const OrderSchema = z
     grand_total: z.float64().nonnegative().default(0),
     payment_status: z.string().max(32),
     payment_fee: z.float64().nonnegative().default(0),
-    placed_at: z.iso.datetime(),
-    cancelled_at: z.iso.datetime().nullable().optional(),
-    completed_at: z.iso.datetime().nullable().optional(),
-    created_at: z.iso.datetime().optional().optional(),
-    updated_at: z.iso.datetime().optional().optional(),
-    deleted_at: z.iso.datetime().nullable().optional(),
+    placed_at: z.string(),
+    cancelled_at: z.string().nullable().optional(),
+    completed_at: z.string().nullable().optional(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional(),
+    deleted_at: z.string().nullable().optional(),
   })
   .extend({
     items: z.array(OrderItemSchema),
@@ -67,6 +75,7 @@ export const CartItem = OrderItemSchema.pick({
   name: true,
   sku: true,
   variant_attrs: true,
+  inventory: true,
   unit_price: true,
   row_discount: true,
   row_tax: true,
@@ -81,6 +90,7 @@ export const CartMeta = OrderSchema.pick({
   tax_total: true,
   shipping_total: true,
   grand_total: true,
+  payment_fee: true,
   items_count: true,
   items_quantity: true,
 }).strip();
@@ -108,18 +118,22 @@ export const OrderTotalsSchema = OrderSchema.pick({
   payment_fee: true,
 }).strip();
 export const GetOrder = OrderSchema.pick({
-  // uuid: true,
   order_number: true,
   status: true,
   placed_at: true,
 })
   .extend({
+    uuid: z.uuid().optional(),
     items: z.array(
       OrderItemSchema.pick({
         uuid: true,
         name: true,
         qty_ordered: true,
-      }).strip(),
+      })
+        .extend({
+          order_uuid: z.uuid().optional(),
+        })
+        .strip(),
     ),
   })
   .strip();

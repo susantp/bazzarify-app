@@ -14,18 +14,32 @@
       "ios": {
         "simulator": true
       },
-      "environment": "development"
+      "environment": "development",
+      "channel": "development"
     },
     "preview": {
       "android": {
         "buildType": "app-bundle"
       },
       "distribution": "internal",
-      "environment": "preview"
+      "environment": "preview",
+      "channel": "preview"
     },
     "production": {
       "autoIncrement": true,
-      "environment": "production"
+      "environment": "production",
+      "channel": "production"
+    },
+    "staging": {
+      "autoIncrement": true,
+      "environment": "production",
+      "channel": "production",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
     }
   },
   "submit": {

@@ -1,5 +1,8 @@
 import { atom } from "jotai";
-import { TUserAddress } from "@/modules/user/schemas/UserAddress";
+import {
+  TUserAddress,
+  TUserAddressCreate,
+} from "@/modules/user/schemas/UserAddress";
 
 export const addressListAtom = atom<TUserAddress[] | undefined | null>();
 
@@ -27,3 +30,5 @@ export const getAddressByUuidAtom = atom((get) => {
     return addresses?.find((address) => address.uuid === uuid) || null;
   };
 });
+
+export const addressDraftAtom = atom<Partial<TUserAddressCreate> | null>(null);

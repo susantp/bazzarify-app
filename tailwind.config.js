@@ -3,8 +3,19 @@ module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "rgba(var(--color-primary) / <alpha-value>)",
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    ({ addBase }) =>
+      addBase({
+        ":root": {
+          "--color-primary": "234 88 12",
+        },
+      }),
+  ],
 }
 

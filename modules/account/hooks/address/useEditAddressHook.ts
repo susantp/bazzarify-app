@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   addressListAtom,
   getAddressByUuidAtom,
@@ -9,10 +9,14 @@ import { AddressFormRef } from "@/modules/account/components/settings/AddressFor
 import actionUpdateAddress from "@/modules/user/actions/actionUpdateAddress";
 import Toast from "react-native-toast-message";
 import { GestureResponderEvent } from "react-native";
+import { selectedDeliveryAddress } from "@/modules/cart/atoms";
 
 export default function useEditAddressHook() {
   const { uuid } = useLocalSearchParams();
   const setAddress = useSetAtom(addressListAtom);
+  const [selectedAddress, setSelectedAddress] = useAtom(
+    selectedDeliveryAddress,
+  );
   const getAddress = useAtomValue(getAddressByUuidAtom);
   const existingAddress = getAddress(uuid.toString());
   const formRef = useRef<AddressFormRef>(null);
@@ -22,12 +26,21 @@ export default function useEditAddressHook() {
       fieldValues.uuid = existingAddress?.uuid;
       const addresses = await actionUpdateAddress(fieldValues);
       if (addresses?.addresses) {
+        const updatedSelected =
+          selectedAddress?.uuid === existingAddress?.uuid
+            ? addresses.addresses.find(
+                (address) => address.uuid === existingAddress?.uuid,
+              )
+            : null;
         Toast.show({
           position: "bottom",
           text1: "Address updated successfully!",
           type: "success",
         });
         setAddress(addresses.addresses);
+        if (updatedSelected) {
+          setSelectedAddress(updatedSelected);
+        }
         router.back();
       }
     }

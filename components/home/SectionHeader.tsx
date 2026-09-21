@@ -19,7 +19,7 @@ const SectionHeader = ({ title, seeMorePath }: SectionHeaderProps) => (
           ios: "Poppins_SemiBold",
         }),
       }}
-      className="font-poppins flex-grow text-2xl text-orange-600"
+      className="font-poppins flex-grow text-2xl text-primary"
     >
       {title}
     </Text>

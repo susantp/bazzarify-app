@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 import Toast from "react-native-toast-message";
 import {
@@ -21,9 +21,13 @@ import { addressModalAtom } from "@/atoms/addressModalAtom";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 import getCartItemToUpdate from "@/modules/cart/utils/getCartItemToUpdate";
+import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
+import { routeGuestToLoginForProtectedTarget } from "@/modules/core/utils/protectedNavigation";
 
 export default function useCartHook() {
   const [cartState, setCartState] = useAtom(cartAtom);
+  const authStatus = useAtomValue(authStatusAtom);
+  const isAuthenticated = authStatus === "authenticated";
   const [showAddressModal, setShowAddressModal] = useAtom(addressModalAtom);
   const handleAddressModal = () => {
     setShowAddressModal(!showAddressModal);
@@ -67,13 +71,37 @@ export default function useCartHook() {
       });
   };
 
-  const handleCheckoutPress = () =>
-    cartState?.cart?.totals.items_count
-      ? router.push("/cart/checkout")
-      : Alert.alert("Please select item to checkout.");
+  const handleCheckoutPress = () => {
+    if (!isAuthenticated) {
+      routeGuestToLoginForProtectedTarget("/cart/checkout").then(
+        () => undefined,
+      );
+      return;
+    }
+
+    if (cartState?.cart?.totals.items_count) {
+      router.push("/cart/checkout");
+      return;
+    }
+
+    Alert.alert("Please select item to checkout.");
+  };
 
   const handleLineItemIncrement = (item: TCartItem) => {
     if (!item) return;
+    if (item.inventory && !item.inventory.can_increment) {
+      Toast.show({
+        position: "bottom",
+        text1: "Maximum quantity reached",
+        text2:
+          item.inventory.available_to_sell > 0
+            ? `Only ${item.inventory.available_to_sell} item(s) are currently available.`
+            : "This variant is currently out of stock.",
+        type: "error",
+      });
+      return;
+    }
+
     const data: TCartItemToUpdateQuantity = {
       line_id: item.line_id,
       uuid: item.uuid,
@@ -107,7 +135,7 @@ export default function useCartHook() {
         Toast.show({
           position: "bottom",
           text1: "Failed to add item to cart",
-          text2: "please try again later",
+          text2: error.message,
           type: "error",
         });
       });
@@ -128,6 +156,7 @@ export default function useCartHook() {
     }
     decrementCartItem(parsed.data)
       .then((result) => {
+        console.log("remove item from state called:", result?.cart);
         if (result?.cart) {
           setCartState(result);
         }
@@ -178,6 +207,9 @@ export default function useCartHook() {
       });
   };
 
+  const getLineItemIncrementDisabled = (item: TCartItem) =>
+    Boolean(item.inventory && !item.inventory.can_increment);
+
   return {
     handleAddToCart,
     handleAddressModal,
@@ -187,5 +219,6 @@ export default function useCartHook() {
     handleLineItemRemove,
     handleLineItemDecrement,
     handleCheckoutPress,
+    getLineItemIncrementDisabled,
   };
 }

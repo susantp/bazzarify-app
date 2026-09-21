@@ -13,6 +13,11 @@ module.exports = {
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
+    config: {
+      googleMaps: {
+        apiKey: process.env.GOOGLE_MAPS_API_KEY,
+      },
+    },
   },
   android: {
     edgeToEdgeEnabled: true,
@@ -24,6 +29,11 @@ module.exports = {
       "android.permission.ACCESS_COARSE_LOCATION",
       "android.permission.ACCESS_FINE_LOCATION",
     ],
+    config: {
+      googleMaps: {
+        apiKey: process.env.GOOGLE_MAPS_API_KEY,
+      },
+    },
   },
   web: {
     bundler: "metro",
@@ -31,6 +41,13 @@ module.exports = {
     favicon: "./assets/images/favicon.png",
   },
   plugins: [
+    [
+      "expo-maps",
+      {
+        requestLocationPermission: true,
+        locationPermission: "Allow $(PRODUCT_NAME) to use your location",
+      },
+    ],
     [
       "expo-location",
       {
@@ -67,6 +84,7 @@ module.exports = {
     ],
     "expo-web-browser",
     "expo-font",
+    "@sentry/react-native",
   ],
   experiments: {
     typedRoutes: true,
@@ -76,6 +94,7 @@ module.exports = {
     router: {
       origin: false,
     },
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
     eas: {
       projectId: "32e3cd11-e03a-424c-8a11-110085048593",
     },

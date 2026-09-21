@@ -7,9 +7,18 @@ export async function hideSplash() {
 }
 
 export function subscribeOnResume(callback: () => void): () => void {
+  let previousState = AppState.currentState;
   const sub = AppState.addEventListener(
     "change",
-    (state) => state === "active" && callback(),
+    (state) => {
+      const hasResumed =
+        (previousState === "inactive" || previousState === "background") &&
+        state === "active";
+      previousState = state;
+      if (hasResumed) {
+        callback();
+      }
+    },
   );
   return () => sub.remove();
 }
@@ -19,4 +28,16 @@ export function initSentry() {
     dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
     // spotlight: __DEV__, // enable if needed
   });
+}
+export function toTitleCase(str: string) {
+  if (!str) {
+    return ""; // Handle empty or null strings
+  }
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map(function (word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
 }

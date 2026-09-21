@@ -4,6 +4,10 @@ import { authAxiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
 import {
+  hasEnvelopeError,
+  toActionFeedbackError,
+} from "@/modules/core/utils/actionFeedback";
+import {
   ConsumerProxyRequestError,
   getConsumerProxyFailure,
 } from "@/modules/core/utils/handleError";
@@ -32,9 +36,12 @@ export default async function postDataAndValidate<
     const failure = getConsumerProxyFailure(error);
     const err = failure
       ? new ConsumerProxyRequestError(failure)
-      : new Error(errorMessage, { cause: error });
-    Sentry.captureException(err);
+      : toActionFeedbackError(error, errorMessage);
+    Sentry.captureException(error);
     throw err;
+  }
+  if (hasEnvelopeError(upstream.data)) {
+    throw toActionFeedbackError(upstream.data, errorMessage);
   }
   const parsed = responseSchema.safeParse(upstream.data);
 
@@ -42,7 +49,10 @@ export default async function postDataAndValidate<
     const issues = formattedIssues(parsed.error.issues);
     console.log("postDataAndValidate", issues);
     Sentry.captureException(issues);
-    throw new Error("API response schema validation failed");
+    throw toActionFeedbackError(
+      new Error("API response schema validation failed"),
+      "API response schema validation failed",
+    );
   }
 
   return parsed.data;

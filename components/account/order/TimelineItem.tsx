@@ -20,7 +20,7 @@ export default function TimelineItem({ item }: TimelineItemProps) {
       </View>
       <View className="flex-row gap-x-2">
         <View
-          className={`h-4 w-4 rounded-full ${active ? "bg-orange-600" : "bg-gray-500"}`}
+          className={`h-4 w-4 rounded-full ${active ? "bg-primary" : "bg-gray-500"}`}
         ></View>
         <Text className={`text-xs ${!active && "text-gray-500"}`}>{date}</Text>
       </View>
