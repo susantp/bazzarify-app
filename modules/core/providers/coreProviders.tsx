@@ -14,13 +14,17 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { QueryClient } from "@tanstack/query-core";
 import { useMemo } from "react";
 import useAuthSessionEffects from "@/modules/auth/hooks/useAuthSessionEffects";
+import { BazarifyThemeProvider } from "@/components/design-system/theme";
 
 function AuthenticatedRoot() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(public)" options={{ headerShown: false }} />
       <Stack.Screen name="(private)/(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="oauth-native-callback" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="oauth-native-callback"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen
         name="vendor/[vendorUuid]"
@@ -35,7 +39,10 @@ function GuestRoot() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(public)" options={{ headerShown: false }} />
-      <Stack.Screen name="oauth-native-callback" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="oauth-native-callback"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen
         name="vendor/[vendorUuid]"
@@ -59,18 +66,20 @@ export default function CoreProviders() {
   useAuthSessionEffects();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <QueryClientProvider client={queryClient}>
-        <AuthTransitionResolver />
-        {isPending ? (
-          <ThemedLoader />
-        ) : isAuthenticated ? (
-          <AuthenticatedRoot />
-        ) : (
-          <GuestRoot />
-        )}
-      </QueryClientProvider>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <BazarifyThemeProvider colorScheme={colorScheme}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <QueryClientProvider client={queryClient}>
+          <AuthTransitionResolver />
+          {isPending ? (
+            <ThemedLoader />
+          ) : isAuthenticated ? (
+            <AuthenticatedRoot />
+          ) : (
+            <GuestRoot />
+          )}
+        </QueryClientProvider>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </BazarifyThemeProvider>
   );
 }
