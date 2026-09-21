@@ -1,8 +1,10 @@
 import { z } from "zod";
+import { ConsumerProxyErrorSchema } from "@/modules/core/schemas/ConsumerProxyResponseSchema";
 
 export const MetaDataSchema = z
   .object({
-    error: z.union([z.string(), z.record(z.string(), z.string())]),
+    // Backend: MetaDataDTO and bootstrap/app.php emit strings, keyed records, or null.
+    error: ConsumerProxyErrorSchema,
     executionTime: z.number().nullable().optional(),
     errorCode: z.number().nullable(),
   })

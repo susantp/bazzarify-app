@@ -3,6 +3,10 @@ import { AxiosResponse } from "axios";
 import { authAxiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
+import {
+  ConsumerProxyRequestError,
+  getConsumerProxyFailure,
+} from "@/modules/core/utils/handleError";
 
 export async function fetchAuthDataAndValidate<TResponse extends z.ZodType>(
   endpoint: { module: string; path: string },
@@ -21,7 +25,10 @@ export async function fetchAuthDataAndValidate<TResponse extends z.ZodType>(
   try {
     upstream = await instance.get(endpoint.path);
   } catch (error: unknown) {
-    const err = new Error(errorMessage, { cause: error });
+    const failure = getConsumerProxyFailure(error);
+    const err = failure
+      ? new ConsumerProxyRequestError(failure)
+      : new Error(errorMessage, { cause: error });
     Sentry.captureException(err);
     throw err;
   }

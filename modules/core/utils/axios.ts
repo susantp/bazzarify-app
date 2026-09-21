@@ -45,8 +45,10 @@ export const authAxiosInstance = async ({
   const instance = axios.create(config);
   instance.interceptors.response.use(
     (response) => {
-      // Handle successful responses that contain error codes in metadata
-      if (response.data?.metaData?.errorCode === 401) {
+      // The proxy exposes failures at the top level; retain backend-envelope compatibility.
+      const errorCode =
+        response.data?.errorCode ?? response.data?.metaData?.errorCode;
+      if (errorCode === 401) {
         deleteStorage(AUTH_TOKEN_KEY);
         router.replace("/(tabs)/guest/guestAccountIndex");
       }

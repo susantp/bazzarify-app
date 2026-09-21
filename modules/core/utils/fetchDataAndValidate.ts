@@ -1,8 +1,12 @@
 import { z } from "zod";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { axiosInstance } from "@/modules/core/utils/axios";
 import * as Sentry from "@sentry/react-native";
 import { formattedIssues } from "@/modules/core/utils/zod.util";
+import {
+  ConsumerProxyRequestError,
+  getConsumerProxyFailure,
+} from "@/modules/core/utils/handleError";
 
 export default async function fetchDataAndValidate<T extends z.ZodType>(
   endpoint: string,
@@ -14,10 +18,10 @@ export default async function fetchDataAndValidate<T extends z.ZodType>(
   try {
     upstream = await axiosInstance.get(endpoint, { params });
   } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      console.log("fetch and validate error: ", error, error.response?.data);
-    }
-    const err = new Error(errorMessage, { cause: error });
+    const failure = getConsumerProxyFailure(error);
+    const err = failure
+      ? new ConsumerProxyRequestError(failure)
+      : new Error(errorMessage, { cause: error });
     Sentry.captureException(err);
     throw err;
   }

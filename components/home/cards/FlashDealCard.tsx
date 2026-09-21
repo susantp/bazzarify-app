@@ -15,7 +15,7 @@ export default function FlashDealCard({
 }: IHomeCardComponent<TFlashDealsPayload>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
-    <GridWrapper className={className} title={title} >
+    <GridWrapper className={className} title={title}>
       {isLoading ? (
         <ThemedText>Loading</ThemedText>
       ) : isError ? (
