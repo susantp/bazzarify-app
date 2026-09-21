@@ -6,6 +6,7 @@ import { Carousel } from "@/components/design-system/media";
 interface ImageSliderProps {
   images: ImageSliderType[];
   autoplayInterval?: number;
+  type?: "banner" | "thumbnail" | "gallery" | "product";
 }
 
 const ImageSlider: React.FC<ImageSliderProps> = ({

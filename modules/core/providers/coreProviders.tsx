@@ -21,7 +21,10 @@ function AuthenticatedRoot() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(public)" options={{ headerShown: false }} />
       <Stack.Screen name="(private)/(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="oauth-native-callback" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="oauth-native-callback"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen
         name="vendor/[vendorUuid]"
@@ -36,7 +39,10 @@ function GuestRoot() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(public)" options={{ headerShown: false }} />
-      <Stack.Screen name="oauth-native-callback" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="oauth-native-callback"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
       <Stack.Screen
         name="vendor/[vendorUuid]"
