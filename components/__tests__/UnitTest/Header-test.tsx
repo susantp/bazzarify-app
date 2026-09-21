@@ -1,15 +1,26 @@
 import { fireEvent, render } from "@testing-library/react-native";
+import { router } from "expo-router";
 import TopBar from "@/components/home/TopBar";
 
-it("renders search input with placeholder", () => {
-  const { getByPlaceholderText } = render(<TopBar className="" />);
+jest.mock("expo-router", () => ({
+  router: {
+    back: jest.fn(),
+    canGoBack: jest.fn(() => false),
+    push: jest.fn(),
+    replace: jest.fn(),
+  },
+}));
 
-  expect(getByPlaceholderText("Search on Bazzarify")).toBeTruthy();
+it("renders the search control", async () => {
+  const { getByRole } = await render(<TopBar className="" />);
+
+  expect(getByRole("button", { name: "Search" })).toBeTruthy();
 });
 
-it("does not crash when search input is empty", () => {
-  const { getByPlaceholderText } = render(<TopBar className="" />);
-  const input = getByPlaceholderText("Search on Bazzarify");
-  fireEvent.changeText(input, "");
-  expect(input.props.value).toBe("");
+it("opens search when the search control is pressed", async () => {
+  const { getByRole } = await render(<TopBar className="" />);
+
+  fireEvent.press(getByRole("button", { name: "Search" }));
+
+  expect(router.push).toHaveBeenCalledWith("/search");
 });
