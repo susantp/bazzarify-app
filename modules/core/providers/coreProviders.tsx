@@ -14,6 +14,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { QueryClient } from "@tanstack/query-core";
 import { useMemo } from "react";
 import useAuthSessionEffects from "@/modules/auth/hooks/useAuthSessionEffects";
+import { BazarifyThemeProvider } from "@/components/design-system/theme";
 
 function AuthenticatedRoot() {
   return (
@@ -59,18 +60,20 @@ export default function CoreProviders() {
   useAuthSessionEffects();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <QueryClientProvider client={queryClient}>
-        <AuthTransitionResolver />
-        {isPending ? (
-          <ThemedLoader />
-        ) : isAuthenticated ? (
-          <AuthenticatedRoot />
-        ) : (
-          <GuestRoot />
-        )}
-      </QueryClientProvider>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <BazarifyThemeProvider colorScheme={colorScheme}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <QueryClientProvider client={queryClient}>
+          <AuthTransitionResolver />
+          {isPending ? (
+            <ThemedLoader />
+          ) : isAuthenticated ? (
+            <AuthenticatedRoot />
+          ) : (
+            <GuestRoot />
+          )}
+        </QueryClientProvider>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </BazarifyThemeProvider>
   );
 }

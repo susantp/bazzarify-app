@@ -4,7 +4,7 @@ import Markdown, { MarkdownIt } from "react-native-markdown-display";
 import { lexicalJsonToMarkdown } from "@/modules/core/utils/lexicalJsonToMarkdown";
 
 type Props = {
-  value: string | Record<string, any>; // Lexical editorState JSON
+  value: string | Record<string, unknown>; // Lexical editorState JSON
   onError?: (e: unknown) => void;
 };
 
