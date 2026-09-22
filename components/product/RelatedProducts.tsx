@@ -10,14 +10,6 @@ const RelatedProducts = () => (
         </Text>
         <Text variant="body">See more</Text>
       </Box>
-      {/*<View className="flex-row">*/}
-      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
-      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
-      {/*</View>*/}
-      {/*<View className="flex-row">*/}
-      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
-      {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
-      {/*</View>*/}
     </Box>
   </Box>
 );
