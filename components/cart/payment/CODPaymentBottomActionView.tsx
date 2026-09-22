@@ -1,6 +1,5 @@
-import { Pressable, Text, View } from "react-native";
+import { Box, Button, Text } from "@/components/design-system";
 import React from "react";
-import { ThemedText } from "@/components/ThemedText";
 
 interface ICODPaymentMethodViewProps {
   totalPrice: number;
@@ -18,38 +17,23 @@ const CODPaymentBottomActionView = ({
   action,
 }: ICODPaymentMethodViewProps) => {
   return (
-    <View className="w-full px-4 py-9">
-      <View className="flex-col gap-y-4">
-        <View className="w-full flex-row justify-between">
-          <Text className="text-sm font-light">Subtotal</Text>
-          <Text className="font-semibold">Rs. {subTotalPrice}</Text>
-        </View>
-        <View className="w-full flex-row justify-between">
-          <Text className="text-sm font-light">Cash Payment Fee</Text>
-          <Text className="font-semibold">Rs. {cashPaymentFee}</Text>
-        </View>
-        <View className="w-full flex-row justify-between">
-          <Text className="text-xl">Total Amount</Text>
-          <Text className="text-xl font-semibold text-primary">
-            Rs. {totalPrice}
-          </Text>
-        </View>
-        <Pressable
-          className="w-full flex-row items-center justify-center rounded-md bg-primary p-4"
-          onPress={action}
-        >
-          <ThemedText
-            type="subtitle"
-            style={{
-              color: "#ffffff",
-              textAlign: "center",
-            }}
-          >
-            {actionBtn}
-          </ThemedText>
-        </Pressable>
-      </View>
-    </View>
+    <Box direction="column" gap="lg" paddingX="lg" paddingY="huge">
+      <Box direction="row" justify="space-between">
+        <Text variant="bodyCompact">Subtotal</Text>
+        <Text variant="bodyMedium">Rs. {subTotalPrice}</Text>
+      </Box>
+      <Box direction="row" justify="space-between">
+        <Text variant="bodyCompact">Cash Payment Fee</Text>
+        <Text variant="bodyMedium">Rs. {cashPaymentFee}</Text>
+      </Box>
+      <Box direction="row" justify="space-between">
+        <Text variant="title">Total Amount</Text>
+        <Text variant="title" color="primary">
+          Rs. {totalPrice}
+        </Text>
+      </Box>
+      <Button label={actionBtn} onPress={action} />
+    </Box>
   );
 };
 export default CODPaymentBottomActionView;
