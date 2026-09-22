@@ -1,9 +1,7 @@
 import React from "react";
-import { Image, View } from "react-native";
-import { Colors, primaryColor } from "@/constants/Colors";
-import { ThemedText } from "@/components/ThemedText";
 import { TCategoryWithImage } from "@/modules/product/schemas/CategorySchema";
 import { TImage } from "@/modules/product/schemas/ImageSchema";
+import { Box, Image, Text } from "@/components/design-system";
 
 function getInitials(name: string): string {
   return name
@@ -38,36 +36,20 @@ export default function CategoryAvatar({
   const initials = getInitials(item.name);
 
   if (imageUrl) {
-    return (
-      <Image
-        source={{ uri: imageUrl }}
-        style={{
-          width: size,
-          height: size,
-          borderRadius: 16,
-        }}
-      />
-    );
+    return <Image source={{ uri: imageUrl }} size={size} radius="lg" />;
   }
 
   return (
-    <View
-      style={{
-        width: size,
-        height: size,
-        borderRadius: 16,
-        backgroundColor: primaryColor,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+    <Box
+      align="center"
+      justify="center"
+      backgroundColor="primary"
+      borderRadius="lg"
+      style={{ height: size, width: size }}
     >
-      <ThemedText
-        darkColor={Colors.light.background}
-        lightColor={Colors.light.background}
-        type="subtitle"
-      >
+      <Text variant="bodyMedium" color="textInverted">
         {initials || "?"}
-      </ThemedText>
-    </View>
+      </Text>
+    </Box>
   );
 }

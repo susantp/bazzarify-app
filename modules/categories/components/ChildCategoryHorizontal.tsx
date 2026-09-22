@@ -1,28 +1,34 @@
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { TCategoryWithImage } from "@/modules/product/schemas/CategorySchema";
-import { ThemedText } from "@/components/ThemedText";
 import CategoryAvatar from "@/modules/categories/components/CategoryAvatar";
+import { Box, Text } from "@/components/design-system";
 
 const ChildCategoryHorizontal = (props: {
   onPress: () => void;
   item: TCategoryWithImage;
 }) => {
   return (
-    <TouchableOpacity onPress={props.onPress}>
-      <View className="w-full flex-col items-center py-5">
+    <Pressable
+      accessibilityLabel={props.item.name}
+      accessibilityRole="button"
+      onPress={props.onPress}
+      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+    >
+      <Box align="center" paddingY="xl" gap="sm" style={styles.content}>
         <CategoryAvatar item={props.item} size={100} />
-        <ThemedText
-          darkColor="#0000"
-          ellipsizeMode={"tail"}
-          numberOfLines={1}
-          type="defaultSemiBold"
-        >
+        <Text variant="bodyCompactMedium" numberOfLines={1}>
           {props.item.name}
-        </ThemedText>
-      </View>
-    </TouchableOpacity>
+        </Text>
+      </Box>
+    </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  card: { width: "100%" },
+  content: { width: "100%" },
+  pressed: { opacity: 0.8 },
+});
 
 export default ChildCategoryHorizontal;
