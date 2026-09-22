@@ -45,7 +45,7 @@ export default function GuestAccountLandingScreen() {
               onPress={handleLoginPress}
               color="#1A202C"
               label="Login"
-              className="py-2.5"
+              style={{ paddingVertical: 10 }}
               isLeft={true}
             />
             <PolygonButton
@@ -54,7 +54,7 @@ export default function GuestAccountLandingScreen() {
               onPress={handleRegisterPress}
               color={Colors.light.tint}
               label="Register"
-              className="py-2.5"
+              style={{ paddingVertical: 10 }}
               isLeft={false}
             />
           </View>

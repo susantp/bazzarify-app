@@ -1,7 +1,8 @@
-import { LayoutRectangle, Text, TouchableOpacity } from "react-native";
+import { Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
+import { LayoutRectangle, Pressable, StyleProp, ViewStyle } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 import React from "react";
-import cn from "@/utils/tailwindHelper";
 
 interface PolygonButtonProps {
   dimensions: { width: number; height: number };
@@ -11,7 +12,7 @@ interface PolygonButtonProps {
   label: string;
   isLeft: boolean;
   disabled?: boolean;
-  className?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 const PolygonButton = ({
@@ -22,42 +23,61 @@ const PolygonButton = ({
   setDimensions,
   isLeft,
   disabled = false,
-  className,
-}: PolygonButtonProps) => (
-  <TouchableOpacity
-    onPress={disabled ? undefined : onPress}
-    disabled={disabled}
-    className={cn("flex", "items-center", "justify-center", "px-8", className)}
-    onLayout={(e) => setDimensions(e.nativeEvent.layout)}
-    style={{ opacity: disabled ? 0.55 : 1 }}
-  >
-    <Svg
-      width={dimensions.width}
-      height={dimensions.height}
-      className="absolute"
-      style={{ position: "absolute", top: 0, left: 0 }}
+  style,
+}: PolygonButtonProps) => {
+  const theme = useBazarifyTheme();
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={disabled ? undefined : onPress}
+      disabled={disabled}
+      onLayout={(e) => setDimensions(e.nativeEvent.layout)}
+      style={[styles.button, { opacity: disabled ? 0.55 : 1 }, style]}
     >
-      <Polygon
-        points={
-          isLeft
-            ? `
+      <Svg
+        width={dimensions.width}
+        height={dimensions.height}
+        style={styles.background}
+      >
+        <Polygon
+          points={
+            isLeft
+              ? `
               0,0 
               ${dimensions.width},0 
               ${dimensions.width * 0.88},${dimensions.height} 
               0,${dimensions.height}
             `
-            : `
+              : `
               ${dimensions.width * 0.12},0 
               ${dimensions.width},0 
               ${dimensions.width},${dimensions.height} 
               0,${dimensions.height}
             `
-        }
-        fill={disabled ? "#9CA3AF" : color}
-      />
-    </Svg>
-    <Text className="font-bold text-white">{label}</Text>
-  </TouchableOpacity>
-);
+          }
+          fill={disabled ? theme.colors.borderStrong : color}
+        />
+      </Svg>
+      <Text variant="label" color="textInverted">
+        {label}
+      </Text>
+    </Pressable>
+  );
+};
+
+const styles = {
+  button: {
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    paddingHorizontal: 32,
+  },
+  background: {
+    left: 0,
+    position: "absolute" as const,
+    top: 0,
+  },
+};
 
 export default PolygonButton;
