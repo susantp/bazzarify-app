@@ -117,7 +117,6 @@ export default function VerifyPasswordResetScreen() {
               name="verification_code"
               formField={({ field }: IControlledFormFieldProps) => (
                 <NumberInput
-                  className="border-2 border-slate-200 py-5"
                   hasError={errors.verification_code}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
@@ -145,7 +144,6 @@ export default function VerifyPasswordResetScreen() {
               }}
               formField={({ field }: IControlledFormFieldProps) => (
                 <UserPasswordInput
-                  className="border-2 border-slate-200 py-5"
                   hasError={errors.password}
                   setShowPassword={setShowPassword}
                   showPassword={showPassword}
@@ -165,7 +163,6 @@ export default function VerifyPasswordResetScreen() {
               rules={{ required: "Confirm Password is required" }}
               formField={({ field }: IControlledFormFieldProps) => (
                 <UserPasswordInput
-                  className="border-2 border-slate-200 py-5"
                   hasError={errors.password_confirmation}
                   setShowPassword={setShowRepeatPassword}
                   showPassword={showRepeatPassword}
