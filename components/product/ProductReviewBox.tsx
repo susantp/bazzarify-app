@@ -1,69 +1,84 @@
-import { Animated, Image, Text, View } from "react-native";
-import { randomUUID } from "expo-crypto";
 import React from "react";
-import { Colors } from "@/constants/Colors";
-import ScrollView = Animated.ScrollView;
+import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon, Image, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
+
+type ProductReview = {
+  content: string;
+  id: string;
+  rating: number;
+  reviewer: string;
+};
+
+const reviews: ProductReview[] = Array.from({ length: 11 }, (_, index) => ({
+  content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  id: `review-${index + 1}`,
+  rating: 4,
+  reviewer: "Ayush P.",
+}));
 
 const ProductReviewBox = () => (
-  <View className="px-4">
-    <View id="reviews" className="flex-col gap-y-3 rounded-xl">
-      <View className="flex-row items-center justify-between justify-items-center px-6">
-        <Text className="text-xl font-semibold">Reviews</Text>
-        <Text className="text-md">view more</Text>
-      </View>
+  <Box paddingX="lg">
+    <Box id="reviews" gap="md">
+      <Box direction="row" justify="space-between" paddingX="xxl">
+        <Text variant="title">Reviews</Text>
+        <Text variant="body">view more</Text>
+      </Box>
 
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {Array.from({ length: 11 }).map((item, index) => (
-          <ProductReviewDetails key={randomUUID()} />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {reviews.map((review) => (
+          <ProductReviewDetails key={review.id} review={review} />
         ))}
       </ScrollView>
-    </View>
-  </View>
+    </Box>
+  </Box>
 );
 
-const ProductReviewDetails = () => (
-  <View className="mr-4 w-52">
-    <View
-      id="review-detail"
-      className="flex-col rounded-xl border border-gray-400 bg-white p-3"
-    >
-      <View
-        id="product-slider"
-        className="flex items-center justify-items-center"
+const ProductReviewDetails = ({ review }: { review: ProductReview }) => {
+  const theme = useBazarifyTheme();
+
+  return (
+    <Box style={{ marginRight: theme.spacing.lg, width: 208 }}>
+      <Box
+        id="review-detail"
+        gap="sm"
+        borderRadius="xl"
+        backgroundColor="surface"
+        padding="md"
+        style={{ borderColor: theme.colors.border, borderWidth: 1 }}
       >
-        <Image
-          source={require("@/assets/products/product.png")}
-          className="h-24 w-24 rounded-lg"
-        />
-      </View>
-      <View
-        id="product-reviewer"
-        className="flex items-center justify-items-center"
-      >
-        <Text className="text-md font-semibold">Ayush P.</Text>
-      </View>
-      <View
-        id="product-reviewer"
-        className="flex items-center justify-items-center"
-      >
-        <View className="flex-row items-center justify-items-center gap-x-2">
-          <Ionicons name="star" size={20} color={Colors.light.tint} />
-          <Ionicons name="star" size={20} color={Colors.light.tint} />
-          <Ionicons name="star" size={20} color={Colors.light.tint} />
-          <Ionicons name="star" size={20} color={Colors.light.tint} />
-        </View>
-      </View>
-      <View
-        id="product-review-content"
-        className="flex items-center justify-items-center"
-      >
-        <Text className="text-md">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </Text>
-      </View>
-    </View>
-  </View>
-);
+        <Box id="product-slider" align="center">
+          <Image
+            source={require("@/assets/products/product.png")}
+            size={96}
+            radius="md"
+          />
+        </Box>
+        <Box id="product-reviewer" align="center">
+          <Text variant="bodyMedium">{review.reviewer}</Text>
+        </Box>
+        <Box
+          id="product-review-rating"
+          direction="row"
+          align="center"
+          justify="center"
+          gap="xs"
+        >
+          {Array.from({ length: review.rating }, (_, index) => (
+            <Icon key={`${review.id}-star-${index}`} size={20} color="warning">
+              {({ color, size }) => (
+                <Ionicons name="star" size={size} color={color} />
+              )}
+            </Icon>
+          ))}
+        </Box>
+        <Box id="product-review-content" align="center">
+          <Text variant="body">{review.content}</Text>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
 
 export default ProductReviewBox;
