@@ -93,7 +93,7 @@ export default function ProductScreen() {
               </ProductScreenContainer>
             </ScrollView>
           </ContentWrapper>
-          <BottomActionView className="gap-y-3 p-3">
+          <BottomActionView style={{ gap: 12, padding: 12 }}>
             <ProductPageBottomView
               onCartAdd={() => handleAddToCart(product, selectedVariant)}
               canPurchase={selectedVariantCanSell}
@@ -101,12 +101,12 @@ export default function ProductScreen() {
                 !hasConcreteSku
                   ? "Unavailable"
                   : selectedVariant
-                  ? selectedVariantCanSell
-                    ? `${selectedVariantAvailableToSell} available for this option`
-                    : "This option is currently unavailable"
-                  : requiresCustomerSelection
-                    ? "Select an option before purchasing"
-                    : "Unavailable"
+                    ? selectedVariantCanSell
+                      ? `${selectedVariantAvailableToSell} available for this option`
+                      : "This option is currently unavailable"
+                    : requiresCustomerSelection
+                      ? "Select an option before purchasing"
+                      : "Unavailable"
               }
               onStorePress={() =>
                 product?.user_uuid &&
