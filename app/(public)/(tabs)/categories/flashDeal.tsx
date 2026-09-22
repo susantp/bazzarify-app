@@ -18,7 +18,7 @@ export default function Page() {
       <ScreenHeader
         title="Flash Deal"
         iconColor={Colors.light.tint}
-        textClassname="text-primary"
+        titleColor={Colors.light.tint}
       />
       <ContentWrapper>
         <BubbleDesign />

@@ -8,7 +8,7 @@ const AccountHeader = () => {
     <View className="flex-row items-center justify-between bg-primary">
       <ScreenHeader
         title="Account"
-        containerClassname="w-6/12"
+        style={{ width: "50%" }}
         interactive={false}
       />
       <TouchableOpacity
