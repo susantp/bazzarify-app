@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { InputProps } from "@/components/common";
-import cn from "@/utils/tailwindHelper";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon, Input, useBazarifyTheme } from "@/components/design-system";
 
 interface PasswordInputProps extends InputProps {
   setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,46 +16,88 @@ const UserPasswordInput = ({
   onBlur,
   onChange,
   hasError,
-  className,
 }: PasswordInputProps) => {
+  const theme = useBazarifyTheme();
+
   return (
     <>
-      <TextInput
+      <Input
         value={value}
         onBlur={onBlur}
         onChangeText={onChange}
         secureTextEntry={showPassword}
         placeholder="Password"
-        className={cn(
-          "rounded-xl",
-          "bg-white",
-          "pl-16",
-          "text-black",
-          className,
-        )}
+        error={hasError?.message}
+        style={styles.input}
       />
-      <View className="absolute left-4 top-1/2 h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-slate-100">
-        {showPassword ? (
-          <Ionicons name="lock-closed-outline" size={20} color="#64748B" />
-        ) : (
-          <Ionicons name="lock-open-outline" size={20} color="#64748B" />
-        )}
-      </View>
-      <TouchableOpacity
-        className="absolute right-4 top-1/2 -translate-y-1/2"
-        onPress={() => setShowPassword(!showPassword)}
+      <Box
+        align="center"
+        justify="center"
+        borderRadius="pill"
+        style={[
+          styles.iconSurface,
+          { backgroundColor: theme.colors.surfaceMuted },
+        ]}
       >
-        <View className="h-9 w-9 items-center justify-center rounded-full bg-slate-100">
-          {showPassword ? (
-            <Ionicons name="eye-off-outline" size={20} color="#64748B" />
-          ) : (
-            <Ionicons name="eye-outline" size={20} color="#64748B" />
+        <Icon size={20} color="textMuted">
+          {({ color, size }) => (
+            <Ionicons
+              name={showPassword ? "lock-closed-outline" : "lock-open-outline"}
+              size={size}
+              color={color}
+            />
           )}
-        </View>
-      </TouchableOpacity>
-      {hasError && <Text className="text-red-600">{hasError.message}</Text>}
+        </Icon>
+      </Box>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={showPassword ? "Hide password" : "Show password"}
+        testID="password-visibility-toggle"
+        onPress={() => setShowPassword(!showPassword)}
+        style={styles.visibilityButton}
+      >
+        <Box
+          align="center"
+          justify="center"
+          borderRadius="pill"
+          style={[
+            styles.iconSurface,
+            { backgroundColor: theme.colors.surfaceMuted },
+          ]}
+        >
+          <Icon size={20} color="textMuted">
+            {({ color, size }) => (
+              <Ionicons
+                name={showPassword ? "eye-off-outline" : "eye-outline"}
+                size={size}
+                color={color}
+              />
+            )}
+          </Icon>
+        </Box>
+      </Pressable>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    paddingHorizontal: 64,
+  },
+  iconSurface: {
+    height: 36,
+    left: 16,
+    position: "absolute",
+    top: "50%",
+    transform: [{ translateY: -18 }],
+    width: 36,
+  },
+  visibilityButton: {
+    position: "absolute",
+    right: 16,
+    top: "50%",
+    transform: [{ translateY: -18 }],
+  },
+});
 
 export default UserPasswordInput;

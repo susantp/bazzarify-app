@@ -129,7 +129,6 @@ export default function RegisterScreen() {
                   name="name"
                   formField={({ field }: IControlledFormFieldProps) => (
                     <NameInput
-                      className="border-2 border-slate-200 py-5"
                       hasError={errors.name}
                       onChange={field.onChange}
                       onBlur={field.onBlur}
@@ -145,7 +144,6 @@ export default function RegisterScreen() {
                   name="email"
                   formField={({ field }: IControlledFormFieldProps) => (
                     <UsernameInput
-                      className="border-2 border-slate-200 py-5"
                       hasError={errors.email}
                       onChange={field.onChange}
                       onBlur={field.onBlur}
@@ -163,7 +161,6 @@ export default function RegisterScreen() {
                   rules={{ required: true }}
                   formField={({ field }: IControlledFormFieldProps) => (
                     <UserPasswordInput
-                      className="border-2 border-slate-200 py-5"
                       hasError={errors.password}
                       setShowPassword={setShowPassword}
                       showPassword={showPassword}
@@ -183,7 +180,6 @@ export default function RegisterScreen() {
                   rules={{ required: true }}
                   formField={({ field }: IControlledFormFieldProps) => (
                     <UserPasswordInput
-                      className="border-2 border-slate-200 py-5"
                       hasError={errors.password_confirmation}
                       setShowPassword={setShowRepeatPassword}
                       showPassword={showRepeatPassword}

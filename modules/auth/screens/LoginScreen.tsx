@@ -86,7 +86,6 @@ const LoginScreen = () => {
                   name="password"
                   formField={({ field }: IControlledFormFieldProps) => (
                     <UserPasswordInput
-                      className="border-2 border-slate-200 py-5 text-black"
                       hasError={errors.password}
                       setShowPassword={handleShowPassword}
                       showPassword={showPassword}
