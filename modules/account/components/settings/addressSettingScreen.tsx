@@ -1,13 +1,13 @@
-import ContentWrapper from "@/components/common/ContentWrapper";
 import AddressListComponent from "@/modules/account/components/settings/AddressListComponent";
+import { Button, Box } from "@/components/design-system";
+import { PageContent } from "@/components/design-system/compositions";
 import { useAtomValue, useSetAtom } from "jotai";
 import { addressListAtom } from "@/modules/user/atoms/addresessAtom";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 import actionUpdateAddress from "@/modules/user/actions/actionUpdateAddress";
 import Toast from "react-native-toast-message";
 import { Link } from "expo-router";
-import { ThemedText } from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
+import { StyleSheet } from "react-native";
 
 const AddressSettingScreen = () => {
   const addresses = useAtomValue(addressListAtom);
@@ -45,26 +45,26 @@ const AddressSettingScreen = () => {
     });
   };
   return (
-    <ContentWrapper className="flex-col items-center gap-y-5 bg-white">
-      {addresses && addresses.length > 0 ? (
-        <AddressListComponent
-          addresses={addresses}
-          onSwitchChange={handleSwitch}
-        />
-      ) : null}
-      <Link
-        href={`/account/setting/address/create`}
-        className="rounded-full bg-primary px-4 py-3"
-      >
-        <ThemedText
-          lightColor={Colors.light.background}
-          style={{ fontSize: 20 }}
-        >
-          Create new address
-        </ThemedText>
-      </Link>
-    </ContentWrapper>
+    <PageContent backgroundColor="background">
+      <Box align="center" gap="xl" flex={1} style={styles.content}>
+        {addresses && addresses.length > 0 ? (
+          <AddressListComponent
+            addresses={addresses}
+            onSwitchChange={handleSwitch}
+          />
+        ) : null}
+        <Link href="/account/setting/address/create" asChild>
+          <Button label="Create new address" size="lg" />
+        </Link>
+      </Box>
+    </PageContent>
   );
 };
+
+const styles = StyleSheet.create({
+  content: {
+    width: "100%",
+  },
+});
 
 export default AddressSettingScreen;
