@@ -77,7 +77,8 @@ export default function RequestPasswordResetScreen() {
         }
         setError("phone", {
           type: "manual",
-          message: "Oops something went wrong. Please contact bazzarify support.",
+          message:
+            "Oops something went wrong. Please contact bazzarify support.",
         });
       });
   };
@@ -90,7 +91,7 @@ export default function RequestPasswordResetScreen() {
           <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4">
             <PageTitle title="Forget Password" />
             <ControlledInput
-              className="w-full gap-y-2 px-6"
+              style={{ width: "100%", gap: 8, paddingHorizontal: 24 }}
               errors={errors}
               control={control}
               rules={{ required: "Email is required" }}
@@ -107,7 +108,7 @@ export default function RequestPasswordResetScreen() {
               )}
             />
             <ControlledInput
-              className="w-full gap-y-2 px-6"
+              style={{ width: "100%", gap: 8, paddingHorizontal: 24 }}
               errors={errors}
               control={control}
               rules={{ required: "Phone is required" }}

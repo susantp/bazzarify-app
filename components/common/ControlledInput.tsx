@@ -1,4 +1,5 @@
-import { View } from "react-native";
+import { Box } from "@/components/design-system";
+import type { StyleProp, ViewStyle } from "react-native";
 import { Controller } from "react-hook-form";
 import React from "react";
 
@@ -8,9 +9,9 @@ const ControlledInput = ({ ...props }) => {
     return <></>;
   }
   return (
-    <View className={props.className}>
+    <Box style={props.style as StyleProp<ViewStyle>}>
       <Controller name={props.name} render={props.formField} {...props} />
-    </View>
+    </Box>
   );
 };
 
