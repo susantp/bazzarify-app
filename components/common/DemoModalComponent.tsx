@@ -5,15 +5,11 @@ import {
   Modal,
   Pressable,
   StyleSheet,
-  TouchableOpacity,
-  View,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { primaryColor } from "@/constants/Colors";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { Box, Icon } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface IDemoModalComponent {
   children?: React.ReactNode;
@@ -30,15 +26,20 @@ const DemoModalComponent = ({
   handlePress,
   type,
 }: IDemoModalComponent) => {
+  const theme = useBazarifyTheme();
+
   return (
     <Modal animationType="fade" transparent visible={showModal}>
-      <View style={{ flex: 1 }}>
+      <Box flex={1}>
         {/* Backdrop */}
         <Pressable
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            backgroundColor: showModal ? "rgba(0,0,0,0.4)" : "transparent",
-          }}
+          accessibilityLabel="Close modal"
+          style={[
+            StyleSheet.absoluteFillObject,
+            {
+              backgroundColor: showModal ? theme.colors.overlay : "transparent",
+            },
+          ]}
           onPress={handlePress}
         />
 
@@ -50,11 +51,14 @@ const DemoModalComponent = ({
         )}
 
         {type === "center" && (
-          <CenterContainer handlePress={handlePress}>
+          <CenterContainer
+            handlePress={handlePress}
+            themeColor={theme.colors.primary}
+          >
             {children}
           </CenterContainer>
         )}
-      </View>
+      </Box>
     </Modal>
   );
 };
@@ -71,23 +75,38 @@ const BottomDrawerContainer = ({
   children,
   handlePress,
 }: IModalContentContainerProps) => {
+  const theme = useBazarifyTheme();
+
   return (
     <SafeAreaView
       edges={["bottom"]} // 🔥 THIS is the fix
-      className="absolute bottom-0 w-full border-t border-t-gray-400 bg-white"
-      style={{
-        maxHeight: SCREEN_HEIGHT * 0.85,
-      }}
+      style={[
+        styles.bottomDrawer,
+        {
+          backgroundColor: theme.colors.surface,
+          borderTopColor: theme.colors.borderStrong,
+        },
+      ]}
     >
       {/* Close button */}
-      <View className="p-6 pb-2">
-        <TouchableOpacity className="items-end" onPress={handlePress}>
-          <AntDesign name="close-circle" size={28} color={primaryColor} />
-        </TouchableOpacity>
-      </View>
+      <Box paddingX="xxl" paddingY="sm" style={styles.closeRow}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Close modal"
+          onPress={handlePress}
+        >
+          <Icon size={28} color="primary" accessibilityLabel="Close modal">
+            {({ color, size }) => (
+              <AntDesign name="close-circle" size={size} color={color} />
+            )}
+          </Icon>
+        </Pressable>
+      </Box>
 
       {/* Scrollable content */}
-      <View style={{ flex: 1, paddingHorizontal: 24 }}>{children}</View>
+      <Box flex={1} paddingX="xxl">
+        {children}
+      </Box>
     </SafeAreaView>
   );
 };
@@ -96,11 +115,34 @@ const CenterContainer = ({
   children,
   height,
   handlePress,
-}: IModalContentContainerProps) => (
-  <View className={`absolute w-full flex-col gap-y-2 bg-transparent p-6`}>
+  themeColor,
+}: IModalContentContainerProps & { themeColor: string }) => (
+  <Box style={styles.centerContainer} gap="sm" padding="lg">
     {children}
-    <TouchableOpacity className="w-full items-center" onPress={handlePress}>
-      <AntDesign name="close-circle" color="white" size={35} strokeWidth={4} />
-    </TouchableOpacity>
-  </View>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Close modal"
+      onPress={handlePress}
+      style={styles.centerClose}
+    >
+      <AntDesign name="close-circle" color={themeColor} size={35} />
+    </Pressable>
+  </Box>
 );
+
+const styles = StyleSheet.create({
+  bottomDrawer: {
+    borderTopWidth: 1,
+    bottom: 0,
+    maxHeight: SCREEN_HEIGHT * 0.85,
+    position: "absolute",
+    width: "100%",
+  },
+  closeRow: { alignItems: "flex-end", paddingBottom: 8 },
+  centerContainer: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    width: "100%",
+  },
+  centerClose: { alignItems: "center", width: "100%" },
+});
