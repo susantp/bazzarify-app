@@ -1,25 +1,36 @@
-import { Text, View } from "react-native";
 import React from "react";
 import { LexicalContentView } from "@/modules/core/components/LexicalContentView";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 const ProductDescription = ({
   product,
 }: {
   product: TProductWithVariantAndImage;
-}) => (
-  <View className="p-4">
-    <View
-      id="voucher-info"
-      className="flex-col gap-y-3 rounded-xl border border-gray-400 px-3 py-2"
-    >
-      <Text className="text-xl font-semibold">Description</Text>
-      <LexicalContentView value={product.description} />
-      <View className="flex items-center justify-items-center">
-        <Text className="text-md text-primary">See more</Text>
-      </View>
-    </View>
-  </View>
-);
+}) => {
+  const theme = useBazarifyTheme();
+
+  return (
+    <Box padding="lg">
+      <Box
+        id="voucher-info"
+        gap="md"
+        borderRadius="xl"
+        paddingX="md"
+        paddingY="sm"
+        style={{ borderColor: theme.colors.borderStrong, borderWidth: 1 }}
+      >
+        <Text variant="title">Description</Text>
+        <LexicalContentView value={product.description} />
+        <Box align="center">
+          <Text variant="body" color="primary">
+            See more
+          </Text>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
 
 export default ProductDescription;
