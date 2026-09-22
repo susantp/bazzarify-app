@@ -45,14 +45,7 @@ const ProductPriceComponent = ({
           <Text variant="heading" color="primary">
             {currency.code.concat(" ").concat(String(price))}
           </Text>
-          {/*<Text className="text-sm text-gray-600 line-through">Rs. 3,499</Text>*/}
         </Box>
-        {/*<View id="discount" className="relative flex items-center">*/}
-        {/*  <DiscountBannerIcon />*/}
-        {/*  <Text className="absolute inset-x-2.5 inset-y-2.5 flex items-center pl-3 text-sm text-white">*/}
-        {/*    -8%*/}
-        {/*  </Text>*/}
-        {/*</View>*/}
       </Box>
       <Text variant="bodyCompactMedium" color={availabilityColor}>
         {availabilityLabel}
