@@ -1,10 +1,11 @@
-import { FlatList, StyleProp, View, ViewStyle } from "react-native";
+import { FlatList, StyleProp, ViewStyle } from "react-native";
 import * as Crypto from "expo-crypto";
 import React from "react";
 import SectionHeader, {
   SectionHeaderProps,
 } from "@/components/home/SectionHeader";
 import { Href } from "expo-router";
+import { Box } from "@/components/design-system";
 
 export interface ContentGridSectionProps<T> {
   title: string;
@@ -12,7 +13,7 @@ export interface ContentGridSectionProps<T> {
   renderItem: (item: T, index: number, cols: 2 | 3 | 4) => React.ReactElement;
   showDiscountBadge?: boolean;
   navigateTo?: string;
-  className?: string;
+  style?: StyleProp<ViewStyle>;
   cols: 2 | 3 | 4;
   horizontal: boolean;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -23,7 +24,7 @@ export interface ContentGridSectionProps<T> {
 function ContentGridSection<T>({
   title,
   items,
-  className,
+  style,
   cols,
   horizontal,
   contentContainerStyle,
@@ -34,7 +35,7 @@ function ContentGridSection<T>({
     return null;
   }
   return (
-    <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
+    <Box id={title.toLowerCase().replaceAll(" ", "-")} style={style}>
       {section && (
         <SectionHeader
           title={section.title}
@@ -52,7 +53,7 @@ function ContentGridSection<T>({
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       />
-    </View>
+    </Box>
   );
 }
 
@@ -60,20 +61,29 @@ export default ContentGridSection;
 
 interface GridWrapperProps {
   seeMorePath?: Href;
-  className?: string;
+  style?: StyleProp<ViewStyle>;
   title: string;
   children: React.ReactNode;
+  testID?: string;
 }
 export function GridWrapper({
-  className,
+  style,
   seeMorePath,
   title,
   children,
+  testID,
 }: GridWrapperProps) {
   return (
-    <View id={title.toLowerCase().replaceAll(" ", "-")} className={className}>
+    <Box
+      testID={testID}
+      id={title.toLowerCase().replaceAll(" ", "-")}
+      backgroundColor="surface"
+      paddingX="xs"
+      paddingY="md"
+      style={style}
+    >
       <SectionHeader title={title} seeMorePath={seeMorePath} />
       {children}
-    </View>
+    </Box>
   );
 }

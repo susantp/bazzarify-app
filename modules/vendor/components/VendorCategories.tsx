@@ -7,7 +7,6 @@ import CategoryCard from "@/modules/categories/components/CategoryCard";
 import { THomeCategoriesPayload } from "@/modules/product/schemas/responsePayloads/HomeCategoriesPayloadSchema";
 import { router } from "expo-router";
 
-const className = "flex-col bg-white px-1 py-3";
 const title = "Categories";
 // const seeMorePath = "/(tabs)/categories";
 const id = "categories";
@@ -17,7 +16,7 @@ export default function VendorCategories({
 }: IHomeCardComponent<THomeCategoriesPayload | undefined>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
-    <GridWrapper className={className} title={title}>
+    <GridWrapper title={title}>
       {isLoading ? (
         <ThemedText>Loading</ThemedText>
       ) : isError ? (
