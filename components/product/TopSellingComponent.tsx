@@ -1,63 +1,61 @@
-import { Image, Text, View } from "react-native";
 import React from "react";
+import { Box, Image, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
-const TopSellingComponent = () => (
-  <View className="p-4">
-    <View
-      id="top-selling-info"
-      className="flex-col gap-y-3 rounded-xl border border-gray-400 px-3 py-2"
-    >
-      <Text className="text-xl font-semibold">Top Selling Products</Text>
-      <View className="flex-row items-center justify-between justify-items-center">
-        <View className="flex-row items-center justify-items-center gap-x-3">
-          <View>
-            <Image
-              source={require("@/assets/products/product.png")}
-              className="h-10 w-10 rounded-lg"
-            />
-          </View>
-          <View>
-            <Text>Ultima watch circle 2.0 smartwatch</Text>
-          </View>
-        </View>
-        <View>
-          <Text className="font-semibold text-primary">Rs. 3,499</Text>
-        </View>
-      </View>
-      <View className="flex-row items-center justify-between justify-items-center">
-        <View className="flex-row items-center justify-items-center gap-x-3">
-          <View>
-            <Image
-              source={require("@/assets/products/product.png")}
-              className="h-10 w-10 rounded-lg"
-            />
-          </View>
-          <View>
-            <Text>Ultima watch circle 2.0 smartwatch</Text>
-          </View>
-        </View>
-        <View>
-          <Text className="font-semibold text-primary">Rs. 3,499</Text>
-        </View>
-      </View>
-      <View className="flex-row items-center justify-between justify-items-center">
-        <View className="flex-row items-center justify-items-center gap-x-3">
-          <View>
-            <Image
-              source={require("@/assets/products/product.png")}
-              className="h-10 w-10 rounded-lg"
-            />
-          </View>
-          <View>
-            <Text>Ultima watch circle 2.0 smartwatch</Text>
-          </View>
-        </View>
-        <View>
-          <Text className="font-semibold text-primary">Rs. 3,499</Text>
-        </View>
-      </View>
-    </View>
-  </View>
-);
+const topSellingItems = [
+  {
+    image: require("@/assets/products/product.png"),
+    name: "Ultima watch circle 2.0 smartwatch",
+    price: "Rs. 3,499",
+  },
+  {
+    image: require("@/assets/products/product.png"),
+    name: "Ultima watch circle 2.0 smartwatch",
+    price: "Rs. 3,499",
+  },
+  {
+    image: require("@/assets/products/product.png"),
+    name: "Ultima watch circle 2.0 smartwatch",
+    price: "Rs. 3,499",
+  },
+] as const;
+
+const TopSellingComponent = () => {
+  const theme = useBazarifyTheme();
+
+  return (
+    <Box padding="lg">
+      <Box
+        id="top-selling-info"
+        gap="md"
+        borderRadius="xl"
+        paddingX="md"
+        paddingY="sm"
+        style={{ borderColor: theme.colors.borderStrong, borderWidth: 1 }}
+      >
+        <Text variant="title">Top Selling Products</Text>
+        {topSellingItems.map((item, index) => (
+          <Box
+            key={`${item.name}-${index}`}
+            direction="row"
+            align="center"
+            justify="space-between"
+            gap="md"
+          >
+            <Box direction="row" align="center" gap="md" flex={1}>
+              <Image source={item.image} size={40} radius="sm" />
+              <Text variant="body" numberOfLines={2}>
+                {item.name}
+              </Text>
+            </Box>
+            <Text variant="bodyMedium" color="primary">
+              {item.price}
+            </Text>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+};
 
 export default TopSellingComponent;
