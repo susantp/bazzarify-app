@@ -6,15 +6,20 @@ import { FeedbackContainer } from "./feedback-container";
 
 export type LoaderProps = {
   label?: string;
+  size?: "small" | "large";
   testID?: string;
 };
 
-export function Loader({ label = "Loading", testID }: LoaderProps) {
+export function Loader({
+  label = "Loading",
+  size = "small",
+  testID,
+}: LoaderProps) {
   const theme = useBazarifyTheme();
 
   return (
     <FeedbackContainer accessibilityLabel={label} testID={testID}>
-      <ActivityIndicator color={theme.colors.primary} />
+      <ActivityIndicator size={size} color={theme.colors.primary} />
       <Text variant="caption" color="textMuted">
         {label}
       </Text>
