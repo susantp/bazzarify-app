@@ -1,10 +1,12 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable } from "react-native";
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 import { formatUserAddress } from "@/modules/user/utils/address";
 import { addDays, format, isSameMonth } from "date-fns";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 const ParcelIcon = ({ size }: { size: number }) => (
   <Svg width={size} height={size} viewBox="0 0 20 19" fill="none">
@@ -21,6 +23,7 @@ const ProductDeliveryDetails = ({
   onChangeAddress: () => void;
   selectedAddress: TUserAddress | null;
 }) => {
+  const theme = useBazarifyTheme();
   const today = new Date();
   const start = addDays(today, 7);
   const end = addDays(today, 8);
@@ -29,65 +32,85 @@ const ProductDeliveryDetails = ({
     : `${format(start, "d MMM")} - ${format(end, "d MMM")}`;
 
   return (
-    <View className="p-4">
-      <View
+    <Box padding="lg">
+      <Box
         id="delivery-info"
-        className="flex-col gap-y-3 rounded-xl border border-gray-400 p-4"
+        gap="md"
+        borderRadius="xl"
+        padding="lg"
+        style={{ borderColor: theme.colors.borderStrong, borderWidth: 1 }}
       >
-        <Text className="text-xl font-semibold">Delivery</Text>
-        <View className="flex-row justify-between">
-          <View className="flex-row items-center justify-items-center gap-x-2">
-            <Ionicons name="location-outline" size={28} color="black" />
+        <Text variant="title">Delivery</Text>
+        <Box direction="row" justify="space-between">
+          <Box direction="row" align="center" gap="sm" flex={1}>
+            <Icon size={28}>
+              {({ color, size }) => (
+                <Ionicons name="location-outline" size={size} color={color} />
+              )}
+            </Icon>
             <Text
               style={{ width: 200 }}
               lineBreakMode="clip"
               numberOfLines={2}
-              className="text-sm font-semibold"
+              variant="bodyCompactMedium"
             >
               {selectedAddress
                 ? formatUserAddress(selectedAddress)
                 : "Select your address"}
             </Text>
-          </View>
-          <View>
-            <TouchableOpacity onPress={onChangeAddress}>
-              <Text className="rounded-full bg-primary px-2 py-1 text-white">
+          </Box>
+          <Pressable onPress={onChangeAddress} accessibilityRole="button">
+            <Box
+              backgroundColor="primary"
+              borderRadius="pill"
+              paddingX="sm"
+              paddingY="xs"
+            >
+              <Text color="textInverted" variant="bodyCompactMedium">
                 Change
               </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View className="flex-row justify-between">
-          <View className="flex-row items-center justify-items-center gap-x-2">
-            <Ionicons name="arrow-undo-outline" size={28} color="black" />
-            <Text className="text-md font-semibold">14 days free returns</Text>
-          </View>
-        </View>
-        <View className="flex-row justify-between">
-          <View className="flex-row items-center justify-items-center gap-x-2">
-            <Ionicons name="shield-checkmark-outline" size={28} color="black" />
-            <Text className="text-md font-semibold">
-              1 year brand seller warranty
-            </Text>
-          </View>
-        </View>
-        <View className="flex-row justify-between">
-          <View className="flex-col items-center justify-items-center gap-y-2">
-            <View className="flex-row items-center justify-items-center gap-x-2">
+            </Box>
+          </Pressable>
+        </Box>
+        <Box direction="row" justify="space-between">
+          <Box direction="row" align="center" gap="sm">
+            <Icon size={28}>
+              {({ color, size }) => (
+                <Ionicons name="arrow-undo-outline" size={size} color={color} />
+              )}
+            </Icon>
+            <Text variant="bodyMedium">14 days free returns</Text>
+          </Box>
+        </Box>
+        <Box direction="row" justify="space-between">
+          <Box direction="row" align="center" gap="sm">
+            <Icon size={28}>
+              {({ color, size }) => (
+                <Ionicons
+                  name="shield-checkmark-outline"
+                  size={size}
+                  color={color}
+                />
+              )}
+            </Icon>
+            <Text variant="bodyMedium">1 year brand seller warranty</Text>
+          </Box>
+        </Box>
+        <Box direction="row" justify="space-between">
+          <Box align="center" gap="sm">
+            <Box direction="row" align="center" gap="sm">
               <ParcelIcon size={28} />
-              <Text className="text-md font-semibold">
-                Get by {deliveryDate}
-              </Text>
-            </View>
-            <Text className="text-sm text-gray-500">Standard Delivery</Text>
-          </View>
+              <Text variant="bodyMedium">Get by {deliveryDate}</Text>
+            </Box>
+            <Text variant="caption" color="textMuted">
+              Standard Delivery
+            </Text>
+          </Box>
 
-          <View>
-            <Text className="text-md">Rs. 100</Text>
-          </View>
-        </View>
-      </View>
-    </View>
+          <Text variant="body">Rs. 100</Text>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 export default ProductDeliveryDetails;
