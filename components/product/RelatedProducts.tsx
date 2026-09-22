@@ -1,15 +1,15 @@
-import { Text, View } from "react-native";
 import React from "react";
+import { Box, Text } from "@/components/design-system";
 
 const RelatedProducts = () => (
-  <View className="p-4">
-    <View id="voucher-info" className="flex-col gap-y-3 rounded-xl px-3 py-2">
-      <View className="flex-row justify-between">
-        <Text className="text-xl font-semibold text-orange-600">
+  <Box padding="lg">
+    <Box id="voucher-info" gap="md" paddingX="md" paddingY="sm">
+      <Box direction="row" justify="space-between">
+        <Text variant="title" color="primary">
           Related Products
         </Text>
-        <Text>See more</Text>
-      </View>
+        <Text variant="body">See more</Text>
+      </Box>
       {/*<View className="flex-row">*/}
       {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
       {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
@@ -18,8 +18,8 @@ const RelatedProducts = () => (
       {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
       {/*  <ProductCard cols={2} item={popularItemsData[0]} />*/}
       {/*</View>*/}
-    </View>
-  </View>
+    </Box>
+  </Box>
 );
 
 export default RelatedProducts;
