@@ -1,11 +1,23 @@
-import { Text, type TextProps, StyleSheet } from "react-native";
-
-import { useThemeColor } from "@/hooks/useThemeColor";
+import {
+  Text as BazarifyText,
+  type BazarifyTextProps,
+} from "@/components/design-system/primitives";
+import type { TextProps } from "react-native";
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
   type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+};
+
+type LegacyTextVariant = NonNullable<ThemedTextProps["type"]>;
+
+const variantMap: Record<LegacyTextVariant, BazarifyTextProps["variant"]> = {
+  default: "bodyCompact",
+  title: "displayCompact",
+  defaultSemiBold: "bodyCompactMedium",
+  subtitle: "bodyMedium",
+  link: "link",
 };
 
 export function ThemedText({
@@ -15,46 +27,17 @@ export function ThemedText({
   type = "default",
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-
   return (
-    <Text
+    <BazarifyText
+      variant={variantMap[type]}
       style={[
-        { color },
-        type === "default" ? styles.default : undefined,
-        type === "title" ? styles.title : undefined,
-        type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
-        type === "subtitle" ? styles.subtitle : undefined,
-        type === "link" ? styles.link : undefined,
+        lightColor || darkColor
+          ? { color: lightColor ?? darkColor }
+          : undefined,
+        type === "subtitle" ? { color: "#f47d58" } : undefined,
         style,
       ]}
       {...rest}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  default: {
-    fontSize: 12,
-    lineHeight: 16,
-  },
-  defaultSemiBold: {
-    fontSize: 12,
-    lineHeight: 12,
-    fontWeight: "600",
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    lineHeight: 32,
-  },
-  subtitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#f47d58",
-  },
-  link: {
-    lineHeight: 30,
-    fontSize: 14,
-  },
-});
