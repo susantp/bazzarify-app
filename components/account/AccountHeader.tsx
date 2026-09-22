@@ -1,27 +1,43 @@
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon } from "@/components/design-system";
 
 const AccountHeader = () => {
   return (
-    <View className="flex-row items-center justify-between bg-primary">
-      <ScreenHeader
-        title="Account"
-        style={{ width: "50%" }}
-        interactive={false}
-      />
-      <TouchableOpacity
-        className="w-6/12 items-end px-4"
-        activeOpacity={0.4}
+    <Box
+      direction="row"
+      align="center"
+      justify="space-between"
+      backgroundColor="primary"
+    >
+      <ScreenHeader title="Account" style={styles.title} interactive={false} />
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Account settings"
+        style={styles.settings}
         onPress={() => {
           router.push({ pathname: "/account/setting" });
         }}
       >
-        <Ionicons name="settings-outline" size={32} color="white" />
-      </TouchableOpacity>
-    </View>
+        <Icon size={32} color="textInverted">
+          {({ color, size }) => (
+            <Ionicons name="settings-outline" size={size} color={color} />
+          )}
+        </Icon>
+      </Pressable>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  title: { width: "50%" },
+  settings: {
+    alignItems: "flex-end",
+    paddingHorizontal: 16,
+    width: "50%",
+  },
+});
 
 export default AccountHeader;
