@@ -1,5 +1,5 @@
-import { Image, Text, View } from "react-native";
 import React, { ReactNode } from "react";
+import { Box, Image, Text } from "@/components/design-system";
 import { TCartItem } from "@/modules/order/schemas/orderSchema";
 
 interface OrderItemProps {
@@ -10,43 +10,42 @@ interface WrapperProps {
 }
 
 const OrderItem = ({ items }: OrderItemProps) => (
-  <View className="flex-row items-center bg-white">
-    <View id="content-thumbnail" className="flex w-4/12 items-center">
+  <Box direction="row" align="center" backgroundColor="surface">
+    <Box align="center" style={styles.thumbnail}>
       <Image
         source={require("@/assets/products/product.png")}
-        className={`h-32 w-32`}
+        size={128}
+        radius="none"
       />
-    </View>
+    </Box>
 
     {items?.map((item) => (
       <Wrapper key={item.uuid}>
-        <View id="cart-item-title">
-          <Text className="text-md">{item.name}</Text>
-        </View>
-        <View id="vendor">
-          <Text className="text-sm">item.vendor</Text>
-        </View>
-        <View
-          id="price-action"
-          className="w-full flex-row items-center justify-between"
+        <Text>{item.name}</Text>
+        <Text variant="caption">item.vendor</Text>
+        <Box
+          direction="row"
+          align="center"
+          justify="space-between"
+          style={styles.priceAction}
         >
-          <View className="flex-col">
-            <Text className="text-md text-primary">{item.unit_price}</Text>
-            {/*<Text className="text-sm text-gray-600 line-through">Rs 1999</Text>*/}
-          </View>
-
-          <View className="gap-x-2">
-            <Text className="text-gray-700">x {item.qty_ordered}</Text>
-          </View>
-        </View>
+          <Text color="primary">{item.unit_price}</Text>
+          <Text color="textMuted">x {item.qty_ordered}</Text>
+        </Box>
       </Wrapper>
     ))}
-  </View>
+  </Box>
 );
 export default OrderItem;
 
 const Wrapper = ({ children }: WrapperProps) => (
-  <View id="content" className="flex w-8/12 flex-col items-start gap-y-2">
+  <Box direction="column" align="flex-start" gap="sm" style={styles.content}>
     {children}
-  </View>
+  </Box>
 );
+
+const styles = {
+  thumbnail: { width: "33.333%" as const },
+  content: { width: "66.667%" as const },
+  priceAction: { width: "100%" as const },
+};
