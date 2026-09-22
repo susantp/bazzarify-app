@@ -1,8 +1,8 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
-import { TCartItem } from "@/modules/order/schemas/orderSchema";
-import { Colors } from "@/constants/Colors";
+import { Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon, Image, Text } from "@/components/design-system";
+import { TCartItem } from "@/modules/order/schemas/orderSchema";
 import { shouldDisplayVariantLabel } from "@/modules/product/utils/selection";
 
 export type CartItemProps = {
@@ -29,86 +29,123 @@ const CartItem = ({
           ? `${item.inventory.available_to_sell} item(s) available`
           : null;
 
-  return (
-    <View className="flex flex-row items-center py-2">
-      <View id="select-action" className="w-1/12">
-        <TouchableOpacity onPress={onRemove}>
-          <Ionicons name="close-circle" size={30} color={Colors.light.tint} />
-        </TouchableOpacity>
-      </View>
+  const decrementDisabled = item.qty_ordered <= 0;
 
-      <View id="content-thumbnail" className="flex w-4/12 items-center">
+  return (
+    <Box direction="row" align="center" paddingY="sm">
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Remove ${item.name}`}
+        onPress={onRemove}
+        style={styles.remove}
+      >
+        <Icon size={30} color="primary">
+          {({ color, size }) => (
+            <Ionicons name="close-circle" size={size} color={color} />
+          )}
+        </Icon>
+      </Pressable>
+
+      <Box align="center" style={styles.thumbnail}>
         <Image
           source={require("@/assets/products/product.png")}
-          className={`h-32 w-32`}
+          size={128}
+          radius="none"
         />
-      </View>
+      </Box>
 
-      <View id="content" className="flex w-7/12 flex-col items-start gap-y-1">
-        <View id="cart-item-title">
-          <Text className="text-md">{item.name}</Text>
-        </View>
+      <Box
+        direction="column"
+        align="flex-start"
+        gap="xs"
+        style={styles.content}
+      >
+        <Text>{item.name}</Text>
         {shouldDisplayVariantLabel(item.name, item.variant_attrs?.name) ? (
-          <View>
-            <Text>{item.variant_attrs?.name.replace("|", "-")}</Text>
-          </View>
+          <Text>{item.variant_attrs?.name.replace("|", "-")}</Text>
         ) : null}
-        <View id="vendor">
-          <Text className="text-sm">item.vendor</Text>
-        </View>
-        <View id="delivery-info">
-          <Text className="text-sm">item.deliveryDate</Text>
-        </View>
-        <View id="price-action" className="flex-row">
-          <View className="w-6/12 flex-col">
-            <Text className="text-md text-primary">Rs {item.unit_price}</Text>
-            <Text className="text-sm text-gray-600 line-through">
+        <Text variant="caption">item.vendor</Text>
+        <Text variant="caption">item.deliveryDate</Text>
+
+        <Box direction="row" style={styles.priceAction}>
+          <Box direction="column" style={styles.priceColumn}>
+            <Text color="primary">Rs {item.unit_price}</Text>
+            <Text variant="caption" color="textMuted" style={styles.discount}>
               {item.row_discount ? `Rs ${item.row_discount}` : null}
             </Text>
             {inventoryMessage ? (
               <Text
-                className="mt-1 text-xs"
-                style={{
-                  color:
-                    item.inventory?.available_to_sell === 0
-                      ? "#B91C1C"
-                      : Colors.light.tint,
-                }}
+                variant="caption"
+                color={
+                  item.inventory?.available_to_sell === 0 ? "danger" : "primary"
+                }
+                style={styles.inventory}
               >
                 {inventoryMessage}
               </Text>
             ) : null}
-          </View>
+          </Box>
 
-          <View className="w-6/12 flex-row gap-x-2">
-            <TouchableOpacity
+          <Box direction="row" align="center" gap="sm" style={styles.quantity}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Increase ${item.name}`}
+              accessibilityState={{ disabled: incrementDisabled }}
               disabled={incrementDisabled}
               onPress={onIncrement}
             >
-              <Ionicons
-                name="add-circle-outline"
+              <Icon
                 size={30}
-                color={incrementDisabled ? "gray" : Colors.light.tint}
-              />
-            </TouchableOpacity>
-            <View className="px-2 py-2">
+                color={incrementDisabled ? "textMuted" : "primary"}
+              >
+                {({ color, size }) => (
+                  <Ionicons
+                    name="add-circle-outline"
+                    size={size}
+                    color={color}
+                  />
+                )}
+              </Icon>
+            </Pressable>
+            <Box paddingX="sm" paddingY="sm">
               <Text>{item.qty_ordered}</Text>
-            </View>
-            <TouchableOpacity
-              disabled={item.qty_ordered <= 0}
+            </Box>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Decrease ${item.name}`}
+              accessibilityState={{ disabled: decrementDisabled }}
+              disabled={decrementDisabled}
               onPress={onDecrement}
             >
-              <Ionicons
-                name="remove-circle-outline"
+              <Icon
                 size={30}
-                color={item.qty_ordered > 0 ? "#f47d58" : "gray"}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </View>
+                color={decrementDisabled ? "textMuted" : "primary"}
+              >
+                {({ color, size }) => (
+                  <Ionicons
+                    name="remove-circle-outline"
+                    size={size}
+                    color={color}
+                  />
+                )}
+              </Icon>
+            </Pressable>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  remove: { width: "8.333%" },
+  thumbnail: { width: "33.333%" },
+  content: { width: "58.333%" },
+  priceAction: { width: "100%" },
+  priceColumn: { width: "50%" },
+  quantity: { width: "50%" },
+  discount: { textDecorationLine: "line-through" },
+  inventory: { marginTop: 4 },
+});
 
 export default CartItem;
