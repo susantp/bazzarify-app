@@ -1,13 +1,13 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { AntDesign } from "@expo/vector-icons";
-import { Colors } from "@/constants/Colors";
 import { useAtomValue } from "jotai";
 import { userProfileAtom } from "@/atoms/sessionAtom";
 import Toast from "react-native-toast-message";
 import TextInputV1 from "@/components/common/TextInputV1";
+import { Button, Icon, Text } from "@/components/design-system";
 
 export default function Page() {
   const userProfile = useAtomValue(userProfileAtom);
@@ -33,11 +33,11 @@ export default function Page() {
                 activeOpacity={0.4}
                 className="absolute bottom-2 right-2"
               >
-                <AntDesign
-                  name="plus-circle"
-                  size={24}
-                  color={Colors.light.tint}
-                />
+                <Icon color="primary" size={24}>
+                  {({ color, size }) => (
+                    <AntDesign name="plus-circle" size={size} color={color} />
+                  )}
+                </Icon>
               </TouchableOpacity>
             </View>
           </View>
@@ -61,7 +61,7 @@ export default function Page() {
           />
           <TextInputV1 defaultValue={userProfile.dob} placeholder={"dob"} />
           <View className="w-full items-start pt-3">
-            <Text className="text-lg font-semibold">Update Password</Text>
+            <Text variant="title">Update Password</Text>
           </View>
 
           <TextInputV1
@@ -76,13 +76,11 @@ export default function Page() {
             keyboardType="visible-password"
             placeholder={"Confirm Password"}
           />
-          <TouchableOpacity
+          <Button
+            label="Update"
             onPress={handleProfileUpdate}
-            activeOpacity={0.6}
-            className="flex w-full items-center rounded-xl bg-primary py-3"
-          >
-            <Text className="text-lg text-white">Update</Text>
-          </TouchableOpacity>
+            style={{ width: "100%", borderRadius: 20 }}
+          />
         </ContentWrapper>
       </ScrollView>
     </SafeAreaWrapper>
