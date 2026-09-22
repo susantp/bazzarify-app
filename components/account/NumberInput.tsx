@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { InputProps } from "@/components/common";
-import cn from "@/utils/tailwindHelper";
+import { Box, Input } from "@/components/design-system";
 
 const NumberInput = ({
   value,
@@ -9,22 +9,34 @@ const NumberInput = ({
   onChange,
   hasError,
   icon,
-  className,
+  className: _className,
   ...props
-}: InputProps) => (
-  <>
-    <TextInput
-      keyboardType="number-pad"
-      value={value}
-      defaultValue={props.defaultValue}
-      onBlur={onBlur}
-      onChangeText={onChange}
-      placeholder={props.placeholder}
-      className={cn("rounded-md", "bg-white", "pl-14", className)}
-    />
-    {icon && <View className="absolute inset-x-9 inset-y-4">{icon}</View>}
-    {hasError && <Text className="text-red-600">{hasError.message}</Text>}
-  </>
-);
+}: InputProps) => {
+  return (
+    <>
+      <Input
+        {...props}
+        keyboardType="number-pad"
+        value={value}
+        onBlur={onBlur}
+        onChangeText={onChange}
+        error={hasError?.message}
+        style={styles.input}
+      />
+      {icon ? <Box style={styles.icon}>{icon}</Box> : null}
+    </>
+  );
+};
+
+const styles = StyleSheet.create({
+  input: {
+    paddingLeft: 56,
+  },
+  icon: {
+    left: 36,
+    position: "absolute",
+    top: 16,
+  },
+});
 
 export default NumberInput;
