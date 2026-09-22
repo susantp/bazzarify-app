@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { FaqList } from "@/modules/account/data/settings/faqList";
-import { Pressable, Text, View } from "react-native";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon, Text, useBazarifyTheme } from "@/components/design-system";
+import { PageContent } from "@/components/design-system/compositions";
 
 const FaqScreen = () => {
   const [list, setList] = useState(FaqList);
+  const theme = useBazarifyTheme();
   const handlePress = (id: string) => {
     setList((prevState) =>
       prevState.map((item) =>
@@ -14,29 +16,59 @@ const FaqScreen = () => {
     );
   };
   return (
-    <ContentWrapper className="gap-y-2 bg-white p-2">
-      {list.map((item) => (
-        <View
-          key={item.id}
-          className="flex-col justify-center gap-y-2 rounded-xl border border-gray-400 p-3"
-        >
-          <Pressable
-            onPress={() => handlePress(item.id)}
-            className="flex-row items-center justify-between"
+    <PageContent backgroundColor="background">
+      <Box gap="sm" padding="sm">
+        {list.map((item) => (
+          <Box
+            key={item.id}
+            gap="sm"
+            borderRadius="xl"
+            style={[styles.card, { borderColor: theme.colors.borderStrong }]}
           >
-            <Text className="text-md">{item.question}</Text>
-            {item.active ? (
-              <Ionicons name="chevron-down" size={20} color="black" />
-            ) : (
-              <Ionicons name="chevron-back" size={20} color="black" />
-            )}
-          </Pressable>
-          <View className={item.active ? undefined : "h-0"}>
-            <Text className="text-sm">{item.answer}</Text>
-          </View>
-        </View>
-      ))}
-    </ContentWrapper>
+            <Pressable
+              onPress={() => handlePress(item.id)}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: item.active }}
+              testID={`faq-question-${item.id}`}
+              style={styles.question}
+            >
+              <Text variant="body">{item.question}</Text>
+              {item.active ? (
+                <Icon size={20} color="text">
+                  {({ color, size }) => (
+                    <Ionicons name="chevron-down" size={size} color={color} />
+                  )}
+                </Icon>
+              ) : (
+                <Icon size={20} color="text">
+                  {({ color, size }) => (
+                    <Ionicons name="chevron-back" size={size} color={color} />
+                  )}
+                </Icon>
+              )}
+            </Pressable>
+            <Box style={item.active ? styles.answer : styles.collapsed}>
+              <Text variant="bodyCompact">{item.answer}</Text>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </PageContent>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    borderWidth: StyleSheet.hairlineWidth,
+    justifyContent: "center",
+    padding: 12,
+  },
+  question: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  answer: {},
+  collapsed: { height: 0, overflow: "hidden" },
+});
 export default FaqScreen;
