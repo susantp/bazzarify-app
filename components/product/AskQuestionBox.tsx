@@ -1,6 +1,8 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable } from "react-native";
 import React from "react";
 import Svg, { Path } from "react-native-svg";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 const QuestionIconBox = () => (
   <Svg width="35" height="36" viewBox="0 0 35 36" fill="none">
@@ -10,21 +12,32 @@ const QuestionIconBox = () => (
     />
   </Svg>
 );
-const AskQuestionBox = () => (
-  <View className="p-4">
-    <View
-      id="reviews"
-      className="flex-col items-center justify-items-center gap-y-1 rounded-xl border border-gray-400 py-2"
-    >
-      <QuestionIconBox />
-      <Text className="text-xl">Ask a question.</Text>
-      <TouchableOpacity>
-        <Text className="text-md text-gray-500">
-          log-in or sign-up to ask question
-        </Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-);
+const AskQuestionBox = () => {
+  const theme = useBazarifyTheme();
+
+  return (
+    <Box padding="lg">
+      <Box
+        id="reviews"
+        align="center"
+        gap="xs"
+        borderRadius="xl"
+        paddingY="sm"
+        style={{ borderColor: theme.colors.borderStrong, borderWidth: 1 }}
+      >
+        <QuestionIconBox />
+        <Text variant="title">Ask a question.</Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Sign in to ask a question"
+        >
+          <Text variant="body" color="textMuted">
+            log-in or sign-up to ask question
+          </Text>
+        </Pressable>
+      </Box>
+    </Box>
+  );
+};
 
 export default AskQuestionBox;
