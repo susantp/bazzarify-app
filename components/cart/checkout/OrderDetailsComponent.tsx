@@ -1,122 +1,152 @@
-import { Text, View } from "react-native";
 import React from "react";
+import { StyleSheet } from "react-native";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import { TCart } from "@/modules/order/schemas/orderSchema";
-import { ThemedText } from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
 import { getCartInventoryState } from "@/modules/cart/utils/getCartInventoryState";
 import { shouldDisplayVariantLabel } from "@/modules/product/utils/selection";
 
 interface Props {
   cart: TCart;
 }
+
 const OrderDetailsComponent = ({ cart }: Props) => {
+  const theme = useBazarifyTheme();
+
   if (!cart) return null;
+
   const inventory = getCartInventoryState(cart);
+
   return (
-    <View className="flex-row">
-      <View className="flex-col gap-y-2 rounded-2xl border border-gray-300 p-4">
-        <View className="border-b border-b-gray-300 py-2">
-          <Text className="text-xl font-bold">Order Details</Text>
-        </View>
+    <Box direction="row">
+      <Box
+        direction="column"
+        gap="sm"
+        borderRadius="xl"
+        padding="lg"
+        style={[styles.panel, { borderColor: theme.colors.borderStrong }]}
+      >
+        <Box
+          paddingY="sm"
+          style={[styles.heading, { borderColor: theme.colors.borderStrong }]}
+        >
+          <Text variant="title">Order Details</Text>
+        </Box>
+
         {inventory.hasBlockingIssue ? (
-          <View className="rounded-xl border border-red-200 bg-red-50 px-3 py-3">
-            <Text className="font-semibold text-red-700">
+          <Box
+            borderRadius="md"
+            paddingX="md"
+            paddingY="md"
+            style={[
+              styles.notice,
+              {
+                backgroundColor: theme.colors.primarySurface,
+                borderColor: theme.colors.danger,
+              },
+            ]}
+          >
+            <Text variant="bodyMedium" color="danger">
               Some items are no longer available.
             </Text>
-            <Text className="mt-1 text-sm text-red-700">
+            <Text variant="caption" color="danger" style={styles.noticeCopy}>
               Remove or update unavailable items before placing the order.
             </Text>
-          </View>
+          </Box>
         ) : inventory.lowStockItems.length > 0 ? (
-          <View className="rounded-xl border border-orange-200 bg-orange-50 px-3 py-3">
-            <Text className="font-semibold text-orange-700">
+          <Box
+            borderRadius="md"
+            paddingX="md"
+            paddingY="md"
+            style={[
+              styles.notice,
+              {
+                backgroundColor: theme.colors.primarySurface,
+                borderColor: theme.colors.warning,
+              },
+            ]}
+          >
+            <Text variant="bodyMedium" color="warning">
               Some items are low in stock.
             </Text>
-            <Text className="mt-1 text-sm text-orange-700">
+            <Text variant="caption" color="warning" style={styles.noticeCopy}>
               Inventory may change before payment is completed.
             </Text>
-          </View>
+          </Box>
         ) : null}
+
         {cart.items.map((item) => (
-          <View
+          <Box
             key={item.uuid}
-            className="flex-col gap-y-4 border-b border-gray-300 py-4"
+            direction="column"
+            gap="lg"
+            paddingY="lg"
+            style={[styles.item, { borderColor: theme.colors.borderStrong }]}
           >
-            <View className="w-full flex-row items-center justify-between">
-              <View className="w-7/12">
-                <ThemedText type="subtitle">{item.name}</ThemedText>
-                {shouldDisplayVariantLabel(item.name, item.variant_attrs?.name) ? (
-                  <ThemedText style={{ fontStyle: "italic" }}>
+            <Box direction="row" align="center" justify="space-between">
+              <Box style={styles.itemName}>
+                <Text variant="bodyMedium">{item.name}</Text>
+                {shouldDisplayVariantLabel(
+                  item.name,
+                  item.variant_attrs?.name,
+                ) ? (
+                  <Text variant="caption" style={styles.variant}>
                     {item.variant_attrs?.name.replace("|", "-")}
-                  </ThemedText>
+                  </Text>
                 ) : null}
                 {item.inventory?.available_to_sell === 0 ? (
-                  <Text className="mt-1 text-xs font-medium text-red-700">
+                  <Text
+                    variant="caption"
+                    color="danger"
+                    style={styles.stockCopy}
+                  >
                     Out of stock
                   </Text>
-                ) : item.inventory &&
-                  item.inventory.available_to_sell > 0 &&
-                  item.inventory.available_to_sell <= 3 ? (
+                ) : item.inventory && item.inventory.available_to_sell <= 3 ? (
                   <Text
-                    className="mt-1 text-xs font-medium"
-                    style={{ color: Colors.light.tint }}
+                    variant="caption"
+                    color="primary"
+                    style={styles.stockCopy}
                   >
                     {item.inventory.available_to_sell} item(s) left
                   </Text>
                 ) : null}
-              </View>
-              <View className="w-1/12 items-end">
-                <Text>x{item.qty_ordered}</Text>
-              </View>
-              <View className="flex w-4/12 items-end">
-                <Text className="text-md text-primary">
-                  Rs. {item.row_total}
-                </Text>
-              </View>
-            </View>
-            <View className="w-full flex-row items-center justify-between">
-              <View className="w-8/12">
-                <ThemedText type="default">Discount</ThemedText>
-              </View>
-              <View className="flex w-4/12 items-end">
-                <ThemedText type="default">Rs. {item.row_discount}</ThemedText>
-              </View>
-            </View>
-            {/*<View className="w-full flex-row items-center justify-between">*/}
-            {/*  <View className="w-8/12">*/}
-            {/*    <ThemedText type="default">Voucher</ThemedText>*/}
-            {/*  </View>*/}
-            {/*  <View className="flex w-4/12 items-end">*/}
-            {/*    <ThemedText type="default">Rs. 0</ThemedText>*/}
-            {/*  </View>*/}
-            {/*</View>*/}
-            <View className="w-full flex-row items-center justify-between">
-              <View className="w-8/12 flex-col gap-y-2">
-                <ThemedText type="default">Delivery Charge</ThemedText>
-                <ThemedText
-                  style={{ fontSize: 11 }}
-                  className="font-extralight text-gray-700"
-                >
-                  Get By Dec Mon 2nd - Wed 4th
-                </ThemedText>
-              </View>
-              <View className="flex w-4/12 items-end">
-                <Text className="text-sm">Rs. {item.row_shipping}</Text>
-              </View>
-            </View>
-          </View>
-        ))}
+              </Box>
+              <Text>{`x${item.qty_ordered}`}</Text>
+              <Text color="primary">Rs. {item.row_total}</Text>
+            </Box>
 
-        {/*<View className="w-full flex-row">*/}
-        {/*  <View className="w-full items-center">*/}
-        {/*    <Text className="text-lg text-primary">*/}
-        {/*      You're saving Upto Rs.2000 60% off*/}
-        {/*    </Text>*/}
-        {/*  </View>*/}
-        {/*</View>*/}
-      </View>
-    </View>
+            <Box direction="row" justify="space-between">
+              <Text>Discount</Text>
+              <Text>Rs. {item.row_discount}</Text>
+            </Box>
+
+            <Box direction="row" justify="space-between">
+              <Box direction="column" gap="sm" style={styles.deliveryCopy}>
+                <Text>Delivery Charge</Text>
+                <Text variant="bodyCompact" color="textMuted">
+                  Get By Dec Mon 2nd - Wed 4th
+                </Text>
+              </Box>
+              <Text variant="caption">Rs. {item.row_shipping}</Text>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  panel: { borderWidth: 1 },
+  heading: { borderBottomWidth: 1 },
+  notice: { borderWidth: 1 },
+  noticeCopy: { marginTop: 4 },
+  item: { borderBottomWidth: 1 },
+  itemName: { width: "58.333%" },
+  deliveryCopy: { width: "66.667%" },
+  variant: { fontStyle: "italic" },
+  stockCopy: { marginTop: 4 },
+});
 
 export default OrderDetailsComponent;
