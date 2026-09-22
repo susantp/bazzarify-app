@@ -1,51 +1,86 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { IProductVariantSelectorProps } from "@/modules/product/hooks/useProductScreen";
+import { Pressable } from "react-native";
+import { Box, Image, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
+import { IProductVariantSelectorProps } from "@/modules/product/hooks/useProductScreen";
 
 const ProductVariantSelector = ({
   variants,
   onPress,
   selectedVariant,
 }: IProductVariantSelectorProps) => {
+  const theme = useBazarifyTheme();
+
   return (
-    <View className="flex-col gap-y-3 border-b-2 border-gray-400 px-4 py-2">
-      <View>
-        <Text className="text-xl font-semibold">
+    <Box
+      gap="md"
+      paddingX="lg"
+      paddingY="sm"
+      style={{
+        borderBottomColor: theme.colors.borderStrong,
+        borderBottomWidth: 2,
+      }}
+    >
+      <Box>
+        <Text variant="title">
           Option:{" "}
           {selectedVariant?.name.replace("|", " ") || (
-            <Text className="text-red-600">Select an option</Text>
+            <Text color="danger" variant="title">
+              Select an option
+            </Text>
           )}
         </Text>
-      </View>
-      <View className="flex-row items-center justify-items-center gap-x-3">
+      </Box>
+      <Box direction="row" align="center" gap="md">
         {variants.map((variant) => {
-          const bg = "bg-".concat(variant.name.split("|")[0]).concat("-200");
-          const isDisabled = !variant.available || variant.available_to_sell <= 0;
+          const variantColor = variant.name.split("|")[0];
+          const isDisabled =
+            !variant.available || variant.available_to_sell <= 0;
           const isSelected = selectedVariant?.uuid === variant.uuid;
+
           return (
-            <TouchableOpacity
+            <Pressable
               key={variant.uuid}
-              onPress={() => !isDisabled && onPress(variant)}
+              accessibilityLabel={`Select ${variant.name.replace("|", " ")}`}
+              accessibilityRole="button"
               disabled={isDisabled}
-              className={`h-10 w-10 rounded-full border-2 p-0.5 ${
-                isSelected ? "border-primary" : "border-gray-300"
-              } ${isDisabled ? "opacity-40" : ""}`}
+              onPress={() => !isDisabled && onPress(variant)}
+              testID={variant.uuid}
+              style={{
+                borderColor: isSelected
+                  ? theme.colors.primary
+                  : theme.colors.borderStrong,
+                borderRadius: theme.radii.pill,
+                borderWidth: 2,
+                opacity: isDisabled ? 0.4 : 1,
+                padding: 2,
+              }}
             >
-              <View className={`h-full w-full rounded-full ${bg}`}>
+              <Box
+                backgroundColor="surfaceMuted"
+                borderRadius="pill"
+                style={{
+                  backgroundColor: variantColor,
+                  height: 36,
+                  width: 36,
+                }}
+              >
                 <Image
                   source={getFirstImageSource({
                     images: variant.images,
                     baseUrl: variant.image_base_url,
                   })}
-                  className="h-full w-full rounded-full"
+                  radius="pill"
+                  style={{ height: "100%", width: "100%" }}
                 />
-              </View>
-            </TouchableOpacity>
+              </Box>
+            </Pressable>
           );
         })}
-      </View>
-    </View>
+      </Box>
+    </Box>
   );
 };
+
 export default ProductVariantSelector;
