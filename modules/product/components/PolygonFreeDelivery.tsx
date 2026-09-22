@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
-import { Colors } from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Box, Icon, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 const PolygonFreeDelivery = () => {
+  const theme = useBazarifyTheme();
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
+
   return (
-    <View className="relative bottom-0 left-0 flex-row justify-start">
+    <Box direction="row" justify="flex-start" style={{ position: "relative" }}>
       <Svg
         width={dimension.width}
         height={dimension.height}
-        className="absolute"
-        style={{ position: "absolute", top: 0, left: 0 }}
+        style={{ left: 0, position: "absolute", top: 0 }}
       >
         <Polygon
           points={`
@@ -21,21 +22,33 @@ const PolygonFreeDelivery = () => {
               ${dimension.width},${dimension.height} 
               0,${dimension.height}
             `}
-          fill={Colors.light.tint}
+          fill={theme.colors.primary}
         />
       </Svg>
-      <View
-        className="w-10/12 flex-row items-center gap-x-2 rounded-tr-md px-2 py-1"
-        onLayout={(e) => setDimension(e.nativeEvent.layout)}
+      <Box
+        direction="row"
+        align="center"
+        gap="sm"
+        paddingX="sm"
+        paddingY="xs"
+        borderRadius="md"
+        style={{ width: "83.333333%" }}
+        onLayout={(event) => setDimension(event.nativeEvent.layout)}
       >
-        <MaterialCommunityIcons
-          name="truck-delivery"
-          size={16}
-          color={`#fff`}
-        />
-        <Text className="uppercase text-white">free delivery</Text>
-      </View>
-    </View>
+        <Icon size={16} color="textInverted">
+          {({ color, size }) => (
+            <MaterialCommunityIcons
+              name="truck-delivery"
+              size={size}
+              color={color}
+            />
+          )}
+        </Icon>
+        <Text color="textInverted" variant="bodyCompactMedium">
+          FREE DELIVERY
+        </Text>
+      </Box>
+    </Box>
   );
 };
 
