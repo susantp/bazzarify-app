@@ -1,13 +1,13 @@
 import {
   Dimensions,
-  Image,
+  Image as NativeImage,
   ImageSourcePropType,
-  Text,
-  View,
+  StyleSheet,
 } from "react-native";
-import cn from "@/utils/tailwindHelper";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { Box, Icon, Stack, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export interface MessageBannerProps {
   time: string;
@@ -27,45 +27,51 @@ const MessageBanner = ({
   testID,
 }: MessageBannerProps) => {
   const { height } = Dimensions.get("window");
+  const theme = useBazarifyTheme();
+  const iconBackground = type === "promo" ? "primary" : "warning";
+
   return (
-    <View
-      className="flex-col gap-y-2 rounded-lg border border-slate-300 bg-white p-2"
+    <Box
+      gap="sm"
+      padding="sm"
+      borderRadius="md"
+      backgroundColor="surface"
       id="banner"
       testID={testID}
+      style={[styles.banner, { borderColor: theme.colors.borderStrong }]}
     >
-      <View className="flex-row items-center justify-items-center gap-x-2">
-        <View
-          className={cn(
-            "rounded-full",
-            "p-2",
-            type === "promo" && "bg-pink-500",
-            type === "activity" && "bg-amber-500",
-          )}
-        >
-          {type === "promo" && (
-            <Ionicons name="megaphone" size={18} color={"#fff"} />
-          )}
-          {type === "activity" && (
-            <Feather name="activity" size={18} color={"#fff"} />
-          )}
-        </View>
-        <View className="flex-col gap-y-1">
+      <Stack direction="row" align="center" space="sm">
+        <Box padding="sm" borderRadius="pill" backgroundColor={iconBackground}>
+          <Icon size={18} color="textInverted">
+            {({ color, size }) =>
+              type === "promo" ? (
+                <Ionicons name="megaphone" size={size} color={color} />
+              ) : (
+                <Feather name="activity" size={size} color={color} />
+              )
+            }
+          </Icon>
+        </Box>
+        <Stack space="xs">
           <Text>{title}</Text>
-          <Text className="text-gray-500">{time}</Text>
-        </View>
-      </View>
-      <View className="flex items-center">
-        <Image
-          style={{
-            height: height * (120 / height),
-            objectFit: "contain",
-          }}
+          <Text variant="caption" color="textMuted">
+            {time}
+          </Text>
+        </Stack>
+      </Stack>
+      <Box align="center">
+        <NativeImage
+          style={{ height: height * (120 / height), objectFit: "contain" }}
           source={imgUrl}
         />
-      </View>
+      </Box>
       <Text>{detail}</Text>
-    </View>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  banner: { borderWidth: StyleSheet.hairlineWidth },
+});
 
 export default MessageBanner;
