@@ -31,6 +31,15 @@ export const typography = {
   label: { fontSize: 14, lineHeight: 20, fontWeight: "600" as const },
 } as const;
 
+export const dimensions = {
+  controlSm: 36,
+  controlMd: 44,
+  controlLg: 52,
+  iconSm: 16,
+  iconMd: 24,
+  iconLg: 32,
+} as const;
+
 const lightColors = {
   background: "#FFFFFF",
   surface: "#FFFFFF",
@@ -76,6 +85,7 @@ export type BazarifyTheme = {
   spacing: typeof spacing;
   radii: typeof radii;
   typography: typeof typography;
+  dimensions: typeof dimensions;
 };
 
 export function createBazarifyTheme(
@@ -89,5 +99,6 @@ export function createBazarifyTheme(
     spacing,
     radii,
     typography,
+    dimensions,
   };
 }
