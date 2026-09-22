@@ -1,14 +1,15 @@
-import { FlatList, Switch, Text, View } from "react-native";
+import { FlatList, StyleSheet, Switch } from "react-native";
 import { useState } from "react";
-import { Colors } from "@/constants/Colors";
 import {
   notificationSettingList,
   NotificationSettingType,
 } from "@/modules/account/data/settings/notification";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Box, Text, useBazarifyTheme } from "@/components/design-system";
+import { PageContent } from "@/components/design-system/compositions";
 
 const NotificationSettingScreen = () => {
   const [notifications, setNotifications] = useState(notificationSettingList);
+  const theme = useBazarifyTheme();
   const handleSwitchChange = (id: string, value: boolean) => {
     setNotifications((prevNotification: NotificationSettingType[]) =>
       prevNotification.map((notification: NotificationSettingType) =>
@@ -20,35 +21,65 @@ const NotificationSettingScreen = () => {
   };
   return (
     notifications.length > 0 && (
-      <ContentWrapper className="bg-white">
+      <PageContent backgroundColor="background">
         <FlatList
           data={notifications}
-          renderItem={({ item }) => {
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => {
             return (
-              <View className="flex-row items-center justify-items-center border-b border-gray-400 px-2 py-4">
-                <View className="w-10/12 flex-col gap-y-2">
-                  <Text className="text-md font-semibold">{item.label}</Text>
-                  <Text className="text-[0.8rem] font-light">
+              <Box
+                direction="row"
+                align="center"
+                style={[
+                  styles.row,
+                  index < notifications.length - 1
+                    ? {
+                        borderBottomColor: theme.colors.borderStrong,
+                        borderBottomWidth: StyleSheet.hairlineWidth,
+                      }
+                    : null,
+                ]}
+              >
+                <Box gap="sm" style={styles.copyColumn}>
+                  <Text variant="bodyMedium">{item.label}</Text>
+                  <Text variant="caption" color="textMuted">
                     {item.helperText}
                   </Text>
-                </View>
-                <View className="w-2/12 items-end">
+                </Box>
+                <Box align="flex-end" style={styles.switchColumn}>
                   <Switch
                     value={item.active}
-                    thumbColor={item.active ? "white" : "gray"}
-                    trackColor={{ true: Colors.light.tint }}
+                    thumbColor={
+                      item.active
+                        ? theme.colors.textInverted
+                        : theme.colors.textMuted
+                    }
+                    trackColor={{ true: theme.colors.primary }}
                     onValueChange={(value) =>
                       handleSwitchChange(item.id, value)
                     }
                   />
-                </View>
-              </View>
+                </Box>
+              </Box>
             );
           }}
         />
-      </ContentWrapper>
+      </PageContent>
     )
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    paddingHorizontal: 8,
+    paddingVertical: 16,
+  },
+  copyColumn: {
+    width: "83.333333%",
+  },
+  switchColumn: {
+    width: "16.666667%",
+  },
+});
 
 export default NotificationSettingScreen;
