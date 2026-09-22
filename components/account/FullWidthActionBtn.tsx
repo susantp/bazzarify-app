@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  GestureResponderEvent,
-  Text,
-  TouchableOpacity,
-  View,
+  Pressable,
+  StyleSheet,
+  type GestureResponderEvent,
 } from "react-native";
-import cn from "@/utils/tailwindHelper";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 const FullWidthActionBtn = ({
   handleOnPress,
@@ -16,20 +16,46 @@ const FullWidthActionBtn = ({
   label: string;
   disabled: boolean;
 }) => {
+  const theme = useBazarifyTheme();
+
   return (
-    <View className="flex w-full px-6">
-      <TouchableOpacity
+    <Box paddingX="xxl" style={styles.container}>
+      <Pressable
         disabled={disabled}
-        activeOpacity={0.8}
-        className={cn(
-          `flex items-center justify-center rounded-full bg-primary py-3`,
-          disabled && `bg-primary/60`,
-        )}
         onPress={handleOnPress}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled }}
+        style={({ pressed }) => [
+          styles.action,
+          {
+            backgroundColor: theme.colors.primary,
+            opacity: disabled ? 0.6 : pressed ? 0.8 : 1,
+          },
+        ]}
       >
-        <Text className="text-xl font-bold text-white">{label}</Text>
-      </TouchableOpacity>
-    </View>
+        <Text
+          variant="title"
+          color="textInverted"
+          style={styles.label}
+          selectable={false}
+        >
+          {label}
+        </Text>
+      </Pressable>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { width: "100%" },
+  action: {
+    alignItems: "center",
+    borderRadius: 999,
+    justifyContent: "center",
+    paddingVertical: 12,
+    width: "100%",
+  },
+  label: { fontWeight: "700" },
+});
 export default FullWidthActionBtn;
