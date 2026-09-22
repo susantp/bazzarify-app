@@ -1,31 +1,40 @@
 import ShippingCoupon from "@/components/common/CouponComponent";
-import { FlatList, Text, View } from "react-native";
+import { FlatList } from "react-native";
 import React from "react";
-import cn from "@/utils/tailwindHelper";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 interface VoucherListProps {
-  className?: string;
+  style?: object;
 }
 
-const VoucherList = ({ className }: VoucherListProps) => {
+const VoucherList = ({ style }: VoucherListProps) => {
+  const theme = useBazarifyTheme();
   const VOUCHERS = [
-    { component: <ShippingCoupon /> },
-    { component: <ShippingCoupon /> },
-    { component: <ShippingCoupon /> },
+    { id: "shipping-1" },
+    { id: "shipping-2" },
+    { id: "shipping-3" },
   ];
   return (
-    <View className={cn(`flex-col`, className)}>
-      <View className="gap-y-2 rounded-2xl border border-gray-300 p-4">
-        <Text className="text-xl font-bold">Voucher</Text>
+    <Box direction="column" style={style}>
+      <Box
+        direction="column"
+        gap="sm"
+        borderRadius="xl"
+        padding="lg"
+        style={{ borderWidth: 1, borderColor: theme.colors.borderStrong }}
+      >
+        <Text variant="title">Voucher</Text>
         <FlatList
           contentContainerStyle={{ columnGap: 20 }}
           showsHorizontalScrollIndicator={false}
-          horizontal={true}
+          horizontal
           data={VOUCHERS}
-          renderItem={({ item }) => item.component}
+          keyExtractor={(item) => item.id}
+          renderItem={() => <ShippingCoupon />}
         />
-      </View>
-    </View>
+      </Box>
+    </Box>
   );
 };
 
