@@ -99,7 +99,6 @@ export default function RequestPasswordResetScreen() {
               formField={({ field }: IControlledFormFieldProps) => (
                 <UsernameInput
                   placeholder="Enter email"
-                  className="border-2 border-slate-200 py-5"
                   hasError={errors.email}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
