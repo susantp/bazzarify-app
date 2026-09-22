@@ -1,8 +1,9 @@
-import { TouchableOpacity } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { TCategoryWithImage } from "@/modules/product/schemas/CategorySchema";
-import { ThemedText } from "@/components/ThemedText";
 import CategoryAvatar from "@/modules/categories/components/CategoryAvatar";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export type CategoryCardProps = {
   item: TCategoryWithImage;
@@ -18,23 +19,37 @@ const CategoryCard = ({
   hasImages = false,
   onPress,
 }: CategoryCardProps) => {
+  const theme = useBazarifyTheme();
+
   return (
     item && (
-      <TouchableOpacity
-        className={`flex w-${(12 / cols).toString()}/12 flex-col items-center gap-y-2 p-2`}
+      <Pressable
+        accessibilityLabel={item.name}
+        accessibilityRole="button"
         onPress={onPress}
+        style={({ pressed }) => [
+          styles.card,
+          {
+            padding: theme.spacing.sm,
+            width: `${100 / cols}%`,
+          },
+          pressed && styles.pressed,
+        ]}
       >
         <CategoryAvatar item={item} size={100} />
-        <ThemedText
-          darkColor="#0000"
-          ellipsizeMode={"tail"}
-          numberOfLines={1}
-          type="defaultSemiBold"
-        >
-          {item.name}
-        </ThemedText>
-      </TouchableOpacity>
+        <Box align="center" style={styles.label}>
+          <Text variant="bodyCompactMedium" numberOfLines={1}>
+            {item.name}
+          </Text>
+        </Box>
+      </Pressable>
     )
   );
 };
+
+const styles = StyleSheet.create({
+  card: { alignItems: "center", gap: 8 },
+  label: { maxWidth: "100%" },
+  pressed: { opacity: 0.8 },
+});
 export default CategoryCard;
