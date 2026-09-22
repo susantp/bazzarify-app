@@ -1,11 +1,11 @@
-import { Text, View } from "react-native";
 import React from "react";
+import { Box, Text } from "@/components/design-system";
 
 const ProductCouponDiscountInfo = () => (
-  <View>
-    <Text className="text-gray-500">
+  <Box>
+    <Text color="textMuted" variant="caption">
       Get extra discount with coupon on shopping
     </Text>
-  </View>
+  </Box>
 );
 export default ProductCouponDiscountInfo;
