@@ -1,16 +1,17 @@
-import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
+import { ImageBackground, Pressable, StyleSheet } from "react-native";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Colors } from "@/constants/Colors";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchStore } from "@/modules/vendor/data/services/vendorService";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import { Box, Icon, Text, useBazarifyTheme } from "@/components/design-system";
 
 interface VendorHeaderProps {
   vendorUuid?: string;
 }
 
 const VendorBanner = ({ vendorUuid }: VendorHeaderProps) => {
+  const theme = useBazarifyTheme();
   const { data, isLoading } = useQuery({
     queryKey: ["vendor", vendorUuid, "store"],
     queryFn: () => fetchStore(vendorUuid as string),
@@ -23,56 +24,87 @@ const VendorBanner = ({ vendorUuid }: VendorHeaderProps) => {
   return (
     <>
       <ImageBackground
-        style={{
-          height: 150,
-        }}
-        className="flex justify-center bg-slate-600"
+        style={[styles.banner, { backgroundColor: theme.colors.locationBar }]}
         imageStyle={{ opacity: 0.3 }}
         // source={{
         //   uri: vendor.bgImgPath,
         // }}
       >
-        <View className="flex-row px-6">
-          <View className="w-9/12 flex-row items-center gap-x-2">
-            <View>
+        <Box direction="row" align="center" paddingX="xxl">
+          <Box direction="row" align="center" gap="sm" style={styles.identity}>
+            <Box>
               {/*<Image*/}
               {/*  source={{ uri: vendor.logo }}*/}
               {/*  style={{ width: 40, height: 40 }}*/}
               {/*/>*/}
-            </View>
-            <View className="flex-col gap-y-1">
-              <Text className="text-lg font-semibold text-white">
+            </Box>
+            <Box gap="xs">
+              <Text variant="title" color="textInverted">
                 {data?.store?.name || "N/A"}
               </Text>
-              <View className="flex-row items-center gap-x-1">
-                <Text className="text-sm font-semibold text-primary">
+              <Box direction="row" align="center" gap="xs">
+                <Text variant="caption" color="primary">
                   100% Authentic
                 </Text>
-                <Ionicons
-                  size={12}
-                  name="shield-checkmark"
-                  color={Colors.light.tint}
-                />
-              </View>
-              <View className="flex-row items-center gap-x-1">
-                <FontAwesome size={12} name="user" color="white" />
-                <Text className="text-sm font-semibold text-white">xxk</Text>
-              </View>
-            </View>
-          </View>
-          <View className="w-3/12 flex-col gap-y-2">
-            <TouchableOpacity className="items-center gap-x-1 rounded-md bg-primary py-1">
-              <Text className="font-semibold text-white">Follow</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="flex-row items-center justify-center gap-x-1 rounded-md bg-primary py-1">
-              <Entypo name="chat" size={15} color="white" />
-              <Text className="font-semibold text-white">Chat</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+                <Icon size={12} color="primary">
+                  {({ color, size }) => (
+                    <Ionicons
+                      name="shield-checkmark"
+                      size={size}
+                      color={color}
+                    />
+                  )}
+                </Icon>
+              </Box>
+              <Box direction="row" align="center" gap="xs">
+                <Icon size={12} color="textInverted">
+                  {({ color, size }) => (
+                    <FontAwesome size={size} name="user" color={color} />
+                  )}
+                </Icon>
+                <Text variant="caption" color="textInverted">
+                  xxk
+                </Text>
+              </Box>
+            </Box>
+          </Box>
+          <Box gap="sm" style={styles.actions}>
+            <Pressable
+              style={[styles.action, { backgroundColor: theme.colors.primary }]}
+            >
+              <Text variant="label" color="textInverted">
+                Follow
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[
+                styles.action,
+                styles.chatAction,
+                { backgroundColor: theme.colors.primary },
+              ]}
+            >
+              <Icon size={15} color="textInverted">
+                {({ color, size }) => (
+                  <Entypo name="chat" size={size} color={color} />
+                )}
+              </Icon>
+              <Text variant="label" color="textInverted">
+                Chat
+              </Text>
+            </Pressable>
+          </Box>
+        </Box>
       </ImageBackground>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  banner: { height: 150, justifyContent: "center" },
+  identity: { flex: 3 },
+  actions: { flex: 1 },
+  action: { alignItems: "center", borderRadius: 6, paddingVertical: 4 },
+  chatAction: { flexDirection: "row", justifyContent: "center", gap: 4 },
+});
 
 export default VendorBanner;
