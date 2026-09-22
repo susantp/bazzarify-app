@@ -1,5 +1,5 @@
-import { FlatList, Switch, Text, View } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { FlatList, StyleSheet, Switch } from "react-native";
+import { Box, Text, useBazarifyTheme } from "@/components/design-system";
 import { Link } from "expo-router";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 
@@ -12,19 +12,35 @@ const AddressListComponent = ({
   addresses,
   onSwitchChange,
 }: IAddressListComponentProps) => {
+  const theme = useBazarifyTheme();
+
   return (
     <FlatList
       data={addresses}
       renderItem={({ item, index }) => {
         return (
-          <View
-            className={`flex-row items-center ${addresses.length - 1 !== index ? "border-b" : undefined} border-b-gray-400 px-2 py-6`}
+          <Box
+            direction="row"
+            align="center"
+            style={[
+              styles.row,
+              index < addresses.length - 1
+                ? {
+                    borderBottomColor: theme.colors.borderStrong,
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                  }
+                : null,
+            ]}
           >
-            <View className="w-2/12 items-start">
+            <Box style={styles.switchColumn}>
               <Switch
                 value={item.is_default}
-                thumbColor={item.is_default ? "white" : "gray"}
-                trackColor={{ true: Colors.light.tint }}
+                thumbColor={
+                  item.is_default
+                    ? theme.colors.textInverted
+                    : theme.colors.textMuted
+                }
+                trackColor={{ true: theme.colors.primary }}
                 onValueChange={(value) =>
                   onSwitchChange({
                     ...item,
@@ -32,28 +48,56 @@ const AddressListComponent = ({
                   })
                 }
               />
-            </View>
-            <View className="w-7/12">
-              <Text className="text-md font-semibold">
+            </Box>
+            <Box style={styles.addressColumn}>
+              <Text variant="bodyMedium">
                 {[item.street, item.city, item.state].join(", ")}
               </Text>
-            </View>
-            <View className="w-3/12">
+            </Box>
+            <Box style={styles.editColumn}>
               <Link
-                className="rounded-lg bg-primary py-2"
+                style={[
+                  styles.editLink,
+                  {
+                    backgroundColor: theme.colors.primary,
+                    borderRadius: theme.radii.md,
+                  },
+                ]}
                 href={{
                   pathname: "/account/setting/address/edit/[uuid]",
                   params: { uuid: item.uuid },
                 }}
               >
-                <Text className="text-center text-xl text-white">Edit</Text>
+                <Text variant="link" color="textInverted" align="center">
+                  Edit
+                </Text>
               </Link>
-            </View>
-          </View>
+            </Box>
+          </Box>
         );
       }}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    paddingHorizontal: 8,
+    paddingVertical: 24,
+  },
+  switchColumn: {
+    alignItems: "flex-start",
+    width: "16.666667%",
+  },
+  addressColumn: {
+    width: "58.333333%",
+  },
+  editColumn: {
+    width: "25%",
+  },
+  editLink: {
+    paddingVertical: 8,
+  },
+});
 
 export default AddressListComponent;
