@@ -1,6 +1,7 @@
 import { StyleProp, View, ViewStyle } from "react-native";
 import React from "react";
 import cn from "@/utils/tailwindHelper";
+import { PageContent } from "@/components/design-system/compositions";
 
 interface ContentWrapperProps {
   children: React.ReactNode;
@@ -14,9 +15,11 @@ const ContentWrapper = ({
   styles,
 }: ContentWrapperProps) => {
   return (
-    <View className={cn(`flex-1 flex-col bg-white`, className)}>
-      {children}
-    </View>
+    <PageContent style={styles}>
+      <View style={{ flex: 1 }} className={cn("flex-col", className)}>
+        {children}
+      </View>
+    </PageContent>
   );
 };
 export default ContentWrapper;
