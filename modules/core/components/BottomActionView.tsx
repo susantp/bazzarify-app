@@ -1,27 +1,36 @@
-import { View } from "react-native";
+import { Box, type BoxProps } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import React from "react";
-import cn from "@/utils/tailwindHelper";
+import type { StyleProp, ViewStyle } from "react-native";
 
 interface BottomActionViewProps {
   children: React.ReactNode;
-  className?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
-const BottomActionView = ({ children, className }: BottomActionViewProps) => {
+const BottomActionView = ({ children, style }: BottomActionViewProps) => {
+  const theme = useBazarifyTheme();
+  const surfaceStyle: BoxProps["style"] = [
+    styles.surface,
+    {
+      backgroundColor: theme.colors.surface,
+      borderColor: theme.colors.borderStrong,
+    },
+    style,
+  ];
+
   return (
-    <View
-      className={cn(
-        "w-full",
-        "flex-col-reverse",
-        "border",
-        "border-gray-400",
-        "bg-white",
-        className,
-      )}
-    >
+    <Box direction="column-reverse" style={surfaceStyle}>
       {children}
-    </View>
+    </Box>
   );
+};
+
+const styles = {
+  surface: {
+    width: "100%" as const,
+    borderWidth: 1,
+  },
 };
 
 export default BottomActionView;
