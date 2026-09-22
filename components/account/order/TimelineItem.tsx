@@ -1,4 +1,6 @@
-import { Text, View } from "react-native";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { OrderTrackingItem } from "@/hooks/useOrderTracking";
 
@@ -8,22 +10,40 @@ interface TimelineItemProps {
 
 export default function TimelineItem({ item }: TimelineItemProps) {
   const { active, description, status, date } = item;
+  const theme = useBazarifyTheme();
+  const textColor = active ? "text" : "textMuted";
+
   return (
-    <View className={`flex-row items-center justify-between`}>
-      <View className="flex-1 pr-12">
-        <Text className={`font-semibold ${!active && `text-gray-500`}`}>
+    <Box direction="row" align="center" justify="space-between">
+      <Box style={styles.details}>
+        <Text variant="bodyMedium" color={textColor}>
           {status}
         </Text>
-        <Text className={`text-xs ${!active && `text-gray-500`}`}>
+        <Text variant="caption" color={textColor}>
           {description}
         </Text>
-      </View>
-      <View className="flex-row gap-x-2">
-        <View
-          className={`h-4 w-4 rounded-full ${active ? "bg-primary" : "bg-gray-500"}`}
-        ></View>
-        <Text className={`text-xs ${!active && "text-gray-500"}`}>{date}</Text>
-      </View>
-    </View>
+      </Box>
+      <Box direction="row" align="center" gap="sm">
+        <Box
+          borderRadius="pill"
+          style={[
+            styles.dot,
+            {
+              backgroundColor: active
+                ? theme.colors.primary
+                : theme.colors.textMuted,
+            },
+          ]}
+        />
+        <Text variant="caption" color={textColor}>
+          {date}
+        </Text>
+      </Box>
+    </Box>
   );
 }
+
+const styles = StyleSheet.create({
+  details: { flex: 1, paddingRight: 48 },
+  dot: { height: 16, width: 16 },
+});
