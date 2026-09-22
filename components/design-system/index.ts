@@ -7,3 +7,4 @@ export * from "./controls";
 export * from "./feedback";
 export * from "./primitives";
 export * from "./theme";
+export * from "./compositions";
