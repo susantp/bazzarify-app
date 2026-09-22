@@ -1,9 +1,5 @@
-import {
-  FlatList,
-  GestureResponderEvent,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { FlatList, GestureResponderEvent } from "react-native";
+import { Button } from "@/components/design-system";
 import TextInputV1 from "@/components/common/TextInputV1";
 import { AddressFieldType } from "@/modules/account/data/address/addressFields";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
@@ -51,21 +47,18 @@ const AddressFormComponent = forwardRef<AddressFormRef, Props>(
 
     return (
       <FlatList
-        contentContainerClassName="px-3 gap-y-3 py-3"
+        contentContainerStyle={styles.content}
         keyExtractor={(item) => item.id}
         data={fields}
         renderItem={({ item }) => {
           if (item.id === "action") {
             return (
-              <TouchableOpacity
+              <Button
                 onPress={(e: GestureResponderEvent) => onSubmit(e)}
-                activeOpacity={0.6}
-                className="mt-4 flex flex-1 items-center rounded-lg bg-primary py-3.5"
-              >
-                <Text className="text-lg font-semibold text-white">
-                  {item.label}
-                </Text>
-              </TouchableOpacity>
+                label={item.label}
+                size="lg"
+                style={styles.action}
+              />
             );
           } else {
             return (
@@ -96,5 +89,17 @@ const AddressFormComponent = forwardRef<AddressFormRef, Props>(
 );
 
 AddressFormComponent.displayName = "AddressFormComponent";
+
+const styles = {
+  content: {
+    gap: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+  },
+  action: {
+    marginTop: 16,
+    width: "100%" as const,
+  },
+};
 
 export default AddressFormComponent;
