@@ -1,23 +1,33 @@
-import { TextInput, View } from "react-native";
+import { StyleSheet, type StyleProp, type TextStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon, Input } from "@/components/design-system";
 
 const FullNameInput = ({
   inputPadding,
   defaultValue,
 }: {
-  inputPadding: string;
+  inputPadding?: StyleProp<TextStyle>;
   defaultValue: string;
-}) => (
-  <View className="relative w-full px-6">
-    <TextInput
-      defaultValue={defaultValue}
-      placeholder="Your email/number"
-      className={`rounded-md bg-white pl-14 ${inputPadding}`}
-    />
-    <View className="absolute inset-x-9 inset-y-3">
-      <Ionicons name="person-circle-outline" size={28} color="gray" />
-    </View>
-  </View>
-);
+}) => {
+  return (
+    <Box paddingX="xxl" style={styles.container}>
+      <Input
+        defaultValue={defaultValue}
+        placeholder="Your email/number"
+        style={[styles.input, inputPadding]}
+      />
+      <Icon size={28} color="textMuted">
+        {({ color, size }) => (
+          <Ionicons name="person-circle-outline" size={size} color={color} />
+        )}
+      </Icon>
+    </Box>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: { position: "relative", width: "100%" },
+  input: { paddingLeft: 56 },
+});
 
 export default FullNameInput;
