@@ -67,7 +67,6 @@ const LoginScreen = () => {
                   name="email"
                   formField={({ field }: IControlledFormFieldProps) => (
                     <UsernameInput
-                      className="border-2 border-slate-200 py-5"
                       hasError={errors.email}
                       onChange={field.onChange}
                       onBlur={field.onBlur}
