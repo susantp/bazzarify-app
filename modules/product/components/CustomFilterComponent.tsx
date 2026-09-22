@@ -1,14 +1,13 @@
 import { TSearchMetadataPayloadSchema } from "@/modules/product/schemas/responsePayloads/SearchMetadataPayloadSchema";
 import { toTitleCase } from "@/modules/core/utils";
 import { useEffect, useMemo, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import cn from "@/utils/tailwindHelper";
-import { primaryColor } from "@/constants/Colors";
+import { Pressable } from "react-native";
 import { useAtom } from "jotai";
 import { searchFiltersAtom } from "@/atoms/searchFiltersAtom";
 import { createInitialSelectedOptions } from "@/modules/product/utils/searchFilters";
 import TextInputV1 from "@/components/common/TextInputV1";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 interface ICustomFilterComponentProps {
   handleDonePress: () => void;
@@ -19,6 +18,7 @@ export const CustomFilterComponent = ({
   handleDonePress,
   metadata,
 }: ICustomFilterComponentProps) => {
+  const theme = useBazarifyTheme();
   const [storedOptions, setStoredOptions] = useAtom(searchFiltersAtom);
   const [selectedOptions, setSelectedOptions] = useState(storedOptions);
 
@@ -178,45 +178,43 @@ export const CustomFilterComponent = ({
 
   if (!metadata) return null;
   return (
-    <>
-      <View className="flex-col gap-y-2 py-2">
-        <ThemedText type="subtitle" style={{ color: primaryColor }}>
+    <Box gap="sm">
+      <Box gap="sm" paddingY="sm">
+        <Text variant="title" color="primary">
           Applied Filters
-        </ThemedText>
+        </Text>
         {appliedChips.length === 0 ? (
-          <ThemedText style={{ color: "#64748B" }}>
-            No filters applied.
-          </ThemedText>
+          <Text color="textMuted">No filters applied.</Text>
         ) : (
-          <View className="flex-row flex-wrap gap-2">
+          <Box direction="row" gap="sm" style={{ flexWrap: "wrap" }}>
             {appliedChips.map((chip) => (
-              <TouchableOpacity
+              <Pressable
                 key={chip.key}
                 onPress={chip.onRemove}
                 style={{
                   backgroundColor: "transparent",
-                  borderColor: primaryColor,
+                  borderColor: theme.colors.primary,
+                  borderRadius: theme.radii.pill,
+                  borderWidth: 1,
+                  flexDirection: "row",
+                  paddingHorizontal: theme.spacing.md,
+                  paddingVertical: theme.spacing.sm,
                 }}
-                className={cn(
-                  "flex-row items-center rounded-full border px-3 py-2",
-                )}
               >
-                <ThemedText style={{ color: primaryColor }}>
-                  {chip.label}
-                </ThemedText>
-                <ThemedText style={{ color: primaryColor }}> x</ThemedText>
-              </TouchableOpacity>
+                <Text color="primary">{chip.label}</Text>
+                <Text color="primary"> x</Text>
+              </Pressable>
             ))}
-          </View>
+          </Box>
         )}
-      </View>
+      </Box>
 
-      <View className="flex-col gap-y-2 py-2">
-        <ThemedText type="subtitle" style={{ color: primaryColor }}>
+      <Box gap="sm" paddingY="sm">
+        <Text variant="title" color="primary">
           Price Range
-        </ThemedText>
-        <View className="flex-row gap-x-3">
-          <View className="flex-1">
+        </Text>
+        <Box direction="row" gap="md">
+          <Box flex={1}>
             <TextInputV1
               legend="Min"
               placeholder={`Min (${metadata.price_range.min})`}
@@ -226,8 +224,8 @@ export const CustomFilterComponent = ({
                 handleRangeChange("price_range", "min", value)
               }
             />
-          </View>
-          <View className="flex-1">
+          </Box>
+          <Box flex={1}>
             <TextInputV1
               legend="Max"
               placeholder={`Max (${metadata.price_range.max})`}
@@ -237,116 +235,139 @@ export const CustomFilterComponent = ({
                 handleRangeChange("price_range", "max", value)
               }
             />
-          </View>
-        </View>
-      </View>
+          </Box>
+        </Box>
+      </Box>
 
       {metadata.attributes?.map((attribute) => (
-        <View className="flex-col gap-y-2 py-2" key={attribute.uuid}>
-          <ThemedText type="subtitle" style={{ color: primaryColor }}>
+        <Box gap="sm" paddingY="sm" key={attribute.uuid}>
+          <Text variant="title" color="primary">
             {toTitleCase(attribute.name)}
-          </ThemedText>
+          </Text>
 
-          <View className="flex-row flex-wrap items-center gap-2">
+          <Box
+            direction="row"
+            align="center"
+            gap="sm"
+            style={{ flexWrap: "wrap" }}
+          >
             {attribute.values.map((option) => {
               const isSelected = selectedOptions.multiple[
                 attribute.name
               ]?.includes(option.uuid);
 
               return (
-                <TouchableOpacity
+                <Pressable
                   key={option.uuid}
                   onPress={() => handleSelect(attribute.name, option.uuid)}
                   style={{
-                    backgroundColor: isSelected ? primaryColor : "transparent",
-                    borderColor: isSelected ? primaryColor : "#94A3B8",
+                    backgroundColor: isSelected
+                      ? theme.colors.primary
+                      : "transparent",
+                    borderColor: isSelected
+                      ? theme.colors.primary
+                      : theme.colors.borderStrong,
+                    borderRadius: theme.radii.pill,
+                    borderWidth: 1,
+                    paddingHorizontal: theme.spacing.md,
+                    paddingVertical: theme.spacing.sm,
                   }}
-                  className={cn("rounded-full border px-3 py-2")}
                 >
-                  <ThemedText
-                    style={{ color: isSelected ? "#FFFFFF" : primaryColor }}
-                  >
+                  <Text color={isSelected ? "textInverted" : "primary"}>
                     {option.value}
-                  </ThemedText>
-                </TouchableOpacity>
+                  </Text>
+                </Pressable>
               );
             })}
-          </View>
-        </View>
+          </Box>
+        </Box>
       ))}
 
       {/* Categories (MULTI SELECT) */}
-      <View className="flex-col gap-y-2 py-2">
-        <ThemedText type="subtitle" style={{ color: primaryColor }}>
+      <Box gap="sm" paddingY="sm">
+        <Text variant="title" color="primary">
           Categories
-        </ThemedText>
+        </Text>
 
-        <View className="flex-row flex-wrap items-center gap-2">
+        <Box
+          direction="row"
+          align="center"
+          gap="sm"
+          style={{ flexWrap: "wrap" }}
+        >
           {metadata.categories?.map((category) => {
             const isSelected = selectedOptions.multiple.categories?.includes(
               category.uuid,
             );
 
             return (
-              <TouchableOpacity
+              <Pressable
                 key={category.uuid}
                 onPress={() => handleSelect("categories", category.uuid)}
+                testID={`filter-category-${category.uuid}`}
                 style={{
-                  backgroundColor: isSelected ? primaryColor : "transparent",
-                  borderColor: isSelected ? primaryColor : "#94A3B8",
+                  backgroundColor: isSelected
+                    ? theme.colors.primary
+                    : "transparent",
+                  borderColor: isSelected
+                    ? theme.colors.primary
+                    : theme.colors.borderStrong,
+                  borderRadius: theme.radii.pill,
+                  borderWidth: 1,
+                  paddingHorizontal: theme.spacing.md,
+                  paddingVertical: theme.spacing.sm,
                 }}
-                className={cn("rounded-full border px-3 py-2")}
               >
-                <ThemedText
-                  style={{ color: isSelected ? "#FFFFFF" : primaryColor }}
-                  className={isSelected ? "text-white" : undefined}
-                >
+                <Text color={isSelected ? "textInverted" : "primary"}>
                   {category.name}
-                </ThemedText>
-              </TouchableOpacity>
+                </Text>
+              </Pressable>
             );
           })}
-        </View>
-      </View>
-      <View className="flex-row justify-between gap-x-4 py-4">
-        <TouchableOpacity
+        </Box>
+      </Box>
+      <Box direction="row" justify="space-between" gap="lg" paddingY="lg">
+        <Pressable
           onPress={resetFilters}
           disabled={selectedCount === 0}
-          className={cn(
-            "flex-1 items-center rounded-full py-4",
-            selectedCount === 0 ? "bg-slate-300" : "bg-primary",
-          )}
+          accessibilityRole="button"
+          style={{
+            alignItems: "center",
+            backgroundColor:
+              selectedCount === 0
+                ? theme.colors.borderStrong
+                : theme.colors.primary,
+            borderRadius: theme.radii.pill,
+            flex: 1,
+            paddingVertical: theme.spacing.lg,
+          }}
         >
-          <ThemedText
-            style={{
-              color: selectedCount ? "#fff" : primaryColor,
-            }}
-          >
-            Reset
-          </ThemedText>
-        </TouchableOpacity>
+          <Text color={selectedCount ? "textInverted" : "primary"}>Reset</Text>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           onPress={() => {
             setStoredOptions(selectedOptions);
             handleDonePress();
           }}
-          activeOpacity={0.4}
           disabled={selectedCount === 0}
-          className={cn(
-            "flex-1 items-center rounded-full py-4",
-            selectedCount === 0 ? "bg-slate-300" : "bg-primary",
-          )}
+          accessibilityRole="button"
+          style={{
+            alignItems: "center",
+            backgroundColor:
+              selectedCount === 0
+                ? theme.colors.borderStrong
+                : theme.colors.primary,
+            borderRadius: theme.radii.pill,
+            flex: 1,
+            paddingVertical: theme.spacing.lg,
+          }}
         >
-          <ThemedText
-            style={{
-              color: selectedCount ? "#fff" : primaryColor,
-            }}
-          >
+          <Text color={selectedCount ? "textInverted" : "primary"}>
             Done{selectedCount > 0 ? ` (${selectedCount})` : ""}
-          </ThemedText>
-        </TouchableOpacity>
-      </View>
-    </>
+          </Text>
+        </Pressable>
+      </Box>
+    </Box>
   );
 };
