@@ -1,10 +1,11 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { Href, router } from "expo-router";
 import React from "react";
 import { ProfileMenuBoxType } from "@/modules/order/types";
 import { TGetOrder } from "@/modules/order/schemas/orderSchema";
 import resolveTrackingOrderRef from "@/modules/order/utils/resolveTrackingOrderRef";
 import formatOrderDate from "@/modules/order/utils/formatOrderDate";
+import { Box, Image, Text, useBazarifyTheme } from "@/components/design-system";
 
 interface OrderedItemProps {
   statusItem: undefined | ProfileMenuBoxType;
@@ -13,6 +14,7 @@ interface OrderedItemProps {
 }
 
 const OrderedItem = ({ statusItem, order, item }: OrderedItemProps) => {
+  const theme = useBazarifyTheme();
   const trackingOrderRef = resolveTrackingOrderRef({
     orderUuid: order.uuid,
     itemOrderUuid: item.order_uuid,
@@ -54,38 +56,60 @@ const OrderedItem = ({ statusItem, order, item }: OrderedItemProps) => {
   };
 
   return (
-    <View className="flex-row items-center bg-white">
-      <View id="content-thumbnail" className="flex w-4/12 items-center">
+    <Box direction="row" align="center" backgroundColor="background">
+      <Box id="content-thumbnail" align="center" style={styles.thumbnail}>
         <Image
           source={require("@/assets/products/product.png")}
-          className={`h-32 w-32`}
+          size={128}
+          radius="md"
         />
-      </View>
+      </Box>
 
-      <View id="content" className="flex w-8/12 flex-col items-start gap-y-2">
-        <View id="cart-item-title">
-          <Text className="text-md">{item.name}</Text>
-        </View>
-        <View id="order-number">
-          <Text className="text-sm">{order.order_number}</Text>
-        </View>
-        <View className="w-full flex-row items-center justify-between">
-          <View className="rounded-lg bg-slate-200 px-4 py-1">
-            <Text className="text-sm">
+      <Box id="content" gap="sm" align="flex-start" style={styles.content}>
+        <Text variant="body">{item.name}</Text>
+        <Text variant="bodyCompact">{order.order_number}</Text>
+        <Box
+          direction="row"
+          align="center"
+          justify="space-between"
+          style={styles.footer}
+        >
+          <Box
+            backgroundColor="surfaceMuted"
+            borderRadius="md"
+            paddingX="lg"
+            paddingY="xs"
+          >
+            <Text variant="bodyCompact">
               {formatOrderDate(order.placed_at, "LLL, d")}
             </Text>
-          </View>
+          </Box>
           {canShowAction ? (
-            <TouchableOpacity
+            <Pressable
               onPress={handleActionPress}
-              className="rounded-lg border border-primary px-4 py-1"
+              accessibilityRole="button"
+              style={[styles.action, { borderColor: theme.colors.primary }]}
             >
-              <Text className="text-primary">{statusItem?.action?.label}</Text>
-            </TouchableOpacity>
+              <Text variant="label" color="primary">
+                {statusItem?.action?.label}
+              </Text>
+            </Pressable>
           ) : null}
-        </View>
-      </View>
-    </View>
+        </Box>
+      </Box>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  thumbnail: { width: "33.333333%" },
+  content: { width: "66.666667%" },
+  footer: { width: "100%" },
+  action: {
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+  },
+});
 export default OrderedItem;
