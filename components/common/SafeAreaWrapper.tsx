@@ -1,22 +1,19 @@
 import React from "react";
-import cn from "@/utils/tailwindHelper";
-import { View } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
+import { Box } from "@/components/design-system";
 import { PageShell } from "@/components/design-system/compositions";
 
 interface SafeAreaWrapperProps {
   children: React.ReactNode;
-  className?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
-export const SafeAreaWrapper = ({
-  children,
-  className,
-}: SafeAreaWrapperProps) => {
+export const SafeAreaWrapper = ({ children, style }: SafeAreaWrapperProps) => {
   return (
     <PageShell>
-      <View style={{ flex: 1 }} className={cn("flex-col", className)}>
+      <Box flex={1} direction="column" style={style}>
         {children ? children : null}
-      </View>
+      </Box>
     </PageShell>
   );
 };

@@ -78,7 +78,7 @@ export default function Page() {
     },
   ];
   return (
-    <SafeAreaWrapper className="bg-pink-300">
+    <SafeAreaWrapper style={{ backgroundColor: "#f9a8d4" }}>
       <ScreenHeader title="Voucher Center" />
       <ContentWrapper>
         <FlatList

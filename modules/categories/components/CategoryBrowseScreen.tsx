@@ -70,11 +70,12 @@ export default function CategoryBrowseScreen({
   const browse = data?.browse;
   const childCategories = browse?.child_categories ?? [];
   const products = browse?.products?.data ?? data?.category?.products ?? [];
-  const titleSegments =
-    browse?.path?.map((item) => item.name).filter(Boolean) ?? [slug];
+  const titleSegments = browse?.path
+    ?.map((item) => item.name)
+    .filter(Boolean) ?? [slug];
 
   return (
-    <SafeAreaWrapper className="h-screen">
+    <SafeAreaWrapper>
       <ScreenHeader title={resolveTitle(titleSegments)} />
       {isLoading ? (
         <ThemedLoader />
