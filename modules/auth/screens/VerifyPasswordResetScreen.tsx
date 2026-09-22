@@ -104,7 +104,7 @@ export default function VerifyPasswordResetScreen() {
           <View className="h-screen w-screen flex-col items-center justify-center gap-y-2">
             <PageTitle title="Forget Password" />
             <ControlledInput
-              className="w-full gap-y-2 px-6"
+              style={{ width: "100%", gap: 8, paddingHorizontal: 24 }}
               errors={errors}
               control={control}
               rules={{
@@ -135,7 +135,7 @@ export default function VerifyPasswordResetScreen() {
               )}
             />
             <ControlledInput
-              className="w-full gap-y-2 px-6"
+              style={{ width: "100%", gap: 8, paddingHorizontal: 24 }}
               errors={errors}
               name="password"
               control={control}
@@ -158,7 +158,7 @@ export default function VerifyPasswordResetScreen() {
               )}
             />
             <ControlledInput
-              className="w-full gap-y-2 px-6"
+              style={{ width: "100%", gap: 8, paddingHorizontal: 24 }}
               errors={errors}
               control={control}
               name="password_confirmation"

@@ -123,7 +123,7 @@ export default function RegisterScreen() {
               </View>
               <View className="w-full gap-y-4 rounded-3xl bg-white px-6 py-8 shadow-sm">
                 <ControlledInput
-                  className="w-full gap-y-2"
+                  style={{ width: "100%", gap: 8 }}
                   errors={errors}
                   control={control}
                   name="name"
@@ -139,7 +139,7 @@ export default function RegisterScreen() {
                   )}
                 />
                 <ControlledInput
-                  className="w-full gap-y-2"
+                  style={{ width: "100%", gap: 8 }}
                   errors={errors}
                   control={control}
                   name="email"
@@ -156,7 +156,7 @@ export default function RegisterScreen() {
                   )}
                 />
                 <ControlledInput
-                  className="w-full gap-y-2"
+                  style={{ width: "100%", gap: 8 }}
                   errors={errors}
                   name="password"
                   control={control}
@@ -176,7 +176,7 @@ export default function RegisterScreen() {
                   )}
                 />
                 <ControlledInput
-                  className="w-full gap-y-2"
+                  style={{ width: "100%", gap: 8 }}
                   errors={errors}
                   control={control}
                   name="password_confirmation"

@@ -58,7 +58,7 @@ const LoginScreen = () => {
               </View>
               <View className="w-full gap-y-4 rounded-3xl bg-white px-6 py-8 shadow-sm">
                 <ControlledInput
-                  className="w-full gap-y-2"
+                  style={{ width: "100%", gap: 8 }}
                   errors={errors}
                   control={control}
                   rules={{
@@ -77,7 +77,7 @@ const LoginScreen = () => {
                   )}
                 />
                 <ControlledInput
-                  className="w-full gap-y-2"
+                  style={{ width: "100%", gap: 8 }}
                   errors={errors}
                   control={control}
                   rules={{
