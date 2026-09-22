@@ -1,7 +1,8 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { Pressable, ScrollView, StyleSheet } from "react-native";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import { ProfileMenuBoxType } from "@/modules/order/types";
-import { Badge } from "react-native-paper";
 import { getProfileOrderStatusPreview } from "@/components/account/profile/getProfileOrderStatusPreview";
 
 interface OrderStatusProps {
@@ -17,6 +18,7 @@ const OrderStatus = ({
   onStatusPress,
   onViewAllPress,
 }: OrderStatusProps) => {
+  const theme = useBazarifyTheme();
   const previewStatuses = getProfileOrderStatusPreview(orderStatuses);
 
   const getStatusCount = (status: string | string[] | undefined) => {
@@ -33,39 +35,89 @@ const OrderStatus = ({
   };
 
   return (
-    <View className="flex-col gap-y-4 py-2">
-      <View className="flex-row items-center justify-between px-2">
-        <Text className="text-md text-lg font-semibold">My Orders</Text>
-        <TouchableOpacity onPress={onViewAllPress}>
-          <Text className="text-sm font-medium text-primary">View all</Text>
-        </TouchableOpacity>
-      </View>
+    <Box direction="column" gap="lg" paddingY="sm">
+      <Box direction="row" align="center" justify="space-between" paddingX="sm">
+        <Text variant="title">My Orders</Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="View all orders"
+          onPress={onViewAllPress}
+        >
+          <Text variant="label" color="primary">
+            View all
+          </Text>
+        </Pressable>
+      </Box>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ columnGap: 12, paddingHorizontal: 8 }}
+        contentContainerStyle={styles.list}
       >
         {previewStatuses.map(({ id, label, status, icon }) => (
-          <TouchableOpacity
-            className="w-24 rounded-lg border border-slate-300 bg-white px-3 py-3"
+          <Pressable
             key={id}
+            accessibilityRole="button"
+            accessibilityLabel={`${label} orders`}
             onPress={() => onStatusPress(id)}
+            style={({ pressed }) => [
+              styles.card,
+              {
+                backgroundColor: theme.colors.surface,
+                borderColor: theme.colors.borderStrong,
+                opacity: pressed ? 0.76 : 1,
+              },
+            ]}
           >
-            <View className="min-h-20 items-center justify-center gap-y-1">
-              <View className="absolute right-0 top-0">
+            <Box
+              align="center"
+              justify="center"
+              gap="xs"
+              style={styles.cardContent}
+            >
+              <Box
+                style={styles.badge}
+                backgroundColor="primary"
+                borderRadius="pill"
+                paddingX="xs"
+              >
                 {getStatusCount(status) ? (
-                  <Badge className="bg-primary text-white">
+                  <Text
+                    variant="bodyCompactMedium"
+                    color="textInverted"
+                    style={styles.badgeText}
+                  >
                     {getStatusCount(status)}
-                  </Badge>
+                  </Text>
                 ) : null}
-              </View>
+              </Box>
               {icon}
-              <Text className="text-center text-sm font-medium">{label}</Text>
-            </View>
-          </TouchableOpacity>
+              <Text variant="bodyCompactMedium" align="center">
+                {label}
+              </Text>
+            </Box>
+          </Pressable>
         ))}
       </ScrollView>
-    </View>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  list: { columnGap: 12, paddingHorizontal: 8 },
+  card: {
+    borderRadius: 14,
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    width: 96,
+  },
+  cardContent: { minHeight: 80 },
+  badge: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+  },
+  badgeText: { minWidth: 16, textAlign: "center" },
+});
+
 export default OrderStatus;
