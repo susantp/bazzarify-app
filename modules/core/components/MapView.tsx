@@ -1,17 +1,22 @@
 import React from "react";
-import { Coordinates, GoogleMaps } from "expo-maps";
+import type { Coordinates } from "expo-maps";
+import type { GoogleMapsMarker } from "expo-maps/src/google/GoogleMaps.types";
+import type { CameraPosition } from "expo-maps/src/shared.types";
 import {
   ActivityIndicator,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { GoogleMapsMarker } from "expo-maps/src/google/GoogleMaps.types";
-import { CameraPosition } from "expo-maps/src/shared.types";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { AntDesign } from "@expo/vector-icons";
+import { loadExpoMaps } from "@/modules/core/services/expoMapsRuntime";
+import { EmptyState } from "@/components/design-system";
+
+const expoMaps = loadExpoMaps();
 
 interface Props {
   onClick: (event: { coordinates: Coordinates }) => void;
@@ -47,15 +52,28 @@ export const MapView = ({
   searchLoading,
   searchError,
 }: Props) => {
-  console.log("mapView", selectedAddress);
+  const GoogleMapsView =
+    expoMaps && (Platform.OS === "android" || Platform.OS === "ios")
+      ? expoMaps.GoogleMaps.View
+      : null;
+
   return (
     <SafeAreaWrapper className="relative flex flex-1 flex-col">
-      <GoogleMaps.View
-        style={{ height: "100%" }}
-        onMapClick={onClick}
-        markers={markers}
-        cameraPosition={cameraPosition}
-      />
+      {GoogleMapsView ? (
+        <GoogleMapsView
+          style={{ height: "100%" }}
+          onMapClick={onClick}
+          markers={markers}
+          cameraPosition={cameraPosition}
+        />
+      ) : (
+        <View style={styles.mapUnavailable}>
+          <EmptyState
+            title="Map unavailable"
+            description="Use address search or install the Bazarify development client to select a location on the map."
+          />
+        </View>
+      )}
       <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
         <AntDesign name="close-circle" size={24} color="#ea580c" />
       </TouchableOpacity>
@@ -124,6 +142,13 @@ export const MapView = ({
   );
 };
 const styles = StyleSheet.create({
+  mapUnavailable: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f3f4f6",
+    paddingHorizontal: 24,
+  },
   closeBtn: {
     position: "absolute",
     top: 16,

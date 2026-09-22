@@ -27,7 +27,7 @@ import {
   formatUserAddress,
   mapGeocodeToAddressDraft,
 } from "@/modules/user/utils/address";
-import { Coordinates as MapCoordinates } from "expo-maps";
+import type { Coordinates as MapCoordinates } from "expo-maps";
 import { LocationGeocodedAddress } from "expo-location";
 import {
   fetchPlaceDetails,
@@ -64,7 +64,9 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
       router.push("/account/setting/address/create");
       return;
     }
-    await routeGuestToLoginForProtectedTarget("/account/setting/address/create");
+    await routeGuestToLoginForProtectedTarget(
+      "/account/setting/address/create",
+    );
   };
 
   const openCreateAddress = () => {
