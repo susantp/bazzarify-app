@@ -1,50 +1,77 @@
-import { TextInput, View } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { Box, Icon, Input } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
 
 const CardPaymentComponent = () => {
+  const theme = useBazarifyTheme();
+
   return (
-    <View className="flex-1 flex-col gap-y-6 p-2">
-      <View className="relative flex-row items-center gap-x-2 rounded-md border border-gray-300 px-2">
-        <View className="border border-white py-2">
-          <MaterialCommunityIcons
-            name="credit-card-outline"
-            color={Colors.light.tint}
-            size={20}
-          />
-        </View>
-        <View>
-          <TextInput
-            placeholder="Card number"
-            keyboardType="number-pad"
-            textContentType="creditCardNumber"
-          />
-        </View>
-      </View>
-      <View className="flex-row gap-x-4">
-        <TextInput
+    <Box flex={1} direction="column" gap="xl" padding="sm">
+      <Box
+        direction="row"
+        align="center"
+        gap="sm"
+        borderRadius="md"
+        paddingX="sm"
+        style={[styles.cardNumber, { borderColor: theme.colors.border }]}
+      >
+        <Icon size={24} color="primary">
+          {({ color, size }) => (
+            <MaterialCommunityIcons
+              name="credit-card-outline"
+              color={color}
+              size={size}
+            />
+          )}
+        </Icon>
+        <Input
+          containerStyle={styles.cardNumberInputContainer}
+          style={styles.cardNumberInput}
+          placeholder="Card number"
+          keyboardType="number-pad"
+          textContentType="creditCardNumber"
+        />
+      </Box>
+      <Box direction="row" gap="lg">
+        <Input
+          containerStyle={styles.expiryInputContainer}
+          style={styles.centeredInput}
           keyboardType="number-pad"
           placeholder="MM/YY"
           textContentType="creditCardExpiration"
-          className="w-24 rounded-md border border-gray-300 px-2 py-2 text-center"
         />
-        <TextInput
+        <Input
+          containerStyle={styles.cvvInputContainer}
+          style={styles.centeredInput}
           keyboardType="number-pad"
           keyboardAppearance="dark"
           placeholder="CVV"
           textContentType="creditCardSecurityCode"
-          className="w-20 rounded-md border border-gray-300 px-2 py-2 text-center"
         />
-      </View>
-      <View>
-        <TextInput
-          className="rounded-md border border-gray-300 p-3"
-          placeholder="Name on card"
-        />
-      </View>
-    </View>
+      </Box>
+      <Input
+        placeholder="Name on card"
+        containerStyle={styles.nameInputContainer}
+      />
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  cardNumber: { borderWidth: 1 },
+  cardNumberInputContainer: { flex: 1 },
+  cardNumberInput: {
+    borderWidth: 0,
+    minHeight: 0,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+  },
+  expiryInputContainer: { width: 96 },
+  cvvInputContainer: { width: 80 },
+  centeredInput: { textAlign: "center" },
+  nameInputContainer: { width: "100%" },
+});
 
 export default CardPaymentComponent;
