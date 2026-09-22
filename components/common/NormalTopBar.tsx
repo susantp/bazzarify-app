@@ -19,9 +19,7 @@ export default function NormalTopBar({
 }: NormalHeaderProps) {
   return (
     <SearchAppBar
-      actions={
-        <TopBarIcons className="w-full flex-row items-center justify-between" />
-      }
+      actions={<TopBarIcons testID="search-actions" />}
       canGoBack={canGoBack}
       onBackPress={() => (canGoBack ? router.back() : router.replace("/"))}
       onChangeText={onChangeText}

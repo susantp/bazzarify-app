@@ -1,12 +1,22 @@
-import { Image, Pressable, Text, TouchableOpacity, View } from "react-native";
-import { HeaderIconsProps, HeaderProps, SearchBoxProps } from "@/components";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from "react-native";
+import { HeaderProps, SearchBoxProps } from "@/components";
 import { router } from "expo-router";
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 import { Badge } from "react-native-paper";
-import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export const SearchBox = ({ className }: SearchBoxProps) => {
   const canGoBack = router.canGoBack();
@@ -60,30 +70,57 @@ export const SearchBox = ({ className }: SearchBoxProps) => {
   );
 };
 
-export const TopBarIcons = ({ className }: HeaderIconsProps) => {
+type TopBarIconsProps = {
+  className?: string;
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
+};
+
+export const TopBarIcons = ({ style, testID }: TopBarIconsProps) => {
   const cart = useAtomValue(cartAtom);
+  const theme = useBazarifyTheme();
+
   return (
-    <View className={className}>
-      <TouchableOpacity>
-        <Ionicons name="heart-outline" size={32} color="white" />
+    <Box
+      testID={testID}
+      direction="row"
+      align="center"
+      justify="space-between"
+      gap="sm"
+      style={[styles.topBarIcons, style]}
+    >
+      <TouchableOpacity accessibilityRole="button">
+        <Icon size={32} color="textInverted">
+          {({ color, size }) => (
+            <Ionicons name="heart-outline" size={size} color={color} />
+          )}
+        </Icon>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/cart")}>
-        <Ionicons name="cart-outline" size={32} color="white" />
+      <TouchableOpacity
+        accessibilityRole="button"
+        testID={testID ? `${testID}-cart` : undefined}
+        onPress={() => router.push("/cart")}
+      >
+        <Icon size={32} color="textInverted">
+          {({ color, size }) => (
+            <Ionicons name="cart-outline" size={size} color={color} />
+          )}
+        </Icon>
         {cart?.cart?.totals.items_count ? (
           <Badge
             style={{
               position: "absolute",
               top: -4,
               right: -4,
-              backgroundColor: "#fff",
-              color: Colors.light.tint,
+              backgroundColor: theme.colors.surface,
+              color: theme.colors.primary,
             }}
           >
             {cart?.cart?.totals.items_count}
           </Badge>
         ) : null}
       </TouchableOpacity>
-    </View>
+    </Box>
   );
 };
 
@@ -92,7 +129,12 @@ export default function TopBar({ className }: HeaderProps) {
     <View className={clsx("flex-row items-center bg-primary", className)}>
       {/* Give SearchBox the flex so it owns the horizontal space */}
       <SearchBox className="flex-1" />
-      <TopBarIcons className="w-3/12 flex-row items-center justify-between px-2 md:w-2/12 md:px-4" />
+      <TopBarIcons style={styles.homeActions} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  homeActions: { width: "25%" },
+  topBarIcons: { minHeight: 44 },
+});
