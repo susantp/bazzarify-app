@@ -1,36 +1,49 @@
-import { Text, View } from "react-native";
-import React from "react";
+import { Box, Icon, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet } from "react-native";
 
 const CODPaymentComponent = () => {
+  const theme = useBazarifyTheme();
+
   return (
-    <View className="flex-1">
-      <View className="h-4 bg-gray-200"></View>
-      <View className="flex-row gap-x-2 p-2">
-        <View className="w-1/12 items-end">
-          <Ionicons name="cash-outline" color="#3dafc8" size={20} />
-        </View>
-        <View className="w-10/12 flex-col gap-y-2">
-          <Text className="text-justify">
+    <Box flex={1}>
+      <Box
+        style={[styles.separator, { backgroundColor: theme.colors.border }]}
+      />
+      <Box direction="row" gap="sm" padding="sm">
+        <Icon size={24} color="primary">
+          {({ color, size }) => (
+            <Ionicons name="cash-outline" color={color} size={size} />
+          )}
+        </Icon>
+        <Box flex={1} gap="sm">
+          <Text variant="body" style={styles.justified}>
             - You may pay in cash to our courier upon receiving your parcel at
             the doorstep
           </Text>
-          <Text className="text-justify">
+          <Text variant="body" style={styles.justified}>
             - Before agreeing to receive the parcel, check if your delivery
             status has been updated to 'Out for Delivery'
           </Text>
-          <Text className="text-justify">
+          <Text variant="body" style={styles.justified}>
             - Before receiving, confirm that the airway bill shows that the
             parcel is from Bazzarify.
           </Text>
-          <Text className="text-justify">
+          <Text variant="body" style={styles.justified}>
             - Before you make payment to the courier, confirm your order number,
             sender information and tracking number on the parcel
           </Text>
-        </View>
-      </View>
-    </View>
+        </Box>
+      </Box>
+    </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  separator: { height: 16 },
+  justified: { textAlign: "justify" },
+});
 
 export default CODPaymentComponent;
