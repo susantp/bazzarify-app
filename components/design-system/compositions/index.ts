@@ -6,3 +6,5 @@ export { AppBar } from "./app-bar";
 export type { AppBarProps } from "./app-bar";
 export { SearchAppBar } from "./search-app-bar";
 export type { SearchAppBarProps } from "./search-app-bar";
+export { SearchLauncher } from "./search-launcher";
+export type { SearchLauncherProps } from "./search-launcher";

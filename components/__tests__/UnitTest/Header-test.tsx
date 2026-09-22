@@ -1,6 +1,7 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import { router } from "expo-router";
 import TopBar from "@/components/home/TopBar";
+import { BazarifyThemeProvider } from "@/components/design-system/theme";
 
 jest.mock("expo-router", () => ({
   router: {
@@ -12,13 +13,21 @@ jest.mock("expo-router", () => ({
 }));
 
 it("renders the search control", async () => {
-  const { getByRole } = await render(<TopBar className="" />);
+  const { getByRole } = await render(
+    <BazarifyThemeProvider>
+      <TopBar className="" />
+    </BazarifyThemeProvider>,
+  );
 
   expect(getByRole("button", { name: "Search" })).toBeTruthy();
 });
 
 it("opens search when the search control is pressed", async () => {
-  const { getByRole } = await render(<TopBar className="" />);
+  const { getByRole } = await render(
+    <BazarifyThemeProvider>
+      <TopBar className="" />
+    </BazarifyThemeProvider>,
+  );
 
   fireEvent.press(getByRole("button", { name: "Search" }));
 

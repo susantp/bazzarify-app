@@ -1,24 +1,25 @@
 import {
-  Image,
-  Pressable,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   type StyleProp,
   type ViewStyle,
 } from "react-native";
-import { HeaderProps, SearchBoxProps } from "@/components";
+import { HeaderProps } from "@/components";
 import { router } from "expo-router";
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 import { Badge } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { Box, Icon } from "@/components/design-system";
+import { Box, Icon, SearchLauncher } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 
-export const SearchBox = ({ className }: SearchBoxProps) => {
+type SearchBoxProps = {
+  style?: StyleProp<ViewStyle>;
+};
+
+export const SearchBox = ({ style }: SearchBoxProps) => {
   const canGoBack = router.canGoBack();
 
   const goSearch = () => router.push("/search");
@@ -31,42 +32,12 @@ export const SearchBox = ({ className }: SearchBoxProps) => {
     }
   };
   return (
-    <View className={clsx("relative", className)}>
-      {/* Make the entire pill tappable */}
-      <Pressable
-        onPress={goSearch}
-        accessibilityRole="button"
-        accessibilityLabel="Search"
-        hitSlop={6}
-        style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
-        className="h-12 w-full flex-row items-center rounded-full bg-white px-4"
-      >
-        {/* Reserve space so text doesn't jump when back appears */}
-        <View className="flex-1 flex-row items-center pl-8">
-          <Text className="mr-2 text-lg">Search on</Text>
-          <Image source={require("@/assets/images/iconSmall.png")} />
-        </View>
-      </Pressable>
-
-      {/* Independent back button layered above the pill */}
-      {canGoBack && (
-        <View
-          pointerEvents="box-none"
-          className="absolute left-0 top-0 h-12 w-12"
-        >
-          <Pressable
-            onPress={goBack}
-            accessibilityRole="button"
-            accessibilityLabel="Go back"
-            hitSlop={12}
-            className="h-full w-full items-center justify-center"
-            style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
-          >
-            <Ionicons name="arrow-back" size={20} color="black" />
-          </Pressable>
-        </View>
-      )}
-    </View>
+    <SearchLauncher
+      canGoBack={canGoBack}
+      onBackPress={goBack}
+      onSearchPress={goSearch}
+      style={style}
+    />
   );
 };
 
@@ -128,7 +99,7 @@ export default function TopBar({ className }: HeaderProps) {
   return (
     <View className={clsx("flex-row items-center bg-primary", className)}>
       {/* Give SearchBox the flex so it owns the horizontal space */}
-      <SearchBox className="flex-1" />
+      <SearchBox style={styles.searchBox} />
       <TopBarIcons style={styles.homeActions} />
     </View>
   );
@@ -136,5 +107,6 @@ export default function TopBar({ className }: HeaderProps) {
 
 const styles = StyleSheet.create({
   homeActions: { width: "25%" },
+  searchBox: { flex: 1 },
   topBarIcons: { minHeight: 44 },
 });
