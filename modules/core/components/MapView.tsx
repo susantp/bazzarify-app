@@ -58,7 +58,7 @@ export const MapView = ({
       : null;
 
   return (
-    <SafeAreaWrapper className="relative flex flex-1 flex-col">
+    <SafeAreaWrapper style={{ flex: 1 }}>
       {GoogleMapsView ? (
         <GoogleMapsView
           style={{ height: "100%" }}

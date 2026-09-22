@@ -14,7 +14,7 @@ export default function Page() {
     setSelectedDiscount(discount);
   const discountList = ["All", "10%", "20%", "30%", "40%", "50%"];
   return (
-    <SafeAreaWrapper className="bg-white">
+    <SafeAreaWrapper>
       <ScreenHeader
         title="Flash Deal"
         iconColor={Colors.light.tint}
