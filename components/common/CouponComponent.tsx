@@ -1,44 +1,87 @@
-import { Text, View } from "react-native";
 import React from "react";
-import cn from "@/utils/tailwindHelper";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
+import type { StyleProp, ViewStyle } from "react-native";
 
 interface ShippingCouponProps {
-  className?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
-const ShippingCoupon = ({ className }: ShippingCouponProps) => {
+const ShippingCoupon = ({ style }: ShippingCouponProps) => {
+  const theme = useBazarifyTheme();
+
   return (
-    <View className={cn("h-32", "flex-row", "py-3", className)}>
-      <View className="h-full flex-col items-center justify-center gap-y-1 rounded-lg border border-gray-200 bg-green-50 px-4 py-1">
-        <Text className="text-xl font-bold text-green-600">Rs. 130</Text>
-        <Text className="text-[0.7rem] font-light text-green-600">
+    <Box direction="row" paddingY="sm" style={[styles.container, style]}>
+      <Box
+        align="center"
+        justify="center"
+        gap="xs"
+        borderRadius="md"
+        paddingX="lg"
+        paddingY="xs"
+        backgroundColor="primarySurface"
+        style={[styles.amount, { borderColor: theme.colors.border }]}
+      >
+        <Text variant="title" color="success">
+          Rs. 130
+        </Text>
+        <Text variant="bodyCompact" color="success">
           Min. Spend Rs. 799
         </Text>
-      </View>
-      <View className="h-full flex-col justify-center gap-y-1 rounded-lg border border-gray-200 bg-green-50 px-4 py-2">
-        <View className="flex-row items-center gap-x-2">
-          <Text className="text-xl font-bold text-green-600">
+      </Box>
+      <Box
+        direction="column"
+        justify="center"
+        gap="xs"
+        borderRadius="md"
+        paddingX="lg"
+        paddingY="sm"
+        backgroundColor="primarySurface"
+        style={[styles.details, { borderColor: theme.colors.border }]}
+      >
+        <Box direction="row" align="center" gap="sm">
+          <Text variant="title" color="success">
             Free Shipping
           </Text>
-          <View className="rounded-full bg-green-200 px-2 py-1">
-            <Text className="text-[0.67rem] text-green-600">T&C</Text>
-          </View>
-        </View>
-        <Text className="text-[0.7rem] font-light text-green-600">
+          <Box
+            borderRadius="pill"
+            paddingX="sm"
+            paddingY="xs"
+            style={{ backgroundColor: theme.colors.primarySurface }}
+          >
+            <Text variant="bodyCompact" color="success">
+              T&C
+            </Text>
+          </Box>
+        </Box>
+        <Text variant="bodyCompact" color="success">
           Selected sellers
         </Text>
-        <Text className="text-[0.7rem] font-light text-green-600">
+        <Text variant="bodyCompact" color="success">
           Expires in
         </Text>
-        <View className="flex-row items-center justify-between gap-x-2">
-          <Text className="text-[0.6rem]">08:15:08</Text>
-          <View className="rounded-xl bg-red-500 px-3 py-1">
-            <Text className="text-[0.67rem] text-white">Collect</Text>
-          </View>
-        </View>
-      </View>
-    </View>
+        <Box direction="row" align="center" justify="space-between" gap="sm">
+          <Text variant="bodyCompact">08:15:08</Text>
+          <Box
+            borderRadius="md"
+            paddingX="md"
+            paddingY="xs"
+            backgroundColor="danger"
+          >
+            <Text variant="bodyCompact" color="textInverted">
+              Collect
+            </Text>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
+};
+
+const styles = {
+  container: { height: 128 },
+  amount: { borderWidth: 1, height: "100%" as const },
+  details: { borderWidth: 1, flex: 1, height: "100%" as const },
 };
 
 export default ShippingCoupon;
