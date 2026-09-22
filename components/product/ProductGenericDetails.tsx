@@ -1,9 +1,9 @@
-import { Text, View } from "react-native";
-import { Colors } from "@/constants/Colors";
 import React, { ReactNode } from "react";
 import Svg, { Path } from "react-native-svg";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import { Ionicons } from "@expo/vector-icons";
+import { Box, Icon, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export const DiscountBannerIcon = () => (
   <Svg width="51" height="32" viewBox="0 0 51 32" fill="none">
@@ -23,44 +23,53 @@ const ProductGenericDetails = ({
 }: {
   item: TProductWithVariantAndImage;
   children: ReactNode;
-}) => (
-  <View className="px-4">
-    <View id="product-title" className="py-2">
-      <Text className="text-2xl">{item.name}</Text>
-    </View>
+}) => {
+  const theme = useBazarifyTheme();
 
-    <View id="rating-info" className="flex-row justify-between">
-      <View id="reviews" className="flex-row gap-x-1">
-        <Ionicons name="star" size={20} color={Colors["light"].tint} />
-        <Ionicons name="star" size={20} color={Colors["light"].tint} />
-        <Ionicons name="star" size={20} color={Colors["light"].tint} />
-        <Ionicons name="star" size={20} color={Colors["light"].tint} />
-        <Ionicons name="star-outline" size={20} color={Colors["light"].tint} />
-        <Text>512</Text>
-      </View>
+  return (
+    <Box paddingX="lg">
+      <Box id="product-title" paddingY="sm">
+        <Text variant="heading">{item.name}</Text>
+      </Box>
 
-      <View
-        id="authenticity"
-        className="flex-row items-center justify-items-center gap-x-2"
+      <Box id="rating-info" direction="row" justify="space-between">
+        <Box id="reviews" direction="row" align="center" gap="xs">
+          {(["star", "star", "star", "star", "star-outline"] as const).map(
+            (name, index) => (
+              <Icon key={`${name}-${index}`} size={20} color="primary">
+                {({ color, size }) => (
+                  <Ionicons name={name} size={size} color={color} />
+                )}
+              </Icon>
+            ),
+          )}
+          <Text>512</Text>
+        </Box>
+
+        <Box id="authenticity" direction="row" align="center" gap="sm">
+          <Text variant="bodyMedium" color="primary">
+            100% Authentic
+          </Text>
+          <Icon size={23} color="primary">
+            {({ color, size }) => (
+              <Ionicons name="shield-checkmark" color={color} size={size} />
+            )}
+          </Icon>
+        </Box>
+      </Box>
+
+      <Box
+        id="price-info"
+        gap="sm"
+        borderRadius="xl"
+        paddingX="md"
+        paddingY="sm"
+        style={{ borderColor: theme.colors.borderStrong, borderWidth: 1 }}
       >
-        <Text className="text-md font-semibold text-orange-900">
-          100% Authentic
-        </Text>
-        <Ionicons
-          name="shield-checkmark"
-          color={Colors["light"].tint}
-          size={23}
-        />
-      </View>
-    </View>
-
-    <View
-      id="price-info"
-      className="flex-col gap-y-2 rounded-xl border border-gray-400 px-3 py-2"
-    >
-      {children}
-    </View>
-  </View>
-);
+        {children}
+      </Box>
+    </Box>
+  );
+};
 
 export default ProductGenericDetails;
