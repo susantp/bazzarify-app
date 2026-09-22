@@ -1,10 +1,10 @@
-import { Pressable, TouchableOpacity, View } from "react-native";
+import { Pressable } from "react-native";
 import React, { useState } from "react";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import constructProductImagesUrl from "@/modules/product/utils/constructImageUrl";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
-import { Colors } from "@/constants/Colors";
 import ImageSlider from "@/components/common/ImageSlider";
+import { Box, Icon } from "@/components/design-system";
 
 export interface IProductSliderProps {
   item: TProductWithVariantAndImage;
@@ -22,35 +22,60 @@ const ProductSlider = ({ item }: IProductSliderProps) => {
       },
     ];
   return (
-    <View className="relative overflow-visible">
-      <View
-        id="product-slider"
-        className="flex items-center justify-items-center"
-      >
+    <Box style={{ position: "relative", overflow: "visible" }}>
+      <Box id="product-slider" align="center">
         <ImageSlider type="product" images={images} autoplayInterval={5000} />
-      </View>
+      </Box>
 
-      <View
+      <Box
         id="actions"
-        className="w-full flex-row justify-between rounded-lg px-4 py-2 opacity-90"
-        style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+        direction="row"
+        justify="space-between"
+        paddingX="lg"
+        paddingY="sm"
+        style={{
+          bottom: 0,
+          left: 0,
+          opacity: 0.9,
+          position: "absolute",
+          right: 0,
+        }}
       >
         <Pressable
-          className="rounded-full p-2 shadow-sm"
+          accessibilityLabel={
+            isFav ? "Remove from favorites" : "Add to favorites"
+          }
+          accessibilityRole="button"
+          testID="product-favorite"
           onPress={() => setIsFav(!isFav)}
         >
-          <Entypo
-            color={Colors.light.tint}
-            name={isFav ? `heart` : `heart-outlined`}
-            size={40}
-          />
+          <Box backgroundColor="surface" borderRadius="pill" padding="sm">
+            <Icon size={40} color="primary">
+              {({ color, size }) => (
+                <Entypo
+                  color={color}
+                  name={isFav ? "heart" : "heart-outlined"}
+                  size={size}
+                />
+              )}
+            </Icon>
+          </Box>
         </Pressable>
 
-        <TouchableOpacity className="rounded-full p-2 shadow-sm">
-          <AntDesign name="share-alt" size={40} color={Colors.light.tint} />
-        </TouchableOpacity>
-      </View>
-    </View>
+        <Pressable
+          accessibilityLabel="Share product"
+          accessibilityRole="button"
+        >
+          <Box backgroundColor="surface" borderRadius="pill" padding="sm">
+            <Icon size={40} color="primary">
+              {({ color, size }) => (
+                <AntDesign name="share-alt" size={size} color={color} />
+              )}
+            </Icon>
+          </Box>
+        </Pressable>
+      </Box>
+    </Box>
   );
 };
 
