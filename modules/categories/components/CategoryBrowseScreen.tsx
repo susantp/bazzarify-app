@@ -1,16 +1,15 @@
 import React from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import categoryService from "@/modules/product/services/categoryService";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
-import { ThemedText } from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
 import ChildCategoryHorizontal from "@/modules/categories/components/ChildCategoryHorizontal";
 import SingleProductCard from "@/modules/product/components/SingleProductCard";
 import { TCategoryWithImage } from "@/modules/product/schemas/CategorySchema";
+import { Box, Text } from "@/components/design-system";
 
 type CategoryBrowseRouteLevel = "child" | "subchild" | "grandchild";
 
@@ -87,16 +86,21 @@ export default function CategoryBrowseScreen({
           numColumns={2}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
-            <View className="gap-y-4 bg-white px-4 pb-4 pt-2">
+            <Box
+              backgroundColor="surface"
+              gap="lg"
+              paddingX="lg"
+              style={styles.header}
+            >
               {childCategories.length > 0 ? (
-                <View className="gap-y-3">
-                  <ThemedText type="subtitle">Refine by category</ThemedText>
+                <Box gap="md">
+                  <Text variant="bodyMedium">Refine by category</Text>
                   <FlatList
                     horizontal
                     data={childCategories}
                     keyExtractor={(item) => item.uuid}
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingRight: 12 }}
+                    contentContainerStyle={styles.categoryList}
                     renderItem={({ item }) => {
                       const normalizedItem = {
                         ...item,
@@ -109,7 +113,7 @@ export default function CategoryBrowseScreen({
                       );
 
                       return (
-                        <View style={{ marginRight: 12 }}>
+                        <Box style={styles.categoryItem}>
                           <ChildCategoryHorizontal
                             item={normalizedItem}
                             onPress={() => {
@@ -118,39 +122,38 @@ export default function CategoryBrowseScreen({
                               }
                             }}
                           />
-                        </View>
+                        </Box>
                       );
                     }}
                   />
-                </View>
+                </Box>
               ) : null}
 
-              <View className="flex-row items-center justify-between">
-                <ThemedText type="subtitle">Products</ThemedText>
+              <Box direction="row" align="center" justify="space-between">
+                <Text variant="bodyMedium">Products</Text>
                 {browse?.products?.next_page_url ? (
-                  <ThemedText
-                    darkColor={Colors.light.tint}
-                    type="defaultSemiBold"
-                  >
+                  <Text variant="label" color="primary">
                     Showing first page
-                  </ThemedText>
+                  </Text>
                 ) : null}
-              </View>
-            </View>
+              </Box>
+            </Box>
           }
           ListEmptyComponent={
-            <View className="px-4 py-8">
-              <ThemedText
-                type="title"
-                darkColor={Colors.light.tint}
-                lightColor={Colors.light.tint}
-              >
+            <Box paddingX="lg" paddingY="xxl">
+              <Text variant="title" color="primary">
                 No products on record.
-              </ThemedText>
-            </View>
+              </Text>
+            </Box>
           }
         />
       )}
     </SafeAreaWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  categoryItem: { marginRight: 12 },
+  categoryList: { paddingRight: 12 },
+  header: { paddingBottom: 16, paddingTop: 8 },
+});
