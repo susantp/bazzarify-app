@@ -1,11 +1,17 @@
-import { FlatList, Image, Switch, Text, View } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { FlatList, StyleSheet, Switch } from "react-native";
 import { useAtom } from "jotai";
 import { languageAtom } from "@/atoms/languageAtom";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import {
+  Box,
+  Image as DesignImage,
+  Text,
+  useBazarifyTheme,
+} from "@/components/design-system";
+import { PageContent } from "@/components/design-system/compositions";
 
 const LanguageSettingScreen = () => {
   const [languages, setLanguages] = useAtom(languageAtom);
+  const theme = useBazarifyTheme();
 
   const handleSwitchChange = (id: string, value: boolean) => {
     setLanguages((prevLanguages) =>
@@ -19,31 +25,66 @@ const LanguageSettingScreen = () => {
 
   return (
     languages.length > 0 && (
-      <ContentWrapper className="bg-white">
+      <PageContent backgroundColor="background">
         <FlatList
           data={languages}
-          renderItem={({ item }) => (
-            <View className="flex-row items-center justify-items-center border-b border-gray-400 px-2 py-2">
-              <View className="w-2/12 items-start">
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <Box
+              direction="row"
+              align="center"
+              style={[
+                styles.row,
+                index < languages.length - 1
+                  ? {
+                      borderBottomColor: theme.colors.borderStrong,
+                      borderBottomWidth: StyleSheet.hairlineWidth,
+                    }
+                  : null,
+              ]}
+            >
+              <Box style={styles.switchColumn}>
                 <Switch
                   value={item.default}
-                  thumbColor={item.default ? "white" : "gray"}
-                  trackColor={{ true: Colors.light.tint }}
+                  thumbColor={
+                    item.default
+                      ? theme.colors.textInverted
+                      : theme.colors.textMuted
+                  }
+                  trackColor={{ true: theme.colors.primary }}
                   onValueChange={(value) => handleSwitchChange(item.id, value)}
                 />
-              </View>
-              <View className="w-8/12 flex-col gap-y-2">
-                <Text className="text-md font-semibold">{item.label}</Text>
-              </View>
-              <View className="w-2/12 items-end">
-                <Image source={item.imgSource} />
-              </View>
-            </View>
+              </Box>
+              <Box style={styles.labelColumn}>
+                <Text variant="bodyMedium">{item.label}</Text>
+              </Box>
+              <Box align="flex-end" style={styles.flagColumn}>
+                <DesignImage source={item.imgSource} size={32} radius="sm" />
+              </Box>
+            </Box>
           )}
         />
-      </ContentWrapper>
+      </PageContent>
     )
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  switchColumn: {
+    alignItems: "flex-start",
+    width: "16.666667%",
+  },
+  labelColumn: {
+    gap: 8,
+    width: "66.666667%",
+  },
+  flagColumn: {
+    width: "16.666667%",
+  },
+});
 
 export default LanguageSettingScreen;
