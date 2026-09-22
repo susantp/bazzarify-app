@@ -9,12 +9,13 @@ import cn from "@/utils/tailwindHelper";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import React from "react";
 
-interface MessageBannerProps {
+export interface MessageBannerProps {
   time: string;
   title: string;
   detail: string;
   imgUrl: ImageSourcePropType;
   type: "promo" | "activity";
+  testID?: string;
 }
 
 const MessageBanner = ({
@@ -23,12 +24,14 @@ const MessageBanner = ({
   time,
   imgUrl,
   type,
+  testID,
 }: MessageBannerProps) => {
   const { height } = Dimensions.get("window");
   return (
     <View
       className="flex-col gap-y-2 rounded-lg border border-slate-300 bg-white p-2"
       id="banner"
+      testID={testID}
     >
       <View className="flex-row items-center justify-items-center gap-x-2">
         <View
