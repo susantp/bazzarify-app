@@ -1,11 +1,12 @@
 import { router } from "expo-router";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
 import PolygonFreeDelivery from "@/modules/product/components/PolygonFreeDelivery";
 import { getProductInventorySummary } from "@/modules/product/utils/getProductInventorySummary";
-import { Colors } from "@/constants/Colors";
+import { Box, Image, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export type ProductCardProps = {
   item: TOmittedProductWithImages | null;
@@ -19,98 +20,104 @@ function getCardWidth(cols: ProductCardProps["cols"]) {
 const ProductCard = ({ item, cols }: ProductCardProps) => {
   if (!item) return null;
   const inventory = getProductInventorySummary(item);
-  const inventoryTone =
-    inventory.canPurchase === false
-      ? styles.inventoryDanger
-      : styles.inventoryInfo;
+  const theme = useBazarifyTheme();
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
+    <Pressable
+      accessibilityLabel={item.name}
+      accessibilityRole="button"
       onPress={() =>
         router.push({
           pathname: "/products/[uuid]",
           params: { uuid: item.uuid },
         })
       }
-      style={[styles.cardSlot, { width: getCardWidth(cols) }]}
+      style={({ pressed }) => [
+        styles.cardSlot,
+        { width: getCardWidth(cols) },
+        pressed && styles.pressed,
+      ]}
     >
-      <View
-        className="overflow-hidden rounded-2xl border border-gray-200 bg-white"
-        style={{ opacity: inventory.canPurchase === false ? 0.7 : 1 }}
+      <Box
+        backgroundColor="surface"
+        borderRadius="xl"
+        style={[
+          styles.card,
+          {
+            borderColor: theme.colors.border,
+            opacity: inventory.canPurchase === false ? 0.7 : 1,
+          },
+        ]}
       >
-        <View className="bg-slate-50 p-3">
-          <View
+        <Box backgroundColor="surfaceMuted" padding="md">
+          <Box
             id="image-container"
-            className="items-center justify-center overflow-hidden rounded-2xl bg-white"
-            style={styles.imageFrame}
+            backgroundColor="surface"
+            borderRadius="xl"
+            align="center"
+            justify="center"
+            style={[styles.imageFrame, styles.overflowHidden]}
           >
             <Image
               source={getFirstImageSource({
                 images: item.images,
                 baseUrl: item.image_base_url,
               })}
-              resizeMode="cover"
               style={styles.image}
             />
-          </View>
+          </Box>
           {"freeDelivery" in item && <PolygonFreeDelivery />}
-        </View>
+        </Box>
 
-        <View id="content" className="gap-y-2 px-3 pb-3 pt-1">
-          <View style={styles.nameBlock}>
-            <Text numberOfLines={2} className="text-sm font-medium text-slate-900">
+        <Box id="content" gap="sm" paddingX="md" style={styles.content}>
+          <Box style={styles.nameBlock}>
+            <Text variant="bodyCompactMedium" numberOfLines={2}>
               {item.name}
             </Text>
-          </View>
-          <View className="flex-row items-end">
+          </Box>
+          <Box direction="row" align="flex-end">
             {"base_price" in item && (
-              <View>
-                <Text className="text-xl font-semibold text-primary">
+              <Box>
+                <Text variant="title" color="primary">
                   Rs {item?.base_price}
                 </Text>
-              </View>
+              </Box>
             )}
-          </View>
+          </Box>
           {inventory.message ? (
             <Text
-              className="self-start rounded-full px-2.5 py-1 text-xs font-medium"
-              style={inventoryTone}
+              variant="bodyCompactMedium"
+              color="primary"
+              style={[
+                styles.inventory,
+                {
+                  backgroundColor:
+                    inventory.canPurchase === false
+                      ? theme.colors.danger
+                      : theme.colors.primarySurface,
+                  color:
+                    inventory.canPurchase === false
+                      ? theme.colors.textInverted
+                      : theme.colors.primary,
+                },
+              ]}
             >
               {inventory.message}
             </Text>
           ) : null}
-          {/*<View className="flex-row px-1">*/}
-          {/*  {"rating" in item && (*/}
-          {/*    <View className="w-5/12 flex-row items-center gap-x-1">*/}
-          {/*      <AntDesign name="star" size={16} color={`#f47d58`} />*/}
-          {/*      <Text className="text-md text-primary">{item?.rating}</Text>*/}
-          {/*    </View>*/}
-          {/*  )}*/}
-          {/*  {"location" in item && (*/}
-          {/*    <View className="w-7/12 flex-row items-center justify-center gap-x-1">*/}
-          {/*      <FontAwesome name="map-marker" size={16} color={`#f47d58`} />*/}
-          {/*      <Text*/}
-          {/*        className="text-md text-slate-600"*/}
-          {/*        numberOfLines={1}*/}
-          {/*        ellipsizeMode="tail"*/}
-          {/*      >*/}
-          {/*        {item?.location}*/}
-          {/*      </Text>*/}
-          {/*    </View>*/}
-          {/*  )}*/}
-          {/*</View>*/}
-        </View>
-      </View>
-    </TouchableOpacity>
+        </Box>
+      </Box>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
+  card: { borderWidth: StyleSheet.hairlineWidth, overflow: "hidden" },
   cardSlot: {
     paddingHorizontal: 6,
     paddingVertical: 8,
   },
+  content: { paddingBottom: 12, paddingTop: 4 },
   imageFrame: {
     aspectRatio: 1,
     width: "100%",
@@ -119,17 +126,17 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+  inventory: {
+    alignSelf: "flex-start",
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
   nameBlock: {
     minHeight: 40,
   },
-  inventoryInfo: {
-    backgroundColor: "#FFF1EB",
-    color: Colors.light.tint,
-  },
-  inventoryDanger: {
-    backgroundColor: "#FEE2E2",
-    color: "#B91C1C",
-  },
+  overflowHidden: { overflow: "hidden" },
+  pressed: { opacity: 0.9 },
 });
 
 export default React.memo(ProductCard);
