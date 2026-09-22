@@ -1,7 +1,6 @@
-import { formatDistance } from "date-fns";
-import { View } from "react-native";
-import StyledText from "@/components/common/StyledText";
 import React from "react";
+import { formatDistance } from "date-fns";
+import { Box, Text } from "@/components/design-system";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 
 type SpecialSale = {
@@ -18,36 +17,48 @@ type SpecialSaleProduct = TProductWithVariantAndImage & {
 
 const SpecialSaleBanner = ({ item }: { item: SpecialSaleProduct }) => {
   if (!item.specialSale) return null;
+
   const sale = item.specialSale;
   const price = item.price ?? item.base_price;
   const timeDistance = formatDistance(new Date(sale.endDate), new Date());
+  const discountedPrice =
+    sale.discountType === "flat"
+      ? price - sale.discount
+      : price - price * (sale.discount / 100);
+
   return (
-    <View className="w-screen flex-row bg-primary p-2">
-      <View className="w-6/12 flex-col gap-y-1">
-        <StyledText className="text-sm text-white">{sale.name}</StyledText>
-        <StyledText className="text-2xl font-bold text-white">
-          {sale.discountType === "flat" && price - sale.discount}
-          {sale.discountType === "percent" &&
-            `Rs. ${(price - price * (sale.discount / 100)).toFixed()}`}
-        </StyledText>
-        <View className="flex-row gap-x-2">
-          <StyledText className="text-white line-through">
+    <Box direction="row" backgroundColor="primary" padding="sm">
+      <Box gap="xs" style={{ width: "50%" }}>
+        <Text color="textInverted" variant="bodyCompact">
+          {sale.name}
+        </Text>
+        <Text color="textInverted" variant="heading">
+          {sale.discountType === "flat"
+            ? discountedPrice
+            : `Rs. ${discountedPrice.toFixed()}`}
+        </Text>
+        <Box direction="row" gap="sm">
+          <Text
+            color="textInverted"
+            style={{ textDecorationLine: "line-through" }}
+          >
             Rs. {price}
-          </StyledText>
-          <StyledText className="font-bold text-white">
+          </Text>
+          <Text color="textInverted" variant="bodyMedium">
             -
             {sale.discountType === "flat"
               ? `Rs. ${sale.discount}`
               : `${sale.discount}%`}
-          </StyledText>
-        </View>
-      </View>
-      <View className="w-6/12 flex-row items-end justify-end">
-        <StyledText className="text-lg font-semibold text-white">
+          </Text>
+        </Box>
+      </Box>
+      <Box align="flex-end" justify="flex-end" style={{ width: "50%" }}>
+        <Text color="textInverted" variant="title" align="right">
           Ends in {timeDistance}
-        </StyledText>
-      </View>
-    </View>
+        </Text>
+      </Box>
+    </Box>
   );
 };
+
 export default SpecialSaleBanner;
