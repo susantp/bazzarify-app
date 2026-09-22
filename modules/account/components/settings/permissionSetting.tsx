@@ -1,14 +1,15 @@
-import { FlatList, Switch, Text, View } from "react-native";
+import { FlatList, StyleSheet, Switch } from "react-native";
 import { useState } from "react";
 import {
   permissionSetting,
   PermissionType,
 } from "@/modules/account/data/settings/permissions";
-import { Colors } from "@/constants/Colors";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Box, Text, useBazarifyTheme } from "@/components/design-system";
+import { PageContent } from "@/components/design-system/compositions";
 
 const PermissionSettingScreen = () => {
   const [permissions, setPermissions] = useState(permissionSetting);
+  const theme = useBazarifyTheme();
   const handleSwitchChange = (id: string, value: boolean) => {
     setPermissions((prevPermissions: PermissionType[]) =>
       prevPermissions.map((permission: PermissionType) =>
@@ -18,32 +19,63 @@ const PermissionSettingScreen = () => {
   };
   return (
     permissions.length > 0 && (
-      <ContentWrapper className="bg-white">
+      <PageContent backgroundColor="background">
         <FlatList
           data={permissions}
-          renderItem={({ item }) => {
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => {
             return (
-              <View className="flex-row items-center justify-between border-b border-gray-400 px-2 py-6">
-                <View className="w-10/12">
-                  <Text className="text-md font-semibold">{item.label}</Text>
-                </View>
-                <View className="w-2/12 items-end">
+              <Box
+                direction="row"
+                align="center"
+                justify="space-between"
+                style={[
+                  styles.row,
+                  index < permissions.length - 1
+                    ? {
+                        borderBottomColor: theme.colors.borderStrong,
+                        borderBottomWidth: StyleSheet.hairlineWidth,
+                      }
+                    : null,
+                ]}
+              >
+                <Box style={styles.labelColumn}>
+                  <Text variant="bodyMedium">{item.label}</Text>
+                </Box>
+                <Box align="flex-end" style={styles.switchColumn}>
                   <Switch
                     value={item.active}
-                    thumbColor={item.active ? "white" : "gray"}
-                    trackColor={{ true: Colors.light.tint }}
+                    thumbColor={
+                      item.active
+                        ? theme.colors.textInverted
+                        : theme.colors.textMuted
+                    }
+                    trackColor={{ true: theme.colors.primary }}
                     onValueChange={(value) =>
                       handleSwitchChange(item.id, value)
                     }
                   />
-                </View>
-              </View>
+                </Box>
+              </Box>
             );
           }}
         />
-      </ContentWrapper>
+      </PageContent>
     )
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    paddingHorizontal: 8,
+    paddingVertical: 24,
+  },
+  labelColumn: {
+    width: "83.333333%",
+  },
+  switchColumn: {
+    width: "16.666667%",
+  },
+});
 
 export default PermissionSettingScreen;
