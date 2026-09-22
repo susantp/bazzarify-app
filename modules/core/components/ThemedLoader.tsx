@@ -1,9 +1,4 @@
-import { ActivityIndicator, View } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { Loader } from "@/components/design-system";
 
-const ThemedLoader = () => (
-  <View className="flex h-screen items-center justify-center bg-white">
-    <ActivityIndicator color={Colors.light.tint} size="large" />
-  </View>
-);
+const ThemedLoader = () => <Loader size="large" />;
 export default ThemedLoader;
