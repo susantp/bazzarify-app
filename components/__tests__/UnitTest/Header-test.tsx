@@ -15,7 +15,7 @@ jest.mock("expo-router", () => ({
 it("renders the search control", async () => {
   const { getByRole } = await render(
     <BazarifyThemeProvider>
-      <TopBar className="" />
+      <TopBar />
     </BazarifyThemeProvider>,
   );
 
@@ -25,7 +25,7 @@ it("renders the search control", async () => {
 it("opens search when the search control is pressed", async () => {
   const { getByRole } = await render(
     <BazarifyThemeProvider>
-      <TopBar className="" />
+      <TopBar />
     </BazarifyThemeProvider>,
   );
 

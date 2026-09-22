@@ -17,6 +17,8 @@ describe("TopBarIcons", () => {
     );
 
     expect(await screen.findByTestId("actions")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Favorites" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Cart" })).toBeTruthy();
     fireEvent.press(screen.getByTestId("actions-cart"));
     expect(router.push).toHaveBeenCalledWith("/cart");
   });

@@ -1,13 +1,10 @@
 import {
+  Pressable,
   StyleSheet,
-  TouchableOpacity,
-  View,
   type StyleProp,
   type ViewStyle,
 } from "react-native";
-import { HeaderProps } from "@/components";
 import { router } from "expo-router";
-import clsx from "clsx";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 import { Badge } from "react-native-paper";
@@ -42,7 +39,6 @@ export const SearchBox = ({ style }: SearchBoxProps) => {
 };
 
 type TopBarIconsProps = {
-  className?: string;
   style?: StyleProp<ViewStyle>;
   testID?: string;
 };
@@ -60,16 +56,22 @@ export const TopBarIcons = ({ style, testID }: TopBarIconsProps) => {
       gap="sm"
       style={[styles.topBarIcons, style]}
     >
-      <TouchableOpacity accessibilityRole="button">
+      <Pressable
+        accessibilityLabel="Favorites"
+        accessibilityRole="button"
+        hitSlop={8}
+      >
         <Icon size={32} color="textInverted">
           {({ color, size }) => (
             <Ionicons name="heart-outline" size={size} color={color} />
           )}
         </Icon>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </Pressable>
+      <Pressable
+        accessibilityLabel="Cart"
         accessibilityRole="button"
         testID={testID ? `${testID}-cart` : undefined}
+        hitSlop={8}
         onPress={() => router.push("/cart")}
       >
         <Icon size={32} color="textInverted">
@@ -79,33 +81,49 @@ export const TopBarIcons = ({ style, testID }: TopBarIconsProps) => {
         </Icon>
         {cart?.cart?.totals.items_count ? (
           <Badge
-            style={{
-              position: "absolute",
-              top: -4,
-              right: -4,
-              backgroundColor: theme.colors.surface,
-              color: theme.colors.primary,
-            }}
+            style={[
+              styles.cartBadge,
+              {
+                backgroundColor: theme.colors.surface,
+                color: theme.colors.primary,
+              },
+            ]}
           >
             {cart?.cart?.totals.items_count}
           </Badge>
         ) : null}
-      </TouchableOpacity>
+      </Pressable>
     </Box>
   );
 };
 
-export default function TopBar({ className }: HeaderProps) {
+type TopBarProps = {
+  style?: StyleProp<ViewStyle>;
+};
+
+export default function TopBar({ style }: TopBarProps) {
   return (
-    <View className={clsx("flex-row items-center bg-primary", className)}>
+    <Box
+      direction="row"
+      align="center"
+      backgroundColor="primary"
+      paddingX="sm"
+      paddingY="xl"
+      style={style}
+    >
       {/* Give SearchBox the flex so it owns the horizontal space */}
       <SearchBox style={styles.searchBox} />
       <TopBarIcons style={styles.homeActions} />
-    </View>
+    </Box>
   );
 }
 
 const styles = StyleSheet.create({
+  cartBadge: {
+    position: "absolute",
+    right: -4,
+    top: -4,
+  },
   homeActions: { width: "25%" },
   searchBox: { flex: 1 },
   topBarIcons: { minHeight: 44 },

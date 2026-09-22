@@ -17,7 +17,7 @@ export default function Page() {
   }
   return (
     <SafeAreaWrapper>
-      <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
+      <TopBar />
       <VendorHeader vendorUuid={vendorUuid.toString()} />
       <VendorCategories queryResult={vendorCategories} />
     </SafeAreaWrapper>
