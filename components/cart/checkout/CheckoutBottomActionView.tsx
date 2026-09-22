@@ -1,7 +1,5 @@
-import { Text, View } from "react-native";
 import React from "react";
-import { Button } from "react-native-paper";
-import { Colors } from "@/constants/Colors";
+import { Box, Button, Text } from "@/components/design-system";
 
 interface ICheckoutBottomActionViewProps {
   totalPrice: number | undefined;
@@ -21,36 +19,35 @@ const CheckoutBottomActionView = ({
   helperText = null,
 }: ICheckoutBottomActionViewProps) => {
   return (
-    <View className="flex-col gap-y-3 px-4 py-9">
-      <View className="flex-row items-center justify-between">
-        <View className="flex-col gap-y-2">
-          <Text className="text-xl font-bold">
+    <Box direction="column" gap="md" paddingX="lg" paddingY="huge">
+      <Box direction="row" align="center" justify="space-between">
+        <Box direction="column" gap="sm">
+          <Text variant="title">
             Total:
-            <Text className="text-xl text-primary">{` Rs. ${totalPrice}`}</Text>
+            <Text variant="title" color="primary">{` Rs. ${totalPrice}`}</Text>
           </Text>
-          <Text className="text-sm font-light">
+          <Text variant="caption">
             Delivery fee:
-            <Text className="text-primary">{` Rs. ${deliveryPrice}`}</Text>
+            <Text
+              variant="caption"
+              color="primary"
+            >{` Rs. ${deliveryPrice}`}</Text>
           </Text>
-        </View>
+        </Box>
         <Button
-          icon="cart-arrow-right"
-          mode="contained"
+          variant="primary"
+          size="sm"
           onPress={handlePress}
           disabled={disabled}
-          style={{
-            backgroundColor: disabled ? "#D1D5DB" : Colors.light.tint,
-            paddingHorizontal: 1.5,
-            paddingVertical: 1,
-          }}
-        >
-          {btnLabel}
-        </Button>
-      </View>
+          label={btnLabel}
+        />
+      </Box>
       {helperText ? (
-        <Text className="text-xs text-red-700">{helperText}</Text>
+        <Text variant="caption" color="danger">
+          {helperText}
+        </Text>
       ) : null}
-    </View>
+    </Box>
   );
 };
 
