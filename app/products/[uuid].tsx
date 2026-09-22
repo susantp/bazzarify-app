@@ -1,4 +1,4 @@
-import { Animated, Platform } from "react-native";
+import { Animated, Platform, StyleSheet } from "react-native";
 import TopBar from "@/components/home/TopBar";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -49,9 +49,7 @@ export default function ProductScreen() {
   const handleOpenAddress = () => setShowAddressModal(true);
   return (
     <SafeAreaWrapper>
-      <TopBar
-        className={`flex-row items-center justify-between gap-3 bg-primary p-4`}
-      />
+      <TopBar style={styles.productTopBar} />
       {isError ? (
         <FetchingErrorComponent message="Sorry, something went wrong fetching the product." />
       ) : product && currency ? (
@@ -131,3 +129,10 @@ export default function ProductScreen() {
     </SafeAreaWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  productTopBar: {
+    gap: 12,
+    padding: 16,
+  },
+});

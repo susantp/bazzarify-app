@@ -41,7 +41,7 @@ export default function HomeScreen() {
   return (
     <Suspense fallback={null}>
       <SafeAreaWrapper>
-        <TopBar className={`flex-row items-center justify-between px-2 py-5`} />
+        <TopBar />
         <DeliveryBar
           locationError={error}
           refresh={refresh}
