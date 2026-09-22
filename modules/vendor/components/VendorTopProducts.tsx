@@ -6,7 +6,6 @@ import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
 import { TProductSearchPayload } from "@/modules/product/schemas/responsePayloads/ProductSearchPayloadSchema";
 import { randomUUID } from "expo-crypto";
 
-const className = "bg-white px-1 py-3";
 const title = "Top Products";
 // const seeMorePath = "/(tabs)/categories/just-for-you";
 const id = "TopProducts";
@@ -15,7 +14,7 @@ export default function VendorTopProducts({
   queryResult,
 }: IHomeInfiniteCardComponent<TProductSearchPayload | null>) {
   return (
-    <GridWrapper className={className} title={title}>
+    <GridWrapper title={title}>
       <InfiniteProductGrid
         id={id}
         numColumns={numCols}

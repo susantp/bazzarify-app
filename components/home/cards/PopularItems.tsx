@@ -6,7 +6,6 @@ import React from "react";
 import { IHomeCardComponent } from "@/modules/home/types";
 import { TPopularProductsPayload } from "@/modules/product/schemas/responsePayloads/PopularProductsPayloadSchema";
 
-const className = "bg-white px-1 py-3";
 const title = "Popular Items";
 // const seeMorePath = "/(tabs)/categories/popular-items";
 const id = "popularItems";
@@ -16,7 +15,7 @@ export default function PopularItems({
 }: IHomeCardComponent<TPopularProductsPayload>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
-    <GridWrapper className={className} title={title}>
+    <GridWrapper title={title}>
       {isLoading ? (
         <ThemedText>Loading</ThemedText>
       ) : isError ? (

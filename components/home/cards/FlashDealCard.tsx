@@ -5,7 +5,6 @@ import FlashDealsProductCard from "@/components/home/FlashDealsProductCard";
 import { IHomeCardComponent } from "@/modules/home/types";
 import { TFlashDealsPayload } from "@/modules/product/schemas/responsePayloads/FlashDealsPayloadSchema";
 
-const className = "bg-white px-1 py-3";
 const title = "Flash Deals";
 // const seeMorePath = "/(tabs)/categories/flashDeal";
 const id = "flashDeals";
@@ -15,7 +14,7 @@ export default function FlashDealCard({
 }: IHomeCardComponent<TFlashDealsPayload>) {
   const { data, isLoading, isError, error } = queryResult;
   return (
-    <GridWrapper className={className} title={title}>
+    <GridWrapper title={title}>
       {isLoading ? (
         <ThemedText>Loading</ThemedText>
       ) : isError ? (
