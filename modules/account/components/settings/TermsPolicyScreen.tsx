@@ -1,14 +1,18 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import { useEffect, useState } from "react";
+import { Pressable, StyleSheet } from "react-native";
+import { useState } from "react";
 import {
   TermPolicyType,
   termsPolicy,
 } from "@/modules/account/data/settings/termsPolicy";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Box, Text, useBazarifyTheme } from "@/components/design-system";
+import { PageContent } from "@/components/design-system/compositions";
 
 const TermsPolicyScreen = () => {
   const [termsPolicyState, setTermsPolicyState] = useState(termsPolicy);
-  const [activeContent, setActiveContent] = useState<TermPolicyType | null>();
+  const theme = useBazarifyTheme();
+  const activeContent: TermPolicyType | undefined = termsPolicyState.find(
+    (item) => item.active,
+  );
   const handleActiveSwitch = (id: string) => {
     setTermsPolicyState((prevState) =>
       prevState.map((item) =>
@@ -16,28 +20,46 @@ const TermsPolicyScreen = () => {
       ),
     );
   };
-  useEffect(() => {
-    const activeTermsPolicy = termsPolicyState.filter((item) => item.active);
-    setActiveContent(activeTermsPolicy[0]);
-  }, [termsPolicyState]);
   return (
-    <ContentWrapper className="gap-y-2 bg-white">
-      <View className="flex-row">
-        {termsPolicyState.map((item, key) => (
-          <TouchableOpacity
-            onPress={() => handleActiveSwitch(item.id)}
-            key={item.id}
-            className={`w-6/12 items-center bg-orange-300 py-2 ${item.active && "border-b-2 border-gray-400"}`}
-          >
-            <Text className="font-semibold">{item.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View className="px-2">
-        {activeContent && <Text>{activeContent.content}</Text>}
-      </View>
-    </ContentWrapper>
+    <PageContent backgroundColor="background">
+      <Box gap="sm">
+        <Box direction="row">
+          {termsPolicyState.map((item) => (
+            <Pressable
+              onPress={() => handleActiveSwitch(item.id)}
+              key={item.id}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: item.active }}
+              testID={`terms-policy-tab-${item.id}`}
+              style={[
+                styles.tab,
+                {
+                  backgroundColor: theme.colors.primarySurface,
+                  borderBottomColor: theme.colors.borderStrong,
+                  borderBottomWidth: item.active ? 2 : 0,
+                },
+              ]}
+            >
+              <Text variant="label" align="center">
+                {item.title}
+              </Text>
+            </Pressable>
+          ))}
+        </Box>
+        <Box paddingX="sm">
+          {activeContent && <Text variant="body">{activeContent.content}</Text>}
+        </Box>
+      </Box>
+    </PageContent>
   );
 };
+
+const styles = StyleSheet.create({
+  tab: {
+    alignItems: "center",
+    flex: 1,
+    paddingVertical: 8,
+  },
+});
 
 export default TermsPolicyScreen;
