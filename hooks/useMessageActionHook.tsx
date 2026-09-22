@@ -9,28 +9,36 @@ export default function useMessageActionHook() {
     {
       id: "chats",
       label: "Chats",
-      icon: <MaterialIcons name="message" size={30} color={"#fff"} />,
-      bgColor: "bg-green-500",
+      icon: ({ color, size }) => (
+        <MaterialIcons name="message" size={size} color={color} />
+      ),
+      backgroundColor: "success",
       routeTo: () => router.push("/account/message/inbox"),
     },
     {
       id: "package",
       label: "Orders",
-      icon: <Feather name="package" size={30} color={"#fff"} />,
-      bgColor: "bg-blue-500",
+      icon: ({ color, size }) => (
+        <Feather name="package" size={size} color={color} />
+      ),
+      backgroundColor: "primary",
     },
     {
       id: "activity",
       label: "Activities",
-      icon: <Feather name="activity" size={30} color={"#fff"} />,
-      bgColor: "bg-amber-500",
+      icon: ({ color, size }) => (
+        <Feather name="activity" size={size} color={color} />
+      ),
+      backgroundColor: "warning",
       routeTo: () => router.push("/account/message/activities"),
     },
     {
       id: "promos",
       label: "Promos",
-      icon: <Ionicons name="megaphone" size={30} color={"#fff"} />,
-      bgColor: "bg-pink-500",
+      icon: ({ color, size }) => (
+        <Ionicons name="megaphone" size={size} color={color} />
+      ),
+      backgroundColor: "danger",
       routeTo: () => router.push("/account/message/promotions"),
     },
   ];

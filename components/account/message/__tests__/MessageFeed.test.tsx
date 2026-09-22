@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { MessageFeed } from "@/components/account/message/MessageFeed";
+import { BazarifyThemeProvider } from "@/components/design-system/theme";
 
 const items = [
   {
@@ -20,7 +21,9 @@ const items = [
 describe("MessageFeed", () => {
   it("renders data-driven message items with the selected feed type", async () => {
     const screen = await render(
-      <MessageFeed testID="feed" items={items} type="activity" />,
+      <BazarifyThemeProvider>
+        <MessageFeed testID="feed" items={items} type="activity" />
+      </BazarifyThemeProvider>,
     );
 
     expect(await screen.findByTestId("feed-item-0")).toBeTruthy();
