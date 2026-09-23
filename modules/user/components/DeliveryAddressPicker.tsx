@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-} from "react-native";
+import { ActivityIndicator, FlatList, Pressable } from "react-native";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
@@ -36,12 +30,15 @@ import {
 } from "@/modules/core/services/placesService";
 import { authStatusAtom } from "@/modules/auth/atoms/authStatusAtom";
 import { routeGuestToLoginForProtectedTarget } from "@/modules/core/utils/protectedNavigation";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 interface Props {
   onClose?: () => void;
 }
 
 const DeliveryAddressPicker = ({ onClose }: Props) => {
+  const theme = useBazarifyTheme();
   const authStatus = useAtomValue(authStatusAtom);
   const isAuthenticated = authStatus === "authenticated";
   const addresses = useAtomValue(addressListAtom) || [];
@@ -118,28 +115,43 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
   const activeAddress = selectedAddress || defaultAddress;
 
   return (
-    <View className="flex-col gap-y-4 pb-4">
-      <Text className="text-lg font-semibold">Select delivery address</Text>
+    <Box gap="lg" style={{ paddingBottom: theme.spacing.lg }}>
+      <Text variant="title">Select delivery address</Text>
       {addresses.length === 0 ? (
-        <View className="flex-col gap-y-3">
-          <Text className="text-sm text-gray-600">
+        <Box gap="md">
+          <Text variant="bodyCompact" color="textMuted">
             No saved address yet. Add a new address or pick on the map.
           </Text>
-          <View className="flex-row gap-x-3">
-            <TouchableOpacity
-              className="rounded-full bg-primary px-4 py-2"
+          <Box direction="row" gap="md">
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Create address"
+              style={{
+                backgroundColor: theme.colors.primary,
+                borderRadius: theme.radii.pill,
+                paddingHorizontal: theme.spacing.lg,
+                paddingVertical: theme.spacing.sm,
+              }}
               onPress={openCreateAddress}
             >
-              <Text className="text-white">Create address</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="rounded-full border border-gray-300 px-4 py-2"
+              <Text color="textInverted">Create address</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Use current location"
+              style={{
+                borderColor: theme.colors.border,
+                borderRadius: theme.radii.pill,
+                borderWidth: 1,
+                paddingHorizontal: theme.spacing.lg,
+                paddingVertical: theme.spacing.sm,
+              }}
               onPress={() => renderMapPortal()}
             >
               <Text>Use current location</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+            </Pressable>
+          </Box>
+        </Box>
       ) : (
         <>
           <FlatList
@@ -149,47 +161,80 @@ const DeliveryAddressPicker = ({ onClose }: Props) => {
             renderItem={({ item }) => {
               const isSelected = activeAddress?.uuid === item.uuid;
               return (
-                <TouchableOpacity
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={formatUserAddress(item)}
                   onPress={() => handleSelect(item)}
-                  className={`rounded-lg border p-3 ${
-                    isSelected ? "border-primary" : "border-gray-200"
-                  }`}
+                  style={{
+                    borderColor: isSelected
+                      ? theme.colors.primary
+                      : theme.colors.border,
+                    borderRadius: theme.radii.lg,
+                    borderWidth: 1,
+                    padding: theme.spacing.lg,
+                  }}
                 >
-                  <Text className="text-sm font-semibold">
-                    {formatUserAddress(item)}
-                  </Text>
-                  <View className="mt-1 flex-row gap-x-2">
+                  <Text variant="bodyMedium">{formatUserAddress(item)}</Text>
+                  <Box
+                    direction="row"
+                    gap="sm"
+                    style={{ marginTop: theme.spacing.xs }}
+                  >
                     {item.is_default ? (
-                      <Text className="text-xs text-green-600">Default</Text>
+                      <Text variant="bodyCompact" color="success">
+                        Default
+                      </Text>
                     ) : null}
                     {isSelected ? (
-                      <Text className="text-xs text-primary">Selected</Text>
+                      <Text variant="bodyCompact" color="primary">
+                        Selected
+                      </Text>
                     ) : null}
-                  </View>
-                </TouchableOpacity>
+                  </Box>
+                </Pressable>
               );
             }}
           />
-          <View className="flex-row items-center justify-between pt-2">
-            <TouchableOpacity
-              className="rounded-full bg-primary px-4 py-2"
+          <Box
+            direction="row"
+            align="center"
+            justify="space-between"
+            style={{ paddingTop: theme.spacing.sm }}
+          >
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Create new address"
+              style={{
+                backgroundColor: theme.colors.primary,
+                borderRadius: theme.radii.pill,
+                paddingHorizontal: theme.spacing.lg,
+                paddingVertical: theme.spacing.sm,
+              }}
               onPress={openCreateAddress}
             >
-              <Text className="text-white">Create new address</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="rounded-full border border-gray-300 px-4 py-2"
+              <Text color="textInverted">Create new address</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Use current location"
+              style={{
+                borderColor: theme.colors.border,
+                borderRadius: theme.radii.pill,
+                borderWidth: 1,
+                paddingHorizontal: theme.spacing.lg,
+                paddingVertical: theme.spacing.sm,
+              }}
               onPress={() => renderMapPortal()}
             >
               <Text>Use current location</Text>
-            </TouchableOpacity>
-          </View>
+            </Pressable>
+          </Box>
         </>
       )}
       {!addresses.length && currentLatitude === null ? (
-        <ActivityIndicator size="small" color="#999" />
+        <ActivityIndicator size="small" color={theme.colors.textMuted} />
       ) : null}
-    </View>
+    </Box>
   );
 };
 
