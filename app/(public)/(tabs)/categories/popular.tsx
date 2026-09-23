@@ -1,35 +1,41 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
+import { Box, Icon } from "@/components/design-system";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Page() {
   return (
     <SafeAreaWrapper>
-      <View className="flex-row items-center justify-between pr-3">
+      <Box
+        direction="row"
+        align="center"
+        justify="space-between"
+        style={styles.header}
+      >
         <ScreenHeader title="Popular Items" />
-        <TouchableOpacity activeOpacity={0.6}>
-          <Ionicons
-            name="options"
-            size={24}
-            color="white"
-            className="rotate-90"
-          />
-        </TouchableOpacity>
-      </View>
-      {/*<ContentWrapper>*/}
-      {/*  <ContentGridSection*/}
-      {/*    className="align-center flex-col bg-white"*/}
-      {/*    title={"Popular Items"}*/}
-      {/*    items={popularItemsData}*/}
-      {/*    horizontal={false}*/}
-      {/*    cols={2}*/}
-      {/*    renderItem={(item, index, cols) => (*/}
-      {/*      <ProductCard item={item} key={index} cols={cols} />*/}
-      {/*    )}*/}
-      {/*  />*/}
-      {/*</ContentWrapper>*/}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Filter popular items"
+        >
+          <Icon size={24} color="surface">
+            {({ color, size }) => (
+              <Ionicons
+                name="options"
+                size={size}
+                color={color}
+                style={styles.rotatedIcon}
+              />
+            )}
+          </Icon>
+        </Pressable>
+      </Box>
     </SafeAreaWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  header: { paddingRight: 12 },
+  rotatedIcon: { transform: [{ rotate: "90deg" }] },
+});
