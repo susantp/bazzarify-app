@@ -1,14 +1,15 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { Text, TouchableOpacity, View } from "react-native";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Pressable } from "react-native";
+import { Box, Icon, PageContent, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import { router } from "expo-router";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import useSearchHistory from "@/modules/search/hooks/useSearchHistory";
-import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Page() {
+  const theme = useBazarifyTheme();
   const { history, clearAll, removeEntry, addEntry, actor } =
     useSearchHistory();
   const { canGoBack, onSearchSubmit, handleChangeText, searchQuery } =
@@ -22,35 +23,66 @@ export default function Page() {
         searchPlaceHolder="Hoodie for men"
         handleSubmitEditing={onSearchSubmit}
       />
-      <ContentWrapper className="gap-y-3 bg-white p-4">
-        <View className="flex-row items-center justify-between">
-          <View>
-            <Text className="text-xl font-semibold">Search History</Text>
-          </View>
-          <TouchableOpacity
-            className="flex-row items-center gap-x-2 rounded-full bg-gray-100 px-2 py-1"
+      <PageContent backgroundColor="surface" gap="md" padding="lg">
+        <Box direction="row" align="center" justify="space-between">
+          <Text variant="title">Search History</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Clear all search history"
+            style={{
+              alignItems: "center",
+              backgroundColor: theme.colors.surfaceMuted,
+              borderRadius: theme.radii.pill,
+              flexDirection: "row",
+              gap: theme.spacing.xs,
+              paddingHorizontal: theme.spacing.sm,
+              paddingVertical: theme.spacing.xs,
+            }}
             onPress={() => void clearAll()}
           >
-            <Text className="text-sm font-extralight">Clear all</Text>
-            <Ionicons name="trash-outline" size={18} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View className="flex-row flex-wrap gap-4">
+            <Text variant="bodyCompact" color="textMuted">
+              Clear all
+            </Text>
+            <Icon size={18} color="text">
+              {({ color, size }) => (
+                <Ionicons name="trash-outline" size={size} color={color} />
+              )}
+            </Icon>
+          </Pressable>
+        </Box>
+        <Box direction="row" gap="lg" style={{ flexWrap: "wrap" }}>
           {history.length === 0 ? (
-            <View className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3">
-              <Text className="text-sm text-gray-500">
+            <Box
+              backgroundColor="surfaceMuted"
+              borderRadius="xl"
+              paddingX="lg"
+              paddingY="md"
+              style={{
+                borderColor: theme.colors.border,
+                borderStyle: "dashed",
+                borderWidth: 1,
+              }}
+            >
+              <Text variant="bodyCompact" color="textMuted">
                 {actor?.type === "user"
                   ? "Your synced searches will appear here."
                   : "Your recent searches will appear here once you start browsing."}
               </Text>
-            </View>
+            </Box>
           ) : (
             history.map((item) => (
-              <View
+              <Box
                 key={item}
-                className="flex-row items-center gap-x-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-2"
+                direction="row"
+                align="center"
+                gap="sm"
+                backgroundColor="surfaceMuted"
+                borderRadius="pill"
+                paddingX="md"
+                paddingY="sm"
+                style={{ borderColor: theme.colors.border, borderWidth: 1 }}
               >
-                <TouchableOpacity
+                <Pressable
                   onPress={() => {
                     void addEntry(item);
                     router.replace({
@@ -59,18 +91,26 @@ export default function Page() {
                     });
                   }}
                 >
-                  <Text className="text-sm font-medium text-gray-700">
+                  <Text variant="bodyCompactMedium" color="textMuted">
                     {item}
                   </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => void removeEntry(item)}>
-                  <Ionicons name="close" size={16} color={Colors.light.icon} />
-                </TouchableOpacity>
-              </View>
+                </Pressable>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Remove ${item}`}
+                  onPress={() => void removeEntry(item)}
+                >
+                  <Icon size={16} color="textMuted">
+                    {({ color, size }) => (
+                      <Ionicons name="close" size={size} color={color} />
+                    )}
+                  </Icon>
+                </Pressable>
+              </Box>
             ))
           )}
-        </View>
-      </ContentWrapper>
+        </Box>
+      </PageContent>
     </SafeAreaWrapper>
   );
 }
