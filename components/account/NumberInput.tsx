@@ -9,7 +9,6 @@ const NumberInput = ({
   onChange,
   hasError,
   icon,
-  className: _className,
   ...props
 }: InputProps) => {
   return (

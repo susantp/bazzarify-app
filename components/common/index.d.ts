@@ -7,7 +7,6 @@ export interface InputProps extends TextInputProps {
   onBlur: () => void;
   onChange: (text: string) => void;
   hasError: FieldError | undefined;
-  className?: string;
   icon?: ReactElement;
 }
 
