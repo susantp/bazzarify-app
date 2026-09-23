@@ -8,7 +8,6 @@ const NameInput = ({
   onBlur,
   onChange,
   hasError,
-  className: _className,
   ...rest
 }: InputProps) => {
   const theme = useBazarifyTheme();

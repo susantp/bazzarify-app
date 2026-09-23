@@ -1,6 +1,5 @@
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
-import "../global.css";
 import { Provider } from "jotai";
 import "expo-dev-client";
 import Toast from "react-native-toast-message";

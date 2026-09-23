@@ -39,17 +39,4 @@ export type ItemProps = {
 };
 
 export type titleKey =
-  | "Flash Deals"
-  | "Popular Items"
-  | "Just for you"
-  | "Categories";
-
-type HeaderProps = {
-  className: string;
-};
-type SearchBoxProps = {
-  className: string;
-};
-type HeaderIconsProps = {
-  className: string;
-};
+  "Flash Deals" | "Popular Items" | "Just for you" | "Categories";
