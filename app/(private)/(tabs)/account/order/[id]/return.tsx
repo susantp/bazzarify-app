@@ -1,12 +1,11 @@
 import React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Pressable, TextInput } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import Checkbox from "expo-checkbox";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import ContentWrapper from "@/components/common/ContentWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import { Colors } from "@/constants/Colors";
-import StyledText from "@/components/common/StyledText";
+import { Box, PageContent, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 // Define type for reasons
 type Reason = {
@@ -27,6 +26,7 @@ const reasonsList: Reason[] = [
 ];
 
 const ReturnForm: React.FC = () => {
+  const theme = useBazarifyTheme();
   const { control, handleSubmit, watch, setValue } = useForm<FormData>({
     defaultValues: {
       return_reasons: [],
@@ -71,23 +71,23 @@ const ReturnForm: React.FC = () => {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Return" />
-      <ContentWrapper className="p-6">
-        <View className="flex-col gap-y-2">
+      <PageContent backgroundColor="surface" padding="xxl">
+        <Box gap="sm">
           {reasonsList.map((reason) => (
             <Controller
               key={reason.id}
               control={control}
               name="return_reasons"
               render={({ field }) => (
-                <View
+                <Box
+                  direction="row"
+                  align="center"
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
                     marginBottom: 8,
                   }}
                 >
                   <Checkbox
-                    color={Colors.light.tint}
+                    color={theme.colors.primary}
                     value={field.value.some((r) => r.id === reason.id)}
                     onValueChange={(isChecked) => {
                       const updatedReasons = isChecked
@@ -96,8 +96,10 @@ const ReturnForm: React.FC = () => {
                       setValue("return_reasons", updatedReasons);
                     }}
                   />
-                  <Text style={{ marginLeft: 8 }}>{reason.label}</Text>
-                </View>
+                  <Text style={{ marginLeft: theme.spacing.sm }}>
+                    {reason.label}
+                  </Text>
+                </Box>
               )}
             />
           ))}
@@ -123,17 +125,24 @@ const ReturnForm: React.FC = () => {
             />
           )}
 
-          <TouchableOpacity
-            className="flex w-full items-center rounded-lg bg-primary py-2"
-            activeOpacity={0.6}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Submit return request"
+            style={{
+              alignItems: "center",
+              backgroundColor: theme.colors.primary,
+              borderRadius: theme.radii.lg,
+              paddingVertical: theme.spacing.sm,
+              width: "100%",
+            }}
             onPress={handleSubmit(onSubmit)}
           >
-            <StyledText className="text-lg font-semibold text-white">
+            <Text variant="title" color="textInverted">
               Submit
-            </StyledText>
-          </TouchableOpacity>
-        </View>
-      </ContentWrapper>
+            </Text>
+          </Pressable>
+        </Box>
+      </PageContent>
     </SafeAreaWrapper>
   );
 };
