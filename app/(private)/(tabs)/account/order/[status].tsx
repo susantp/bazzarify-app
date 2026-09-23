@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator } from "react-native";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Box, PageContent, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import { useLocalSearchParams, router } from "expo-router";
-import { Colors } from "@/constants/Colors";
 
 export default function LegacyTrackRoutePage() {
+  const theme = useBazarifyTheme();
   const params = useLocalSearchParams<{
     order?: string | string[];
     id?: string | string[];
@@ -31,17 +32,19 @@ export default function LegacyTrackRoutePage() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Track Your Product" />
-      <ContentWrapper className="bg-white px-4 py-3">
+      <PageContent backgroundColor="surface" paddingX="lg" paddingY="md">
         {orderRef ? (
-          <View className="items-center py-6">
-            <ActivityIndicator color={Colors.light.tint} size="large" />
-          </View>
+          <Box align="center" paddingY="xxl">
+            <ActivityIndicator color={theme.colors.primary} size="large" />
+          </Box>
         ) : (
-          <View className="items-center py-6">
-            <Text className="text-sm text-gray-500">Order id is missing.</Text>
-          </View>
+          <Box align="center" paddingY="xxl">
+            <Text variant="bodyCompact" color="textMuted">
+              Order id is missing.
+            </Text>
+          </Box>
         )}
-      </ContentWrapper>
+      </PageContent>
     </SafeAreaWrapper>
   );
 }
