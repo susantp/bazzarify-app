@@ -1,11 +1,5 @@
 import { router } from "expo-router";
-import {
-  Image,
-  ListRenderItemInfo,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, type ListRenderItemInfo } from "react-native";
 import {
   IProfileMenu,
   SettingEnum,
@@ -14,9 +8,12 @@ import React, { useState } from "react";
 import { useAtomValue } from "jotai";
 import { filteredDefaultLanguage } from "@/atoms/languageAtom";
 import { logoutAuthSession } from "@/modules/auth/session/sessionController";
+import { Box, Image, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export default function useSettingScreen() {
   const defaultLanguage = useAtomValue(filteredDefaultLanguage);
+  const theme = useBazarifyTheme();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
@@ -34,26 +31,33 @@ export default function useSettingScreen() {
 
   const renderSettingItem = ({ item }: ListRenderItemInfo<IProfileMenu>) => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.4}
+      <Pressable
+        accessibilityLabel={item.label}
+        accessibilityRole="button"
         onPress={() => router.push(`/account/setting/${item.id}`)}
-        className={`border-b border-b-gray-400 px-2 py-6`}
+        style={({ pressed }) => [
+          styles.item,
+          { borderBottomColor: theme.colors.borderStrong },
+          pressed && styles.pressed,
+        ]}
       >
         {item.id === SettingEnum.LANGUAGE && defaultLanguage.length > 0 ? (
-          <View className="flex-row items-center">
-            <Text className="w-10/12 text-xl">{item.label}</Text>
-            <View className="items-end justify-center">
+          <Box direction="row" align="center">
+            <Text variant="title" style={styles.languageLabel}>
+              {item.label}
+            </Text>
+            <Box align="flex-end" justify="center" style={styles.languageIcon}>
               <Image
                 source={defaultLanguage[0].imgSource}
-                width={10}
-                height={10}
+                size={10}
+                radius="none"
               />
-            </View>
-          </View>
+            </Box>
+          </Box>
         ) : (
-          <Text className="items-end text-xl">{item.label}</Text>
+          <Text variant="title">{item.label}</Text>
         )}
-      </TouchableOpacity>
+      </Pressable>
     );
   };
   return {
@@ -62,3 +66,14 @@ export default function useSettingScreen() {
     renderSettingItem,
   };
 }
+
+const styles = StyleSheet.create({
+  item: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 8,
+    paddingVertical: 24,
+  },
+  languageIcon: { width: "16.666%" },
+  languageLabel: { flex: 1 },
+  pressed: { opacity: 0.6 },
+});
