@@ -1,10 +1,4 @@
-import {
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet } from "react-native";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React from "react";
@@ -23,6 +17,7 @@ import { router } from "expo-router";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import LoginProvider from "@/modules/auth/enums/loginProvider";
 import useLoginHook from "@/modules/auth/hooks/useLoginHook";
+import { Box, Text } from "@/components/design-system";
 
 const LoginScreen = () => {
   const {
@@ -44,19 +39,34 @@ const LoginScreen = () => {
   } = useLoginHook();
   return (
     <SafeAreaWrapper>
-      <View className="flex-1 bg-slate-50">
-        <View className="pointer-events-none absolute -right-10 -top-24 h-44 w-44 rounded-full bg-primary opacity-10" />
-        <View className="pointer-events-none absolute -bottom-28 -left-16 h-52 w-52 rounded-full bg-primary opacity-10" />
+      <Box flex={1} backgroundColor="surfaceMuted">
+        <Box
+          pointerEvents="none"
+          backgroundColor="primary"
+          style={styles.topGlow}
+        />
+        <Box
+          pointerEvents="none"
+          backgroundColor="primary"
+          style={styles.bottomGlow}
+        />
         <ContentWrapper>
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            <View className="flex-1 items-center justify-center py-6">
-              <View className="mb-6 items-center">
+            <Box flex={1} align="center" justify="center" paddingY="xxl">
+              <Box align="center" gap="sm" style={styles.titleBlock}>
                 <PageTitle title="Login" />
-                <Text className="mt-2 text-base text-slate-500">
+                <Text variant="body" color="textMuted">
                   Welcome back, sign in to continue
                 </Text>
-              </View>
-              <View className="w-full gap-y-4 rounded-3xl bg-white px-6 py-8 shadow-sm">
+              </Box>
+              <Box
+                backgroundColor="surface"
+                borderRadius="xl"
+                gap="lg"
+                paddingX="xxl"
+                paddingY="xxl"
+                style={styles.formCard}
+              >
                 <ControlledInput
                   style={{ width: "100%", gap: 8 }}
                   errors={errors}
@@ -96,46 +106,80 @@ const LoginScreen = () => {
                 />
 
                 <LoginFormHelperText />
-                <View className="h-2" />
+                <Box style={styles.smallSpacer} />
                 <FullWidthActionBtn
                   handleOnPress={handleSubmit(handleCredentialsLogin)}
                   label={isSubmitting ? "Logging in..." : "Login"}
                   disabled={isSubmitting}
                 />
-                <View className="flex-row items-center justify-center gap-x-3">
-                  <View className="h-px flex-1 bg-slate-200" />
-                  <Text className="text-gray-400">or</Text>
-                  <View className="h-px flex-1 bg-slate-200" />
-                </View>
-                <TouchableOpacity>
-                  <SocialLoginButton
-                    label="sign in with"
-                    provider="google"
-                    onPress={() => handleOAuthLogin(LoginProvider.GOOGLE)}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <SocialLoginButton
-                    label="sign in with"
-                    provider="facebook"
-                    onPress={() => handleOAuthLogin(LoginProvider.FACEBOOK)}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View className="mt-6 flex-row items-center gap-x-2">
-                <View>
-                  <Text>New User?</Text>
-                </View>
+                <Box direction="row" align="center" justify="center" gap="md">
+                  <Box flex={1} style={styles.divider} />
+                  <Text color="textMuted">or</Text>
+                  <Box flex={1} style={styles.divider} />
+                </Box>
+                <SocialLoginButton
+                  label="sign in with"
+                  provider="google"
+                  onPress={() => handleOAuthLogin(LoginProvider.GOOGLE)}
+                />
+                <SocialLoginButton
+                  label="sign in with"
+                  provider="facebook"
+                  onPress={() => handleOAuthLogin(LoginProvider.FACEBOOK)}
+                />
+              </Box>
+              <Box
+                direction="row"
+                align="center"
+                gap="sm"
+                style={styles.signupRow}
+              >
+                <Text>New User?</Text>
                 <Pressable onPress={() => router.push("/auth/register")}>
-                  <Text className="text-primary underline">Sign Up</Text>
+                  <Text color="primary" style={styles.signupText}>
+                    Sign Up
+                  </Text>
                 </Pressable>
-              </View>
-            </View>
+              </Box>
+            </Box>
           </ScrollView>
         </ContentWrapper>
-      </View>
+      </Box>
     </SafeAreaWrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  bottomGlow: {
+    borderRadius: 999,
+    bottom: -112,
+    height: 208,
+    left: -64,
+    opacity: 0.1,
+    position: "absolute",
+    width: 208,
+  },
+  divider: { backgroundColor: "#E2E8F0", height: StyleSheet.hairlineWidth },
+  formCard: {
+    shadowColor: "#000",
+    shadowOffset: { height: 2, width: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    width: "100%",
+  },
+  signupRow: { marginTop: 24 },
+  signupText: { textDecorationLine: "underline" },
+  smallSpacer: { height: 8 },
+  titleBlock: { marginBottom: 24 },
+  topGlow: {
+    borderRadius: 999,
+    height: 176,
+    opacity: 0.1,
+    position: "absolute",
+    right: -40,
+    top: -96,
+    width: 176,
+  },
+});
 
 export default LoginScreen;
