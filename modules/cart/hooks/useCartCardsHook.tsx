@@ -1,9 +1,8 @@
-import { View } from "react-native";
-import { Card } from "react-native-paper";
+import { StyleSheet } from "react-native";
 import CartItem from "@/components/cart/CartItem";
-import { ThemedText } from "@/components/ThemedText";
 import React from "react";
 import useCartHook from "@/modules/cart/hooks/useCartHook";
+import { Box, Text } from "@/components/design-system";
 
 export default function useCartCardsHook() {
   const {
@@ -16,12 +15,17 @@ export default function useCartCardsHook() {
   const CARDS = [
     {
       title: "wel",
-      component: <View className="h-3 bg-gray-100" />,
+      component: <Box backgroundColor="surfaceMuted" style={styles.spacer} />,
     },
     {
       title: "cart-items",
       component: cartState?.cart?.totals.items_count ? (
-        <Card className="flex-1">
+        <Box
+          backgroundColor="surface"
+          borderRadius="md"
+          flex={1}
+          style={styles.cartCard}
+        >
           {cartState?.cart?.items.map((item) => (
             <CartItem
               key={item.variant_attrs?.uuid ?? item.uuid}
@@ -32,11 +36,11 @@ export default function useCartCardsHook() {
               incrementDisabled={getLineItemIncrementDisabled(item)}
             />
           ))}
-        </Card>
+        </Box>
       ) : (
-        <ThemedText type="title" darkColor="#0000" lightColor="#0000">
+        <Text variant="title" color="textMuted">
           No Items on cart
-        </ThemedText>
+        </Text>
       ),
     },
     // {
@@ -62,3 +66,8 @@ export default function useCartCardsHook() {
     CARDS,
   };
 }
+
+const styles = StyleSheet.create({
+  cartCard: { overflow: "hidden" },
+  spacer: { height: 12 },
+});
