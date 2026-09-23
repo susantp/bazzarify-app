@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Pressable } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import ContentWrapper from "@/components/common/ContentWrapper";
-import { Colors } from "@/constants/Colors";
-import { randomUUID } from "expo-crypto";
-import cn from "@/utils/tailwindHelper";
+import {
+  Box,
+  Icon,
+  Image,
+  PageContent,
+  Text,
+} from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export default function Page() {
+  const theme = useBazarifyTheme();
   const [selectedDiscount, setSelectedDiscount] = useState("50%");
   const handleSelectDiscount = (discount: string) =>
     setSelectedDiscount(discount);
@@ -17,49 +22,53 @@ export default function Page() {
     <SafeAreaWrapper>
       <ScreenHeader
         title="Flash Deal"
-        iconColor={Colors.light.tint}
-        titleColor={Colors.light.tint}
+        iconColor={theme.colors.primary}
+        titleColor={theme.colors.primary}
       />
-      <ContentWrapper>
+      <PageContent backgroundColor="surface">
         <BubbleDesign />
-        <View className="flex-row items-center justify-between px-2">
-          <Text className="text-xl font-semibold">Choose your discount</Text>
+        <Box
+          direction="row"
+          align="center"
+          justify="space-between"
+          paddingX="sm"
+        >
+          <Text variant="title">Choose your discount</Text>
           <DealTimer />
-        </View>
-        <View className="p-3">
+        </Box>
+        <Box padding="md">
           <DiscountSelection
             selectedDiscount={selectedDiscount}
             discounts={discountList}
             onSelectDiscount={handleSelectDiscount}
           />
-        </View>
-        <View className="flex-row justify-between px-2 py-6">
-          <Text className="text-xl font-bold text-primary">
+        </Box>
+        <Box
+          direction="row"
+          justify="space-between"
+          paddingX="sm"
+          paddingY="xxl"
+        >
+          <Text variant="title" color="primary">
             {selectedDiscount === "All" ? "" : `${selectedDiscount} Discount`}
           </Text>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            className="rounded-lg bg-orange-50 p-1"
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Filter flash deals"
           >
-            <Ionicons
-              name="options"
-              size={28}
-              color={Colors.light.tint}
-              className="rotate-90"
-            />
-          </TouchableOpacity>
-        </View>
-        {/*<ContentGridSection*/}
-        {/*  className="align-center flex-col bg-white"*/}
-        {/*  title={"Popular Items"}*/}
-        {/*  items={popularItemsData}*/}
-        {/*  horizontal={false}*/}
-        {/*  cols={2}*/}
-        {/*  renderItem={(item, index, cols) => (*/}
-        {/*    <ProductCard item={item} key={index} cols={cols} />*/}
-        {/*  )}*/}
-        {/*/>*/}
-      </ContentWrapper>
+            <Icon size={28} color="primary">
+              {({ color, size }) => (
+                <Ionicons
+                  name="options"
+                  size={size}
+                  color={color}
+                  style={{ transform: [{ rotate: "90deg" }] }}
+                />
+              )}
+            </Icon>
+          </Pressable>
+        </Box>
+      </PageContent>
     </SafeAreaWrapper>
   );
 }
@@ -74,58 +83,76 @@ const DiscountSelection = ({
   discounts,
   onSelectDiscount,
   selectedDiscount,
-}: DiscountSelectionProps) => (
-  <View className="flex-row items-center justify-between justify-items-center rounded-lg bg-slate-50 p-1">
-    {discounts.map((discount) => (
-      <TouchableOpacity
-        key={randomUUID()}
-        className={cn(
-          "rounded-full px-4 py-3",
-          selectedDiscount === discount ? "border-2 border-primary" : undefined,
-        )}
-        onPress={() => onSelectDiscount(discount)}
-      >
-        <Text className="font-semibold">{discount}</Text>
-      </TouchableOpacity>
-    ))}
-  </View>
-);
+}: DiscountSelectionProps) => {
+  const theme = useBazarifyTheme();
+
+  return (
+    <Box
+      direction="row"
+      align="center"
+      justify="space-between"
+      backgroundColor="surfaceMuted"
+      padding="xs"
+      borderRadius="lg"
+    >
+      {discounts.map((discount) => (
+        <Pressable
+          key={discount}
+          accessibilityRole="button"
+          accessibilityLabel={discount}
+          style={({ pressed }) => ({
+            borderColor:
+              selectedDiscount === discount
+                ? theme.colors.primary
+                : "transparent",
+            borderRadius: theme.radii.pill,
+            borderWidth: selectedDiscount === discount ? 2 : 0,
+            opacity: pressed ? 0.8 : 1,
+            paddingHorizontal: theme.spacing.lg,
+            paddingVertical: theme.spacing.md,
+          })}
+          onPress={() => onSelectDiscount(discount)}
+        >
+          <Text variant="bodyMedium">{discount}</Text>
+        </Pressable>
+      ))}
+    </Box>
+  );
+};
 const DealTimer = () => (
-  <View className="flex-row items-center gap-x-2">
-    <View className="p-2">
-      <Entypo name="stopwatch" size={28} color="white" />
-    </View>
-    <View className="rounded-lg bg-white p-2">
-      <Text className="font-semibold">00</Text>
-    </View>
-    <View className="rounded-lg bg-white p-2">
-      <Text className="font-semibold">36</Text>
-    </View>
-    <View className="rounded-lg bg-white p-2">
-      <Text className="font-semibold">58</Text>
-    </View>
-  </View>
+  <Box direction="row" align="center" gap="sm">
+    <Icon size={28} color="primary">
+      {({ color, size }) => (
+        <Entypo name="stopwatch" size={size} color={color} />
+      )}
+    </Icon>
+    <Box backgroundColor="surface" padding="sm" borderRadius="lg">
+      <Text variant="bodyMedium">00</Text>
+    </Box>
+    <Box backgroundColor="surface" padding="sm" borderRadius="lg">
+      <Text variant="bodyMedium">36</Text>
+    </Box>
+    <Box backgroundColor="surface" padding="sm" borderRadius="lg">
+      <Text variant="bodyMedium">58</Text>
+    </Box>
+  </Box>
 );
 const BubbleDesign = () => (
-  <View>
-    <View
-      style={{
-        position: "absolute",
-        top: -80,
-        left: 100,
-      }}
-    >
-      <Image source={require("@/assets/images/flashDeal/bubble00.png")} />
-    </View>
-    <View
+  <Box>
+    <Image
+      source={require("@/assets/images/flashDeal/bubble00.png")}
+      radius="none"
+      style={{ position: "absolute", top: -80, left: 100 }}
+    />
+    <Image
+      source={require("@/assets/images/flashDeal/bubble01.png")}
+      radius="none"
       style={{
         position: "absolute",
         top: -80,
         left: 50,
         transform: [{ rotateY: "50deg" }],
       }}
-    >
-      <Image source={require("@/assets/images/flashDeal/bubble01.png")} />
-    </View>
-  </View>
+    />
+  </Box>
 );
