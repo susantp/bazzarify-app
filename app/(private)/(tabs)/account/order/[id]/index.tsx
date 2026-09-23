@@ -1,9 +1,10 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Box, PageContent, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import useOrder from "@/modules/order/hooks/useOrder";
 import useOrderStatusBox from "@/modules/order/hooks/useOrderStatusBox";
 import OrderedItem from "@/components/account/order/OrderedItem";
@@ -12,6 +13,7 @@ import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
 
 export default function OrderDetailsPage() {
+  const theme = useBazarifyTheme();
   const { id } = useLocalSearchParams<{ id?: string | string[] }>();
   const orderId = Array.isArray(id) ? id[0] : id;
   const normalizedOrderId = orderId ? decodeURIComponent(orderId) : undefined;
@@ -43,11 +45,18 @@ export default function OrderDetailsPage() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Order Details" />
-      <ContentWrapper className="gap-y-4 bg-white px-3 py-2">
+      <PageContent
+        backgroundColor="surface"
+        gap="lg"
+        paddingX="sm"
+        paddingY="sm"
+      >
         {!order ? (
-          <View className="py-6">
-            <Text className="text-sm text-gray-500">Order not found.</Text>
-          </View>
+          <Box paddingY="xxl">
+            <Text variant="bodyCompact" color="textMuted">
+              Order not found.
+            </Text>
+          </Box>
         ) : null}
         {order?.items?.map((item) => (
           <OrderedItem
@@ -58,8 +67,16 @@ export default function OrderDetailsPage() {
           />
         ))}
         {order && !hasTrackAction && trackingOrderRef ? (
-          <TouchableOpacity
-            className="rounded-lg border border-primary px-4 py-2"
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Track Order"
+            style={{
+              borderColor: theme.colors.primary,
+              borderRadius: theme.radii.lg,
+              borderWidth: 1,
+              paddingHorizontal: theme.spacing.lg,
+              paddingVertical: theme.spacing.sm,
+            }}
             onPress={() =>
               router.push({
                 pathname: "/account/order/[id]/tracking",
@@ -67,10 +84,12 @@ export default function OrderDetailsPage() {
               })
             }
           >
-            <Text className="text-center text-primary">Track Order</Text>
-          </TouchableOpacity>
+            <Text align="center" color="primary">
+              Track Order
+            </Text>
+          </Pressable>
         ) : null}
-      </ContentWrapper>
+      </PageContent>
     </SafeAreaWrapper>
   );
 }
