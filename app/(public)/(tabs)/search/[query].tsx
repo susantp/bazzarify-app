@@ -3,12 +3,11 @@ import { useLocalSearchParams } from "expo-router";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { View } from "react-native";
+import { Box, Text } from "@/components/design-system";
 import React, { useEffect, useMemo, useRef } from "react";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductCard from "@/components/common/ProductCard";
 import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
-import { ThemedText } from "@/components/ThemedText";
 import useProductSearch from "@/modules/product/hooks/useProductSearch";
 import { useAtom, useSetAtom } from "jotai";
 import {
@@ -70,17 +69,15 @@ export default function Page() {
       <ContentWrapper>
         {isLoading ? <ThemedLoader /> : null}
         {isError ? (
-          <ThemedText>
-            An error occurred while fetching search results.
-          </ThemedText>
+          <Text>An error occurred while fetching search results.</Text>
         ) : null}
         {metadata ? (
-          <View className="p-2">
+          <Box padding="sm">
             <FilterTriggerButton
               onPress={() => bottomSheetRef.current?.expand()}
               appliedCount={appliedFilterCount}
             />
-          </View>
+          </Box>
         ) : null}
         {!isSuccess ? null : (
           <InfiniteProductGrid
