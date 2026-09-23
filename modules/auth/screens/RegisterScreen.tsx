@@ -1,4 +1,4 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet } from "react-native";
 import UserPasswordInput from "@/components/account/UserPasswordInput";
 import SocialLoginButton from "@/components/account/SocialLoginButton";
 import React, { useState } from "react";
@@ -29,6 +29,7 @@ import {
   clearAuthSession,
   setAuthenticatedSession,
 } from "@/modules/auth/session/sessionController";
+import { Box, Text } from "@/components/design-system";
 
 export default function RegisterScreen() {
   const [formValues] = useState({
@@ -109,19 +110,34 @@ export default function RegisterScreen() {
 
   return (
     <SafeAreaWrapper>
-      <View className="flex-1 bg-slate-50">
-        <View className="pointer-events-none absolute -right-10 -top-24 h-44 w-44 rounded-full bg-primary opacity-10" />
-        <View className="pointer-events-none absolute -bottom-28 -left-16 h-52 w-52 rounded-full bg-primary opacity-10" />
+      <Box flex={1} backgroundColor="surfaceMuted">
+        <Box
+          pointerEvents="none"
+          backgroundColor="primary"
+          style={styles.topGlow}
+        />
+        <Box
+          pointerEvents="none"
+          backgroundColor="primary"
+          style={styles.bottomGlow}
+        />
         <ContentWrapper>
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            <View className="flex-1 items-center justify-center py-6">
-              <View className="mb-6 items-center">
+            <Box flex={1} align="center" justify="center" paddingY="xxl">
+              <Box align="center" gap="sm" style={styles.titleBlock}>
                 <PageTitle title="Register" />
-                <Text className="mt-2 text-base text-slate-500">
+                <Text variant="body" color="textMuted">
                   Create your account to get started
                 </Text>
-              </View>
-              <View className="w-full gap-y-4 rounded-3xl bg-white px-6 py-8 shadow-sm">
+              </Box>
+              <Box
+                backgroundColor="surface"
+                borderRadius="xl"
+                gap="lg"
+                paddingX="xxl"
+                paddingY="xxl"
+                style={styles.formCard}
+              >
                 <ControlledInput
                   style={{ width: "100%", gap: 8 }}
                   errors={errors}
@@ -196,33 +212,70 @@ export default function RegisterScreen() {
                   label={isSubmitting ? "Creating account..." : "Register"}
                   disabled={isSubmitting}
                 />
-                <View className="flex-row items-center justify-center gap-x-3">
-                  <View className="h-px flex-1 bg-slate-200" />
-                  <Text className="text-gray-400">or</Text>
-                  <View className="h-px flex-1 bg-slate-200" />
-                </View>
-                <TouchableOpacity disabled={isSubmitting}>
+                <Box direction="row" align="center" justify="center" gap="md">
+                  <Box flex={1} style={styles.divider} />
+                  <Text color="textMuted">or</Text>
+                  <Box flex={1} style={styles.divider} />
+                </Box>
+                <Pressable disabled={isSubmitting}>
                   <SocialLoginButton label="register with" provider="google" />
-                </TouchableOpacity>
-                <TouchableOpacity disabled={isSubmitting}>
+                </Pressable>
+                <Pressable disabled={isSubmitting}>
                   <SocialLoginButton
                     label="register with"
                     provider="facebook"
                   />
-                </TouchableOpacity>
-              </View>
-              <View className="mt-6 flex-row items-center gap-x-2">
-                <View>
-                  <Text>Old User?</Text>
-                </View>
+                </Pressable>
+              </Box>
+              <Box
+                direction="row"
+                align="center"
+                gap="sm"
+                style={styles.signinRow}
+              >
+                <Text>Old User?</Text>
                 <Link href="/auth/login">
-                  <Text className="text-primary underline">Sign In</Text>
+                  <Text color="primary" style={styles.signinText}>
+                    Sign In
+                  </Text>
                 </Link>
-              </View>
-            </View>
+              </Box>
+            </Box>
           </ScrollView>
         </ContentWrapper>
-      </View>
+      </Box>
     </SafeAreaWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  bottomGlow: {
+    borderRadius: 999,
+    bottom: -112,
+    height: 208,
+    left: -64,
+    opacity: 0.1,
+    position: "absolute",
+    width: 208,
+  },
+  divider: { backgroundColor: "#E2E8F0", height: StyleSheet.hairlineWidth },
+  formCard: {
+    shadowColor: "#000",
+    shadowOffset: { height: 2, width: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    width: "100%",
+  },
+  signinRow: { marginTop: 24 },
+  signinText: { textDecorationLine: "underline" },
+  titleBlock: { marginBottom: 24 },
+  topGlow: {
+    borderRadius: 999,
+    height: 176,
+    opacity: 0.1,
+    position: "absolute",
+    right: -40,
+    top: -96,
+    width: 176,
+  },
+});
