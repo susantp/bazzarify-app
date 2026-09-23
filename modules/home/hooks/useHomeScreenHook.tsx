@@ -14,7 +14,7 @@ import { IHomeCard } from "@/modules/home/types";
 import homeService from "@/modules/product/services/homeService";
 import marketingService from "@/modules/marketing/sliders/domain/services/marketingService";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
-import { ThemedText } from "@/components/ThemedText";
+import { Text } from "@/components/design-system";
 
 export default function useHomeScreenHook() {
   const queryClient = useQueryClient();
@@ -106,7 +106,7 @@ export default function useHomeScreenHook() {
     {
       id: "slider",
       component: homeCategoriesQueryResult.isLoading ? (
-        <ThemedText>Loading</ThemedText>
+        <Text>Loading</Text>
       ) : homeCategoriesQueryResult.isError ? (
         <></>
       ) : (
@@ -129,18 +129,6 @@ export default function useHomeScreenHook() {
       ) : undefined,
       title: "Popular Items",
     },
-    // {
-    //   id: "ad-banner",
-    //   component: (
-    //     <View className="flex w-full items-center">
-    //       <Image
-    //         source={require("@/assets/images/ads/homeAd.png")}
-    //         style={{ width: width * 0.99, height: height * 0.2 }}
-    //       />
-    //     </View>
-    //   ),
-    //   title: "Ad Banner",
-    // },
     {
       id: "categories",
       component: homeCategoriesQueryResult?.data?.homeCategories?.data
