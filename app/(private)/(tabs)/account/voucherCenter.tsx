@@ -3,82 +3,67 @@ import ScreenHeader from "@/components/common/ScreenHeader";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import {
   FlatList,
-  Image,
   ListRenderItemInfo,
-  Text,
   useWindowDimensions,
-  View,
 } from "react-native";
 import ShippingCoupon from "@/components/common/CouponComponent";
 import React, { ReactElement } from "react";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import { Box, Image, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 type VoucherCenterCard = { id: string; component: ReactElement };
 export default function Page() {
   const { width } = useWindowDimensions();
+  const theme = useBazarifyTheme();
   const CARDS: VoucherCenterCard[] = [
     {
       id: "newUserVoucher",
       component: (
-        <View className="flex-row items-center gap-x-4 p-4">
-          <View>
-            <Image
-              source={require("@/assets/images/voucher-icon.png")}
-              style={{ width: 30, height: 30 }}
-            />
-          </View>
-          <View>
-            <Text className="text-lg">New User Voucher</Text>
-          </View>
-        </View>
+        <Box direction="row" align="center" gap="lg" padding="lg">
+          <Image
+            source={require("@/assets/images/voucher-icon.png")}
+            size={30}
+            radius="none"
+          />
+          <Text variant="title">New User Voucher</Text>
+        </Box>
       ),
     },
     {
       id: "voucherPreview",
       component: (
-        <View className="flex items-center bg-purple-200 py-8">
+        <Box align="center" backgroundColor="primarySurface" paddingY="xxxl">
           <ShippingCoupon />
-        </View>
+        </Box>
       ),
     },
     {
       id: "banner",
       component: (
-        <View className="flex items-center">
+        <Box align="center">
           <Image
             source={require("@/assets/images/banners/freeShippingVoucher.png")}
             style={{ width: width, height: 40 }}
           />
-        </View>
+        </Box>
       ),
     },
     {
       id: "voucherSlider",
       component: (
-        <View className="flex-row items-center justify-center">
+        <Box direction="row" align="center" justify="center">
           <ShippingCoupon />
-        </View>
+        </Box>
       ),
     },
     {
       id: "productList",
-      component: (
-        <ThemedLoader />
-        // <ContentGridSection
-        //   className="align-center flex-col bg-white"
-        //   title={"Popular Items"}
-        //   items={popularItemsData}
-        //   horizontal={false}
-        //   cols={2}
-        //   renderItem={(item, index, cols) => (
-        //     <ProductCard item={item} key={index} cols={cols} />
-        //   )}
-        // />
-      ),
+      component: <ThemedLoader />,
     },
   ];
   return (
-    <SafeAreaWrapper style={{ backgroundColor: "#f9a8d4" }}>
+    <SafeAreaWrapper style={{ backgroundColor: theme.colors.primarySurface }}>
       <ScreenHeader title="Voucher Center" />
       <ContentWrapper>
         <FlatList
