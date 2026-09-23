@@ -2,9 +2,8 @@ import {
   Linking,
   RefreshControl,
   ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+  Pressable,
+  StyleSheet,
 } from "react-native";
 import ProfileInfo from "@/components/account/profile/ProfileInfo";
 import AccountHeader from "@/components/account/AccountHeader";
@@ -19,6 +18,8 @@ import formatOrderDate from "@/modules/order/utils/formatOrderDate";
 import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { Box, Icon, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export default function AccountProfileScreen() {
   const {
@@ -31,6 +32,7 @@ export default function AccountProfileScreen() {
   } = useOrder();
   const orderStatusGroups = useAtomValue(orderStatusesState);
   const { orderStatusBoxes } = useOrderStatusBox(orderStatusGroups);
+  const theme = useBazarifyTheme();
   const recentOrders = ordersPayload?.orders?.data?.slice(0, 5) || [];
   const earnWithBazzarifyUrl = "https://vendor.bazarify.com.np/register";
 
@@ -42,12 +44,12 @@ export default function AccountProfileScreen() {
     <SafeAreaWrapper>
       <AccountHeader />
       <ScrollView
-        className="flex-1 bg-white"
+        style={[styles.scroll, { backgroundColor: theme.colors.surface }]}
         refreshControl={
           <RefreshControl refreshing={isRefreshing} onRefresh={refreshOrders} />
         }
       >
-        <View className="flex-1 flex-col px-2 py-2">
+        <Box flex={1} gap="sm" padding="sm">
           <ProfileInfo user={user} />
           <OrderStatus
             orderStatuses={orderStatusBoxes}
@@ -55,15 +57,23 @@ export default function AccountProfileScreen() {
             onStatusPress={handleStatusPress}
             onViewAllPress={() => router.push("/account/order")}
           />
-          <View className="mt-4 gap-y-2 px-2">
-            <Text className="text-lg font-semibold">Recent Orders</Text>
+          <Box gap="sm" paddingX="sm" style={styles.recentSection}>
+            <Text variant="title">Recent Orders</Text>
             {!recentOrders.length ? (
-              <Text className="text-sm text-gray-500">No orders found.</Text>
+              <Text variant="bodyCompact" color="textMuted">
+                No orders found.
+              </Text>
             ) : null}
             {recentOrders.map((order) => (
-              <TouchableOpacity
+              <Pressable
                 key={order.uuid || order.order_number}
-                className="rounded-lg border border-slate-200 p-3"
+                accessibilityLabel={order.order_number}
+                accessibilityRole="button"
+                style={({ pressed }) => [
+                  styles.orderCard,
+                  { borderColor: theme.colors.border },
+                  pressed && styles.pressed,
+                ]}
                 onPress={() =>
                   router.push({
                     pathname: "/account/order/[id]",
@@ -73,36 +83,76 @@ export default function AccountProfileScreen() {
                   })
                 }
               >
-                <View className="flex-row items-center justify-between">
-                  <Text className="font-semibold">{order.order_number}</Text>
-                  <Text className="text-xs text-gray-500">
+                <Box direction="row" align="center" justify="space-between">
+                  <Text variant="bodyMedium">{order.order_number}</Text>
+                  <Text variant="bodyCompact" color="textMuted">
                     {toTitleCase(order.status.replace(/_/g, " "))}
                   </Text>
-                </View>
-                <Text className="mt-1 text-xs text-gray-500">
+                </Box>
+                <Text
+                  variant="bodyCompact"
+                  color="textMuted"
+                  style={styles.orderDate}
+                >
                   {formatOrderDate(order.placed_at, "LLL d, yyyy")}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
-          </View>
-          <View className="mt-4 border-t border-slate-200 px-2 pt-4">
-            <Text className="text-[28px] font-semibold text-slate-900">
-              Earn with Bazzarify
-            </Text>
-            <TouchableOpacity
-              className="mt-4 flex-row items-center gap-x-3 rounded-xl border border-slate-300 px-4 py-4"
+          </Box>
+          <Box
+            gap="lg"
+            paddingX="sm"
+            style={[
+              styles.earnSection,
+              { borderTopColor: theme.colors.border },
+            ]}
+          >
+            <Text variant="heading">Earn with Bazzarify</Text>
+            <Pressable
+              accessibilityLabel="Earn With Bazzarify"
+              accessibilityRole="button"
+              style={({ pressed }) => [
+                styles.earnAction,
+                { borderColor: theme.colors.borderStrong },
+                pressed && styles.pressed,
+              ]}
               onPress={handleEarnWithBazzarifyPress}
             >
-              <View className="h-7 w-7 items-center justify-center rounded-full">
-                <FontAwesome5 name="rupee-sign" size={20} color="#EA580C" />
-              </View>
-              <Text className="text-2xl font-medium text-slate-900">
-                Earn With Bazzarify
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+              <Icon size={20} color="primary">
+                {({ color, size }) => (
+                  <FontAwesome5 name="rupee-sign" size={size} color={color} />
+                )}
+              </Icon>
+              <Text variant="title">Earn With Bazzarify</Text>
+            </Pressable>
+          </Box>
+        </Box>
       </ScrollView>
     </SafeAreaWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  earnAction: {
+    alignItems: "center",
+    borderRadius: 20,
+    borderWidth: StyleSheet.hairlineWidth,
+    flexDirection: "row",
+    gap: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  earnSection: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingTop: 16,
+  },
+  orderCard: {
+    borderRadius: 14,
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: 12,
+  },
+  orderDate: { marginTop: 4 },
+  pressed: { opacity: 0.76 },
+  recentSection: { marginTop: 16 },
+  scroll: { flex: 1 },
+});
