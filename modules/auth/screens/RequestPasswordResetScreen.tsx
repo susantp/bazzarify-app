@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import React from "react";
 import PageTitle from "@/components/account/PageTitle";
@@ -24,6 +24,7 @@ import {
   applyValidationFeedback,
   getValidationFeedback,
 } from "@/modules/core/utils/validationFeedback";
+import { Box } from "@/components/design-system";
 
 export default function RequestPasswordResetScreen() {
   const {
@@ -87,8 +88,8 @@ export default function RequestPasswordResetScreen() {
     <SafeAreaWrapper>
       <ScreenHeader title="Forget Password" />
       <ContentWrapper>
-        <ScrollView>
-          <View className="h-screen-safe w-screen flex-col items-center justify-center gap-y-4">
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <Box flex={1} align="center" justify="center" gap="lg">
             <PageTitle title="Forget Password" />
             <ControlledInput
               style={{ width: "100%", gap: 8, paddingHorizontal: 24 }}
@@ -114,7 +115,6 @@ export default function RequestPasswordResetScreen() {
               name="phone"
               formField={({ field }: IControlledFormFieldProps) => (
                 <NumberInput
-                  className="border-2 border-slate-200 py-5"
                   hasError={errors.phone}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
@@ -136,7 +136,7 @@ export default function RequestPasswordResetScreen() {
               label="Send OTP Code"
               disabled={isSubmitting}
             />
-          </View>
+          </Box>
         </ScrollView>
       </ContentWrapper>
     </SafeAreaWrapper>
