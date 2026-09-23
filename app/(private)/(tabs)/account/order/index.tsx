@@ -1,15 +1,10 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import {
-  RefreshControl,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { RefreshControl, ScrollView, Pressable } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { Box, PageContent, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import useOrderStatusBox from "@/modules/order/hooks/useOrderStatusBox";
 import useOrder from "@/modules/order/hooks/useOrder";
 import { toTitleCase } from "@/modules/core/utils";
@@ -19,15 +14,14 @@ import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
 
 export default function Page() {
+  const theme = useBazarifyTheme();
   const { statusId } = useLocalSearchParams();
-  const {
-    getFilteredOrder,
-    isRefreshing,
-    refreshOrders,
-  } = useOrder();
+  const { getFilteredOrder, isRefreshing, refreshOrders } = useOrder();
   const orderStatusGroups = useAtomValue(orderStatusesState);
   const { orderStatusBoxes } = useOrderStatusBox(orderStatusGroups);
-  const availableStatusIds = orderStatusBoxes.map((orderStatus) => orderStatus.id);
+  const availableStatusIds = orderStatusBoxes.map(
+    (orderStatus) => orderStatus.id,
+  );
   const selectedStatusId = resolveOrderStatusSelection({
     routeStatusId: statusId,
     currentStatus: null,
@@ -41,7 +35,12 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Your Order" />
-      <ContentWrapper className="gap-y-6 bg-white px-3 py-2">
+      <PageContent
+        backgroundColor="surface"
+        gap="lg"
+        paddingX="sm"
+        paddingY="sm"
+      >
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -49,35 +48,54 @@ export default function Page() {
               onRefresh={refreshOrders}
             />
           }
-          contentContainerClassName="gap-y-6"
+          contentContainerStyle={{ rowGap: theme.spacing.lg }}
         >
-          <View className="flex-row flex-wrap gap-2">
+          <Box direction="row" gap="sm" style={{ flexWrap: "wrap" }}>
             {orderStatusBoxes.map((orderStatus) => (
-              <TouchableOpacity
+              <Pressable
                 key={orderStatus.id}
+                accessibilityRole="button"
+                accessibilityLabel={orderStatus.label}
                 onPress={() =>
                   router.replace({
                     pathname: "/account/order",
                     params: { statusId: orderStatus.id },
                   })
                 }
-                className="flex-row rounded-lg border border-slate-400 px-2 py-1"
+                style={{
+                  borderColor: theme.colors.borderStrong,
+                  borderRadius: theme.radii.lg,
+                  borderWidth: 1,
+                  flexDirection: "row",
+                  paddingHorizontal: theme.spacing.sm,
+                  paddingVertical: theme.spacing.xs,
+                }}
               >
                 <Text
-                  className={`${selectedStatusId === orderStatus.id ? "text-primary" : undefined} text-md`}
+                  color={
+                    selectedStatusId === orderStatus.id ? "primary" : "text"
+                  }
+                  variant="bodyCompact"
                 >
                   {orderStatus.label}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
-          </View>
+          </Box>
           {!filteredOrders.length ? (
-            <Text className="text-sm text-gray-500">No orders found.</Text>
+            <Text variant="bodyCompact" color="textMuted">
+              No orders found.
+            </Text>
           ) : null}
           {filteredOrders.map((order) => (
-            <TouchableOpacity
+            <Pressable
               key={order.uuid || order.order_number}
-              className="rounded-lg border border-slate-200 p-3"
+              style={{
+                borderColor: theme.colors.border,
+                borderRadius: theme.radii.lg,
+                borderWidth: 1,
+                padding: theme.spacing.lg,
+              }}
               onPress={() =>
                 router.push({
                   pathname: "/account/order/[id]",
@@ -87,19 +105,23 @@ export default function Page() {
                 })
               }
             >
-              <View className="flex-row items-center justify-between">
-                <Text className="font-semibold">{order.order_number}</Text>
-                <Text className="text-xs text-gray-500">
+              <Box direction="row" align="center" justify="space-between">
+                <Text variant="bodyMedium">{order.order_number}</Text>
+                <Text variant="bodyCompact" color="textMuted">
                   {toTitleCase(order.status.replace(/_/g, " "))}
                 </Text>
-              </View>
-              <Text className="mt-1 text-xs text-gray-500">
+              </Box>
+              <Text
+                variant="bodyCompact"
+                color="textMuted"
+                style={{ marginTop: theme.spacing.xs }}
+              >
                 {formatOrderDate(order.placed_at, "LLL d, yyyy")}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </ScrollView>
-      </ContentWrapper>
+      </PageContent>
     </SafeAreaWrapper>
   );
 }
