@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
 import React, { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
@@ -24,6 +24,7 @@ import {
   applyValidationFeedback,
   getValidationFeedback,
 } from "@/modules/core/utils/validationFeedback";
+import { Box } from "@/components/design-system";
 
 export default function VerifyPasswordResetScreen() {
   const { email, phone } = useLocalSearchParams<{
@@ -100,8 +101,8 @@ export default function VerifyPasswordResetScreen() {
     <SafeAreaWrapper>
       <ScreenHeader title="Forget Password" />
       <ContentWrapper>
-        <ScrollView>
-          <View className="h-screen w-screen flex-col items-center justify-center gap-y-2">
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <Box flex={1} align="center" justify="center" gap="sm">
             <PageTitle title="Forget Password" />
             <ControlledInput
               style={{ width: "100%", gap: 8, paddingHorizontal: 24 }}
@@ -179,7 +180,7 @@ export default function VerifyPasswordResetScreen() {
               label="Update password"
               disabled={isSubmitting}
             />
-          </View>
+          </Box>
         </ScrollView>
       </ContentWrapper>
     </SafeAreaWrapper>
