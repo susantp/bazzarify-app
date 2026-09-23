@@ -1,15 +1,16 @@
-import { Image, ScrollView, TouchableOpacity, View } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import ContentWrapper from "@/components/common/ContentWrapper";
 import { AntDesign } from "@expo/vector-icons";
 import { useAtomValue } from "jotai";
 import { userProfileAtom } from "@/atoms/sessionAtom";
 import Toast from "react-native-toast-message";
 import TextInputV1 from "@/components/common/TextInputV1";
-import { Button, Icon, Text } from "@/components/design-system";
+import { Box, Button, Icon, Image, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export default function Page() {
+  const theme = useBazarifyTheme();
   const userProfile = useAtomValue(userProfileAtom);
   const handleProfileUpdate = () => {
     Toast.show({
@@ -21,26 +22,28 @@ export default function Page() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Edit Profile" />
-      <ScrollView className="flex-1 bg-white">
-        <ContentWrapper className="gap-y-4 px-4 py-3.5">
-          <View className="flex items-center">
-            <View>
+      <ScrollView style={{ flex: 1, backgroundColor: theme.colors.surface }}>
+        <Box gap="lg" paddingX="lg" paddingY="lg">
+          <Box align="center">
+            <Box style={{ position: "relative" }}>
               <Image
                 source={require("@/assets/images/profile.png")}
-                style={{ width: 150, height: 150 }}
+                size={150}
+                radius="none"
               />
-              <TouchableOpacity
-                activeOpacity={0.4}
-                className="absolute bottom-2 right-2"
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Add profile image"
+                style={{ position: "absolute", bottom: 8, right: 8 }}
               >
                 <Icon color="primary" size={24}>
                   {({ color, size }) => (
                     <AntDesign name="plus-circle" size={size} color={color} />
                   )}
                 </Icon>
-              </TouchableOpacity>
-            </View>
-          </View>
+              </Pressable>
+            </Box>
+          </Box>
           <TextInputV1
             defaultValue={userProfile.name}
             placeholder={"Enter Your Profile"}
@@ -60,9 +63,9 @@ export default function Page() {
             placeholder={"email"}
           />
           <TextInputV1 defaultValue={userProfile.dob} placeholder={"dob"} />
-          <View className="w-full items-start pt-3">
+          <Box align="flex-start" paddingY="sm">
             <Text variant="title">Update Password</Text>
-          </View>
+          </Box>
 
           <TextInputV1
             keyboardType="visible-password"
@@ -81,7 +84,7 @@ export default function Page() {
             onPress={handleProfileUpdate}
             style={{ width: "100%", borderRadius: 20 }}
           />
-        </ContentWrapper>
+        </Box>
       </ScrollView>
     </SafeAreaWrapper>
   );
