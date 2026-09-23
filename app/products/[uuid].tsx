@@ -9,7 +9,8 @@ import ProductDescription from "@/components/product/ProductDescription";
 import ProductSlider from "@/modules/product/components/ProductSlider";
 import ProductSpecification from "@/components/product/ProductSpecification";
 import BottomActionView from "@/modules/core/components/BottomActionView";
-import ContentWrapper from "@/components/common/ContentWrapper";
+import { PageContent } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ProductPageBottomView from "@/modules/core/components/ProductPageBottomView";
 import useProductScreen from "@/modules/product/hooks/useProductScreen";
@@ -28,6 +29,7 @@ import DeliveryAddressPicker from "@/modules/user/components/DeliveryAddressPick
 import ScrollView = Animated.ScrollView;
 
 export default function ProductScreen() {
+  const theme = useBazarifyTheme();
   const { uuid } = useLocalSearchParams();
   const {
     product,
@@ -54,11 +56,16 @@ export default function ProductScreen() {
         <FetchingErrorComponent message="Sorry, something went wrong fetching the product." />
       ) : product && currency ? (
         <>
-          <ContentWrapper className={`flex-1 ` + (ios ? " pb-2" : " pt-3")}>
+          <PageContent
+            backgroundColor="surface"
+            style={{
+              paddingBottom: ios ? theme.spacing.sm : 0,
+              paddingTop: ios ? 0 : theme.spacing.md,
+            }}
+          >
             <ScrollView style={{ width: "100%" }}>
               <ProductScreenContainer>
                 <ProductSlider item={product} />
-                {/*<SpecialSaleBanner item={product} />*/}
                 <ProductGenericDetails item={product}>
                   <ProductPriceComponent
                     item={product}
@@ -76,21 +83,15 @@ export default function ProductScreen() {
                   ) : null}
                   <ProductCouponDiscountInfo />
                 </ProductGenericDetails>
-                {/*<VoucherList className="border-gray-400 px-4" />*/}
                 <ProductDeliveryDetails
                   selectedAddress={displayAddress}
                   onChangeAddress={handleOpenAddress}
                 />
-                {/*<ProductReviewBox />*/}
-                {/*<AskQuestionBox />*/}
-                {/*<TopSellingComponent />*/}
-                {/*<ProductVendorDetails />*/}
                 <ProductDescription product={product} />
                 <ProductSpecification product={product} />
-                {/*<RelatedProducts />*/}
               </ProductScreenContainer>
             </ScrollView>
-          </ContentWrapper>
+          </PageContent>
           <BottomActionView style={{ gap: 12, padding: 12 }}>
             <ProductPageBottomView
               onCartAdd={() => handleAddToCart(product, selectedVariant)}
