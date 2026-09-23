@@ -1,6 +1,5 @@
-import { Text, View } from "react-native";
+import { Box, Icon, PageContent, Text } from "@/components/design-system";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import ContentWrapper from "@/components/common/ContentWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { useLocalSearchParams } from "expo-router";
 import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
@@ -16,21 +15,31 @@ export default function PaymentConfirmationScreen() {
   return (
     <SafeAreaWrapper>
       <ScreenHeader title={paymentMethodById?.name} />
-      <ContentWrapper className="bg-white">
+      <PageContent backgroundColor="surface">
         {paymentMethodById?.voucherMsg && (
-          <View className="flex-row gap-x-2 bg-blue-200 p-2">
-            <View className="w-1/12 items-end">
-              <Ionicons name="information-circle" color="blue" size={15} />
-            </View>
-            <View className="w-10/12">
-              <Text className="text-justify">
-                {paymentMethodById.voucherMsg}
-              </Text>
-            </View>
-          </View>
+          <Box
+            direction="row"
+            align="center"
+            gap="sm"
+            backgroundColor="surfaceMuted"
+            padding="sm"
+          >
+            <Icon
+              size={16}
+              color="locationBar"
+              accessibilityLabel="Information"
+            >
+              {({ color, size }) => (
+                <Ionicons name="information-circle" color={color} size={size} />
+              )}
+            </Icon>
+            <Box flex={1}>
+              <Text align="justify">{paymentMethodById.voucherMsg}</Text>
+            </Box>
+          </Box>
         )}
         {componentMap[id.toString()]}
-      </ContentWrapper>
+      </PageContent>
     </SafeAreaWrapper>
   );
 }
