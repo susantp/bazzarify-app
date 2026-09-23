@@ -1,59 +1,74 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import ContentWrapper from "@/components/common/ContentWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import { Text, View } from "react-native";
+import { Box, PageContent, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
-import { randomUUID } from "expo-crypto";
 import React from "react";
 import PaymentMethodView from "@/components/cart/payment/PaymentMethodView";
 import BottomActionView from "@/modules/core/components/BottomActionView";
 
 export default function PaymentScreen() {
+  const theme = useBazarifyTheme();
   const { paymentMethodSections, cartState, inventoryState } =
     usePaymentScreenHook();
 
   return (
     <SafeAreaWrapper>
       <ScreenHeader title="Payment" />
-      <ContentWrapper className="bg-white">
+      <PageContent backgroundColor="surface">
         {inventoryState.hasBlockingIssue ? (
-          <View className="mx-4 mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
-            <Text className="font-semibold text-red-700">
+          <Box
+            backgroundColor="surfaceMuted"
+            paddingX="lg"
+            paddingY="md"
+            style={{
+              marginHorizontal: theme.spacing.lg,
+              marginBottom: theme.spacing.lg,
+              borderColor: theme.colors.danger,
+              borderWidth: 1,
+              borderRadius: theme.radii.lg,
+            }}
+          >
+            <Text variant="bodyMedium" color="danger">
               Some items became unavailable.
             </Text>
-            <Text className="mt-1 text-sm text-red-700">
+            <Text
+              variant="bodyCompact"
+              color="danger"
+              style={{ marginTop: theme.spacing.xs }}
+            >
               Go back to checkout and update your cart before payment.
             </Text>
-          </View>
+          </Box>
         ) : null}
-        {paymentMethodSections.map((methodSection, index) => (
-          <View key={randomUUID()} className="flex-col">
-            <View className="bg-gray-300 px-2 py-1.5">
-              <Text>{methodSection.sectionTitle}</Text>
-            </View>
+        {paymentMethodSections.map((methodSection) => (
+          <Box key={methodSection.sectionTitle}>
+            <Box backgroundColor="surfaceMuted" paddingX="sm" paddingY="xs">
+              <Text variant="label">{methodSection.sectionTitle}</Text>
+            </Box>
             {methodSection.methods.map((methodType) => (
               <PaymentMethodView
                 method={methodType}
-                key={randomUUID()}
+                key={String(methodType.pathname)}
                 pathName={methodType.pathname}
               />
             ))}
-          </View>
+          </Box>
         ))}
-      </ContentWrapper>
+      </PageContent>
       <BottomActionView>
-        <View className="flex-col gap-y-4 px-4 py-9">
-          <View className="flex-row justify-between">
-            <Text className="text-sm font-light">Subtotal</Text>
-            <Text className="font-semibold">{`Rs. ${cartState?.cart?.totals.sub_total}`}</Text>
-          </View>
-          <View className="flex-row justify-between">
-            <Text className="text-xl">Total Amount</Text>
-            <Text className="text-xl font-semibold text-primary">
+        <Box gap="lg" paddingX="lg" paddingY="huge">
+          <Box direction="row" justify="space-between">
+            <Text variant="bodyCompact">Subtotal</Text>
+            <Text variant="bodyMedium">{`Rs. ${cartState?.cart?.totals.sub_total}`}</Text>
+          </Box>
+          <Box direction="row" justify="space-between">
+            <Text variant="title">Total Amount</Text>
+            <Text variant="title" color="primary">
               {`Rs. ${cartState?.cart?.totals.grand_total}`}
             </Text>
-          </View>
-        </View>
+          </Box>
+        </Box>
       </BottomActionView>
     </SafeAreaWrapper>
   );
