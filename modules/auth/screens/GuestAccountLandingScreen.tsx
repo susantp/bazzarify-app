@@ -1,10 +1,11 @@
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import PolygonButton from "@/components/common/PolygonButton";
 import { useState } from "react";
 import { router } from "expo-router";
-import { Colors } from "@/constants/Colors";
 import ContentWrapper from "@/components/common/ContentWrapper";
+import { Box, Text } from "@/components/design-system";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 
 type GuestMenuType = {
   [key: string]: { id: string; label: string };
@@ -19,6 +20,7 @@ const guestMenu: GuestMenuType = {
 };
 
 export default function GuestAccountLandingScreen() {
+  const theme = useBazarifyTheme();
   const [loginBtnDimension, setLoginBtnDimension] = useState({
     width: 0,
     height: 0,
@@ -33,17 +35,17 @@ export default function GuestAccountLandingScreen() {
 
   return (
     <SafeAreaWrapper>
-      <ContentWrapper className="flex-col gap-y-9 py-5">
-        <View id="auth-actions" className="flex-col items-center gap-y-4">
-          <Text className="text-lg font-semibold">
+      <ContentWrapper styles={styles.content}>
+        <Box id="auth-actions" align="center" gap="lg">
+          <Text variant="title" align="center">
             Login or Register to get special offers.
           </Text>
-          <View className="flex-row items-center">
+          <Box direction="row" align="center">
             <PolygonButton
               dimensions={loginBtnDimension}
               setDimensions={setLoginBtnDimension}
               onPress={handleLoginPress}
-              color="#1A202C"
+              color={theme.colors.text}
               label="Login"
               style={{ paddingVertical: 10 }}
               isLeft={true}
@@ -52,25 +54,44 @@ export default function GuestAccountLandingScreen() {
               dimensions={registerBtnDimension}
               setDimensions={setRegisterBtnDimension}
               onPress={handleRegisterPress}
-              color={Colors.light.tint}
+              color={theme.colors.primary}
               label="Register"
               style={{ paddingVertical: 10 }}
               isLeft={false}
             />
-          </View>
-        </View>
-        <View id="guest-menu" className="flex-col border-t border-t-slate-300">
+          </Box>
+        </Box>
+        <Box
+          id="guest-menu"
+          style={[styles.menu, { borderTopColor: theme.colors.borderStrong }]}
+        >
           {Object.keys(guestMenu).map((key: string) => (
-            <TouchableOpacity
-              activeOpacity={0.4}
-              className="border-b border-b-slate-300 px-3 py-6"
+            <Pressable
+              accessibilityLabel={guestMenu[key].label}
+              accessibilityRole="button"
               key={key}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { borderBottomColor: theme.colors.borderStrong },
+                pressed && styles.pressed,
+              ]}
             >
               <Text>{guestMenu[key].label}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
-        </View>
+        </Box>
       </ContentWrapper>
     </SafeAreaWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  content: { gap: 36, paddingVertical: 20 },
+  menu: { borderTopWidth: StyleSheet.hairlineWidth },
+  menuItem: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 12,
+    paddingVertical: 24,
+  },
+  pressed: { opacity: 0.6 },
+});
