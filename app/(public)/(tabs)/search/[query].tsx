@@ -3,8 +3,8 @@ import { useLocalSearchParams } from "expo-router";
 import useSearchBarHook from "@/hooks/useSearchBarHook";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import { Box, Text } from "@/components/design-system";
-import React, { useEffect, useMemo, useRef } from "react";
+import { Box, EmptyState, ErrorState } from "@/components/design-system";
+import { useEffect, useMemo, useRef } from "react";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
 import ProductCard from "@/components/common/ProductCard";
 import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
@@ -68,9 +68,6 @@ export default function Page() {
       />
       <ContentWrapper>
         {isLoading ? <ThemedLoader /> : null}
-        {isError ? (
-          <Text>An error occurred while fetching search results.</Text>
-        ) : null}
         {metadata ? (
           <Box padding="sm">
             <FilterTriggerButton
@@ -79,16 +76,32 @@ export default function Page() {
             />
           </Box>
         ) : null}
-        {!isSuccess ? null : (
+        {!isSuccess && !isError ? null : (
           <InfiniteProductGrid
             id="SearchResults"
             numColumns={2}
             queryResult={queryResult}
             selectItems={(p) => p?.products?.data ?? []}
-            renderItem={({ item, index }) => (
-              <ProductCard item={item} key={index} cols={2} />
-            )}
-            keyExtractor={(item) => item?.uuid}
+            renderItem={({ item }) => <ProductCard item={item} cols={2} />}
+            keyExtractor={(item) => item.uuid}
+            listEmptyComponent={
+              <EmptyState
+                title="No products found"
+                description="Try another search or adjust your filters."
+                testID="search-results-empty"
+              />
+            }
+            listErrorComponent={
+              <ErrorState
+                title="Couldn't load search results"
+                description="Check your connection and try again."
+                action={{
+                  label: "Retry",
+                  onPress: () => void queryResult.refetch(),
+                }}
+                testID="search-results-error"
+              />
+            }
           />
         )}
       </ContentWrapper>
