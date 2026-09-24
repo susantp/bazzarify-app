@@ -35,8 +35,10 @@ export function Carousel<T>({
 
   useEffect(() => {
     currentIndexRef.current = 0;
-    setCurrentIndex(0);
     listRef.current?.scrollToOffset({ offset: 0, animated: false });
+
+    const resetIndexId = setTimeout(() => setCurrentIndex(0), 0);
+    return () => clearTimeout(resetIndexId);
   }, [data.length]);
 
   useEffect(() => {

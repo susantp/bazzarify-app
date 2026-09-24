@@ -99,7 +99,7 @@ export type BazarifyTheme = {
 };
 
 export function createBazarifyTheme(
-  colorScheme: ColorSchemeName,
+  colorScheme: ColorSchemeName | null | undefined,
 ): BazarifyTheme {
   const mode: BazarifyColorScheme = colorScheme === "dark" ? "dark" : "light";
 

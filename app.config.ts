@@ -20,7 +20,6 @@ module.exports = {
     },
   },
   android: {
-    edgeToEdgeEnabled: true,
     adaptiveIcon: {
       foregroundImage: "./assets/images/launcher.png",
     },
@@ -55,7 +54,17 @@ module.exports = {
           "Allow $(PRODUCT_NAME) to use your location.",
       },
     ],
+    [
+      "expo-build-properties",
+      {
+        ios: {
+          enableSceneSupport: true,
+        },
+      },
+    ],
     "expo-router",
+    "expo-image",
+    "expo-status-bar",
     [
       "expo-splash-screen",
       {

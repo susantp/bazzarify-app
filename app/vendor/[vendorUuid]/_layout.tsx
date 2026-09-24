@@ -34,9 +34,6 @@ export default function Layout() {
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarActiveBackgroundColor: "#fff",
-        tabBarIconStyle: {
-          color: Colors.light.icon,
-        },
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {

@@ -35,7 +35,7 @@ const DemoModalComponent = ({
         <Pressable
           accessibilityLabel="Close modal"
           style={[
-            StyleSheet.absoluteFillObject,
+            styles.backdrop,
             {
               backgroundColor: showModal ? theme.colors.overlay : "transparent",
             },
@@ -131,6 +131,13 @@ const CenterContainer = ({
 );
 
 const styles = StyleSheet.create({
+  backdrop: {
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0,
+  },
   bottomDrawer: {
     borderTopWidth: 1,
     bottom: 0,
