@@ -38,7 +38,7 @@ xcodebuild \
   -configuration "${CONFIG}" \
   -destination "id=${BOOTED_ID}" \
   -derivedDataPath "${DERIVED_DATA}" \
-  IPHONEOS_DEPLOYMENT_TARGET=15.0 \
+  IPHONEOS_DEPLOYMENT_TARGET=16.4 \
   build
 
 APP_PATH="${DERIVED_DATA}/Build/Products/${CONFIG}-iphonesimulator/${APP_NAME}.app"

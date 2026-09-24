@@ -1,10 +1,15 @@
 import { ImageBackground, Pressable, StyleSheet } from "react-native";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchStore } from "@/modules/vendor/data/services/vendorService";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
-import { Box, Icon, Text, useBazarifyTheme } from "@/components/design-system";
+import {
+  Box,
+  ErrorState,
+  Icon,
+  Text,
+  useBazarifyTheme,
+} from "@/components/design-system";
 
 interface VendorHeaderProps {
   vendorUuid?: string;
@@ -12,13 +17,24 @@ interface VendorHeaderProps {
 
 const VendorBanner = ({ vendorUuid }: VendorHeaderProps) => {
   const theme = useBazarifyTheme();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["vendor", vendorUuid, "store"],
     queryFn: () => fetchStore(vendorUuid as string),
     staleTime: 5 * 60 * 1000,
   });
   if (isLoading) {
     return <ThemedLoader />;
+  }
+
+  if (isError && !data) {
+    return (
+      <ErrorState
+        title="Store details unavailable"
+        description="We couldn't load this store. Check your connection and try again."
+        action={{ label: "Retry", onPress: () => void refetch() }}
+        testID="vendor-banner-error"
+      />
+    );
   }
 
   return (
