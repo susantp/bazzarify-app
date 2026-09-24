@@ -1,10 +1,9 @@
 import { GridWrapper } from "@/components/home/ContentGridSection";
 import ProductCard from "@/components/common/ProductCard";
-import React from "react";
 import { TJustForYouProductsPayload } from "@/modules/product/schemas/responsePayloads/JustForYouProductsPayloadSchema";
 import { IHomeInfiniteCardComponent } from "@/modules/home/types";
 import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
-import { randomUUID } from "expo-crypto";
+import { EmptyState, ErrorState } from "@/components/design-system";
 
 const title = "Just For You";
 // const seeMorePath = "/(tabs)/categories/just-for-you";
@@ -19,11 +18,31 @@ export default function JustForYou({
         id={id}
         numColumns={numCols}
         queryResult={queryResult}
-        selectItems={(p) => p?.justForYouProducts.data || []}
-        renderItem={({ item, index }) =>
-          item ? <ProductCard item={item} key={index} cols={numCols} /> : null
+        selectItems={(p) =>
+          p?.justForYouProducts.data?.filter(
+            (item): item is NonNullable<typeof item> => item !== null,
+          ) ?? []
         }
-        keyExtractor={(item) => item?.uuid || randomUUID()}
+        renderItem={({ item }) => <ProductCard item={item} cols={numCols} />}
+        keyExtractor={(item) => item.uuid}
+        listEmptyComponent={
+          <EmptyState
+            title="No recommendations yet"
+            description="Check back later for products picked for you."
+            testID="just-for-you-empty"
+          />
+        }
+        listErrorComponent={
+          <ErrorState
+            title="Couldn't load recommendations"
+            description="Check your connection and try again."
+            action={{
+              label: "Retry",
+              onPress: () => void queryResult.refetch(),
+            }}
+            testID="just-for-you-error"
+          />
+        }
       />
     </GridWrapper>
   );
