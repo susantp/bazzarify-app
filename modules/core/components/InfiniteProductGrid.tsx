@@ -18,6 +18,7 @@ export interface InfiniteProductGridProps<TPage, TItem> {
   id?: string;
   onEndReachedThreshold?: number;
   listEmptyComponent?: React.ReactElement | null;
+  listErrorComponent?: React.ReactElement | null;
 }
 
 export default function InfiniteProductGrid<TPage, TItem>(
@@ -32,6 +33,7 @@ export default function InfiniteProductGrid<TPage, TItem>(
     id,
     onEndReachedThreshold = 0.4,
     listEmptyComponent,
+    listErrorComponent,
   } = props;
 
   const {
@@ -57,13 +59,7 @@ export default function InfiniteProductGrid<TPage, TItem>(
   }
 
   if (isError) {
-    return (
-      <View style={{ paddingVertical: 16 }}>
-        <View>
-          <></>
-        </View>
-      </View>
-    );
+    return listErrorComponent ?? null;
   }
 
   return (
