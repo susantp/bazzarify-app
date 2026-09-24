@@ -1,27 +1,26 @@
-import { beforeEach, describe, expect, it, mock } from "bun:test";
+import { consumeAuthRedirect, setAuthRedirect } from "../utils/authRedirect";
+import { retrieveStorage, setStorage } from "@/modules/core/utils/secureStore";
 
-const mockStore = new Map<string, string>();
+jest.mock("@/modules/core/utils/secureStore", () => {
+  const storage = new Map<string, string>();
 
-mock.module("@/modules/core/utils/secureStore", () => ({
-  setStorage: (key: string, value: string) => {
-    mockStore.set(key, value);
-    return Promise.resolve();
-  },
-  retrieveStorage: (key: string) => {
-    return Promise.resolve(mockStore.get(key) ?? null);
-  },
-  deleteStorage: (key: string) => {
-    mockStore.delete(key);
-    return Promise.resolve();
-  },
-}));
+  return {
+    storage,
+    setStorage: jest.fn(async (key: string, value: string) => {
+      storage.set(key, value);
+    }),
+    retrieveStorage: jest.fn(async (key: string) => storage.get(key) ?? null),
+    deleteStorage: jest.fn(async (key: string) => {
+      storage.delete(key);
+    }),
+  };
+});
 
-const { consumeAuthRedirect, setAuthRedirect } = await import(
-  "../utils/authRedirect"
-);
-const { retrieveStorage, setStorage } = await import(
-  "@/modules/core/utils/secureStore"
-);
+const mockStore = (
+  jest.requireMock("@/modules/core/utils/secureStore") as {
+    storage: Map<string, string>;
+  }
+).storage;
 
 describe("authRedirect", () => {
   beforeEach(() => {

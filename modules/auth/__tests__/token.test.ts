@@ -1,39 +1,38 @@
-import { beforeEach, describe, expect, it, mock } from "bun:test";
-
-const mockStore = new Map<string, string>();
-
-mock.module("@/modules/core/utils/secureStore", () => ({
-  setStorage: (key: string, value: string) => {
-    mockStore.set(key, value);
-    return Promise.resolve();
-  },
-  retrieveStorage: (key: string) => {
-    return Promise.resolve(mockStore.get(key) ?? null);
-  },
-  deleteStorage: (key: string) => {
-    mockStore.delete(key);
-    return Promise.resolve();
-  },
-}));
-
-const {
+import {
   clearAuthToken,
   getAuthToken,
   getStoredSession,
   getStoredUser,
   setAuthToken,
   setStoredSession,
-} = await import(
-  "@/modules/auth/utils/token"
-);
-const { retrieveStorage, setStorage } = await import(
-  "@/modules/core/utils/secureStore"
-);
-const {
+} from "@/modules/auth/utils/token";
+import { retrieveStorage, setStorage } from "@/modules/core/utils/secureStore";
+import {
   AUTH_TOKEN_EXPIRES_AT_KEY,
   AUTH_TOKEN_KEY,
   USER_KEY,
-} = await import("@/modules/auth/config");
+} from "@/modules/auth/config";
+
+jest.mock("@/modules/core/utils/secureStore", () => {
+  const storage = new Map<string, string>();
+
+  return {
+    storage,
+    setStorage: jest.fn(async (key: string, value: string) => {
+      storage.set(key, value);
+    }),
+    retrieveStorage: jest.fn(async (key: string) => storage.get(key) ?? null),
+    deleteStorage: jest.fn(async (key: string) => {
+      storage.delete(key);
+    }),
+  };
+});
+
+const mockStore = (
+  jest.requireMock("@/modules/core/utils/secureStore") as {
+    storage: Map<string, string>;
+  }
+).storage;
 
 describe("token utils", () => {
   beforeEach(() => {

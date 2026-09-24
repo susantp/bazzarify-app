@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import Markdown, { MarkdownIt } from "react-native-markdown-display";
+import Markdown, {
+  createMarkdownIt,
+} from "@ronradtke/react-native-markdown-display";
 import { lexicalJsonToMarkdown } from "@/modules/core/utils/lexicalJsonToMarkdown";
 
 type Props = {
@@ -8,7 +10,8 @@ type Props = {
   onError?: (e: unknown) => void;
 };
 
-const md = MarkdownIt({ html: false, linkify: true, typographer: true });
+const md = createMarkdownIt({ typographer: true });
+md.set({ linkify: true });
 
 export const LexicalContentView: React.FC<Props> = ({ value, onError }) => {
   const [mdText, setMdText] = useState<string | null>(null);

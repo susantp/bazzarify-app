@@ -1,5 +1,4 @@
 import { Href, router } from "expo-router";
-import _ from "underscore";
 import React, { useTransition } from "react";
 import CardPaymentComponent from "@/components/cart/payment/CardPaymentComponent";
 import BottomActionView from "@/modules/core/components/BottomActionView";
@@ -186,10 +185,9 @@ export default function usePaymentScreenHook(id?: string) {
       methods: [CODPayPaymentMethod],
     },
   ];
-  const paymentMethodById: PaymentMethodType | undefined = _.find(
-    _.flatten(_.pluck(paymentMethodSections, "methods")),
-    { id },
-  );
+  const paymentMethodById: PaymentMethodType | undefined = paymentMethodSections
+    .flatMap((section) => section.methods)
+    .find((method) => method.id === id);
 
   return {
     paymentMethodSections,

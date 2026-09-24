@@ -18,9 +18,10 @@ function getCardWidth(cols: ProductCardProps["cols"]) {
 }
 
 const ProductCard = ({ item, cols }: ProductCardProps) => {
+  const theme = useBazarifyTheme();
+
   if (!item) return null;
   const inventory = getProductInventorySummary(item);
-  const theme = useBazarifyTheme();
 
   return (
     <Pressable

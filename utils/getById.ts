@@ -1,5 +1,3 @@
-import { find } from "underscore";
-
 export const getById = <T extends { id: string }>(
   id: string,
   collection: T[],
@@ -14,7 +12,7 @@ export const findChildren = <T extends { id: string; children?: T[] }>(
   for (const key in keys) {
     const value = keys[key];
 
-    const matchingNode = find(currentLevel, (node: T) => node.id === value);
+    const matchingNode = currentLevel.find((node) => node.id === value);
 
     if (!matchingNode) {
       return [];

@@ -1,8 +1,8 @@
-import { describe, expect, it } from "bun:test";
-
-const { isAuthEntryPath, isPrivatePath, normalizeAuthPath } = await import(
-  "@/modules/auth/utils/routePolicy"
-);
+import {
+  isAuthEntryPath,
+  isPrivatePath,
+  normalizeAuthPath,
+} from "@/modules/auth/utils/routePolicy";
 
 describe("routePolicy", () => {
   it("normalizes the public root path consistently", () => {

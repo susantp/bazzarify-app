@@ -1,4 +1,3 @@
-import { describe, expect, it } from "bun:test";
 import sortOrderStatuses from "@/modules/order/utils/sortOrderStatuses";
 
 describe("sortOrderStatuses", () => {
@@ -32,11 +31,6 @@ describe("sortOrderStatuses", () => {
         "awaiting_pickup",
         "confirmed",
       ]),
-    ).toEqual([
-      "confirmed",
-      "completed",
-      "awaiting_pickup",
-      "custom_status",
-    ]);
+    ).toEqual(["confirmed", "completed", "awaiting_pickup", "custom_status"]);
   });
 });

@@ -1,33 +1,37 @@
-import { beforeEach, describe, expect, it, mock } from "bun:test";
-
-const mockStore = new Map<string, string>();
-
-mock.module("@/modules/core/utils/secureStore", () => ({
-  setStorage: (key: string, value: string) => {
-    mockStore.set(key, value);
-    return Promise.resolve();
-  },
-  retrieveStorage: (key: string) => {
-    return Promise.resolve(mockStore.get(key) ?? null);
-  },
-  deleteStorage: (key: string) => {
-    mockStore.delete(key);
-    return Promise.resolve();
-  },
-}));
-
-const { authSessionAtom, authSessionEventAtom } = await import(
-  "@/modules/auth/atoms/authSessionAtom"
-);
-const { appStore } = await import("@/modules/core/utils/appStore");
-const {
+import {
+  authSessionAtom,
+  authSessionEventAtom,
+} from "@/modules/auth/atoms/authSessionAtom";
+import { appStore } from "@/modules/core/utils/appStore";
+import {
   clearAuthSession,
   logoutAuthSession,
   requireReauthSession,
   setAuthenticatedSession,
   syncSessionFromStorage,
-} = await import("@/modules/auth/session/sessionController");
-const { setStoredSession } = await import("@/modules/auth/utils/token");
+} from "@/modules/auth/session/sessionController";
+import { setStoredSession } from "@/modules/auth/utils/token";
+
+jest.mock("@/modules/core/utils/secureStore", () => {
+  const storage = new Map<string, string>();
+
+  return {
+    storage,
+    setStorage: jest.fn(async (key: string, value: string) => {
+      storage.set(key, value);
+    }),
+    retrieveStorage: jest.fn(async (key: string) => storage.get(key) ?? null),
+    deleteStorage: jest.fn(async (key: string) => {
+      storage.delete(key);
+    }),
+  };
+});
+
+const mockStore = (
+  jest.requireMock("@/modules/core/utils/secureStore") as {
+    storage: Map<string, string>;
+  }
+).storage;
 
 describe("sessionController", () => {
   beforeEach(() => {

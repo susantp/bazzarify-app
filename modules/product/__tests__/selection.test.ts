@@ -1,4 +1,3 @@
-import assert from "node:assert/strict";
 import {
   getAutoResolvedVariant,
   productRequiresCustomerSelection,
@@ -48,37 +47,42 @@ const baseProduct = {
   ],
 };
 
-assert.equal(
-  getAutoResolvedVariant({
-    ...baseProduct,
-    selection: {
-      requires_customer_selection: false,
-      auto_resolvable_variant_uuid: "22222222-2222-2222-2222-222222222222",
-    },
-  } as never)?.uuid,
-  "22222222-2222-2222-2222-222222222222",
-);
+describe("product selection", () => {
+  it("uses the automatically resolved variant when customer choice is unnecessary", () => {
+    expect(
+      getAutoResolvedVariant({
+        ...baseProduct,
+        selection: {
+          requires_customer_selection: false,
+          auto_resolvable_variant_uuid: "22222222-2222-2222-2222-222222222222",
+        },
+      } as never)?.uuid,
+    ).toBe("22222222-2222-2222-2222-222222222222");
+  });
 
-assert.equal(
-  productRequiresCustomerSelection({
-    ...baseProduct,
-    variants: [
-      ...baseProduct.variants,
-      {
-        ...baseProduct.variants[0],
-        uuid: "33333333-3333-3333-3333-333333333333",
-        sku: "FACE-WASH-02",
-        name: "Large",
-      },
-    ],
-    selection: {
-      requires_customer_selection: true,
-      auto_resolvable_variant_uuid: null,
-    },
-  } as never),
-  true,
-);
+  it("requires customer choice when the product selection says so", () => {
+    expect(
+      productRequiresCustomerSelection({
+        ...baseProduct,
+        variants: [
+          ...baseProduct.variants,
+          {
+            ...baseProduct.variants[0],
+            uuid: "33333333-3333-3333-3333-333333333333",
+            sku: "FACE-WASH-02",
+            name: "Large",
+          },
+        ],
+        selection: {
+          requires_customer_selection: true,
+          auto_resolvable_variant_uuid: null,
+        },
+      } as never),
+    ).toBe(true);
+  });
 
-assert.equal(shouldDisplayVariantLabel("Face Wash", "Face Wash"), false);
-assert.equal(shouldDisplayVariantLabel("Face Wash", "Large"), true);
-console.log("product selection mobile assertions passed");
+  it("hides a redundant variant label and shows a distinct one", () => {
+    expect(shouldDisplayVariantLabel("Face Wash", "Face Wash")).toBe(false);
+    expect(shouldDisplayVariantLabel("Face Wash", "Large")).toBe(true);
+  });
+});

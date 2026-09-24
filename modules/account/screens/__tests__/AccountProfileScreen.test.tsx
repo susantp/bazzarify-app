@@ -61,13 +61,13 @@ describe("AccountProfileScreen", () => {
       </BazarifyThemeProvider>,
     );
 
-    fireEvent.press(screen.getByRole("button", { name: "ORD-1" }));
+    await fireEvent.press(screen.getByRole("button", { name: "ORD-1" }));
     expect(router.push).toHaveBeenCalledWith({
       pathname: "/account/order/[id]",
       params: { id: "order-1" },
     });
 
-    fireEvent.press(
+    await fireEvent.press(
       screen.getByRole("button", { name: "Earn With Bazzarify" }),
     );
     expect(openURL).toHaveBeenCalledWith(
