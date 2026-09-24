@@ -1,13 +1,10 @@
 import { GridWrapper } from "@/components/home/ContentGridSection";
 import ProductCard from "@/components/common/ProductCard";
-import React from "react";
 import { IHomeInfiniteCardComponent } from "@/modules/home/types";
 import InfiniteProductGrid from "@/modules/core/components/InfiniteProductGrid";
 import { TProductSearchPayload } from "@/modules/product/schemas/responsePayloads/ProductSearchPayloadSchema";
-import { randomUUID } from "expo-crypto";
 
 const title = "Products";
-// const seeMorePath = "/(tabs)/categories/just-for-you";
 const id = "VendorProducts";
 const numCols = 2;
 export default function VendorProducts({
@@ -20,10 +17,10 @@ export default function VendorProducts({
         numColumns={numCols}
         queryResult={queryResult}
         selectItems={(p) => p?.products?.data || []}
-        renderItem={({ item, index }) =>
-          item ? <ProductCard item={item} key={index} cols={numCols} /> : null
+        renderItem={({ item }) =>
+          item ? <ProductCard item={item} cols={numCols} /> : null
         }
-        keyExtractor={(item) => item?.uuid || randomUUID()}
+        keyExtractor={(item) => item.uuid}
       />
     </GridWrapper>
   );
