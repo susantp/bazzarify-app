@@ -20,7 +20,7 @@ const CartHeader = ({ onAddressButtonPress }: Props) => {
         align="center"
         justify="flex-end"
         gap="lg"
-        backgroundColor="primary"
+        backgroundColor="navigationBar"
         paddingX="sm"
         style={styles.actions}
       >

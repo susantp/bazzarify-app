@@ -61,7 +61,7 @@ export const TopBarIcons = ({ style, testID }: TopBarIconsProps) => {
         accessibilityRole="button"
         hitSlop={8}
       >
-        <Icon size={32} color="textInverted">
+        <Icon size={32} color="navigationText">
           {({ color, size }) => (
             <Ionicons name="heart-outline" size={size} color={color} />
           )}
@@ -74,7 +74,7 @@ export const TopBarIcons = ({ style, testID }: TopBarIconsProps) => {
         hitSlop={8}
         onPress={() => router.push("/cart")}
       >
-        <Icon size={32} color="textInverted">
+        <Icon size={32} color="navigationText">
           {({ color, size }) => (
             <Ionicons name="cart-outline" size={size} color={color} />
           )}
@@ -106,7 +106,7 @@ export default function TopBar({ style }: TopBarProps) {
     <Box
       direction="row"
       align="center"
-      backgroundColor="primary"
+      backgroundColor="navigationBar"
       paddingX="sm"
       paddingY="xl"
       style={style}

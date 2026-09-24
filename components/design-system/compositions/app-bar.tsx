@@ -33,7 +33,7 @@ export function AppBar({
   testID,
 }: AppBarProps) {
   const theme = useBazarifyTheme();
-  const foregroundColor = iconColor ?? theme.colors.textInverted;
+  const foregroundColor = iconColor ?? theme.colors.navigationText;
 
   return (
     <Box
@@ -42,7 +42,7 @@ export function AppBar({
       align="center"
       justify="space-between"
       paddingX="sm"
-      backgroundColor="primary"
+      backgroundColor="navigationBar"
       style={[styles.bar, { minHeight: theme.dimensions.controlLg }, style]}
     >
       <Pressable

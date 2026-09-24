@@ -24,11 +24,7 @@ export default function PaymentConfirmationScreen() {
             backgroundColor="surfaceMuted"
             padding="sm"
           >
-            <Icon
-              size={16}
-              color="locationBar"
-              accessibilityLabel="Information"
-            >
+            <Icon size={16} color="primary" accessibilityLabel="Information">
               {({ color, size }) => (
                 <Ionicons name="information-circle" color={color} size={size} />
               )}

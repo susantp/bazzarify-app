@@ -3,8 +3,7 @@ import React from "react";
 import { Platform, StyleSheet } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useBazarifyTheme } from "@/components/design-system/theme";
 import { useLocation } from "@/modules/core/hooks/useLocation";
 import { BlurView } from "expo-blur";
 import { useAtomValue } from "jotai";
@@ -12,7 +11,7 @@ import { cartAtom } from "@/modules/cart/atoms";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const theme = useBazarifyTheme();
   useLocation();
   const cart = useAtomValue(cartAtom);
   return (
@@ -20,28 +19,35 @@ export default function TabLayout() {
       initialRouteName="index"
       backBehavior="history"
       screenOptions={{
-        tabBarInactiveBackgroundColor: "#fff",
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarInactiveBackgroundColor: theme.colors.surface,
+        tabBarActiveBackgroundColor: theme.colors.surface,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textMuted,
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarActiveBackgroundColor: "#fff",
-        tabBarIconStyle: {
-          color: Colors.light.icon,
-        },
         tabBarBackground: () => (
           <BlurView
-            tint="light"
+            tint={theme.mode}
             intensity={200}
-            style={StyleSheet.absoluteFill}
+            style={[
+              StyleSheet.absoluteFill,
+              { backgroundColor: theme.colors.surface },
+            ]}
           />
         ),
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: "absolute",
+        tabBarStyle: [
+          {
+            backgroundColor: theme.colors.surface,
+            borderTopColor: theme.colors.border,
           },
-          default: {},
-        }),
+          Platform.select({
+            ios: {
+              // Keep the iOS tab bar over the existing blur surface.
+              position: "absolute",
+            },
+            default: {},
+          }),
+        ],
       }}
     >
       <Tabs.Screen

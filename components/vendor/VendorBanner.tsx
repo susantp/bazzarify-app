@@ -39,7 +39,7 @@ const VendorBanner = ({ vendorUuid }: VendorHeaderProps) => {
               {/*/>*/}
             </Box>
             <Box gap="xs">
-              <Text variant="title" color="textInverted">
+              <Text variant="title" color="locationBarText">
                 {data?.store?.name || "N/A"}
               </Text>
               <Box direction="row" align="center" gap="xs">
@@ -57,12 +57,12 @@ const VendorBanner = ({ vendorUuid }: VendorHeaderProps) => {
                 </Icon>
               </Box>
               <Box direction="row" align="center" gap="xs">
-                <Icon size={12} color="textInverted">
+                <Icon size={12} color="locationBarText">
                   {({ color, size }) => (
                     <FontAwesome size={size} name="user" color={color} />
                   )}
                 </Icon>
-                <Text variant="caption" color="textInverted">
+                <Text variant="caption" color="locationBarText">
                   xxk
                 </Text>
               </Box>

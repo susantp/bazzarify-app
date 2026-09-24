@@ -45,7 +45,7 @@ export function SearchAppBar({
       direction="row"
       align="center"
       padding="sm"
-      backgroundColor="primary"
+      backgroundColor="navigationBar"
       style={style}
     >
       <Box
@@ -54,7 +54,7 @@ export function SearchAppBar({
         align="center"
         paddingX="sm"
         borderRadius="pill"
-        backgroundColor="surface"
+        backgroundColor="navigationInput"
       >
         {canGoBack ? (
           <Pressable
@@ -79,7 +79,14 @@ export function SearchAppBar({
           onSubmitEditing={onSubmitEditing}
           placeholder={placeholder}
           returnKeyType="next"
-          style={[styles.input, { color: theme.colors.text }, inputStyle]}
+          style={[
+            styles.input,
+            {
+              backgroundColor: theme.colors.navigationInput,
+              color: theme.colors.text,
+            },
+            inputStyle,
+          ]}
           value={value}
         />
       </Box>

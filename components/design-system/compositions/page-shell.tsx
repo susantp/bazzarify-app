@@ -20,7 +20,7 @@ export type PageShellProps = {
 
 export function PageShell({
   children,
-  backgroundColor = "primary",
+  backgroundColor = "navigationBar",
   contentBackgroundColor = "background",
   edges = ["top", "right", "bottom", "left"],
   style,

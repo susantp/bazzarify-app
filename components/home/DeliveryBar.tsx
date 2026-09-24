@@ -31,11 +31,12 @@ export default function DeliveryBar({
       align="center"
       justify="center"
       gap="sm"
+      paddingX="lg"
       paddingY="sm"
       backgroundColor="locationBar"
       style={style}
     >
-      <Icon size={14} color="textInverted">
+      <Icon size={14} color="locationBarText">
         {({ color, size }) => (
           <Ionicons name="location-outline" size={size} color={color} />
         )}
@@ -45,14 +46,19 @@ export default function DeliveryBar({
         style={styles.content}
       >
         {locationError ? (
-          <Box direction="row" align="center" justify="space-between">
-            <Text variant="bodyCompact" color="textInverted">
-              Location has an error. Please restart the app
+          <Box direction="row" align="center" gap="sm">
+            <Text
+              variant="bodyCompact"
+              color="locationBarText"
+              numberOfLines={1}
+              style={styles.errorMessage}
+            >
+              Location unavailable
             </Text>
             <Pressable onPress={refresh}>
               <Text
                 variant="bodyCompact"
-                color="textInverted"
+                color="locationBarText"
                 style={styles.refresh}
               >
                 Refresh Location
@@ -62,7 +68,7 @@ export default function DeliveryBar({
         ) : (
           <Text
             variant="bodyCompactMedium"
-            color="textInverted"
+            color="locationBarText"
             numberOfLines={1}
             style={styles.address}
           >
@@ -85,6 +91,7 @@ export default function DeliveryBar({
 
 const styles = StyleSheet.create({
   address: { fontSize: 11 },
-  content: { width: 320 },
+  content: { flex: 1, minWidth: 0 },
+  errorMessage: { flexShrink: 1 },
   refresh: { fontWeight: "700" },
 });

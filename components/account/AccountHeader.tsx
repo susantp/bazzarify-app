@@ -10,7 +10,7 @@ const AccountHeader = () => {
       direction="row"
       align="center"
       justify="space-between"
-      backgroundColor="primary"
+      backgroundColor="navigationBar"
     >
       <ScreenHeader title="Account" style={styles.title} interactive={false} />
       <Pressable
@@ -21,7 +21,7 @@ const AccountHeader = () => {
           router.push({ pathname: "/account/setting" });
         }}
       >
-        <Icon size={32} color="textInverted">
+        <Icon size={32} color="navigationText">
           {({ color, size }) => (
             <Ionicons name="settings-outline" size={size} color={color} />
           )}

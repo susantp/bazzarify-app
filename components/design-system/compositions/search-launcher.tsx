@@ -38,7 +38,7 @@ export function SearchLauncher({
         onPress={onSearchPress}
         style={({ pressed }) => [
           styles.launcher,
-          { backgroundColor: theme.colors.surface },
+          { backgroundColor: theme.colors.navigationInput },
           pressed && styles.pressed,
         ]}
       >
@@ -54,7 +54,10 @@ export function SearchLauncher({
             source={require("@/assets/images/iconSmall.png")}
             size={24}
             radius="none"
-            style={styles.logo}
+            style={[
+              styles.logo,
+              theme.mode === "dark" && { tintColor: theme.colors.text },
+            ]}
           />
         </Box>
       </Pressable>
