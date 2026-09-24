@@ -2,14 +2,19 @@
 set -euo pipefail
 
 # ---- Config ----
-APP_NAME="Bazzarify"                    # Expo-generated scheme/workspace name
+APP_NAME="Bazarify"                     # Expo-generated scheme/workspace name
 CONFIG="${CONFIG:-Debug}"               # Debug by default
 DERIVED_DATA="${DERIVED_DATA:-ios/build}"
 BUNDLE_ID="${BUNDLE_ID:-}"             # optional (e.g., com.bazzarify.app) to auto-launch
 
 echo ">> Prebuild iOS (pods included)"
 # If cleaning every time is too slow, drop the --clean.
-npx expo prebuild --clean --platform ios
+bunx expo prebuild --clean --platform ios
+
+if [[ ! -d "ios/${APP_NAME}.xcworkspace" ]]; then
+  echo "!! iOS workspace was not generated. Check the CocoaPods output above."
+  exit 1
+fi
 
 echo ">> Detect booted simulator"
 BOOTED_ID="$(xcrun simctl list devices booted | awk -F'[()]' '/Booted/ {print $2; exit}')"
@@ -33,6 +38,7 @@ xcodebuild \
   -configuration "${CONFIG}" \
   -destination "id=${BOOTED_ID}" \
   -derivedDataPath "${DERIVED_DATA}" \
+  IPHONEOS_DEPLOYMENT_TARGET=15.0 \
   build
 
 APP_PATH="${DERIVED_DATA}/Build/Products/${CONFIG}-iphonesimulator/${APP_NAME}.app"
