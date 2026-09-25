@@ -20,7 +20,7 @@ echo ">> Detect booted simulator"
 BOOTED_ID="$(xcrun simctl list devices booted | awk -F'[()]' '/Booted/ {print $2; exit}')"
 if [[ -z "${BOOTED_ID}" ]]; then
   echo "!! No booted iOS Simulator found."
-  echo "   Open one (e.g., 'open -a Simulator' then choose a device) and re-run."
+  echo "   Open/select an iOS device in Device Hub, then re-run this helper."
   exit 1
 fi
 
