@@ -33,8 +33,8 @@ jest.mock("@/hooks/usePaymentScreenHook", () => ({
   default: () => ({
     paymentMethodSections: [
       {
-        sectionTitle: "Pay now",
-        methods: [{ pathname: "/payment/cash", label: "Cash" }],
+        sectionTitle: "Available payment method",
+        methods: [{ pathname: "/payment/cod", label: "Cash on delivery" }],
       },
     ],
     cartState: { cart: { totals: { sub_total: 100, grand_total: 120 } } },
@@ -52,7 +52,7 @@ describe("PaymentScreen", () => {
 
     expect(screen.getByText("Payment")).toBeTruthy();
     expect(screen.getByText("Some items became unavailable.")).toBeTruthy();
-    expect(screen.getByText("Cash")).toBeTruthy();
+    expect(screen.getByText("Cash on delivery")).toBeTruthy();
     expect(screen.getByText("Rs. 120")).toBeTruthy();
   });
 });

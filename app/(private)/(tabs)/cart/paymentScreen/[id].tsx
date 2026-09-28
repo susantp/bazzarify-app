@@ -34,7 +34,13 @@ export default function PaymentConfirmationScreen() {
             </Box>
           </Box>
         )}
-        {componentMap[id.toString()]}
+        {componentMap[id.toString() as "cod"] ?? (
+          <Box padding="lg">
+            <Text variant="body">
+              This payment method is not available yet. Choose cash on delivery.
+            </Text>
+          </Box>
+        )}
       </PageContent>
     </SafeAreaWrapper>
   );

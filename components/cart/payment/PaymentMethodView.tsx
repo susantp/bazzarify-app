@@ -2,8 +2,7 @@ import { Box, Icon, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 import { PaymentMethodType } from "@/hooks/usePaymentScreenHook";
 import { Href, Link } from "expo-router";
-import { ConnectIPSIcon, ImePayIcon } from "@/components/common/icons";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 
@@ -25,20 +24,7 @@ const PaymentMethodView = ({ method, pathName }: PaymentMethodViewProps) => {
         <Box direction="row" align="center" gap="sm">
           <Icon size={24} color="primary">
             {({ color, size }) => {
-              if (method.id === "imePay") return <ImePayIcon />;
-              if (method.id === "connectIPS") return <ConnectIPSIcon />;
-              if (method.id === "cod") {
-                return (
-                  <Ionicons name="cash-outline" size={size} color={color} />
-                );
-              }
-              return (
-                <MaterialCommunityIcons
-                  name="credit-card-outline"
-                  size={size}
-                  color={color}
-                />
-              );
+              return <Ionicons name="cash-outline" size={size} color={color} />;
             }}
           </Icon>
           <Text variant="body">{method.name}</Text>

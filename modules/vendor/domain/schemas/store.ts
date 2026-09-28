@@ -3,7 +3,7 @@ import { z } from "zod";
 export const StoreSchema = z
   .object({
     uuid: z.uuid(),
-    user_uuid: z.uuid(),
+    assigned_vendor_user_uuid: z.uuid().nullable(),
     name: z.string(),
     slug: z.string(),
     short_name: z.string().nullable(),
