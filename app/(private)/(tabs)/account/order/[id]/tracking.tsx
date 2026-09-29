@@ -1,12 +1,10 @@
-import React from "react";
 import { ActivityIndicator, FlatList, Pressable } from "react-native";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
-import { Box, Icon, PageContent, Text } from "@/components/design-system";
+import { Box, PageContent, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
-import { randomUUID } from "expo-crypto";
 import DeliveryMileStones from "@/components/account/order/DeliveryMileStones";
+import DeliveryUnitCard from "@/components/account/order/DeliveryUnitCard";
 import TimelineItem from "@/components/account/order/TimelineItem";
 import useOrderTracking from "@/hooks/useOrderTracking";
 import { useLocalSearchParams } from "expo-router";
@@ -38,35 +36,9 @@ export default function TrackOrderPage() {
           borderRadius="lg"
         >
           <Box gap="xs">
-            <Text variant="bodyMedium">Tracking Number</Text>
-            <Text>{tracking.trackingNumber || "--"}</Text>
+            <Text variant="bodyMedium">Order number</Text>
+            <Text>{tracking.orderNumber || "--"}</Text>
           </Box>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Copy tracking number"
-          >
-            <Icon size={24} color="primary">
-              {({ color, size }) => (
-                <AntDesign name="copy" color={color} size={size} />
-              )}
-            </Icon>
-          </Pressable>
-        </Box>
-        <Box
-          direction="row"
-          align="center"
-          gap="lg"
-          backgroundColor="surfaceMuted"
-          padding="lg"
-          borderRadius="lg"
-          style={{ borderColor: theme.colors.border, borderWidth: 1 }}
-        >
-          <Icon size={20} color="primary">
-            {({ color, size }) => (
-              <FontAwesome5 name="shipping-fast" size={size} color={color} />
-            )}
-          </Icon>
-          <Text>{tracking.estimatedDeliveryText}</Text>
         </Box>
         <Box
           direction="row"
@@ -91,6 +63,14 @@ export default function TrackOrderPage() {
         {isLoading ? (
           <Box align="center" paddingY="xxl">
             <ActivityIndicator color={theme.colors.primary} size="large" />
+          </Box>
+        ) : null}
+        {!isLoading && !error && tracking.deliveryUnits.length > 0 ? (
+          <Box gap="md">
+            <Text variant="title">Store deliveries</Text>
+            {tracking.deliveryUnits.map((unit) => (
+              <DeliveryUnitCard key={unit.uuid} unit={unit} />
+            ))}
           </Box>
         ) : null}
         {!isLoading && error ? (
@@ -125,9 +105,8 @@ export default function TrackOrderPage() {
           <FlatList
             contentContainerStyle={{ rowGap: theme.spacing.lg }}
             data={orderTrackingData}
-            renderItem={({ item }) => (
-              <TimelineItem key={randomUUID()} item={item} />
-            )}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <TimelineItem item={item} />}
           />
         ) : null}
       </PageContent>

@@ -6,7 +6,7 @@ describe("mapOrderTrackingToTimeline", () => {
     const payload: TOrderTracking = {
       order_uuid: "019bf642-c317-7253-a8fc-85d11fcb2a49",
       order_number: "ORD-20260125-233029-723eacb3",
-      tracking_number: "TRK-123",
+      tracking_number: null,
       current_status: "shipped",
       estimated_delivery_window: {
         from: "2026-02-08",
@@ -14,6 +14,7 @@ describe("mapOrderTrackingToTimeline", () => {
       },
       timeline: [
         {
+          uuid: "019bf642-c317-7253-a8fc-85d11fcb2a49",
           status: "confirmed",
           title: "Confirmed",
           description: "Order confirmed",
@@ -21,6 +22,7 @@ describe("mapOrderTrackingToTimeline", () => {
           is_current: false,
         },
         {
+          uuid: "019bf642-c317-7253-a8fc-85d11fcb2a50",
           status: "shipped",
           title: "Shipped",
           description: "Order shipped",
@@ -28,6 +30,7 @@ describe("mapOrderTrackingToTimeline", () => {
           is_current: true,
         },
       ],
+      delivery_units: [],
     };
 
     const vm = mapOrderTrackingToTimeline(payload);
@@ -43,7 +46,7 @@ describe("mapOrderTrackingToTimeline", () => {
     const payload: TOrderTracking = {
       order_uuid: "019bf642-c317-7253-a8fc-85d11fcb2a49",
       order_number: "ORD-20260125-233029-723eacb3",
-      tracking_number: "TRK-123",
+      tracking_number: null,
       current_status: null,
       estimated_delivery_window: {
         from: null,
@@ -51,6 +54,7 @@ describe("mapOrderTrackingToTimeline", () => {
       },
       timeline: [
         {
+          uuid: "019bf642-c317-7253-a8fc-85d11fcb2a49",
           status: "confirmed",
           title: "Confirmed",
           description: null,
@@ -58,6 +62,7 @@ describe("mapOrderTrackingToTimeline", () => {
           is_current: true,
         },
       ],
+      delivery_units: [],
     };
 
     const vm = mapOrderTrackingToTimeline(payload);
@@ -65,8 +70,6 @@ describe("mapOrderTrackingToTimeline", () => {
     expect(vm.timeline[0].date).toBe("");
     expect(vm.currentStatusDate).toBe("");
     expect(vm.timeline[0].description).toBe("");
-    expect(vm.estimatedDeliveryText).toBe(
-      "Estimated delivery window unavailable",
-    );
+    expect(vm.trackingNumber).toBeNull();
   });
 });
