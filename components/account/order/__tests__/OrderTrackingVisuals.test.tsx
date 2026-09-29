@@ -10,6 +10,7 @@ describe("order tracking visuals", () => {
       <BazarifyThemeProvider>
         <TimelineItem
           item={{
+            id: "event-1",
             active: false,
             status: "Shipped",
             description: "Package left the warehouse",

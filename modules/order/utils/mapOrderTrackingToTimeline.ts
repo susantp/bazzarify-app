@@ -1,7 +1,11 @@
 import { parseISO, format } from "date-fns";
-import { TOrderTracking } from "@/modules/order/schemas/TrackingSchema";
+import {
+  TDeliveryTrackingUnit,
+  TOrderTracking,
+} from "@/modules/order/schemas/TrackingSchema";
 
 export interface OrderTrackingItem {
+  id: string;
   status: string;
   description: string;
   date: string;
@@ -11,10 +15,10 @@ export interface OrderTrackingItem {
 export interface OrderTrackingViewModel {
   orderUuid: string;
   orderNumber: string;
-  trackingNumber: string;
+  trackingNumber: string | null;
   currentStatus: string;
   currentStatusDate: string;
-  estimatedDeliveryText: string;
+  deliveryUnits: TDeliveryTrackingUnit[];
   timeline: OrderTrackingItem[];
 }
 
@@ -29,26 +33,9 @@ const formatTimelineDate = (raw: string | null) => {
   return format(parsed, "d LLL HH:mm");
 };
 
-const formatDeliveryDate = (raw: string | null) => {
-  if (!raw) {
-    return "";
-  }
-  const parsed = parseISO(raw);
-  if (Number.isNaN(parsed.getTime())) {
-    return "";
-  }
-  return format(parsed, "do LLLL");
-};
-
 export default function mapOrderTrackingToTimeline(
   tracking: TOrderTracking,
 ): OrderTrackingViewModel {
-  const from = formatDeliveryDate(tracking.estimated_delivery_window.from);
-  const to = formatDeliveryDate(tracking.estimated_delivery_window.to);
-  const estimatedDeliveryText =
-    from && to
-      ? `Get your product in ${from} - ${to}`
-      : "Estimated delivery window unavailable";
   const currentItem = tracking.timeline.find((item) => item.is_current);
 
   return {
@@ -57,8 +44,9 @@ export default function mapOrderTrackingToTimeline(
     trackingNumber: tracking.tracking_number,
     currentStatus: tracking.current_status || currentItem?.title || "",
     currentStatusDate: formatTimelineDate(currentItem?.changed_at || null),
-    estimatedDeliveryText,
+    deliveryUnits: tracking.delivery_units,
     timeline: tracking.timeline.map((item) => ({
+      id: item.uuid,
       status: item.title || item.status,
       description: item.description || "",
       date: formatTimelineDate(item.changed_at),
