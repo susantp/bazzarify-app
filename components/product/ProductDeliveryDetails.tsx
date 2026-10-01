@@ -1,10 +1,9 @@
 import { Pressable } from "react-native";
-import React from "react";
 import Svg, { Path } from "react-native-svg";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 import { formatUserAddress } from "@/modules/user/utils/address";
 import { addDays, format, isSameMonth } from "date-fns";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 

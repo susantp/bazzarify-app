@@ -6,7 +6,7 @@ import useSearchBarHook from "@/hooks/useSearchBarHook";
 import { router } from "expo-router";
 import NormalTopBar from "@/components/common/NormalTopBar";
 import useSearchHistory from "@/modules/search/hooks/useSearchHistory";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 
 export default function Page() {
   const theme = useBazarifyTheme();

@@ -1,7 +1,6 @@
 import { Animated, Platform, StyleSheet } from "react-native";
 import TopBar from "@/components/home/TopBar";
 import { router, useLocalSearchParams } from "expo-router";
-import React from "react";
 import ProductScreenContainer from "@/components/product/ProductScreenContainer";
 import ProductGenericDetails from "@/components/product/ProductGenericDetails";
 import ProductDeliveryDetails from "@/components/product/ProductDeliveryDetails";
@@ -108,10 +107,10 @@ export default function ProductScreen() {
                       : "Unavailable"
               }
               onStorePress={() =>
-                product?.user_uuid &&
+                product?.store_uuid &&
                 router.push({
-                  pathname: "/vendor/[vendorUuid]",
-                  params: { vendorUuid: product?.user_uuid },
+                  pathname: "/store/[storeUuid]",
+                  params: { storeUuid: product.store_uuid },
                 })
               }
             />

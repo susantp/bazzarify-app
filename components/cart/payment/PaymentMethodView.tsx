@@ -2,9 +2,8 @@ import { Box, Icon, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 import { PaymentMethodType } from "@/hooks/usePaymentScreenHook";
 import { Href, Link } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Pressable, StyleSheet } from "react-native";
-import React from "react";
 
 export interface PaymentMethodViewProps {
   method: PaymentMethodType;
@@ -19,7 +18,10 @@ const PaymentMethodView = ({ method, pathName }: PaymentMethodViewProps) => {
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={method.name}
-        style={[styles.row, { borderBottomColor: theme.colors.borderStrong }]}
+        style={StyleSheet.flatten([
+          styles.row,
+          { borderBottomColor: theme.colors.borderStrong },
+        ])}
       >
         <Box direction="row" align="center" gap="sm">
           <Icon size={24} color="primary">

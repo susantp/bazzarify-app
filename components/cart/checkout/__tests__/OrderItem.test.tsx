@@ -1,4 +1,3 @@
-import React from "react";
 import { render } from "@testing-library/react-native";
 import { BazarifyThemeProvider } from "@/components/design-system/theme";
 import OrderItem from "@/components/cart/checkout/OrderItem";
@@ -27,7 +26,7 @@ describe("OrderItem", () => {
     );
 
     expect(screen.getByText("Travel backpack")).toBeTruthy();
-    expect(screen.getByText("item.vendor")).toBeTruthy();
+    expect(screen.queryByText("item.vendor")).toBeNull();
     expect(screen.getByText("2500")).toBeTruthy();
     expect(screen.getByText("x 2")).toBeTruthy();
   });

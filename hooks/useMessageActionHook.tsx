@@ -1,7 +1,7 @@
 import { MessageActionType } from "@/components/account/message/MessageAction";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Feather, Ionicons } from "@expo/vector-icons";
-import React from "react";
+import MaterialIcons from "@react-native-vector-icons/material-icons";
+import Feather from "@react-native-vector-icons/feather";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { router } from "expo-router";
 
 export default function useMessageActionHook() {

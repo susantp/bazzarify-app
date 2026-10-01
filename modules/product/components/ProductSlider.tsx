@@ -1,6 +1,7 @@
 import { Pressable } from "react-native";
-import React, { useState } from "react";
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { useState } from "react";
+import AntDesign from "@react-native-vector-icons/ant-design";
+import Entypo from "@react-native-vector-icons/entypo";
 import constructProductImagesUrl from "@/modules/product/utils/constructImageUrl";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
 import ImageSlider from "@/components/common/ImageSlider";

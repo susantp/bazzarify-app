@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { FlatList, RefreshControl } from "react-native";
 import { Image, Text } from "@/components/design-system";
@@ -14,12 +14,29 @@ import homePopupAtom from "@/modules/core/atoms/homePopupAtom";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import { useAtom, useAtomValue } from "jotai";
 import ThemedLoader from "@/modules/core/components/ThemedLoader";
+import LocationAccessCard from "@/components/home/LocationAccessCard";
 
 export default function HomeScreen() {
   const [showModal, setShowModal] = useAtom(homePopupAtom);
+  const [locationCardDismissed, setLocationCardDismissed] = useState(false);
   const address = useAtomValue(geocodeAddressAtom);
   const error = useAtomValue(locationErrorAtom);
-  const { refresh } = useLocation();
+  const {
+    refresh,
+    requestAccess,
+    openLocationSettings,
+    permissionStatus,
+    canAskAgain,
+    isRequesting,
+  } = useLocation();
+  const needsLocationAccess =
+    permissionStatus === "undetermined" || permissionStatus === "denied";
+  const locationStatus =
+    permissionStatus === "checking"
+      ? "checking"
+      : permissionStatus === "granted"
+        ? "available"
+        : "unavailable";
   const { CARDS, refreshing, onRefresh, justForYouProductsQueryResult } =
     useHomeScreenHook();
   return (
@@ -29,9 +46,20 @@ export default function HomeScreen() {
         <DeliveryBar
           locationError={error}
           refresh={refresh}
+          locationStatus={locationStatus}
           displayCurrentAddress={address}
           style={{ width: "100%" }}
         />
+        {needsLocationAccess && !locationCardDismissed ? (
+          <LocationAccessCard
+            denied={permissionStatus === "denied"}
+            canAskAgain={canAskAgain}
+            isRequesting={isRequesting}
+            onRequestAccess={requestAccess}
+            onOpenSettings={openLocationSettings}
+            onDismiss={() => setLocationCardDismissed(true)}
+          />
+        ) : null}
         <ContentWrapper>
           <FlatList
             data={CARDS}

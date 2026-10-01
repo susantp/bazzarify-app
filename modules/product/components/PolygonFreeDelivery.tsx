@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Svg, { Polygon } from "react-native-svg";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { Box, Icon, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 

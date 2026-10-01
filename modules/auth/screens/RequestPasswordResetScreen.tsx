@@ -1,6 +1,5 @@
 import { ScrollView } from "react-native";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
-import React from "react";
 import PageTitle from "@/components/account/PageTitle";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { useForm } from "react-hook-form";
@@ -18,7 +17,7 @@ import remotePaths from "@/staticData/remote.paths";
 import { AxiosError, AxiosResponse } from "axios";
 import { router } from "expo-router";
 import * as Sentry from "@sentry/react-native";
-import { Feather } from "@expo/vector-icons";
+import Feather from "@react-native-vector-icons/feather";
 import Toast from "react-native-toast-message";
 import {
   applyValidationFeedback,
@@ -120,14 +119,7 @@ export default function RequestPasswordResetScreen() {
                   onBlur={field.onBlur}
                   value={field.value}
                   placeholder="Enter your phone number"
-                  icon={
-                    <Feather
-                      name="phone"
-                      size={28}
-                      strokeWidth={1}
-                      color="gray"
-                    />
-                  }
+                  icon={<Feather name="phone" size={28} color="gray" />}
                 />
               )}
             />

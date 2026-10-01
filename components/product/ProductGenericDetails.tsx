@@ -1,8 +1,7 @@
-import React, { ReactNode } from "react";
+import { type ReactNode } from "react";
 import Svg, { Path } from "react-native-svg";
 import { TProductWithVariantAndImage } from "@/modules/product/schemas/ProductWithVariantAndImageSchema";
-import { Ionicons } from "@expo/vector-icons";
-import { Box, Icon, Text } from "@/components/design-system";
+import { Box, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 
 export const DiscountBannerIcon = () => (
@@ -30,32 +29,6 @@ const ProductGenericDetails = ({
     <Box paddingX="lg">
       <Box id="product-title" paddingY="sm">
         <Text variant="heading">{item.name}</Text>
-      </Box>
-
-      <Box id="rating-info" direction="row" justify="space-between">
-        <Box id="reviews" direction="row" align="center" gap="xs">
-          {(["star", "star", "star", "star", "star-outline"] as const).map(
-            (name, index) => (
-              <Icon key={`${name}-${index}`} size={20} color="primary">
-                {({ color, size }) => (
-                  <Ionicons name={name} size={size} color={color} />
-                )}
-              </Icon>
-            ),
-          )}
-          <Text>512</Text>
-        </Box>
-
-        <Box id="authenticity" direction="row" align="center" gap="sm">
-          <Text variant="bodyMedium" color="primary">
-            100% Authentic
-          </Text>
-          <Icon size={23} color="primary">
-            {({ color, size }) => (
-              <Ionicons name="shield-checkmark" color={color} size={size} />
-            )}
-          </Icon>
-        </Box>
       </Box>
 
       <Box

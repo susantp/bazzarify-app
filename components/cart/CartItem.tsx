@@ -1,6 +1,5 @@
-import React from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, Image, Text } from "@/components/design-system";
 import { TCartItem } from "@/modules/order/schemas/orderSchema";
 import { shouldDisplayVariantLabel } from "@/modules/product/utils/selection";
@@ -64,8 +63,6 @@ const CartItem = ({
         {shouldDisplayVariantLabel(item.name, item.variant_attrs?.name) ? (
           <Text>{item.variant_attrs?.name.replace("|", "-")}</Text>
         ) : null}
-        <Text variant="caption">item.vendor</Text>
-        <Text variant="caption">item.deliveryDate</Text>
 
         <Box direction="row" style={styles.priceAction}>
           <Box direction="column" style={styles.priceColumn}>

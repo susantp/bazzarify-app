@@ -1,5 +1,5 @@
 import { StyleSheet, type StyleProp, type TextStyle } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, Input } from "@/components/design-system";
 
 const FullNameInput = ({

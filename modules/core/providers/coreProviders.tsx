@@ -26,10 +26,7 @@ function AuthenticatedRoot() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="vendor/[vendorUuid]"
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="store/[storeUuid]" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" options={{ headerShown: false }} />
     </Stack>
   );
@@ -44,10 +41,7 @@ function GuestRoot() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="products/[uuid]" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="vendor/[vendorUuid]"
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="store/[storeUuid]" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" options={{ headerShown: false }} />
     </Stack>
   );

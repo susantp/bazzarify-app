@@ -1,6 +1,7 @@
-import React, { Suspense, useState } from "react";
+import { Suspense, useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { FontAwesome5, Octicons } from "@expo/vector-icons";
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
+import Octicons from "@react-native-vector-icons/octicons";
 import { router } from "expo-router";
 import PolygonButton from "@/components/common/PolygonButton";
 import { useAtomValue } from "jotai";
@@ -55,6 +56,7 @@ const ProductPageBottomView = ({
             <Icon size={24} color="text">
               <FontAwesome5
                 name="apple-alt"
+                iconStyle="solid"
                 color={theme.colors.text}
                 size={24}
               />

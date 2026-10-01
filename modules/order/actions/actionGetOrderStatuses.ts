@@ -1,6 +1,5 @@
-import { authAxiosInstance } from "@/modules/core/utils/axios";
-import * as Sentry from "@sentry/react-native";
-import { formattedIssues } from "@/modules/core/utils/zod.util";
+import { DataSchema } from "@/modules/core/schemas/DataSchema";
+import { fetchAuthDataAndValidate } from "@/modules/core/utils/fetchAuthDataAndValidate";
 import {
   CustomerOrderStatusGroupsSchema,
   TCustomerOrderStatusGroup,
@@ -9,29 +8,12 @@ import {
 export default async function actionGetOrderStatuses(
   token: string,
 ): Promise<TCustomerOrderStatusGroup[]> {
-  const instance = await authAxiosInstance({
+  const response = await fetchAuthDataAndValidate(
+    { module: "consumers", path: "orders/statuses" },
+    DataSchema(CustomerOrderStatusGroupsSchema),
+    "Unable to get order statuses",
     token,
-    modulePath: "consumers",
-  });
-  if (!instance) {
-    throw new Error("Authentication error.");
-  }
-  let upstream: unknown;
-  try {
-    const response = await instance.get("orders/statuses");
-    upstream = response.data;
-  } catch (error: unknown) {
-    const err = new Error("Unable to get order statuses", { cause: error });
-    Sentry.captureException(err);
-    throw err;
-  }
+  );
 
-  const parsed = CustomerOrderStatusGroupsSchema.safeParse(upstream);
-  if (!parsed.success) {
-    const issues = formattedIssues(parsed.error.issues);
-    Sentry.captureException(issues);
-    throw new Error("API response schema validation failed", { cause: issues });
-  }
-
-  return parsed.data;
+  return response.payload ?? [];
 }

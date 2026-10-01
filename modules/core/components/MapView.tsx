@@ -1,4 +1,3 @@
-import React from "react";
 import type { Coordinates } from "expo-maps";
 import type { GoogleMapsMarker } from "expo-maps/src/google/GoogleMaps.types";
 import type { CameraPosition } from "expo-maps/src/shared.types";
@@ -12,7 +11,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@react-native-vector-icons/ant-design";
 import { loadExpoMaps } from "@/modules/core/services/expoMapsRuntime";
 import { EmptyState } from "@/components/design-system";
 

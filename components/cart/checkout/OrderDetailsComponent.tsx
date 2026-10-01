@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet } from "react-native";
 import { Box, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
@@ -124,9 +123,6 @@ const OrderDetailsComponent = ({ cart }: Props) => {
             <Box direction="row" justify="space-between">
               <Box direction="column" gap="sm" style={styles.deliveryCopy}>
                 <Text>Delivery Charge</Text>
-                <Text variant="bodyCompact" color="textMuted">
-                  Get By Dec Mon 2nd - Wed 4th
-                </Text>
               </Box>
               <Text variant="caption">Rs. {item.row_shipping}</Text>
             </Box>
