@@ -1,21 +1,18 @@
 import { Box, Icon, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
-import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
 import { useAtom } from "jotai";
 import { addressModalAtom } from "@/atoms/addressModalAtom";
 import DeliveryAddressPicker from "@/modules/user/components/DeliveryAddressPicker";
-import { TUser } from "@/modules/auth/schemas/UserSchema";
 import { TUserAddress } from "@/modules/user/schemas/UserAddress";
 import { formatUserAddress } from "@/modules/user/utils/address";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 
 interface Props {
-  user: TUser | null;
   defaultDeliveryAddress: TUserAddress | null;
 }
-const CheckoutAddressComponent = ({ user, defaultDeliveryAddress }: Props) => {
+const CheckoutAddressComponent = ({ defaultDeliveryAddress }: Props) => {
   const [showModal, setShowModal] = useAtom(addressModalAtom);
   const theme = useBazarifyTheme();
   const addressLabel = defaultDeliveryAddress
@@ -40,9 +37,9 @@ const CheckoutAddressComponent = ({ user, defaultDeliveryAddress }: Props) => {
         </Icon>
         <Box flex={1} gap="xs">
           <Text variant="body">{addressLabel}</Text>
-          {(defaultDeliveryAddress?.phone || user?.phone) && (
+          {defaultDeliveryAddress?.phone && (
             <Text variant="caption" color="textMuted">
-              Phone: {defaultDeliveryAddress?.phone || user?.phone}
+              Phone: {defaultDeliveryAddress.phone}
             </Text>
           )}
         </Box>

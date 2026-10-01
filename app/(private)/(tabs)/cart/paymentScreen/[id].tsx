@@ -3,8 +3,7 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { useLocalSearchParams } from "expo-router";
 import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
-import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 
 export default function PaymentConfirmationScreen() {
   const { id } = useLocalSearchParams();

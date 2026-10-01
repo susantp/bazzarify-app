@@ -1,11 +1,10 @@
-import React from "react";
 import {
   Pressable,
   StyleSheet,
   type StyleProp,
   type ViewStyle,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box } from "@/components/design-system/primitives/box";
 import { Text } from "@/components/design-system/primitives/text";
 import { Icon } from "@/components/design-system/media/icon";

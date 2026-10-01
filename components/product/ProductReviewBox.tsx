@@ -1,6 +1,5 @@
-import React from "react";
 import { ScrollView } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, Image, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 

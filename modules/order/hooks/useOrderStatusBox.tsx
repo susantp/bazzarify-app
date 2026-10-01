@@ -5,9 +5,8 @@ import {
   ToReviewIcon,
   ToShipIcon,
 } from "@/components/common/icons";
-import React from "react";
 import { ProfileMenuBoxType } from "@/modules/order/types";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { TCustomerOrderStatusGroup } from "@/modules/order/schemas/CustomerOrderStatusGroupSchema";
 
 const getAction = (id: string): ProfileMenuBoxType["action"] => {

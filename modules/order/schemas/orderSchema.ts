@@ -135,7 +135,7 @@ export const GetOrder = OrderSchema.pick({
   placed_at: true,
 })
   .extend({
-    uuid: z.uuid().optional(),
+    uuid: z.uuid(),
     items: z.array(
       OrderItemSchema.pick({
         uuid: true,

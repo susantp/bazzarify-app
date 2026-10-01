@@ -1,4 +1,4 @@
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -6,7 +6,7 @@ import {
   type TextStyle,
   type ViewStyle,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box } from "@/components/design-system/primitives/box";
 import { Icon } from "@/components/design-system/media/icon";
 import { Input } from "@/components/design-system/controls/input";

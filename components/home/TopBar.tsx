@@ -8,7 +8,7 @@ import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
 import { Badge } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, SearchLauncher } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 

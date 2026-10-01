@@ -10,6 +10,7 @@ interface Props {
   fields: AddressFieldType[];
   existingAddress: TUserAddress | null;
   initialValues?: Partial<TUserAddress> | null;
+  actionLabel?: string;
   onSubmit: (e: GestureResponderEvent) => void;
 }
 
@@ -18,7 +19,10 @@ export interface AddressFormRef {
 }
 
 const AddressFormComponent = forwardRef<AddressFormRef, Props>(
-  ({ id, fields, existingAddress, initialValues, onSubmit }, ref) => {
+      (
+        { id, fields, existingAddress, initialValues, actionLabel, onSubmit },
+        ref,
+      ) => {
     const [fieldValues, setFieldValues] = useState<Partial<TUserAddress>>({});
 
     useEffect(() => {
@@ -55,7 +59,7 @@ const AddressFormComponent = forwardRef<AddressFormRef, Props>(
             return (
               <Button
                 onPress={(e: GestureResponderEvent) => onSubmit(e)}
-                label={item.label}
+                label={actionLabel ?? item.label}
                 size="lg"
                 style={styles.action}
               />

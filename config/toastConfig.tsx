@@ -1,7 +1,6 @@
 import { BaseToast, ErrorToast, ToastProps } from "react-native-toast-message";
 import { Colors } from "@/constants/Colors";
-import { AntDesign } from "@expo/vector-icons";
-import Animated from "react-native-reanimated";
+import AntDesign from "@react-native-vector-icons/ant-design";
 import { View } from "react-native";
 
 const toastConfig = {

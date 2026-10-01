@@ -17,7 +17,7 @@ describe("CheckoutAddressComponent", () => {
     const screen = await render(
       <BazarifyThemeProvider>
         <Provider>
-          <CheckoutAddressComponent user={null} defaultDeliveryAddress={null} />
+          <CheckoutAddressComponent defaultDeliveryAddress={null} />
         </Provider>
       </BazarifyThemeProvider>,
     );

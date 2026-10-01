@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { InputProps } from "@/components/common";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, Input, useBazarifyTheme } from "@/components/design-system";
 
 interface PasswordInputProps extends InputProps {

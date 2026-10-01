@@ -1,18 +1,15 @@
 import { Tabs } from "expo-router";
-import React from "react";
 import { Platform, StyleSheet } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
 import { useBazarifyTheme } from "@/components/design-system/theme";
-import { useLocation } from "@/modules/core/hooks/useLocation";
 import { BlurView } from "expo-blur";
 import { useAtomValue } from "jotai";
 import { cartAtom } from "@/modules/cart/atoms";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 
 export default function TabLayout() {
   const theme = useBazarifyTheme();
-  useLocation();
   const cart = useAtomValue(cartAtom);
   return (
     <Tabs

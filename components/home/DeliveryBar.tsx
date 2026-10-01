@@ -4,16 +4,17 @@ import {
   type StyleProp,
   type ViewStyle,
 } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import ChooseAddressComponent from "@/components/common/ChooseAddressComponent";
 import { LocationGeocodedAddress } from "expo-location";
 import DemoModalComponent from "@/components/common/DemoModalComponent";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, Text } from "@/components/design-system";
 
 type DeliveryBarProps = {
   style?: StyleProp<ViewStyle>;
   locationError: string | null;
+  locationStatus: "checking" | "available" | "unavailable";
   refresh: () => void;
   displayCurrentAddress: LocationGeocodedAddress | null;
 };
@@ -21,6 +22,7 @@ type DeliveryBarProps = {
 export default function DeliveryBar({
   style,
   locationError,
+  locationStatus,
   displayCurrentAddress,
   refresh,
 }: DeliveryBarProps) {
@@ -45,7 +47,7 @@ export default function DeliveryBar({
         onPress={() => setShowModal(!showModal)}
         style={styles.content}
       >
-        {locationError ? (
+        {locationError && locationStatus === "available" ? (
           <Box direction="row" align="center" gap="sm">
             <Text
               variant="bodyCompact"
@@ -74,7 +76,11 @@ export default function DeliveryBar({
           >
             {displayCurrentAddress
               ? displayCurrentAddress.formattedAddress
-              : "Location loading..."}
+              : locationStatus === "checking"
+                ? "Finding your delivery area…"
+                : locationStatus === "available"
+                  ? "Location unavailable"
+                  : "Delivery area not set"}
           </Text>
         )}
       </Pressable>

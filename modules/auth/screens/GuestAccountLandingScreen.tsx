@@ -14,7 +14,6 @@ type GuestMenuType = {
 const guestMenu: GuestMenuType = {
   message: { id: "message", label: "Message" },
   orders: { id: "orders", label: "Orders" },
-  vouchers: { id: "vouchers", label: "Vouchers" },
   wishList: { id: "wishList", label: "Wish List" },
   support: { id: "support", label: "Bazzarify Support" },
 };

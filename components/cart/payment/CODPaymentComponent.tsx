@@ -1,7 +1,6 @@
 import { Box, Icon, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
-import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { StyleSheet } from "react-native";
 
 const CODPaymentComponent = () => {

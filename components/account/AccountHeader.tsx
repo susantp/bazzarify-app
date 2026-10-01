@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet } from "react-native";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon } from "@/components/design-system";
 
 const AccountHeader = () => {

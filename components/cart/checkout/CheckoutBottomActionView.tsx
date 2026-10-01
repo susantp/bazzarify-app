@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Button, Text } from "@/components/design-system";
 
 interface ICheckoutBottomActionViewProps {
@@ -26,13 +25,15 @@ const CheckoutBottomActionView = ({
             Total:
             <Text variant="title" color="primary">{` Rs. ${totalPrice}`}</Text>
           </Text>
-          <Text variant="caption">
-            Delivery fee:
-            <Text
-              variant="caption"
-              color="primary"
-            >{` Rs. ${deliveryPrice}`}</Text>
-          </Text>
+          {deliveryPrice !== undefined ? (
+            <Text variant="caption">
+              Delivery fee:
+              <Text
+                variant="caption"
+                color="primary"
+              >{` Rs. ${deliveryPrice}`}</Text>
+            </Text>
+          ) : null}
         </Box>
         <Button
           variant="primary"

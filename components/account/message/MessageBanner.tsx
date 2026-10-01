@@ -4,8 +4,8 @@ import {
   ImageSourcePropType,
   StyleSheet,
 } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
-import React from "react";
+import Feather from "@react-native-vector-icons/feather";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { Box, Icon, Stack, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 
