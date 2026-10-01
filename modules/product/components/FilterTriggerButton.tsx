@@ -1,5 +1,5 @@
 import { TouchableOpacity, View } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@react-native-vector-icons/ant-design";
 import { ThemedText } from "@/components/ThemedText";
 import { primaryColor } from "@/constants/Colors";
 

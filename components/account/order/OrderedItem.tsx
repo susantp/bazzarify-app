@@ -68,6 +68,23 @@ const OrderedItem = ({ statusItem, order, item }: OrderedItemProps) => {
       <Box id="content" gap="sm" align="flex-start" style={styles.content}>
         <Text variant="body">{item.name}</Text>
         <Text variant="bodyCompact">{order.order_number}</Text>
+        {item.qty_refunded > 0 ? (
+          <Text variant="bodyCompact" color="textMuted">
+            Refunded quantity: {item.qty_refunded}
+          </Text>
+        ) : null}
+        {item.refund_cases?.map((refundCase) => (
+          <Text
+            key={refundCase.uuid}
+            variant="bodyCompact"
+            color="textMuted"
+            accessibilityLabel={`Refund ${refundCase.status} for ${refundCase.requested_quantity} item${refundCase.requested_quantity === 1 ? "" : "s"}`}
+          >
+            Refund {refundCase.status.replaceAll("_", " ")} ·{" "}
+            {refundCase.requested_quantity} item
+            {refundCase.requested_quantity === 1 ? "" : "s"}
+          </Text>
+        ))}
         <Box
           direction="row"
           align="center"

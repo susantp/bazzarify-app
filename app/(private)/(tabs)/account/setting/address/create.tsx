@@ -27,6 +27,7 @@ export default function Page() {
           fields={addressFields}
           existingAddress={null}
           initialValues={addressDraft || undefined}
+          actionLabel="Save address"
           onSubmit={handleCreate}
         />
       </ContentWrapper>

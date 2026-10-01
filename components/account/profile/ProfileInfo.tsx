@@ -2,7 +2,7 @@ import { Box, Icon, Image, Text } from "@/components/design-system";
 import { UserEditIcon } from "@/components/common/icons";
 import { Link } from "expo-router";
 import { TUser } from "@/modules/auth/schemas/UserSchema";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 
 interface Props {
   user: TUser | null;

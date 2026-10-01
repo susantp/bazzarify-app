@@ -25,6 +25,7 @@ describe("DeliveryBar", () => {
         <DeliveryBar
           displayCurrentAddress={{ formattedAddress: "Kathmandu" } as never}
           locationError={null}
+          locationStatus="available"
           refresh={jest.fn()}
         />
       </BazarifyThemeProvider>,
@@ -41,6 +42,7 @@ describe("DeliveryBar", () => {
         <DeliveryBar
           displayCurrentAddress={null}
           locationError="denied"
+          locationStatus="available"
           refresh={refresh}
         />
       </BazarifyThemeProvider>,

@@ -3,8 +3,7 @@ import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import { useLocalSearchParams } from "expo-router";
 import usePaymentScreenHook from "@/hooks/usePaymentScreenHook";
-import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@react-native-vector-icons/ionicons";
 
 export default function PaymentConfirmationScreen() {
   const { id } = useLocalSearchParams();
@@ -34,7 +33,13 @@ export default function PaymentConfirmationScreen() {
             </Box>
           </Box>
         )}
-        {componentMap[id.toString()]}
+        {componentMap[id.toString() as "cod"] ?? (
+          <Box padding="lg">
+            <Text variant="body">
+              This payment method is not available yet. Choose cash on delivery.
+            </Text>
+          </Box>
+        )}
       </PageContent>
     </SafeAreaWrapper>
   );

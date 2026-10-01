@@ -1,30 +1,35 @@
 // src/services/locationService.ts
 import * as Location from "expo-location";
-import { LocationGeocodedAddress } from "expo-location";
+import type {
+  LocationGeocodedAddress,
+  LocationPermissionResponse,
+} from "expo-location";
 
 export interface Coordinates {
   latitude: number;
   longitude: number;
 }
 
+/** Reads permission state without triggering the operating-system prompt. */
+export async function getForegroundLocationPermission(): Promise<LocationPermissionResponse> {
+  return Location.getForegroundPermissionsAsync();
+}
+
+/** Requests location only after an explicit user action. */
+export async function requestForegroundLocationPermission(): Promise<LocationPermissionResponse> {
+  return Location.requestForegroundPermissionsAsync();
+}
+
 /**
- * Requests foreground permission, then returns current coords.
- * Throws if permission denied.
+ * Returns current coordinates only when foreground permission is already
+ * granted. Permission prompting belongs to the user-triggered UI action.
  */
 export async function getCurrentCoordinates(): Promise<Coordinates> {
-  // check current status
-  const perm = await Location.getForegroundPermissionsAsync();
-  if (perm.status === Location.PermissionStatus.UNDETERMINED) {
-    // first-time ask
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== Location.PermissionStatus.GRANTED) {
-      throw new Error("location permission not allowed");
-    }
-  } else if (perm.status === Location.PermissionStatus.DENIED) {
-    // user has said “never ask again”
+  const permission = await getForegroundLocationPermission();
+  if (!permission.granted) {
     throw new Error("location permission not allowed");
   }
-  // permission === GRANTED
+
   const { coords } = await Location.getCurrentPositionAsync({
     accuracy: Location.Accuracy.Highest,
   });

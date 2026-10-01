@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native";
 import FullWidthActionBtn from "@/components/account/FullWidthActionBtn";
-import React, { useState } from "react";
+import { useState } from "react";
 import PageTitle from "@/components/account/PageTitle";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import { useForm } from "react-hook-form";
@@ -18,7 +18,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import UserPasswordInput from "@/components/account/UserPasswordInput";
 import * as Sentry from "@sentry/react-native";
 import NumberInput from "@/components/account/NumberInput";
-import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@react-native-vector-icons/fontawesome";
 import Toast from "react-native-toast-message";
 import {
   applyValidationFeedback,
@@ -122,14 +122,7 @@ export default function VerifyPasswordResetScreen() {
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   value={field.value}
-                  icon={
-                    <FontAwesome
-                      name="asterisk"
-                      size={28}
-                      strokeWidth={1}
-                      color="gray"
-                    />
-                  }
+                  icon={<FontAwesome name="asterisk" size={28} color="gray" />}
                   placeholder="Enter OTP"
                 />
               )}

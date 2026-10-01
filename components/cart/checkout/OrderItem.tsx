@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Box, Image, Text } from "@/components/design-system";
 import { TCartItem } from "@/modules/order/schemas/orderSchema";
 
@@ -22,7 +22,6 @@ const OrderItem = ({ items }: OrderItemProps) => (
     {items?.map((item) => (
       <Wrapper key={item.uuid}>
         <Text>{item.name}</Text>
-        <Text variant="caption">item.vendor</Text>
         <Box
           direction="row"
           align="center"

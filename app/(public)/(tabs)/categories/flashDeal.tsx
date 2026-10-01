@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Pressable } from "react-native";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import Entypo from "@react-native-vector-icons/entypo";
+import Ionicons from "@react-native-vector-icons/ionicons";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
 import {

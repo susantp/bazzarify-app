@@ -11,10 +11,10 @@ export type { OrderTrackingItem };
 const emptyTracking: OrderTrackingViewModel = {
   orderUuid: "",
   orderNumber: "",
-  trackingNumber: "",
+  trackingNumber: null,
   currentStatus: "",
   currentStatusDate: "",
-  estimatedDeliveryText: "Estimated delivery window unavailable",
+  deliveryUnits: [],
   timeline: [],
 };
 
@@ -61,7 +61,7 @@ export default function useOrderTracking(orderId?: string) {
     orderTrackingData: tracking.timeline,
     isLoading,
     error,
-    isEmpty: !tracking.timeline.length,
+    isEmpty: !tracking.timeline.length && !tracking.deliveryUnits.length,
     retry: loadTracking,
   };
 }

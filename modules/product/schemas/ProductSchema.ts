@@ -22,7 +22,7 @@ export const ProductSchema = z
   .object({
     type: z.enum(["retail", "wholesale", "virtual"]),
     uuid: z.uuid(),
-    user_uuid: z.uuid().nullable(),
+    store_uuid: z.uuid().nullable(),
     image_base_path: z.string(),
     image_base_url: z.string(),
     id: z.number().nullable(),
@@ -61,7 +61,7 @@ export const OmittedProductWithImagesSchema = ProductSchema.omit({
   highlights: true,
   description: true,
   brand: true,
-  user_uuid: true,
+  store_uuid: true,
   brand_uuid: true,
   created_at: true,
   updated_at: true,

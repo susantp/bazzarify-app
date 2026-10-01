@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import ProfileInfo from "@/components/account/profile/ProfileInfo";
 import AccountHeader from "@/components/account/AccountHeader";
-import React from "react";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import OrderStatus from "@/components/account/profile/OrderStatus";
 import useOrder from "@/modules/order/hooks/useOrder";
@@ -17,7 +16,7 @@ import { toTitleCase } from "@/modules/core/utils";
 import formatOrderDate from "@/modules/order/utils/formatOrderDate";
 import { useAtomValue } from "jotai";
 import { orderStatusesState } from "@/modules/order/atoms/orderStatusesState";
-import { FontAwesome5 } from "@expo/vector-icons";
+import FontAwesome5 from "@react-native-vector-icons/fontawesome5";
 import { Box, Icon, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 
@@ -120,7 +119,12 @@ export default function AccountProfileScreen() {
             >
               <Icon size={20} color="primary">
                 {({ color, size }) => (
-                  <FontAwesome5 name="rupee-sign" size={size} color={color} />
+                  <FontAwesome5
+                    name="rupee-sign"
+                    iconStyle="solid"
+                    size={size}
+                    color={color}
+                  />
                 )}
               </Icon>
               <Text variant="title">Earn With Bazzarify</Text>

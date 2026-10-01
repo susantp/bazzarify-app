@@ -1,6 +1,19 @@
 import { z } from "zod";
 import { VariantSchema } from "@/modules/product/schemas/VariantSchema";
 
+export const OrderItemRefundCaseSchema = z
+  .object({
+    uuid: z.uuid(),
+    requested_quantity: z.number().int().positive(),
+    amount_minor: z.number().int().nonnegative(),
+    status: z.enum(["requested", "approved", "declined", "returned"]),
+    reason: z.string(),
+    created_at: z.string().nullable(),
+    decision_at: z.string().nullable(),
+    returned_at: z.string().nullable(),
+  })
+  .strip();
+
 export const OrderItemSchema = z
   .object({
     line_id: z.string().optional(),
@@ -18,9 +31,8 @@ export const OrderItemSchema = z
       .strip()
       .nullable(),
     qty_ordered: z.number().int().nonnegative(),
-    qty_canceled: z.number().int().nonnegative().default(0),
-    qty_shipped: z.number().int().nonnegative().default(0),
     qty_refunded: z.number().int().nonnegative().default(0),
+    refund_cases: z.array(OrderItemRefundCaseSchema).default([]),
 
     unit_price: z.float64().nonnegative(),
     row_discount: z.float64().nonnegative().default(0),
@@ -123,12 +135,14 @@ export const GetOrder = OrderSchema.pick({
   placed_at: true,
 })
   .extend({
-    uuid: z.uuid().optional(),
+    uuid: z.uuid(),
     items: z.array(
       OrderItemSchema.pick({
         uuid: true,
         name: true,
         qty_ordered: true,
+        qty_refunded: true,
+        refund_cases: true,
       })
         .extend({
           order_uuid: z.uuid().optional(),

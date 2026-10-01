@@ -1,7 +1,7 @@
 import { Pressable, ScrollView } from "react-native";
 import { SafeAreaWrapper } from "@/components/common/SafeAreaWrapper";
 import ScreenHeader from "@/components/common/ScreenHeader";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@react-native-vector-icons/ant-design";
 import { useAtomValue } from "jotai";
 import { userProfileAtom } from "@/atoms/sessionAtom";
 import Toast from "react-native-toast-message";

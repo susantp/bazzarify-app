@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Dimensions,
   GestureResponderEvent,
@@ -6,7 +5,7 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@react-native-vector-icons/ant-design";
 import { Box, Icon } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -113,7 +112,6 @@ const BottomDrawerContainer = ({
 
 const CenterContainer = ({
   children,
-  height,
   handlePress,
   themeColor,
 }: IModalContentContainerProps & { themeColor: string }) => (

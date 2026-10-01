@@ -1,12 +1,8 @@
 import { Href, router } from "expo-router";
 import React, { useTransition } from "react";
-import CardPaymentComponent from "@/components/cart/payment/CardPaymentComponent";
 import BottomActionView from "@/modules/core/components/BottomActionView";
-import CardPaymentBottomActionView from "@/components/cart/payment/CardPaymentBottomActionView";
 import CODPaymentComponent from "@/components/cart/payment/CODPaymentComponent";
 import CODPaymentBottomActionView from "@/components/cart/payment/CODPaymentBottomActionView";
-import ImePayPaymentComponent from "@/components/cart/payment/ImePayPaymentComponent";
-import ImePayPaymentBottomActionView from "@/components/cart/payment/ImePayPaymentBottomActionView";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { orderTotalsAfterOrderCreation } from "@/modules/order/atoms/orderTotalsAfterOrderCreation";
 import { cartAtom, selectedDeliveryAddress } from "@/modules/cart/atoms";
@@ -25,7 +21,7 @@ export type PaymentMethodType = {
   name: string;
   icon: string;
   pathname: Href;
-  id: string;
+  id: "cod";
   voucherMsg?: string;
 };
 export default function usePaymentScreenHook(id?: string) {
@@ -94,18 +90,6 @@ export default function usePaymentScreenHook(id?: string) {
   };
 
   const componentMap: Record<PaymentMethodType["id"], React.ReactNode> = {
-    card: (
-      <>
-        <CardPaymentComponent />
-        <BottomActionView>
-          <CardPaymentBottomActionView
-            totalPrice={399}
-            subTotalPrice={399}
-            actionBtn="Confirm Order"
-          />
-        </BottomActionView>
-      </>
-    ),
     cod: (
       <>
         <CODPaymentComponent />
@@ -126,62 +110,17 @@ export default function usePaymentScreenHook(id?: string) {
         </BottomActionView>
       </>
     ),
-    imePay: (
-      <>
-        <ImePayPaymentComponent />
-        <BottomActionView>
-          <ImePayPaymentBottomActionView
-            totalPrice={323}
-            subTotalPrice={323}
-            actionBtn={"Confirm Order"}
-          />
-        </BottomActionView>
-      </>
-    ),
-  };
-  const CartPaymentMethod: PaymentMethodType = {
-    id: "card",
-    name: "Card payment",
-    icon: "credit_card_icon",
-    pathname: "/cart/paymentScreen/card",
-    voucherMsg:
-      "Ensure you have collected the payment voucher to get Bank and Wallet Discounts. 0% EMI available on selected bank partners.",
-  };
-  const IMEPayPaymentMethod: PaymentMethodType = {
-    id: "imePay",
-    name: "Ime Pay",
-    icon: "ime_pay_icon",
-    pathname: "/cart/paymentScreen/imePay",
-    voucherMsg:
-      "Ensure you have collected the payment voucher to get Bank and Wallet Discounts. 0% EMI available on selected bank partners.",
-  };
-  const ConnectIPSPaymentMethod: PaymentMethodType = {
-    id: "connectIPS",
-    name: "Connect IPS",
-    icon: "connect_ips_icon",
-    pathname: "/cart/paymentScreen/connectIPS",
-    voucherMsg:
-      "Ensure you have collected the payment voucher to get Bank and Wallet Discounts. 0% EMI available on selected bank partners.",
   };
   const CODPayPaymentMethod: PaymentMethodType = {
     id: "cod",
     name: "Cash On Delivery",
     icon: "cash_on_delivery_icon",
     pathname: "/cart/paymentScreen/cod",
-    voucherMsg:
-      "Ensure you have collected the payment voucher to get Bank and Wallet Discounts. 0% EMI available on selected bank partners.",
+    voucherMsg: "Pay the cash-on-delivery amount when your order arrives.",
   };
   const paymentMethodSections: PaymentMethodSection[] = [
     {
-      sectionTitle: "Recommended Method",
-      methods: [CartPaymentMethod],
-    },
-    {
-      sectionTitle: "Digital Payment Method",
-      methods: [IMEPayPaymentMethod, ConnectIPSPaymentMethod],
-    },
-    {
-      sectionTitle: "Recommended Method",
+      sectionTitle: "Available payment method",
       methods: [CODPayPaymentMethod],
     },
   ];

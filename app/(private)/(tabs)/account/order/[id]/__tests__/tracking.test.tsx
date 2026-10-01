@@ -11,8 +11,9 @@ jest.mock("@/hooks/useOrderTracking", () => ({
   default: () => ({
     tracking: {
       currentStatus: "Shipped",
-      trackingNumber: "TRACK-1",
-      estimatedDeliveryText: "Arrives tomorrow",
+      orderNumber: "ORD-TRACK-1",
+      trackingNumber: null,
+      deliveryUnits: [],
       currentStatusDate: "Today",
     },
     orderTrackingData: [],
@@ -50,8 +51,8 @@ describe("TrackOrderPage", () => {
     );
 
     expect(screen.getByText("Track Your Product")).toBeTruthy();
-    expect(screen.getByText("Tracking Number")).toBeTruthy();
-    expect(screen.getByText("TRACK-1")).toBeTruthy();
+    expect(screen.getByText("Order number")).toBeTruthy();
+    expect(screen.getByText("ORD-TRACK-1")).toBeTruthy();
     expect(screen.getByText("Tracking timeline is empty")).toBeTruthy();
   });
 });
