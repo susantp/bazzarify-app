@@ -8,7 +8,7 @@
     "ios": "expo start -i --port 8082",
     "web": "expo start -w --port 8082",
     "test": "jest --watchAll",
-    "test:bun": "bun test modules/order/schemas/orderRefundSchema.test.ts modules/order/schemas/responsePayloads/CreateOrderResponsePayload.test.ts modules/storefront/domain/schemas/storefront-identity.test.ts modules/core/services/locationService.bun.test.ts",
+    "test:bun": "bun test modules/order/schemas/orderRefundSchema.test.ts modules/order/schemas/responsePayloads/CreateOrderResponsePayload.test.ts modules/storefront/domain/schemas/storefront-identity.test.ts modules/core/services/locationService.bun.test.ts modules/core/configs/__tests__/apiEndpoints.bun.test.ts modules/core/configs/__tests__/app.bun.test.ts",
     "lint": "expo lint",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
@@ -18,7 +18,7 @@
     "resolver": "react-native-worklets/jest/resolver",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "modules/(order/schemas/orderRefundSchema|order/schemas/responsePayloads/CreateOrderResponsePayload|storefront/domain/schemas/storefront-identity)\\.test\\.[jt]sx?$"
+      "modules/(order/schemas/orderRefundSchema|order/schemas/responsePayloads/CreateOrderResponsePayload|storefront/domain/schemas/storefront-identity|core/configs/__tests__/(apiEndpoints|app)\\.bun)\\.test\\.[jt]sx?$"
     ]
   },
   "dependencies": {
