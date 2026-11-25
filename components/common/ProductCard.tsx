@@ -3,7 +3,6 @@ import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import getFirstImageSource from "@/modules/core/utils/getFirstImageSource";
 import { TOmittedProductWithImages } from "@/modules/product/schemas/ProductSchema";
-import PolygonFreeDelivery from "@/modules/product/components/PolygonFreeDelivery";
 import { getProductInventorySummary } from "@/modules/product/utils/getProductInventorySummary";
 import { Box, Image, Text } from "@/components/design-system";
 import { useBazarifyTheme } from "@/components/design-system/theme";
@@ -67,7 +66,6 @@ const ProductCard = ({ item, cols }: ProductCardProps) => {
               style={styles.image}
             />
           </Box>
-          {"freeDelivery" in item && <PolygonFreeDelivery />}
         </Box>
 
         <Box id="content" gap="sm" paddingX="md" style={styles.content}>

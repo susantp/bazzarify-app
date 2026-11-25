@@ -31,7 +31,6 @@ export type ItemProps = {
   price: number;
   rating?: number;
   discount?: number;
-  freeDelivery?: boolean;
   base_price: ItemPrice;
   variants?: ItemVariant[];
   location: string;
