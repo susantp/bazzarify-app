@@ -4,6 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import ProductScreenContainer from "@/components/product/ProductScreenContainer";
 import ProductGenericDetails from "@/components/product/ProductGenericDetails";
 import ProductDeliveryDetails from "@/components/product/ProductDeliveryDetails";
+import ProductDeliveryEstimate from "@/components/product/ProductDeliveryEstimate";
 import ProductDescription from "@/components/product/ProductDescription";
 import ProductSlider from "@/modules/product/components/ProductSlider";
 import ProductSpecification from "@/components/product/ProductSpecification";
@@ -85,7 +86,26 @@ export default function ProductScreen() {
                 <ProductDeliveryDetails
                   selectedAddress={displayAddress}
                   onChangeAddress={handleOpenAddress}
-                />
+                >
+                  <ProductDeliveryEstimate
+                    key={JSON.stringify([
+                      uuid,
+                      selectedVariant?.uuid,
+                      displayAddress?.country,
+                      displayAddress?.state,
+                      displayAddress?.city,
+                      displayAddress?.zip,
+                    ])}
+                    productUuid={uuid as string}
+                    variantUuid={
+                      selectedVariantCanSell ? selectedVariant?.uuid : undefined
+                    }
+                    minimumQuantity={
+                      product.commerce?.minimum_order_quantity ?? 1
+                    }
+                    address={displayAddress}
+                  />
+                </ProductDeliveryDetails>
                 <ProductDescription product={product} />
                 <ProductSpecification product={product} />
               </ProductScreenContainer>
